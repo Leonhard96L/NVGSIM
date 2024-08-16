@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="./style.css">
+    <title>{{ title }}</title>
+</head>
+<body>
+<div class="content">
+    <h2>{{ test_id }} {{ test_name }}</h2>
+    <br/>
+    <br/>
+    <h3 class="center-div">Test Objective</h3>
+
+    <p>{{ test_objective }}</p>
+
+    <br/>
+    <table class="no-outer-borders">
+        <thead>
+            <tr>
+                <th>SubCase ID</th>
+                <th class="align-left">SubCase Title</th>
+                <th>Page</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sub in sub_cases %}
+                <tr>
+                    <td>{{ sub.id }}</td>
+                    <td class="align-left">{{ sub.name}}</td>
+                    <td><a href="#{{ sub.id }}">{{ sub.id }}</a></td>
+<!--                    <th {% if loop.first %} class="align-left"{% endif %}>{{col}}</th>-->
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3 class="center-div">Tolerances and Evaluation Criteria</h3>
+
+    <h3>FTD Level 3 and FNPT Level III:</h3>
+
+    <table class="no-outer-borders">
+        <thead>
+            <tr>
+                <th class="align-left">Parameter <span class="light-text">[U oM]</span></th>
+                <th>Tolerance</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="align-left">Engine 1 Torque <span class="light-text">[%]</span></td>
+                <td>CT&M</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <p>Evaluation Criteria to be applied to values in Test Results table.</p>
+
+    <h3 class="center-div">Applicability</h3>
+
+    <p>Test applicable both to FTD Level 3 and FNPT Level III.</p>
+
+    <h3 class="center-div">References</h3>
+
+    <p>EASA CS-FSTD(H)</p>
+
+<!--    <div class="page-break"></div> &lt;!&ndash; Page break here &ndash;&gt;-->
+</div>
+
+<div class="content">
+    <h3 class="center-div">Test Case Results Summary</h3>
+
+    <table class="no-outer-borders">
+        <thead>
+            <tr>
+                <th class="align-left">Parameter <span class="light-text">[U oM]</span></th>
+                <th></th>
+                <th>A1</th>
+                <th>A2</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="align-left">Engine 1 Torque <span class="light-text">[%]</span></td>
+                <td class="no-padding">
+                    <div class="inner-row">Min**</div>
+                    <div class="inner-row middle-row">FSTD</div>
+                    <div class="inner-row">Max**</div>
+                </td>
+                <td class="no-padding">
+                    <div class="inner-row">1</div>
+                    <div class="inner-row middle-row">2</div>
+                    <div class="inner-row">3</div>
+                </td>
+                <td class="no-padding">
+                    <div class="inner-row">1</div>
+                    <div class="inner-row middle-row">2</div>
+                    <div class="inner-row">3</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="align-left">Engine 1 Torque <span class="light-text">[%]</span></td>
+                <td class="no-padding">
+                    <div class="inner-row">Min**</div>
+                    <div class="inner-row middle-row">FSTD</div>
+                    <div class="inner-row">Max**</div>
+                </td>
+                <td class="no-padding">
+                    <div class="inner-row">1</div>
+                    <div class="inner-row middle-row">2</div>
+                    <div class="inner-row">3</div>
+                </td>
+                <td class="no-padding">
+                    <div class="inner-row">1</div>
+                    <div class="inner-row middle-row">2</div>
+                    <div class="inner-row">3</div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <br>
+
+    <p class="center-div tiny-text">
+        ** The Min value is computed as the Reference value minus the specific tolerance value.<br>
+        The Max value is computed as the Reference value plus the specific tolerance value
+    </p>
+
+<!--    <div class="page-break"></div> &lt;!&ndash; Page break here &ndash;&gt;-->
+</div>
+
+{% for sub_case in sub_cases %}
+<div class="content">
+    <h2 id="{{ sub_case.id }}">{{sub_case.id}} {{ sub_case.name}}</h2>
+
+    <h3 class="center-div">Test Procedure</h3>
+
+    <p>
+        On the IOS select ’Maintenance’ page then ’QTG-Test’.
+        The test can be run either in automatic or manual mode.
+    </p>
+    <p><b>Automatic testing:</b> drag and drop the corresponding Test 1.d SubCase A1 into the ’Test Selection’ column, to add it to the list of tests to be executed. Cockpit controls and switches status will be overwritten by the QTG Tool.</p>
+    <p>Press ’Start QTG Execution’ to start the test.</p>
+    <p>The flight controls will be controlled according to the following table:</p>
+    <br>
+    <table class="no-outer-borders centered-table">
+        <thead>
+            <tr>
+                <th class="align-left">Flight Controls</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="align-left">Longitudinal</td>
+                <td>DIRECT DRIVEN</td>
+            </tr>
+            <tr>
+                <td class="align-left">Lateral</td>
+                <td>DIRECT DRIVEN</td>
+            </tr>
+            <tr>
+                <td class="align-left">Collective</td>
+                <td>DIRECT DRIVEN</td>
+            </tr>
+            <tr>
+                <td class="align-left">Pedals</td>
+                <td>DIRECT DRIVEN</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <p><b>Manual testing:</b> follow the Manual Procedure steps indicated in the next page.</p>
+
+    <table class="footer">
+        <tbody>
+            <tr>
+                <td><b>Test</b></td>
+                <td>{{test_id}}</td>
+                <td><b>SubCase</b></td>
+                <td>{{sub_case.short_id}}</td>
+                <td><b>FLT</b></td>
+                <td>30</td>
+                <td><b>TOP</b></td>
+                <td>47</td>
+                <td><b>SW V.</b></td>
+                <td>4.2.1</td>
+                <td><b>Mode</b></td>
+                <td>Automatic</td>
+            </tr>
+            <tr>
+                <td><b>Title</b></td>
+                <td colspan="7" class="align-left">{{ sub_case.name }}</td>
+                <td><b>Date</b></td>
+                <td>{{ curr_date }}</td>
+                <td><b>Time</b></td>
+                <td>{{ curr_time }}</td>
+            </tr>
+            <tr>
+
+            </tr>
+            <tr></tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="content">
+    <h2>Manual Procedure</h2>
+    <ol>
+        <li><p>Drag and drop the corresponding Test 1.d SubCase A1 into the ’Test Selection’ column, to add it to the list of tests to be executed.</p></li>
+        <li><p>In the Test Selection list toggle from ’Automatic’ to ’Manual’.</p></li>
+        <li><p>Press ’Start QTG execution’. Wait for the completion message of the initialization phase.</p></li>
+        <li><p>Setup the cockpit as indicated in the Cockpit Configuration table below.</p></li>
+        <li><p>Press the Spare button on the Cyclic stick to run the simulation.</p></li>
+        <li><p>Stabilize and maintain current flight condition.</p></li>
+        <li><p>Press the Spare button on the Cyclic stick to start recording. On the IOS ’Manual QTG’ page, check that an indication of the test elapsed time is shown.</p></li>
+        <li><p>Press the Spare button on the Cyclic stick to complete the test or to proceed with the next test.</p></li>
+    </ol>
+
+    <table class="footer">
+        <tbody>
+            <tr>
+                <td><b>Test</b></td>
+                <td>1.d</td>
+                <td><b>SubCase</b></td>
+                <td>A1</td>
+                <td><b>FLT</b></td>
+                <td>30</td>
+                <td><b>TOP</b></td>
+                <td>47</td>
+                <td><b>SW V.</b></td>
+                <td>4.2.1</td>
+                <td><b>Mode</b></td>
+                <td>Automatic</td>
+            </tr>
+            <tr>
+                <td><b>Title</b></td>
+                <td colspan="7" class="align-left">Light GW, Aft CG - 3 ft AGL</td>
+                <td><b>Date</b></td>
+                <td>{{ curr_date }}</td>
+                <td><b>Time</b></td>
+                <td>{{ curr_time }}</td>
+            </tr>
+            <tr>
+
+            </tr>
+            <tr></tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="content">
+    <h3 class="center-div">Initial Conditions</h3>
+
+    <table class="no-outer-borders no-horizontal-borders">
+        <thead>
+            <tr>
+                {% for col in headers %}
+                    <th {% if loop.first %} class="align-left"{% endif %}>{{col}}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <!--Loop all the different categories-->
+        {% for subs in subsections %}
+        <thead>
+        <tr>
+            <th colspan="3" class="subsection">{{ subs.title }}</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for row in subs.rows %}
+            <tr>
+                <td class="align-left">{{ row[0] }}</td>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        {% endfor %}
+    </table>
+    <p class="tiny-text">* Snapshot Tests: Reference initial conditions are computed as mean values over data time histories</p>
+    <table class="footer">
+        <tbody>
+            <tr>
+                <td><b>Test</b></td>
+                <td>1.d</td>
+                <td><b>SubCase</b></td>
+                <td>A1</td>
+                <td><b>FLT</b></td>
+                <td>30</td>
+                <td><b>TOP</b></td>
+                <td>47</td>
+                <td><b>SW V.</b></td>
+                <td>4.2.1</td>
+                <td><b>Mode</b></td>
+                <td>Automatic</td>
+            </tr>
+            <tr>
+                <td><b>Title</b></td>
+                <td colspan="7" class="align-left">Light GW, Aft CG - 3 ft AGL</td>
+                <td><b>Date</b></td>
+                <td>{{ curr_date }}</td>
+                <td><b>Time</b></td>
+                <td>{{ curr_time }}</td>
+            </tr>
+            <tr>
+
+            </tr>
+            <tr></tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="content">
+    <h3 class="center-div">Test Results</h3>
+    <table class="no-outer-borders">
+        <thead>
+        <tr>
+            <th class="align-left">Parameter <span class="light-text">[U oM]</span></th>
+            <th>Reference</th>
+            <th>Min**</th>
+            <th>FSTD</th>
+            <th>Max**</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th class="subsection" colspan="5">Snapshot Data</th>
+        </tr>
+        <tr>
+            <td class="align-left">Engine 1 Torque <span class="light-text">[%]</span></td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <p class="center-div tiny-text">
+        ** The Min value is computed as the Reference value minus the specific tolerance value.<br>
+        The Max value is computed as the Reference value plus the specific tolerance value
+    </p>
+
+    <h3 class="center-div">Notes and Rationales</h3>
+
+    <table class="no-outer-borders">
+        <tr>
+            <th colspan="2">Notes</th>
+        </tr>
+        <tr>
+            <td colspan="2" class="align-left"><p>No Notes related to the entire Test are present</p></td>
+        </tr>
+        <tr>
+            <td colspan="2" class="align-left"><p>No Notes related to current SubCase are present</p></td>
+        </tr>
+        <tr>
+            <th colspan="2">Rationales (Validation Data)</th>
+        </tr>
+        <tr>
+            <td class="align-left"><p>
+                Rationale 1
+                (All Subcases)
+                </p>
+            </td>
+            <td class="align-left"><p>In the Hover flight maneuver Vertical Speed values are not reliable due to Rotor Downwash effects. In each current Test SubCases a stable Hover maneuver has been performed.</p></td>
+        </tr>
+        <tr>
+            <td colspan="2" class="align-left"><p>No Rationales related to current SubCase are present</p></td>
+        </tr>
+        <tr>
+            <th colspan="2">Rationales (Results)</th>
+        </tr>
+        <tr>
+            <td colspan="2" class="align-left"><p>No Rationales related to the entire Test are present</p></td>
+        </tr>
+        <tr>
+            <td colspan="2" class="align-left"><p>No Rationales related to current SubCase are present</p></td>
+        </tr>
+    </table>
+
+    <table class="footer">
+        <tbody>
+            <tr>
+                <td><b>Test</b></td>
+                <td>1.d</td>
+                <td><b>SubCase</b></td>
+                <td>A1</td>
+                <td><b>FLT</b></td>
+                <td>30</td>
+                <td><b>TOP</b></td>
+                <td>47</td>
+                <td><b>SW V.</b></td>
+                <td>4.2.1</td>
+                <td><b>Mode</b></td>
+                <td>Automatic</td>
+            </tr>
+            <tr>
+                <td><b>Title</b></td>
+                <td colspan="7" class="align-left">Light GW, Aft CG - 3 ft AGL</td>
+                <td><b>Date</b></td>
+                <td>{{ curr_date }}</td>
+                <td><b>Time</b></td>
+                <td>{{ curr_time }}</td>
+            </tr>
+            <tr>
+
+            </tr>
+            <tr></tr>
+        </tbody>
+    </table>
+</div>
+<div class="content">
+    {% for plot in plots_base64 %}
+        <img src="data:image/png;base64,{{ plot }}" alt="Plot Image">
+    {% endfor %}
+
+</div>
+{% endfor %}
+
+</body>
+</html>
