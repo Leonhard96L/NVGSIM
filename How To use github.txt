@@ -1,0 +1,6 @@
+1. Git bash open in dir NVGSIM
+2. git status 
+3. git pull
+4. git add . -> alles in diesem Verzeichnis
+5. git commit -m "Schreibe Information ueber diesen commit"
+6. git push
