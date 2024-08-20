@@ -248,6 +248,19 @@ def create_plots(QTG_path):
 
 # Generate the PDF
 if __name__ == "__main__":
+    # 1. einen, mehrerer oder alle tests
+    # 2. einen oder mehrere test cases
+    print("MQTG Automatic Creator")
+    create_init_cond = input("Create Initial QTG? (y/n): ").strip().lower() == 'y'
+    test_name = input("Enter Test (leave empty to create all): ")
+    test_case_name = ""
+    if len(test_name) != 0: test_case_name = input("Enter Test Case (leave empty to create all test cases of a test): ")
+
+    print(f"Create Initial QTG: {create_init_cond}")
+    print(f"Test: {test_name}")
+    print(f"Test Case: {test_case_name}")
+    input()
+
     init_cond, ref_init_cond = load_json_data("./data")
     plots_base64 = create_plots("./data")
     # print(plots_base64)
