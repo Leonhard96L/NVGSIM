@@ -28,6 +28,7 @@ import ctypes
 import numpy as np
 
 
+
 import time
 from datetime import datetime
 
@@ -705,6 +706,8 @@ def create_report(QTG_path, report_file):
 
 def create_plots(QTG_path):
 
+    #os.system('"qtg_data_structure.py"')
+
     for dirpath, dirnames, filenames in os.walk(QTG_path): 
         for file in filenames:
             if not file.endswith('.sim'):
@@ -983,7 +986,7 @@ if __name__ == "__main__":
     #Refernce_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\Reference_data_Init_flyout_V2'
     save_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\RecurrentQTG_save_manu'
     #Gib den Testnamen an
-    QTG_name = '1.c.(1)_A1'
+    QTG_name = '1.d_A1'
 
     #Pfad der Referenzdaten und der Speicherdaten, des jeweiligen QTGs
     QTG_path = get_QTG_path(QTG_name, save_data_path)

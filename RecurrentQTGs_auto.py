@@ -27,6 +27,7 @@ import DSim
 import ctypes
 
 import numpy as np
+import qtg_data_structure
 
 
 import time
@@ -273,6 +274,10 @@ def math_pilot(QTG_path,T):
     
 
     i = 0
+# =============================================================================
+#     simulation_mode.write(SIM_MODE.TRIM)
+#     time.sleep(0.5)
+# =============================================================================
     simulation_mode.write(SIM_MODE.RUN) 
     
     while i < len(T)-1:
@@ -611,7 +616,7 @@ def set_init_cond_flyout(init_cond_dict):
     ON = 5e-324 
     
     #init_cond_di_si = units_conversion(init_cond_dict,'SI')
-    
+    0
     #Positions
     #coordiantes LOWL RW26:
     LOWL = [48.23380,14.20719]
@@ -638,15 +643,22 @@ def set_init_cond_flyout(init_cond_dict):
     
     #Flight Parameters
     reference_frame_inertial_position_v_xy.write(float(init_cond_dict['Ground Speed']))
+    reference_frame_inertial_position_v_z.write(float(init_cond_dict['Vertical Velocity']))
     reference_frame_inertial_attitude_psi.write(float(init_cond_dict['Heading']))
+    engine_1_torque.write(float(init_cond_dict['Engine 1 Torque']))
+    engine_2_torque.write(float(init_cond_dict['Engine 2 Torque']))
+    
 
     configuration_failure_engine_1_failed.write(False) if init_cond_dict['Engine 1 Main Switch'] == 'FLIGHT' else configuration_failure_engine_1_failed.write(True)
     configuration_failure_engine_2_failed.write(False) if init_cond_dict['Engine 2 Main Switch'] == 'FLIGHT' else configuration_failure_engine_2_failed.write(True)
     
     hardware_pilot_collective_position.write(float(init_cond_dict["Collective Pos."]))
     hardware_pilot_cyclic_lateral_position.write(float(init_cond_dict["Lateral Cyclic Pos."]))
+    hardware_pilot_cyclic_lateral_trim_position.write(float(init_cond_dict["Lateral Cyclic Pos."]))
     hardware_pilot_cyclic_longitudinal_position.write(float(init_cond_dict["Longitudinal Cyclic Pos."]))
+    hardware_pilot_cyclic_longitudinal_trim_position.write(float(init_cond_dict["Longitudinal Cyclic Pos."]))
     hardware_pilot_pedals_position.write(float(init_cond_dict["Pedals Pos."]))
+    
 
     hardware_panel_center_hydraulics_xmsn_nr_p10.write(False) if init_cond_dict['HINR Button'] == 'NORMAL' else hardware_panel_center_hydraulics_xmsn_nr_p10.write(ON)
     if init_cond_dict['AFCS State'] == 'DSAS':
@@ -703,7 +715,11 @@ def create_report(QTG_path, report_file):
     
 
 
-def create_plots(QTG_path):
+def create_plots(QTG_path,QTG_name):
+
+    ID = QTG_name.split('.')
+
+    qtg_data_structure.data['tests'][int(ID[0])-1]['a.3']['tolerances_recurrent_criteria'][0]['tolerance'][1:]
 
     for dirpath, dirnames, filenames in os.walk(QTG_path): 
         for file in filenames:
@@ -983,7 +999,7 @@ if __name__ == "__main__":
     #Refernce_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\Reference_data_Init_flyout_V2'
     save_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\RecurrentQTG_save_auto'
     #Gib den Testnamen an
-    QTG_name = '1.c.(1)_A1'
+    QTG_name = '1.d_A1'
 
     #Pfad der Referenzdaten und der Speicherdaten, des jeweiligen QTGs
     QTG_path = get_QTG_path(QTG_name, save_data_path)
@@ -993,37 +1009,33 @@ if __name__ == "__main__":
     #Hole die Anfangsbedingungen des jeweiligen QTGs
     init_cond_ref_dict = get_QTG_init_cond_ref(QTG_path)
     
+
+
     #Schreibe die Anfangsbedingungen des jeweiligen QTGs
-    simulation_mode.write(SIM_MODE.PAUSE)
-    set_init_cond_flyout(init_cond_ref_dict)
+
+    
+    simulation_mode.write(SIM_MODE.TRIM)
+    time.sleep(2)
     simulation_mode.write(SIM_MODE.RUN)
+    set_init_cond_flyout(init_cond_ref_dict)
     time.sleep(4)
-    simulation_mode.write(SIM_MODE.PAUSE)
     set_init_cond_flyout(init_cond_ref_dict)
-    simulation_mode.write(SIM_MODE.RUN)
-    time.sleep(3)
-    simulation_mode.write(SIM_MODE.PAUSE)
+    time.sleep(2)
     set_init_cond_flyout(init_cond_ref_dict)
-    simulation_mode.write(SIM_MODE.RUN)
-    time.sleep(2)    
-    simulation_mode.write(SIM_MODE.PAUSE)
+    time.sleep(1)
     set_init_cond_flyout(init_cond_ref_dict)
-    simulation_mode.write(SIM_MODE.RUN)
-    time.sleep(1) 
-    simulation_mode.write(SIM_MODE.PAUSE)
+    time.sleep(0.5)
     set_init_cond_flyout(init_cond_ref_dict)
-    simulation_mode.write(SIM_MODE.RUN)
-    time.sleep(0.5) 
     simulation_mode.write(SIM_MODE.PAUSE)
     
-    
+
     logandsave_flyout_init_cond(QTG_path)
     
     input_matrix, output_matrix = math_pilot(QTG_path,T)
 
     save_io_files(QTG_path, input_matrix, output_matrix, T)
     create_comparison_table(QTG_path)
-    create_plots(QTG_path)
+    create_plots(QTG_path,QTG_name)
     create_report(QTG_path, 'Report.pdf')
 
     

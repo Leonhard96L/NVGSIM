@@ -983,7 +983,7 @@ if __name__ == "__main__":
     Refernce_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\Reference_data_Init_flyout_V3'
 
     # Gib den Testnamen an
-    QTG_name = '1.c.(1)_A1'
+    QTG_name = '1.e_A1'
 
     # Pfad der Referenzdaten und der Speicherdaten, des jeweiligen QTGs
     QTG_path = get_QTG_path(QTG_name, Refernce_data_path)
@@ -995,10 +995,13 @@ if __name__ == "__main__":
 
     # Schreibe die Anfangsbedingungen des jeweiligen QTGs
     set_init_cond_flyout(init_cond_ref_dict)
-    simulation_mode.write(SIM_MODE.PAUSE)
+    simulation_mode.write(SIM_MODE.TRIM)
     time.sleep(2)
     simulation_mode.write(SIM_MODE.RUN)
     input("Hit Enter if Pilot is ready")
+    simulation_mode.write(SIM_MODE.TRIM)
+    time.sleep(0.5)
+    simulation_mode.write(SIM_MODE.RUN)
 
     logandsave_flyout_init_cond(QTG_path)
 
