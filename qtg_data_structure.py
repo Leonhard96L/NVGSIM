@@ -153,8 +153,6 @@ data = {
             
             'c.2':
                 {
-                
-                    'id': 'c.2',
                     'main_title': 'Take-Off',
                     'test_title': 'OEI continued take-off',
                     'objective': 'The objective of this test is to demonstrate that the FSTD one engine inoperative continued take-off is compliant with the reference data.',

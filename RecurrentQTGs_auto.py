@@ -29,6 +29,7 @@ import ctypes
 import numpy as np
 import qtg_data_structure
 
+import re
 
 import time
 from datetime import datetime
@@ -286,10 +287,7 @@ def math_pilot(QTG_path,T):
         hardware_pilot_cyclic_longitudinal_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LONGITUDINAL])
         hardware_pilot_pedals_position.write(MQTG_input_matrix[i,INPUT.PEDALS])
         
-        input_matrix[i,INPUT.COLLECTIVE] = hardware_pilot_collective_position.read()
-        input_matrix[i,INPUT.CYCLIC_LATERAL] = hardware_pilot_cyclic_lateral_position.read()
-        input_matrix[i,INPUT.CYCLIC_LONGITUDINAL] = hardware_pilot_cyclic_longitudinal_position.read()
-        input_matrix[i,INPUT.PEDALS] = hardware_pilot_pedals_position.read()
+
 
         output_matrix[i,OUTPUT.AIRSPEED] = reference_frame_body_freestream_airspeed.read()
         output_matrix[i,OUTPUT.GROUNDSPEED] = reference_frame_inertial_position_v_xy.read()
@@ -305,6 +303,11 @@ def math_pilot(QTG_path,T):
         output_matrix[i,OUTPUT.YAWRATE] = reference_frame_body_attitude_r.read()
         output_matrix[i,OUTPUT.VERTICALSPEED] = reference_frame_inertial_position_v_z.read()
         output_matrix[i,OUTPUT.SIDESLIP] = reference_frame_body_freestream_beta.read()
+        
+        input_matrix[i,INPUT.COLLECTIVE] = hardware_pilot_collective_position.read()
+        input_matrix[i,INPUT.CYCLIC_LATERAL] = hardware_pilot_cyclic_lateral_position.read()
+        input_matrix[i,INPUT.CYCLIC_LONGITUDINAL] = hardware_pilot_cyclic_longitudinal_position.read()
+        input_matrix[i,INPUT.PEDALS] = hardware_pilot_pedals_position.read()
 
         # sleep for dT amount of seconds
         dT = T[i+1]-T[i]
@@ -702,6 +705,7 @@ def create_report(QTG_path, report_file):
     pdf_merger = PdfMerger()
     # Gehe durch alle Dateien im Ordner
     for root, dirs, files in os.walk(QTG_path):
+        print(sorted(files))
         for file in sorted(files):
             if file.endswith('.pdf'):
                 # Voller Pfad der PDF-Datei
@@ -713,222 +717,435 @@ def create_report(QTG_path, report_file):
     pdf_merger.write(output_path)
     pdf_merger.close()
     
+def extract_parts(QTG_name):
+    # Muster für die verschiedenen möglichen Teile des Strings
+    pattern = r'\d+\.(\w)(?:\.\((\d+)\))?(?:\((\w+)\))?_[A-Z]\d+'
+    
+    # Extrahieren
+    match = re.match(pattern, QTG_name)
+    
+    if match:
+        # Extrahiere die einzelnen Gruppen
+        letter = match.group(1)
+        number = match.group(2) if match.group(2) else ''
+        roman_numeral = match.group(3) if match.group(3) else ''
+        
+        # Erstelle das Ergebnis basierend auf den verfügbaren Teilen
+        result = f"{letter}"
+        if number:
+            result += f".{number}"
+        if roman_numeral:
+            result += f".{roman_numeral}"
+        
+        return result
+    else:
+        return "Kein gültiges Muster gefunden"
 
+
+# =============================================================================
+# def create_plots(QTG_path,QTG_name):
+# 
+#     ID = extract_parts(QTG_name)
+#     section = int(QTG_name.split('.')[0])
+# 
+# 
+#     tol_list = qtg_data_structure.data['tests'][section-1][ID]['tolerances_recurrent_criteria']
+#     for tol in tol_list:
+#         tol
+#     
+#     para_file_dict = {
+#         'Engine 1 Torque':'Engine1 TRQ Indicated',
+#         'Engine 2 Torque':'Engine2 TRQ Indicated',
+#         'Rotor Speed' : 'Rotor RPM',
+#         'Pitch Angle' : 'Pitch Angle',
+#         'Bank Angle' : 'Roll Angle',
+#         'Heading' : 'Yaw Angle Unwrapped',
+#         'Sideslip Angle' : 'Angle of Sideslip',
+#         'Airspeed' : 'Indicated Airspeed',
+#         'Radar Altitude' : 'RadarAltitude',
+#         'Vertical Velocity' : 'Vertical Speed',
+#         'Longitudinal Cyclic Pos.' : 'Control Position Pitch',
+#         'Lateral Cyclic Pos.' : 'Control Position Roll',
+#         'Pedals Pos.' : 'Control Position Yaw',
+#         'Collective Pos.' : 'Control Position Collective',
+#         'Pitch Rate' : 'Pitch Angle Rate',
+#         'Roll Rate' : 'Roll Angle Rate' ,
+#         'Yaw Rate' : 'Yaw Angle Rate'
+#     }
+#     
+# 
+#     for dirpath, dirnames, filenames in os.walk(QTG_path): 
+#         for file in filenames:
+#             if not file.endswith('.sim'):
+#                 continue
+# 
+#             file_path = os.path.join(dirpath, file)
+# 
+#             with open(file_path, 'r') as json_file:
+#                 data = json.load(json_file)
+#             if 'FTD1' in data.keys():
+#                 plot_title = file.split('.')[0]
+#                 
+#                 x_Ref = data['Storage'][0]['x']
+#                 y_Ref = data['Storage'][0]['y']
+#                 x = data['FTD1']['x']
+#                 y = data['FTD1']['y']
+#                 x_Rec = data['FTD1_Recurrent']['x']
+#                 y_Rec = data['FTD1_Recurrent']['y']
+#                 
+#                 
+#                 y[-1] = y[-2]
+#                 x[-1] = x[-2]
+#                 y_Rec[-1] = y_Rec[-2]
+#                 x_Rec[-1] = x_Rec[-2]
+#                 #y_uptol = y
+#                 #y_lotol = y
+#                 
+#                 x_label = 'Time(s)'
+# 
+#                 #Korrektur mit richitgen Einheiten
+#                 plt.figure(figsize=(10, 6))
+#                 
+#                 if 'Yaw Angle Unwrapped' in plot_title:
+#                     y = [map360(i) for i in y]
+#                     y_uptol = [i+2 for i in y]
+#                     y_lotol = [i-2 for i in y]
+#                     y_Rec = [map360(i) for i in y_Rec]
+#                     plot_title = 'Heading'
+#                     pdfname = f"7_{plot_title}.pdf"
+#                     y_label = plot_title + ' (deg)'
+#                     plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
+#                     plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
+#                 elif 'Roll Angle' in plot_title:
+#                     pdfname = f"7_{plot_title}.pdf"
+#                     y=np.rad2deg(y)
+#                     y_uptol = [i+1.5 for i in y]
+#                     y_lotol = [i-1.5 for i in y]
+#                     y_Rec=np.rad2deg(y_Rec)
+#                     y_label = plot_title + ' (deg)'
+#                     plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
+#                     plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
+#                 elif 'Pitch Angle' in plot_title:
+#                     pdfname = f"7_{plot_title}.pdf"
+#                     y=np.rad2deg(y)
+#                     y_uptol = [i+2 for i in y]
+#                     y_lotol = [i-2 for i in y]
+#                     y_Rec=np.rad2deg(y_Rec)
+#                     y_label = plot_title + ' (deg)'                    
+#                     plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
+#                     plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
+#                 elif 'Angle of Sideslip' in plot_title:
+#                     pdfname = f"7_{plot_title}.pdf"
+#                     y=np.rad2deg(y)
+#                     y_Rec=np.rad2deg(y_Rec)
+#                     y_label = plot_title + ' (deg)'
+#                 elif 'Angle Rate' in plot_title:
+#                     pdfname = f"9_{plot_title}.pdf"
+#                     y_label = plot_title + ' (deg/s)'
+#                 elif 'Control Position Pitch' in plot_title: #Pitch position Signal ist bei der Referenz invertiert
+#                     pdfname = f"8_{plot_title}.pdf"
+#                     y=[map_control(-i) for i in y]
+#                     y_Rec=[map_control(-i) for i in y_Rec]
+#                     y_label = plot_title + ' (%)'
+#                 elif 'Control Position Collective' in plot_title:
+#                     pdfname = f"8_{plot_title}.pdf"
+#                     y=[map_control(i) for i in y]
+#                     y_Rec=[map_control(i) for i in y_Rec]
+#                     y_label = plot_title + ' (%)'
+#                 elif 'Control Position Roll' in plot_title:
+#                     pdfname = f"8_{plot_title}.pdf"
+#                     y=[map_control(i) for i in y]
+#                     y_Rec=[map_control(i) for i in y_Rec]
+#                     y_label = plot_title + ' (%)'
+#                 elif 'Control Position Yaw' in plot_title:
+#                     pdfname = f"8_{plot_title}.pdf"
+#                     y=[map_control(i) for i in y]
+#                     y_Rec=[map_control(i) for i in y_Rec]
+#                     y_label = plot_title + ' (%)'               
+#                 elif 'TRQ' in plot_title:
+#                     y_uptol = [i+3 for i in y]
+#                     y_lotol = [i-3 for i in y]
+#                     pdfname = f"5_{plot_title}.pdf"
+#                     y_label = plot_title + ' (%)'
+#                     plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
+#                     plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
+#                 elif 'Control QTG Force Pitch' in plot_title:
+#                     y = [pitch_brun2N(i) for i in y]
+#                     x = [pitch_brun2angle(i) for i in x]
+#                     y_Rec = [pitch_brun2N(i) for i in y_Rec]
+#                     x_Rec = [pitch_brun2angle(i) for i in x_Rec]
+#                     pdfname = f"10_{plot_title}.pdf"
+#                     y_label = 'Force Pitch (N)'
+#                     x_label = 'Position (deg)'
+#                 elif 'Control QTG Force Roll' in plot_title:
+#                     y = [roll_brun2N(i) for i in y]
+#                     x = [roll_brun2angle(i) for i in x]
+#                     y_Rec = [roll_brun2N(i) for i in y_Rec]
+#                     x_Rec = [roll_brun2angle(i) for i in x_Rec]
+#                     pdfname = f"10_{plot_title}.pdf"
+#                     y_label = 'Force Roll (N)'
+#                     x_label = 'Position (deg)'
+#                 elif 'Control QTG Force Collective' in plot_title:
+#                     y = [coll_brun2N(i) for i in y]
+#                     x = [coll_brun2angle(i) for i in x]
+#                     y_Rec = [coll_brun2N(i) for i in y_Rec]
+#                     x_Rec = [coll_brun2angle(i) for i in x_Rec]
+#                     pdfname = f"10_{plot_title}.pdf"
+#                     y_label = 'Force Collective (N)'
+#                     x_label = 'Position (deg)' 
+#                 elif 'Control QTG Force Yaw' in plot_title:
+#                     x = [yaw_brun2angle(i) for i in x]
+#                     y = [i*-1000 for i in y]
+#                     x_Rec = [yaw_brun2angle(i) for i in x_Rec]
+#                     y_Rec = [i*-1000 for i in y_Rec]
+#                     pdfname = f"10_{plot_title}.pdf"
+#                     y_label = 'Force Yaw (N)'
+#                     x_label = 'Position (deg)'    
+#                 elif 'Control QTG Position Pitch Velocity' in plot_title:
+#                     y = [pitch_brun2angle(i) for i in y]
+#                     y,x = ATRIM_calc(x, y)
+#                     y_Rec = [pitch_brun2angle(i) for i in y_Rec]
+#                     y_Rec,x_Rec = ATRIM_calc(x_Rec, y_Rec)
+#                     pdfname = f"11_{plot_title}.pdf"
+#                     y_label = 'Long. Cyclic Pos. Rate (deg/s)'
+#                 elif 'Control QTG Position Roll Velocity' in plot_title:
+#                     y = [coll_brun2angle(i) for i in y]
+#                     y,x = ATRIM_calc(x, y)
+#                     y_Rec = [coll_brun2angle(i) for i in y_Rec]
+#                     y_Rec,x_Rec = ATRIM_calc(x_Rec, y_Rec)
+#                     pdfname = f"11_{plot_title}.pdf"
+#                     y_label = 'Lat. Cyclic Pos. Rate (deg/s)'                
+#                 elif 'Groundspeed' in plot_title:
+#                     pdfname = f"2_{plot_title}.pdf"
+#                     y=[mps2kt(i) for i in y]
+#                     y_Rec=[mps2kt(i) for i in y_Rec]
+#                     y_label = plot_title + ' (kt)'
+#                 elif 'Airspeed' in plot_title:
+#                     pdfname = f"1_{plot_title}.pdf"
+#                     y=[mps2kt(i) for i in y]
+#                     y_uptol = [i+3 for i in y]
+#                     y_lotol = [i-3 for i in y]
+#                     y_Rec=[mps2kt(i) for i in y_Rec]
+#                     y_label = plot_title + ' (kt)'
+#                     plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
+#                     plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
+#                 elif 'RadarAltitude' in plot_title:
+#                     pdfname = f"3_{plot_title}.pdf"
+#                     y_uptol = [i+20 for i in y]
+#                     y_lotol = [i-20 for i in y]
+#                     y_label = plot_title + ' (ft)'
+#                     plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
+#                     plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
+#                 elif 'Barometric Altitude' in plot_title:   
+#                     pdfname = f"3_{plot_title}.pdf"
+#                     y=[m2ft(i) for i in y]
+#                     y_Rec=[m2ft(i) for i in y_Rec]
+#                     y_label = plot_title + ' (ft)'
+#                 elif 'Vertical' in plot_title:
+#                     pdfname = f"4_{plot_title}.pdf"
+#                     y=[mps2fpm(-i) for i in y]
+#                     y_Rec=[mps2fpm(-i) for i in y_Rec]
+#                     y_label = plot_title + ' (ft/min)'
+#                 elif 'Rotor' in plot_title:
+#                     pdfname = f"6_{plot_title}.pdf"
+#                     y=[rpm2perc(i) for i in y]
+#                     y_Rec=[rpm2perc(i) for i in y_Rec]
+#                     y_label = plot_title + ' (%)'
+#                 else:
+#                     y_label = plot_title +' (??)'
+#                     pdfname = f"{plot_title}.pdf"
+#                 
+#                 
+#                 plt.plot(x_Ref, y_Ref, label='Reference')
+#                 plt.plot(x, y, label='FTD1_MQTG')
+#                 plt.plot(x_Rec, y_Rec, label='Reccurent', color='green', linestyle='dashed')
+# 
+#                 
+#                 ##Section for scale
+#                 sc_fac = 0.5
+#                 plt.autoscale()
+#                 y_min, y_max = plt.ylim()
+#                 y_range = y_max - y_min
+#                 plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
+# 
+#                 plt.xlabel(x_label)
+#                 plt.ylabel(y_label)
+#                 plt.title(plot_title)
+#                 plt.legend()
+#                 plt.grid(True)
+#                 #plt.show() 
+#                 save_path = os.path.join(dirpath, pdfname)
+#                 
+#                 plt.savefig(save_path, format='pdf')
+#                 plt.close()
+# =============================================================================
 
 def create_plots(QTG_path,QTG_name):
 
-    ID = QTG_name.split('.')
-
-    qtg_data_structure.data['tests'][int(ID[0])-1]['a.3']['tolerances_recurrent_criteria'][0]['tolerance'][1:]
-
-    for dirpath, dirnames, filenames in os.walk(QTG_path): 
-        for file in filenames:
-            if not file.endswith('.sim'):
-                continue
-
-            file_path = os.path.join(dirpath, file)
-
-            with open(file_path, 'r') as json_file:
-                data = json.load(json_file)
-            if 'FTD1' in data.keys():
-                plot_title = file.split('.')[0]
-                
-                x_Ref = data['Storage'][0]['x']
-                y_Ref = data['Storage'][0]['y']
-                x = data['FTD1']['x']
-                y = data['FTD1']['y']
-                x_Rec = data['FTD1_Recurrent']['x']
-                y_Rec = data['FTD1_Recurrent']['y']
-                
-                
-                y[-1] = y[-2]
-                x[-1] = x[-2]
-                y_Rec[-1] = y_Rec[-2]
-                x_Rec[-1] = x_Rec[-2]
-                #y_uptol = y
-                #y_lotol = y
-                
-                x_label = 'Time(s)'
-
-                #Korrektur mit richitgen Einheiten
-                plt.figure(figsize=(10, 6))
-                
-                if 'Yaw Angle Unwrapped' in plot_title:
-                    y = [map360(i) for i in y]
-                    y_uptol = [i+2 for i in y]
-                    y_lotol = [i-2 for i in y]
-                    y_Rec = [map360(i) for i in y_Rec]
-                    plot_title = 'Heading'
-                    pdfname = f"7_{plot_title}.pdf"
-                    y_label = plot_title + ' (deg)'
-                    plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
-                    plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
-                elif 'Roll Angle' in plot_title:
-                    pdfname = f"7_{plot_title}.pdf"
-                    y=np.rad2deg(y)
-                    y_uptol = [i+1.5 for i in y]
-                    y_lotol = [i-1.5 for i in y]
-                    y_Rec=np.rad2deg(y_Rec)
-                    y_label = plot_title + ' (deg)'
-                    plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
-                    plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
-                elif 'Pitch Angle' in plot_title:
-                    pdfname = f"7_{plot_title}.pdf"
-                    y=np.rad2deg(y)
-                    y_uptol = [i+2 for i in y]
-                    y_lotol = [i-2 for i in y]
-                    y_Rec=np.rad2deg(y_Rec)
-                    y_label = plot_title + ' (deg)'                    
-                    plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
-                    plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
-                elif 'Angle of Sideslip' in plot_title:
-                    pdfname = f"7_{plot_title}.pdf"
-                    y=np.rad2deg(y)
-                    y_Rec=np.rad2deg(y_Rec)
-                    y_label = plot_title + ' (deg)'
-                elif 'Angle Rate' in plot_title:
-                    pdfname = f"9_{plot_title}.pdf"
-                    y_label = plot_title + ' (deg/s)'
-                elif 'Control Position Pitch' in plot_title: #Pitch position Signal ist bei der Referenz invertiert
-                    pdfname = f"8_{plot_title}.pdf"
-                    y=[map_control(-i) for i in y]
-                    y_Rec=[map_control(-i) for i in y_Rec]
-                    y_label = plot_title + ' (%)'
-                elif 'Control Position Collective' in plot_title:
-                    pdfname = f"8_{plot_title}.pdf"
-                    y=[map_control(i) for i in y]
-                    y_Rec=[map_control(i) for i in y_Rec]
-                    y_label = plot_title + ' (%)'
-                elif 'Control Position Roll' in plot_title:
-                    pdfname = f"8_{plot_title}.pdf"
-                    y=[map_control(i) for i in y]
-                    y_Rec=[map_control(i) for i in y_Rec]
-                    y_label = plot_title + ' (%)'
-                elif 'Control Position Yaw' in plot_title:
-                    pdfname = f"8_{plot_title}.pdf"
-                    y=[map_control(i) for i in y]
-                    y_Rec=[map_control(i) for i in y_Rec]
-                    y_label = plot_title + ' (%)'               
-                elif 'TRQ' in plot_title:
-                    y_uptol = [i+3 for i in y]
-                    y_lotol = [i-3 for i in y]
-                    pdfname = f"5_{plot_title}.pdf"
-                    y_label = plot_title + ' (%)'
-                    plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
-                    plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
-                elif 'Control QTG Force Pitch' in plot_title:
-                    y = [pitch_brun2N(i) for i in y]
-                    x = [pitch_brun2angle(i) for i in x]
-                    y_Rec = [pitch_brun2N(i) for i in y_Rec]
-                    x_Rec = [pitch_brun2angle(i) for i in x_Rec]
-                    pdfname = f"10_{plot_title}.pdf"
-                    y_label = 'Force Pitch (N)'
-                    x_label = 'Position (deg)'
-                elif 'Control QTG Force Roll' in plot_title:
-                    y = [roll_brun2N(i) for i in y]
-                    x = [roll_brun2angle(i) for i in x]
-                    y_Rec = [roll_brun2N(i) for i in y_Rec]
-                    x_Rec = [roll_brun2angle(i) for i in x_Rec]
-                    pdfname = f"10_{plot_title}.pdf"
-                    y_label = 'Force Roll (N)'
-                    x_label = 'Position (deg)'
-                elif 'Control QTG Force Collective' in plot_title:
-                    y = [coll_brun2N(i) for i in y]
-                    x = [coll_brun2angle(i) for i in x]
-                    y_Rec = [coll_brun2N(i) for i in y_Rec]
-                    x_Rec = [coll_brun2angle(i) for i in x_Rec]
-                    pdfname = f"10_{plot_title}.pdf"
-                    y_label = 'Force Collective (N)'
-                    x_label = 'Position (deg)' 
-                elif 'Control QTG Force Yaw' in plot_title:
-                    x = [yaw_brun2angle(i) for i in x]
-                    y = [i*-1000 for i in y]
-                    x_Rec = [yaw_brun2angle(i) for i in x_Rec]
-                    y_Rec = [i*-1000 for i in y_Rec]
-                    pdfname = f"10_{plot_title}.pdf"
-                    y_label = 'Force Yaw (N)'
-                    x_label = 'Position (deg)'    
-                elif 'Control QTG Position Pitch Velocity' in plot_title:
-                    y = [pitch_brun2angle(i) for i in y]
-                    y,x = ATRIM_calc(x, y)
-                    y_Rec = [pitch_brun2angle(i) for i in y_Rec]
-                    y_Rec,x_Rec = ATRIM_calc(x_Rec, y_Rec)
-                    pdfname = f"11_{plot_title}.pdf"
-                    y_label = 'Long. Cyclic Pos. Rate (deg/s)'
-                elif 'Control QTG Position Roll Velocity' in plot_title:
-                    y = [coll_brun2angle(i) for i in y]
-                    y,x = ATRIM_calc(x, y)
-                    y_Rec = [coll_brun2angle(i) for i in y_Rec]
-                    y_Rec,x_Rec = ATRIM_calc(x_Rec, y_Rec)
-                    pdfname = f"11_{plot_title}.pdf"
-                    y_label = 'Lat. Cyclic Pos. Rate (deg/s)'                
-                elif 'Groundspeed' in plot_title:
-                    pdfname = f"2_{plot_title}.pdf"
-                    y=[mps2kt(i) for i in y]
-                    y_Rec=[mps2kt(i) for i in y_Rec]
-                    y_label = plot_title + ' (kt)'
-                elif 'Airspeed' in plot_title:
-                    pdfname = f"1_{plot_title}.pdf"
-                    y=[mps2kt(i) for i in y]
-                    y_uptol = [i+3 for i in y]
-                    y_lotol = [i-3 for i in y]
-                    y_Rec=[mps2kt(i) for i in y_Rec]
-                    y_label = plot_title + ' (kt)'
-                    plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
-                    plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
-                elif 'RadarAltitude' in plot_title:
-                    pdfname = f"3_{plot_title}.pdf"
-                    y_uptol = [i+20 for i in y]
-                    y_lotol = [i-20 for i in y]
-                    y_label = plot_title + ' (ft)'
-                    plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
-                    plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
-                elif 'Barometric Altitude' in plot_title:   
-                    pdfname = f"3_{plot_title}.pdf"
-                    y=[m2ft(i) for i in y]
-                    y_Rec=[m2ft(i) for i in y_Rec]
-                    y_label = plot_title + ' (ft)'
-                elif 'Vertical' in plot_title:
-                    pdfname = f"4_{plot_title}.pdf"
-                    y=[mps2fpm(-i) for i in y]
-                    y_Rec=[mps2fpm(-i) for i in y_Rec]
-                    y_label = plot_title + ' (ft/min)'
-                elif 'Rotor' in plot_title:
-                    pdfname = f"6_{plot_title}.pdf"
-                    y=[rpm2perc(i) for i in y]
-                    y_Rec=[rpm2perc(i) for i in y_Rec]
-                    y_label = plot_title + ' (%)'
-                else:
-                    y_label = plot_title +' (??)'
-                    pdfname = f"{plot_title}.pdf"
-                
-                
-                plt.plot(x_Ref, y_Ref, label='Reference')
-                plt.plot(x, y, label='FTD1_MQTG')
-                plt.plot(x_Rec, y_Rec, label='Reccurent', color='green', linestyle='dashed')
-
-                
-                ##Section for scale
-                sc_fac = 0.5
-                plt.autoscale()
-                y_min, y_max = plt.ylim()
-                y_range = y_max - y_min
-                plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
-
-                plt.xlabel(x_label)
-                plt.ylabel(y_label)
-                plt.title(plot_title)
-                plt.legend()
-                plt.grid(True)
-                #plt.show() 
-                save_path = os.path.join(dirpath, pdfname)
-                
-                plt.savefig(save_path, format='pdf')
-                plt.close()
+    ID = extract_parts(QTG_name)
+    section = int(QTG_name.split('.')[0])
 
 
+    params = qtg_data_structure.data['tests'][section-1][ID]['tolerances_recurrent_criteria']
+    para_file_dict = {
+        'Engine 1 Torque':'Engine1 TRQ Indicated',
+        'Engine 2 Torque':'Engine2 TRQ Indicated',
+        'Rotor Speed' : 'Rotor RPM',
+        'Pitch Angle' : 'Pitch Angle',
+        'Bank Angle' : 'Roll Angle',
+        'Heading' : 'Yaw Angle Unwrapped',
+        'Sideslip Angle' : 'Angle of Sideslip',
+        'Airspeed' : 'Indicated Airspeed',
+        'Radar Altitude' : 'RadarAltitude',
+        'Vertical Velocity' : 'Vertical Speed',
+        'Longitudinal Cyclic Pos.' : 'Control Position Pitch',
+        'Lateral Cyclic Pos.' : 'Control Position Roll',
+        'Pedals Pos.' : 'Control Position Yaw',
+        'Collective Pos.' : 'Control Position Collective',
+        'Pitch Rate' : 'Pitch Angle Rate',
+        'Roll Rate' : 'Roll Angle Rate' ,
+        'Yaw Rate' : 'Yaw Angle Rate'
+        
+    }
+    
+    
+    for count,param in enumerate(params):
+        count = count+1
+        plot_title = param['parameter']
+        tol = float(param['tolerance'][1:])
+        for dirpath, dirnames, filenames in os.walk(QTG_path):     
+            for file in filenames:
+                if file.split('.')[0] == para_file_dict[plot_title] and file.endswith('.sim'):
+                    file_path = os.path.join(dirpath, file)
+        
+        with open(file_path, 'r') as json_file:
+            data = json.load(json_file)
+            
+        if 'FTD1' in data.keys():
+            
+            x_Ref = data['Storage'][0]['x']
+            y_Ref = data['Storage'][0]['y']
+            x = data['FTD1']['x']
+            y = data['FTD1']['y']
+            x_Rec = data['FTD1_Recurrent']['x']
+            y_Rec = data['FTD1_Recurrent']['y']       
+        
+            y[-1] = y[-2]
+            x[-1] = x[-2]
+            y_Rec[-1] = y_Rec[-2]
+            x_Rec[-1] = x_Rec[-2]
+                            
+            if 'Yaw Angle Unwrapped' in para_file_dict[plot_title]:
+                y = [map360(i) for i in y]
+                y_Rec = [map360(i) for i in y_Rec]
+            elif 'Roll Angle' in para_file_dict[plot_title]:
+                y=np.rad2deg(y)
+                y_Rec=np.rad2deg(y_Rec)
+            elif 'Pitch Angle' in para_file_dict[plot_title]:
+                y=np.rad2deg(y)
+                y_Rec=np.rad2deg(y_Rec)
+            elif 'Angle of Sideslip' in para_file_dict[plot_title]:
+                y=np.rad2deg(y)
+                y_Rec=np.rad2deg(y_Rec)
+            elif 'Angle Rate' in para_file_dict[plot_title]:
+                y=np.rad2deg(y)
+                y_Rec=np.rad2deg(y_Rec)
+            elif 'Control Position Pitch' in para_file_dict[plot_title]: #Pitch position Signal ist bei der Referenz invertiert
+                y=[map_control(-i) for i in y]
+                y_Rec=[map_control(-i) for i in y_Rec]
+            elif 'Control Position Collective' in para_file_dict[plot_title]:
+                y=[map_control(i) for i in y]
+                y_Rec=[map_control(i) for i in y_Rec]
+            elif 'Control Position Roll' in para_file_dict[plot_title]:
+                y=[map_control(i) for i in y]
+                y_Rec=[map_control(i) for i in y_Rec]
+            elif 'Control Position Yaw' in para_file_dict[plot_title]:
+                y=[map_control(i) for i in y]
+                y_Rec=[map_control(i) for i in y_Rec]               
+            elif 'Control QTG Force Pitch' in para_file_dict[plot_title]:
+                y = [pitch_brun2N(i) for i in y]
+                x = [pitch_brun2angle(i) for i in x]
+                y_Rec = [pitch_brun2N(i) for i in y_Rec]
+                x_Rec = [pitch_brun2angle(i) for i in x_Rec]
+            elif 'Control QTG Force Roll' in para_file_dict[plot_title]:
+                y = [roll_brun2N(i) for i in y]
+                x = [roll_brun2angle(i) for i in x]
+                y_Rec = [roll_brun2N(i) for i in y_Rec]
+                x_Rec = [roll_brun2angle(i) for i in x_Rec]
+            elif 'Control QTG Force Collective' in para_file_dict[plot_title]:
+                y = [coll_brun2N(i) for i in y]
+                x = [coll_brun2angle(i) for i in x]
+                y_Rec = [coll_brun2N(i) for i in y_Rec]
+                x_Rec = [coll_brun2angle(i) for i in x_Rec]
+            elif 'Control QTG Force Yaw' in para_file_dict[plot_title]:
+                x = [yaw_brun2angle(i) for i in x]
+                y = [i*-1000 for i in y]
+                x_Rec = [yaw_brun2angle(i) for i in x_Rec]
+                y_Rec = [i*-1000 for i in y_Rec]
+            elif 'Control QTG Position Pitch Velocity' in para_file_dict[plot_title]:
+                y = [pitch_brun2angle(i) for i in y]
+                y,x = ATRIM_calc(x, y)
+                y_Rec = [pitch_brun2angle(i) for i in y_Rec]
+                y_Rec,x_Rec = ATRIM_calc(x_Rec, y_Rec)
+            elif 'Control QTG Position Roll Velocity' in para_file_dict[plot_title]:
+                y = [coll_brun2angle(i) for i in y]
+                y,x = ATRIM_calc(x, y)
+                y_Rec = [coll_brun2angle(i) for i in y_Rec]
+                y_Rec,x_Rec = ATRIM_calc(x_Rec, y_Rec)
+            elif 'Groundspeed' in para_file_dict[plot_title]:
+                y=[mps2kt(i) for i in y]
+                y_Rec=[mps2kt(i) for i in y_Rec]
+            elif 'Airspeed' in para_file_dict[plot_title]:
+                y=[mps2kt(i) for i in y]
+                y_Rec=[mps2kt(i) for i in y_Rec]
+            elif 'Barometric Altitude' in para_file_dict[plot_title]:
+                y=[m2ft(i) for i in y]
+                y_Rec=[m2ft(i) for i in y_Rec]
+            elif 'Vertical' in para_file_dict[plot_title]:
+                y=[mps2fpm(-i) for i in y]
+                y_Rec=[mps2fpm(-i) for i in y_Rec]
+            elif 'Rotor' in para_file_dict[plot_title]:
+                y=[rpm2perc(i) for i in y]
+                y_Rec=[rpm2perc(i) for i in y_Rec]
+            else:
+                y_label = plot_title +' (??)'
+                pdfname = f"{plot_title}.pdf"
+            
+            x_label = 'Time(s)'
+            
+            y_uptol = [i+tol for i in y]
+            y_lotol = [i-tol for i in y]
+            
+            pdfname = f"{count}_{plot_title}.pdf"
+            y_label = plot_title +' '+ param['unit']
 
+            plt.figure(figsize=(10, 6))
+            plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
+            plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
+            
+            
+            plt.plot(x_Ref, y_Ref, label='Reference')
+            plt.plot(x, y, label='FTD1_MQTG')
+            plt.plot(x_Rec, y_Rec, label='Reccurent', color='green', linestyle='dashed')
 
+            
+            ##Section for scale
+            sc_fac = 0.5
+            plt.autoscale()
+            y_min, y_max = plt.ylim()
+            y_range = y_max - y_min
+            plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
+
+            plt.xlabel(x_label)
+            plt.ylabel(y_label)
+            plt.title(plot_title)
+            plt.legend()
+            plt.grid(True)
+            #plt.show() 
+            save_path = os.path.join(dirpath, pdfname)
+            
+            plt.savefig(save_path, format='pdf')
+            plt.close()
 
 def create_comparison_table(QTG_path):
 
@@ -999,7 +1216,7 @@ if __name__ == "__main__":
     #Refernce_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\Reference_data_Init_flyout_V2'
     save_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\RecurrentQTG_save_auto'
     #Gib den Testnamen an
-    QTG_name = '1.d_A1'
+    QTG_name = '1.c.(1)_A1'
 
     #Pfad der Referenzdaten und der Speicherdaten, des jeweiligen QTGs
     QTG_path = get_QTG_path(QTG_name, save_data_path)
@@ -1009,8 +1226,6 @@ if __name__ == "__main__":
     #Hole die Anfangsbedingungen des jeweiligen QTGs
     init_cond_ref_dict = get_QTG_init_cond_ref(QTG_path)
     
-
-
     #Schreibe die Anfangsbedingungen des jeweiligen QTGs
 
     
@@ -1025,6 +1240,8 @@ if __name__ == "__main__":
     time.sleep(1)
     set_init_cond_flyout(init_cond_ref_dict)
     time.sleep(0.5)
+    set_init_cond_flyout(init_cond_ref_dict)
+    time.sleep(0.2)
     set_init_cond_flyout(init_cond_ref_dict)
     simulation_mode.write(SIM_MODE.PAUSE)
     
@@ -1042,19 +1259,20 @@ if __name__ == "__main__":
     #input_matrix, output_matrix, force_matrix = log_flyout_input_output(T)
 
 
-
-    
     set_standard_cond()
     
     """
     Ideen:
-        1. Ich kopiere den ges Ordner des initflyout und speicher den im recurrentQTGsave
-        2. Ich handle alles gleich wie beim init_flyout script aber schreibe im dict einfach eine neue instanz dazu. 
         3. if else bedingung zwischen automatic and manuell test
         4. Eine neue Referenz anlegen: mit OEI und init_cond FTD1 struktur
         
-    Probleme:
-        1. 
+    -Ueberlege nochmal. Das Trim beim init flyout.
+    -Achte auf die Plots bei den tests 2.d.3.ii
+    -Mache noch ein paar init flyouts
+    -stelle die Jungs an die EC135 warning sounds zu holen
+    -sortiere die pdfs richtig fuer report.pdf
+    -idee ich kann in der function create plot auch parameter plotten und dann im create report nur die notwendigen reinschmeisen
+    
     
     
     """
