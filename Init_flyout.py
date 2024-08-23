@@ -729,23 +729,15 @@ def set_init_cond_flyout(init_cond_dict):
     environment_weather_layer_1_top.write(ft2m(14000))  # Set weather layer up to 14000ft
 
     # Flight Parameters
-    reference_frame_inertial_position_v_xy.write(init_cond_di_si['Ground Speed'])
+    #reference_frame_inertial_position_v_xy.write(init_cond_di_si['Ground Speed'])
     reference_frame_inertial_attitude_psi.write(init_cond_di_si['Heading'])
 
-    configuration_failure_engine_1_failed.write(False) if init_cond_dict[
-                                                              'Engine 1 Main Switch'] == 'FLIGHT' else configuration_failure_engine_1_failed.write(
-        True)
-    configuration_failure_engine_2_failed.write(False) if init_cond_dict[
-                                                              'Engine 2 Main Switch'] == 'FLIGHT' else configuration_failure_engine_2_failed.write(
-        True)
+    configuration_failure_engine_1_failed.write(False) if init_cond_dict['Engine 1 Main Switch'] == 'FLIGHT' else configuration_failure_engine_1_failed.write(True)
+    configuration_failure_engine_2_failed.write(False) if init_cond_dict['Engine 2 Main Switch'] == 'FLIGHT' else configuration_failure_engine_2_failed.write(True)
 
-    configuration_failure_engine_1_failed.write(False) if init_cond_dict[
-                                                              'Training Mode'] == 'OFF' else configuration_failure_engine_1_failed.write(
-        True)
+    configuration_failure_engine_1_failed.write(False) if init_cond_dict['Training Mode'] == 'OFF' else configuration_failure_engine_1_failed.write(True)
 
-    hardware_panel_center_hydraulics_xmsn_nr_p10.write(False) if init_cond_dict[
-                                                                     'HINR Button'] == 'NORMAL' else hardware_panel_center_hydraulics_xmsn_nr_p10.write(
-        ON)
+    hardware_panel_center_hydraulics_xmsn_nr_p10.write(False) if init_cond_dict['HINR Button'] == 'NORMAL' else hardware_panel_center_hydraulics_xmsn_nr_p10.write(ON)
     if init_cond_dict['AFCS State'] == 'DSAS':
         flightmodel_module_simple_scas_input_scas_pitch_on.write(ON)
         flightmodel_module_simple_scas_input_scas_roll_on.write(ON)
@@ -981,9 +973,11 @@ def create_comparison_table(QTG_path):
 
 if __name__ == "__main__":
     Refernce_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\Reference_data_Init_flyout_V3'
-
+    
+    brunner_task = DSim.Variable.Enum(DSim.Node(dsim_host,"host/sim1-model/entity/as532_1/task/io_brunner_cls/mode"))
+    brunner_task.write(TASK_MODE.FORCE_RUN)
     # Gib den Testnamen an
-    QTG_name = '1.e_A1'
+    QTG_name = '1.g_A3'
 
     # Pfad der Referenzdaten und der Speicherdaten, des jeweiligen QTGs
     QTG_path = get_QTG_path(QTG_name, Refernce_data_path)
@@ -994,17 +988,24 @@ if __name__ == "__main__":
     init_cond_ref_dict = get_QTG_init_cond_ref(QTG_path)
 
     # Schreibe die Anfangsbedingungen des jeweiligen QTGs
+    simulation_mode.write(SIM_MODE.PAUSE)
+    time.sleep(0.2)
     set_init_cond_flyout(init_cond_ref_dict)
     simulation_mode.write(SIM_MODE.TRIM)
-    time.sleep(2)
+    time.sleep(1.5)
     simulation_mode.write(SIM_MODE.RUN)
     input("Hit Enter if Pilot is ready")
-    simulation_mode.write(SIM_MODE.TRIM)
-    time.sleep(0.5)
-    simulation_mode.write(SIM_MODE.RUN)
 
+# =============================================================================
+#     tmp_vertveloc = reference_frame_inertial_position_v_z.read()
+#     simulation_mode.write(SIM_MODE.TRIM)
+#     time.sleep(0.8)
+#     logandsave_flyout_init_cond(QTG_path,tmp_vertveloc)
+#     simulation_mode.write(SIM_MODE.RUN)
+# =============================================================================
+
+    
     logandsave_flyout_init_cond(QTG_path)
-
     input_matrix, output_matrix, force_matrix = log_flyout_input_output(T)
 
     # input_matrix, output_matrix = math_pilot(QTG_path,T)
@@ -1015,24 +1016,10 @@ if __name__ == "__main__":
     create_report(QTG_path, 'Report.pdf')
 
     set_standard_cond()
+    
+    simulation_mode.write(SIM_MODE.RUN)
 
 """
-
--Offen:
-
-    1. Die Control forces
-    2. Die Control positions initialisieren (Collective, Pedal)
-    4. Die trim speed tests -> kein problem einfach diesen Test kennzeichnen 
-    6. Die GRafischen Auswertung und Tabellen 
-    7. Schreibe das manual QTG procedure dazu, zu jeden Test
-
-
-
--Fuer Recurrent QTGs ein weiteres Program schreiben.
--Eine App machen oder Webapp -> muss fuer MQTG beschrieben werden
-
-
-
 
 
 Noch unsolved:

@@ -682,7 +682,18 @@ data = {
                         {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]', 'tolerance': 'CT&M'},
                         {'parameter': 'Lateral Cyclic Pos.', 'unit': '[%]', 'tolerance': 'CT&M'},
                         {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': 'CT&M'},
-                        {'parameter': 'Collective Pos.', 'unit': '[%]', 'tolerance': 'CT&M'}
+                        {'parameter': 'Collective Pos.', 'unit': '[%]', 'tolerance': 'CT&M'},
+                        {'parameter': 'Airspeed', 'unit': '[kts]', 'tolerance': 'CT&M'}
+                    ],
+                    'tolerances_recurrent_criteria': [
+                        {'parameter': 'Vertical Velocity', 'unit': '[ft/min]', 'tolerance': '±100'},
+                        {'parameter': 'Pitch Angle', 'unit': '[deg]', 'tolerance': '±1.5'},
+                        {'parameter': 'Sideslip Angle', 'unit': '[deg]', 'tolerance': '±2'},
+                        {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]', 'tolerance': '±5'},
+                        {'parameter': 'Lateral Cyclic Pos.', 'unit': '[%]', 'tolerance': '±5'},
+                        {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': '±5'},
+                        {'parameter': 'Collective Pos.', 'unit': '[%]', 'tolerance': '±5'},
+                        {'parameter': 'Airspeed', 'unit': '[kts]', 'tolerance': '±3'}
                     ],
                     'test_cases': [
                         {

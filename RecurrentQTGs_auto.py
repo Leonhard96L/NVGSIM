@@ -252,6 +252,37 @@ def logandsave_flyout_init_cond(QTG_path):
     
         
     print(filename_date + ' wurde unter ' + QTG_path + ' gespeichert!')
+
+def TRIM_pilot(QTG_path,T):
+    MQTG_input_matrix = np.empty((len(T),INPUT.NUMBER_OF_INPUTS))
+    Input_paths = [
+    os.path.join(QTG_path,'Control Position Collective.XY.qtgplot.sim'),
+    os.path.join(QTG_path,'Control Position Roll.XY.qtgplot.sim'),
+    os.path.join(QTG_path,'Control Position Pitch.XY.qtgplot.sim'),
+    os.path.join(QTG_path,'Control Position Yaw.XY.qtgplot.sim')]
+    
+    for path, i in zip(Input_paths,range(INPUT.NUMBER_OF_INPUTS)):
+        with open(path, 'r') as json_file:
+            data = json.load(json_file)
+        MQTG_input_matrix[:,i] = data["FTD1"]["y"]
+    
+    i = 0
+    T = T[0:int(len(T)*0.3)]
+    simulation_mode.write(SIM_MODE.RUN) 
+    
+    while i < len(T)-1:
+        
+        hardware_pilot_collective_position.write(MQTG_input_matrix[i,INPUT.COLLECTIVE])
+        hardware_pilot_cyclic_lateral_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LATERAL])
+        hardware_pilot_cyclic_longitudinal_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LONGITUDINAL])
+        hardware_pilot_pedals_position.write(MQTG_input_matrix[i,INPUT.PEDALS])
+
+        # sleep for dT amount of seconds
+        dT = T[i+1]-T[i]
+        time.sleep(dT)
+        # increment data row index
+        i += 1
+
     
 def math_pilot(QTG_path,T):
     MQTG_input_matrix = np.empty((len(T),INPUT.NUMBER_OF_INPUTS))
@@ -270,25 +301,11 @@ def math_pilot(QTG_path,T):
             data = json.load(json_file)
         MQTG_input_matrix[:,i] = data["FTD1"]["y"]
     
-
-
-    
-
     i = 0
-# =============================================================================
-#     simulation_mode.write(SIM_MODE.TRIM)
-#     time.sleep(0.5)
-# =============================================================================
+
     simulation_mode.write(SIM_MODE.RUN) 
     
     while i < len(T)-1:
-        hardware_pilot_collective_position.write(MQTG_input_matrix[i,INPUT.COLLECTIVE])
-        hardware_pilot_cyclic_lateral_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LATERAL])
-        hardware_pilot_cyclic_longitudinal_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LONGITUDINAL])
-        hardware_pilot_pedals_position.write(MQTG_input_matrix[i,INPUT.PEDALS])
-        
-
-
         output_matrix[i,OUTPUT.AIRSPEED] = reference_frame_body_freestream_airspeed.read()
         output_matrix[i,OUTPUT.GROUNDSPEED] = reference_frame_inertial_position_v_xy.read()
         output_matrix[i,OUTPUT.RADARALT] = radio_altimeter_altitude.read()
@@ -303,6 +320,12 @@ def math_pilot(QTG_path,T):
         output_matrix[i,OUTPUT.YAWRATE] = reference_frame_body_attitude_r.read()
         output_matrix[i,OUTPUT.VERTICALSPEED] = reference_frame_inertial_position_v_z.read()
         output_matrix[i,OUTPUT.SIDESLIP] = reference_frame_body_freestream_beta.read()
+        
+        hardware_pilot_collective_position.write(MQTG_input_matrix[i,INPUT.COLLECTIVE])
+        hardware_pilot_cyclic_lateral_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LATERAL])
+        hardware_pilot_cyclic_longitudinal_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LONGITUDINAL])
+        hardware_pilot_pedals_position.write(MQTG_input_matrix[i,INPUT.PEDALS])
+
         
         input_matrix[i,INPUT.COLLECTIVE] = hardware_pilot_collective_position.read()
         input_matrix[i,INPUT.CYCLIC_LATERAL] = hardware_pilot_cyclic_lateral_position.read()
@@ -615,16 +638,18 @@ def set_standard_cond():
     hardware_pilot_pedals_position.write(0)
     
 
-def set_init_cond_flyout(init_cond_dict):
+def set_init_cond_recurrent(init_cond_dict):
     ON = 5e-324 
     
     #init_cond_di_si = units_conversion(init_cond_dict,'SI')
     0
     #Positions
     #coordiantes LOWL RW26:
-    LOWL = [48.23380,14.20719]
-    reference_frame_inertial_position_latitude.write(LOWL[0])
-    reference_frame_inertial_position_longitude.write(LOWL[1])
+# =============================================================================
+#     LOWL = [48.23380,14.20719]
+#     reference_frame_inertial_position_latitude.write(LOWL[0])
+#     reference_frame_inertial_position_longitude.write(LOWL[1])
+# =============================================================================
         
     
     configuration_loading_empty_mass.write(float(init_cond_dict['Gross Weight']))
@@ -645,6 +670,7 @@ def set_init_cond_flyout(init_cond_dict):
 
     
     #Flight Parameters
+    reference_frame_body_freestream_airspeed.write(float(init_cond_dict['Airspeed']))
     reference_frame_inertial_position_v_xy.write(float(init_cond_dict['Ground Speed']))
     reference_frame_inertial_position_v_z.write(float(init_cond_dict['Vertical Velocity']))
     reference_frame_inertial_attitude_psi.write(float(init_cond_dict['Heading']))
@@ -1216,7 +1242,7 @@ if __name__ == "__main__":
     #Refernce_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\Reference_data_Init_flyout_V2'
     save_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\RecurrentQTG_save_auto'
     #Gib den Testnamen an
-    QTG_name = '1.c.(1)_A1'
+    QTG_name = '1.g_A3'
 
     #Pfad der Referenzdaten und der Speicherdaten, des jeweiligen QTGs
     QTG_path = get_QTG_path(QTG_name, save_data_path)
@@ -1226,24 +1252,121 @@ if __name__ == "__main__":
     #Hole die Anfangsbedingungen des jeweiligen QTGs
     init_cond_ref_dict = get_QTG_init_cond_ref(QTG_path)
     
-    #Schreibe die Anfangsbedingungen des jeweiligen QTGs
 
-    
+    LOWL = [48.23380,14.20719]
+    reference_frame_inertial_position_latitude.write(LOWL[0])
+    reference_frame_inertial_position_longitude.write(LOWL[1])
+    reference_frame_inertial_position_altitude.write(295)
+    reference_frame_body_freestream_airspeed.write(0)
+    reference_frame_inertial_position_v_xy.write(0)
     simulation_mode.write(SIM_MODE.TRIM)
     time.sleep(2)
-    simulation_mode.write(SIM_MODE.RUN)
-    set_init_cond_flyout(init_cond_ref_dict)
+    simulation_mode.write(SIM_MODE.RUN) 
     time.sleep(4)
-    set_init_cond_flyout(init_cond_ref_dict)
-    time.sleep(2)
-    set_init_cond_flyout(init_cond_ref_dict)
-    time.sleep(1)
-    set_init_cond_flyout(init_cond_ref_dict)
-    time.sleep(0.5)
-    set_init_cond_flyout(init_cond_ref_dict)
-    time.sleep(0.2)
-    set_init_cond_flyout(init_cond_ref_dict)
+    #Schreibe die Anfangsbedingungen des jeweiligen QTGs
+    set_init_cond_recurrent(init_cond_ref_dict)
     simulation_mode.write(SIM_MODE.PAUSE)
+    time.sleep(0.2)
+    simulation_mode.write(SIM_MODE.TRIM)
+    time.sleep(2)    
+    TRIM_pilot(QTG_path,T)
+    time.sleep(0.1)
+    set_init_cond_recurrent(init_cond_ref_dict)
+    time.sleep(4.5)
+
+
+
+
+
+    #Setting IAS 
+# =============================================================================
+#     set_init_cond_recurrent(init_cond_ref_dict)
+#     time.sleep(0.2)
+#     simulation_mode.write(SIM_MODE.PAUSE)
+#     time.sleep(0.2)
+#     simulation_mode.write(SIM_MODE.TRIM)
+#     time.sleep(1)
+#     simulation_mode.write(SIM_MODE.RUN)
+#     time.sleep(1)
+# =============================================================================
+
+     
+
+    
+
+    
+    
+# =============================================================================
+#     set_init_cond_recurrent(init_cond_ref_dict)
+#     time.sleep(2)
+# =============================================================================
+    
+
+
+# =============================================================================
+#     simulation_mode.write(SIM_MODE.PAUSE)
+#     time.sleep(0.2)
+#     set_init_cond_recurrent(init_cond_ref_dict) 
+#     simulation_mode.write(SIM_MODE.TRIM)
+#     time.sleep(1)
+#     simulation_mode.write(SIM_MODE.RUN)
+#     time.sleep(0.2)
+#     simulation_mode.write(SIM_MODE.PAUSE)
+#     time.sleep(0.2)
+#     set_init_cond_recurrent(init_cond_ref_dict) 
+#     simulation_mode.write(SIM_MODE.TRIM)
+#     time.sleep(1)
+#     simulation_mode.write(SIM_MODE.RUN)
+# =============================================================================
+    
+# =============================================================================
+#     set_init_cond_recurrent(init_cond_ref_dict)
+#     time.sleep(1)
+#     simulation_mode.write(SIM_MODE.PAUSE)
+#     set_init_cond_recurrent(init_cond_ref_dict)
+#     time.sleep(2)
+#     set_init_cond_recurrent(init_cond_ref_dict)
+# =============================================================================
+
+
+# =============================================================================
+#     simulation_mode.write(SIM_MODE.PAUSE)
+#     time.sleep(0.2)
+#     set_init_cond_recurrent(init_cond_ref_dict) 
+#     simulation_mode.write(SIM_MODE.TRIM)
+#     time.sleep(1)
+#     simulation_mode.write(SIM_MODE.RUN)
+#     time.sleep(0.2)
+#     set_init_cond_recurrent(init_cond_ref_dict)
+#     time.sleep(1)
+#     simulation_mode.write(SIM_MODE.PAUSE)
+#     set_init_cond_recurrent(init_cond_ref_dict)
+#     time.sleep(2)
+#     set_init_cond_recurrent(init_cond_ref_dict)
+# =============================================================================
+
+
+
+# =============================================================================
+#     simulation_mode.write(SIM_MODE.PAUSE)
+#     time.sleep(0.2)
+#     set_init_cond_recurrent(init_cond_ref_dict) 
+#     simulation_mode.write(SIM_MODE.TRIM)
+#     time.sleep(1)
+#     simulation_mode.write(SIM_MODE.RUN)
+#     set_init_cond_recurrent(init_cond_ref_dict)
+#     time.sleep(3)
+#     set_init_cond_recurrent(init_cond_ref_dict)
+#     time.sleep(2)
+#     set_init_cond_recurrent(init_cond_ref_dict)
+#     time.sleep(1)
+#     set_init_cond_recurrent(init_cond_ref_dict)
+#     time.sleep(0.5)
+#     set_init_cond_recurrent(init_cond_ref_dict)
+#     time.sleep(0.2)
+#     set_init_cond_recurrent(init_cond_ref_dict)
+#     simulation_mode.write(SIM_MODE.PAUSE)
+# =============================================================================
     
 
     logandsave_flyout_init_cond(QTG_path)
@@ -1266,15 +1389,23 @@ if __name__ == "__main__":
         3. if else bedingung zwischen automatic and manuell test
         4. Eine neue Referenz anlegen: mit OEI und init_cond FTD1 struktur
         
-    -Ueberlege nochmal. Das Trim beim init flyout.
+    -Ueberlege nochmal. Das Trim beim init flyout. -> habe ich weck gemacht, da dass Trimmen das Variometer verfaelscht
     -Achte auf die Plots bei den tests 2.d.3.ii
     -Mache noch ein paar init flyouts
     -stelle die Jungs an die EC135 warning sounds zu holen
     -sortiere die pdfs richtig fuer report.pdf
     -idee ich kann in der function create plot auch parameter plotten und dann im create report nur die notwendigen reinschmeisen
     
+    -Ueberlege, soll die HI NR funktion drin gelassen werden? Weil sie ist nicht relevant fuer das Training und kann nicht vom Piloten ein/ausgeschaltet werden.
     
-    
+    -Probleme fuer die Reproduzierbarkeit der Tests kann sein:
+        -Trim position der Controls -> Nein
+        -M                          -> Nein
+        -flight attitude
+        
+        -Probleme: Airspeed lasst sich nur mit TRIM setzen. Vertveloc und sideslip moegen den TRIM nicht
+        
+        
     """
     
     
