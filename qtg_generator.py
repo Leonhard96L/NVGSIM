@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, filedialog
-from qtg_data_structure import qtg_data_structure
+from qtg_data_structure import data
 
 
 # Function to populate the Treeview with test cases
@@ -8,7 +8,7 @@ def populate_tree(tree, data):
     for test in data['tests']:
         for part in test['test_parts']:
             for case in part['test_cases']:
-                item_id = f"{test['id']}.{part['id']}.{case['id']}"
+                item_id = f"{test['id']}.{part['id']}_{case['id']}"
                 item_text = f"{item_id} - {part['main_title']}: {case['condition']}"
                 tree.insert('', 'end', text=item_text)
 
@@ -28,7 +28,7 @@ def toggle_test_type(tt):
 
 # Function to handle item transfer between Treeviews
 def on_item_click(event, source_tree, target_tree):
-    selected_item = source_tree.selection()
+    selected_item = source_tree.selection()[0]
     if selected_item:
         # item_id = source_tree.item(selected_item, 'iid')
         item_text = source_tree.item(selected_item, 'text')
@@ -47,11 +47,19 @@ def on_item_click(event, source_tree, target_tree):
 
 # Function to handle single click
 def on_item_single_click(event, source_tree, target_tree):
-    if not double_click_flag[0]:  # Check if double-click was not detected
-        selected_item = source_tree.selection()
-        if selected_item:
+    # Get the item under the cursor
+    item = source_tree.identify_row(event.y)
+
+    if item:  # If an item is under the cursor
+        # Check if the item is already selected, if not, select it
+        if item not in source_tree.selection():
+            source_tree.selection_set(item)
+
+    # Process all selected items
+    selected_items = source_tree.selection()
+    if selected_items:
+        for selected_item in selected_items:
             if source_tree == tree_selected:
-                # item_id = source_tree.item(selected_item, 'iid')
                 item_values = source_tree.item(selected_item, 'values')
                 test_type = toggle_test_type(item_values[0])  # Toggle the flag
 
@@ -91,13 +99,66 @@ def on_remove_all_tests():
 
 
 def on_start_mqtg():
-    progress_text.insert(tk.END, "Starting MQTG...\n")
-    progress_text.yview_moveto(1.0)
+    gui_output("Starting MQTG...")
+    start_testing(create_test_list(), output_dir=directory_var.get(), mqtg=True)
 
 
 def on_start_qtg():
-    progress_text.insert(tk.END, "Starting QTG...\n")
+    gui_output("Starting QTG...")
+    start_testing(create_test_list(), output_dir=directory_var.get(), mqtg=False)
+
+
+def create_test_list():
+    items_data = []
+    for item in tree_selected.get_children():
+        # Retrieve the text and values for each item
+        item_text = tree_selected.item(item, 'text')
+        item_values = tree_selected.item(item, 'values')
+
+        # Split the text and save everything before the first space
+        test_id = item_text.split(' ', 1)[0]  # Take the part before the first space
+
+        # Create a boolean based on the test_type value
+        is_automatic = (item_values[0] == "Automatic")
+
+        # Append the processed data to the list
+        test_item = {
+            'id': test_id,
+            'is_automatic': is_automatic,
+            'full_name': item_text,
+        }
+        items_data.append(test_item)
+
+    return items_data
+
+
+def gui_output(text, nl=True):
+    if nl:
+        text = text + "\n"
+    progress_text.insert(tk.END, text)
     progress_text.yview_moveto(1.0)
+
+
+def on_input_submit():
+    inp = input_var.get()
+    if input_text:
+        input_text.set(inp)
+        gui_output(f"$: {inp}")
+        input_var.set("")
+
+
+def gui_input(prompt):
+    gui_output(prompt, nl=False)
+    root.wait_variable(input_text)  # Block until input_var is updated
+    inp = input_text.get()
+    return inp
+
+
+def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output, gui_input=gui_input):
+    for test_item in tests:
+        gui_output(f"id: {test_item['id']}, is_automatic: {test_item['is_automatic']}")
+        # call test here!
+    test = gui_input("Please enter something: ")
 
 
 # Initialize and configure the Tkinter window
@@ -135,7 +196,6 @@ if __name__ == "__main__":
     tree_selected.heading('test_type', text='Test Type')
 
     # Set column weights and widths
-    # tree_selected.column('#0', minwidth=200, stretch=tk.YES)  # First column takes up remaining space
     tree_selected.column('test_type', width=70, stretch=tk.NO)
 
     # Add scrollbars
@@ -148,7 +208,7 @@ if __name__ == "__main__":
     scrollbar.grid(row=0, column=1, sticky='ns')
 
     # Populate the available tree
-    populate_tree(tree_available, qtg_data_structure)
+    populate_tree(tree_available, data)
 
     # Create directory selector
     directory_var = tk.StringVar()
@@ -171,11 +231,22 @@ if __name__ == "__main__":
     progress_text = tk.Text(frame_progress, height=15, wrap='word')
     progress_text.grid(row=0, column=0, sticky="nsew")
 
+    # Create input text field at the bottom
+    input_var = tk.StringVar()
+    input_entry = ttk.Entry(root, textvariable=input_var)
+    input_entry.grid(row=4, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
+
+    input_text = tk.StringVar()
+
+    # Bind the Enter key to the input submission function
+    input_entry.bind("<Return>", lambda event: on_input_submit())
+
     # Make the frames expand with the window
     root.grid_rowconfigure(0, weight=0)
     root.grid_rowconfigure(1, weight=1)
     root.grid_rowconfigure(2, weight=0)
     root.grid_rowconfigure(3, weight=1)
+    root.grid_rowconfigure(4, weight=0)  # Row for the input field
 
     root.grid_columnconfigure(0, weight=1)
     root.grid_columnconfigure(1, weight=1)
@@ -192,9 +263,9 @@ if __name__ == "__main__":
     # Bind events
     tree_available.bind("<Double-1>", lambda event: on_double_click(event, tree_available, tree_selected))
     tree_selected.bind("<Double-1>", lambda event: on_double_click(event, tree_selected, tree_available))
-    tree_available.bind("<ButtonRelease-1>", lambda event: on_item_single_click(event, tree_available, tree_selected))
-    tree_selected.bind("<ButtonRelease-1>", lambda event: on_item_single_click(event, tree_selected, tree_available))
-    root.bind("<ButtonRelease-1>", on_release)
+    tree_available.bind("<ButtonRelease-3>", lambda event: on_item_single_click(event, tree_available, tree_selected))
+    tree_selected.bind("<ButtonRelease-3>", lambda event: on_item_single_click(event, tree_selected, tree_available))
+    root.bind("<ButtonRelease-3>", on_release)
 
     # Start the Tkinter event loop
     root.mainloop()
