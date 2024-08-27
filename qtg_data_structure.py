@@ -5,14 +5,14 @@ Created on Wed Aug 21 15:00:36 2024
 @author: simulator
 """
 
-            
 data = {
     'tests': [
         {
             'id': '1',
             'name': 'Performance',
-            'a.3': 
+            'test_parts': [
                 {
+                    'id': 'a.3',
                     'main_title': 'Engine Assessment',
                     'test_title': 'Engine & Rotor Speed Governing',
                     'objective': 'The objective of this test is to demonstrate that the FSTD engine and rotor speed governing is compliant with the reference data.',
@@ -82,12 +82,9 @@ data = {
                             }
                         }
                     ]
-            },
-            
-                
-                
-            'c.1':
+                },
                 {
+                    'id': 'c.1',
                     'main_title': 'Take-Off',
                     'test_title': 'Take-off All engines',
                     'objective': 'The objective of this test is to demonstrate that the FSTD all engines take-off is compliant with the reference data.',
@@ -149,10 +146,9 @@ data = {
                             }
                         }
                     ]
-            },
-            
-            'c.2':
+                },
                 {
+                    'id': 'c.2',
                     'main_title': 'Take-Off',
                     'test_title': 'OEI continued take-off',
                     'objective': 'The objective of this test is to demonstrate that the FSTD one engine inoperative continued take-off is compliant with the reference data.',
@@ -214,8 +210,8 @@ data = {
                         }
                     ]
                 },
-            'd':
                 {
+                    'id': 'd',
                     'main_title': 'Hover Performance',
                     'test_title': '',
                     'objective': 'The objective of this test is to demonstrate that the FSTD hover performance is compliant with the reference data.',
@@ -458,8 +454,8 @@ data = {
                         }
                     ]
                 },
-                'e':
                 {
+                    'id': 'e',
                     'main_title': 'Vertical Climb Performance',
                     'test_title': 'Vertical Climb Performance',
                     'objective': 'The objective of this test is to demonstrate that the FSTD vertical climb performance is compliant with the reference data.',
@@ -530,8 +526,8 @@ data = {
                         }
                     ]
                 },
-                'f':
                 {
+                    'id': 'f',
                     'main_title': 'Level Flight Performance and Trimmed Flight Control Position',
                     'test_title': 'Level Flight Performance and Trimmed Flight Control Position',
                     'objective': 'The objective of this test is to demonstrate that the FSTD level flight performance is compliant with the reference data.',
@@ -670,8 +666,8 @@ data = {
                         }
                     ]
                 },
-                'g':
                 {
+                    'id': 'g',
                     'main_title': 'Climb Performance and Trimmed Flight Control Position',
                     'test_title': 'Climb Performance and Trimmed Flight Control Position',
                     'objective': 'The objective of this test is to demonstrate that the FSTD climb performance is compliant with the reference data.',
@@ -978,8 +974,8 @@ data = {
                         }
                     ]
                 },
-            'h.1':
                 {
+                    'id': 'h.1',
                     'main_title': 'Descent',
                     'test_title': 'Descent Performance and Trimmed Flight Control Position',
                     'objective': 'The objective of this test is to demonstrate that the FSTD descent performance is compliant with the reference data.',
@@ -1052,8 +1048,8 @@ data = {
                         }
                     ]
                 },
-            'j.1':
                 {
+                    'id': 'j.1',
                     'main_title': 'Landing',
                     'test_title': 'Landing - All Engines',
                     'objective': 'The objective of this test is to demonstrate that the FSTD landing performance with all engines operative is compliant with the reference data.',
@@ -1105,8 +1101,8 @@ data = {
                         }
                     ]
                 },
-            'j.2':
                 {
+                    'id': 'j.2',
                     'main_title': 'Landing',
                     'test_title': 'Landing - One Engine Inoperative',
                     'objective': 'The objective of this test is to demonstrate that the FSTD one engine inoperative landing is compliant with the reference data.',
@@ -1195,15 +1191,14 @@ data = {
                         }
                     ]
                 }
-            
+            ]
         },
         {
             'id': '2',
             'name': 'Handling Qualities',
-            
-            'a.1': 
+            'test_parts': [
                 {
-
+                    'id': 'a.1',
                     'main_title': 'Control System Mechanical Characteristics',
                     'test_title': 'Cyclic Force vs Position',
                     'objective': 'The objective of this test is to demonstrate that the FSTD Cyclic Control System Mechanical Characteristics are compliant with the reference data.',
@@ -1318,9 +1313,8 @@ data = {
                         }
                     ]
                 },
-                
-                'a.2':{
-
+                {
+                    'id': 'a.2',
                     'main_title': 'Control System Mechanical Characteristics',
                     'test_title': 'Collective/Pedals Force vs Position',
                     'objective': 'The objective of this test is to demonstrate that the FSTD Collective/Pedals Control System Mechanical Characteristics are compliant with the reference data.',
@@ -1383,9 +1377,8 @@ data = {
                         }
                     ]
                 },
-                
-                'a.4':{
-
+                {
+                    'id': 'a.4',
                     'main_title': 'Control System Mechanical Characteristics',
                     'test_title': 'Trim System Rate',
                     'objective': 'The objective of this test is to demonstrate that the FSTD Trim System Rate Characteristics are compliant with the reference data.',
@@ -1447,8 +1440,8 @@ data = {
                         }
                     ]
                 },
-                'c.2':{
-
+                {
+                    'id': 'c.2',
                     'main_title': 'Longitudinal Handling Qualities',
                     'test_title': 'Longitudinal Static Stability',
                     'objective': 'The objective of this test is to demonstrate that the FSTD longitudinal static stability is compliant with the reference data.',
@@ -1781,9 +1774,8 @@ data = {
                         }
                     ]
                 },
-                
-                'c.4':{
-
+                {
+                    'id': 'c.4',
                     'main_title': 'Longitudinal Handling Qualities',
                     'test_title': 'Manoeuvring Stability',
                     'objective': 'The objective of this test is to demonstrate that the FSTD longitudinal manoeuvring stability is compliant with the reference data.',
@@ -2105,8 +2097,8 @@ data = {
                         }
                     ]
                 },
-                
-                'd.2':{
+                {
+                    'id': 'd.2',
                     'main_title': 'Lateral & Directional Handling Qualities',
                     'test_title': 'Directional Static Stability',
                     'objective': 'The objective of this test is to demonstrate that the FSTD directional static stability is compliant with the reference data.',
@@ -2275,8 +2267,8 @@ data = {
                         }
                     ]
                 },
-                
-                'd.3.i':{
+                {
+                    'id': 'd.3.i',
                     'main_title': 'Dynamic Lateral and Directional Stability',
                     'test_title': 'Lateral-Directional Oscillations',
                     'objective': 'The objective of this test is to demonstrate that the FSTD dynamic lateral-directional stability (oscillations) is compliant with the reference data.',
@@ -2396,9 +2388,8 @@ data = {
                         }
                     ]
                 },
-                
-               'd.3.ii':{
-
+                {
+                    'id': 'd.3.ii',
                     'main_title': 'Dynamic Lateral and Directional Stability',
                     'test_title': 'Spiral Stability',
                     'objective': 'The objective of this test is to demonstrate that the FSTD spiral stability is compliant with the reference data.',
@@ -2512,12 +2503,7 @@ data = {
                         }
                     ]
                 }
-            
+            ]
         }
-           
     ]
-                
-}          
-                
-
-
+}

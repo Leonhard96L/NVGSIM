@@ -13,6 +13,7 @@ import pandas as pd
 from matplotlib.backends.backend_pdf import PdfPages
 
 from function_lib import *
+from qtg_data_structure import data as qtg_structure
 
 
 # import matplotlib.pyplot as plt
@@ -120,6 +121,7 @@ def create_pdf(data, output_file):
     #     fp.write(buf.getvalue())
 
 
+# TODO: load plots instead of creating them.
 def create_plots(QTG_path):
     plot_paths = []
     for dirpath, dirnames, filenames in os.walk(QTG_path):
@@ -246,11 +248,22 @@ def create_plots(QTG_path):
     return plot_paths
 
 
+def main():
+    # TODO: new folder structure
+    # make pdf for each test, merge them into one document. check
+    #
+    init_cond, ref_init_cond = load_json_data("./data")
+    # TODO: load existing images
+    plots_base64 = create_plots("./data")
+    data = process_data(ref_init_cond, init_cond, plots_base64)
+    create_pdf(data, "output.pdf")
+
+
 # Generate the PDF
 if __name__ == "__main__":
     # 1. einen, mehrerer oder alle tests
     # 2. einen oder mehrere test cases
-    print("MQTG Automatic Creator")
+    print("MQTG PDF Creator")
     create_init_cond = input("Create Initial QTG? (y/n): ").strip().lower() == 'y'
     test_name = input("Enter Test (leave empty to create all): ")
     test_case_name = ""
@@ -261,8 +274,5 @@ if __name__ == "__main__":
     print(f"Test Case: {test_case_name}")
     input()
 
-    init_cond, ref_init_cond = load_json_data("./data")
-    plots_base64 = create_plots("./data")
-    # print(plots_base64)
-    data = process_data(ref_init_cond, init_cond, plots_base64)
-    create_pdf(data, "output.pdf")
+    main()
+
