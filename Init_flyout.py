@@ -977,7 +977,7 @@ if __name__ == "__main__":
     brunner_task = DSim.Variable.Enum(DSim.Node(dsim_host,"host/sim1-model/entity/as532_1/task/io_brunner_cls/mode"))
     brunner_task.write(TASK_MODE.FORCE_RUN)
     # Gib den Testnamen an
-    QTG_name = '1.g_A3'
+    QTG_name = '1.e_B1'
 
     # Pfad der Referenzdaten und der Speicherdaten, des jeweiligen QTGs
     QTG_path = get_QTG_path(QTG_name, Refernce_data_path)

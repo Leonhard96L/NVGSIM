@@ -47,6 +47,27 @@ dworld_entity = DSim.Entity("world")
 # control simulation mode in D-SIM
 simulation_mode  = DSim.Variable.Enum(DSim.Node(dsim_entity, "SIMULATION/mode"))
 
+class PIDController:
+    def __init__(self, kp, ki, kd, output_limits=None):
+        self.kp = kp
+        self.ki = ki
+        self.kd = kd
+        self.integral = 0
+        self.previous_error = 0
+        self.output_limits = output_limits  # Begrenzungen für die Ausgabe (z.B. cyclic_input)
+
+    def update(self, error, dt):
+        self.integral += error * dt
+        derivative = (error - self.previous_error) / dt
+        output = self.kp * error + self.ki * self.integral + self.kd * derivative
+        self.previous_error = error
+
+        # Begrenzungen anwenden, falls definiert
+        if self.output_limits:
+            output = max(self.output_limits[0], min(output, self.output_limits[1]))
+
+        return output
+
 class TASK_MODE(enum.IntEnum):
     AUTO = 0
     FORCE_STOP = 1
@@ -184,7 +205,7 @@ def CLS_READER_INIT():
     query_readforce_yaw_coll = build_get_force_query(AxisBitmask.Rudder + AxisBitmask.Collective)
     return sock, remoteEndpoint, query_readforce_pitch_roll, query_readforce_yaw_coll
 
-def logandsave_flyout_init_cond(QTG_path):
+def logandsave_flyout_init_cond(QTG_path, rel_cyc_long_corr, rel_cyc_lat_corr):
 
     Eng1state = 'FLIGHT' if configuration_failure_engine_1_failed.read() == False else 'OFF'
     Eng2state = 'FLIGHT' if configuration_failure_engine_2_failed.read() == False else 'OFF'
@@ -222,8 +243,8 @@ def logandsave_flyout_init_cond(QTG_path):
        'X Body Acceleration' : reference_frame_inertial_position_a_x.read(),                            #m/s2 -> m/s2
        'Y Body Acceleration' : reference_frame_inertial_position_a_y.read(),                            #m/s2 -> m/s2
        'Z Body Acceleration' : reference_frame_inertial_position_a_z.read(),                            #m/s2 -> m/s2
-       'Longitudinal Cyclic Pos.' : hardware_pilot_cyclic_longitudinal_position.read(),                 #% -> 1
-       'Lateral Cyclic Pos.' : hardware_pilot_cyclic_lateral_position.read(),                           #% -> 1
+       'Longitudinal Cyclic Pos.' : hardware_pilot_cyclic_longitudinal_position.read()-rel_cyc_long_corr,                 #% -> 1
+       'Lateral Cyclic Pos.' : hardware_pilot_cyclic_lateral_position.read()-rel_cyc_lat_corr,                           #% -> 1
        'Pedals Pos.' : hardware_pilot_pedals_position.read(),                                           #% -> 1
        'Collective Pos.' : hardware_pilot_collective_position.read(),                                   #% -> 1
        'Engine 1 Main Switch' : Eng1state,
@@ -267,7 +288,7 @@ def TRIM_pilot(QTG_path,T):
         MQTG_input_matrix[:,i] = data["FTD1"]["y"]
     
     i = 0
-    T = T[0:int(len(T)*0.3)]
+    T = T[0:int(len(T)*0.5)]
     simulation_mode.write(SIM_MODE.RUN) 
     
     while i < len(T)-1:
@@ -284,7 +305,7 @@ def TRIM_pilot(QTG_path,T):
         i += 1
 
     
-def math_pilot(QTG_path,T):
+def math_pilot(QTG_path,T, rel_cyc_long_corr, rel_cyc_lat_corr):
     MQTG_input_matrix = np.empty((len(T),INPUT.NUMBER_OF_INPUTS))
     output_matrix = np.empty((len(T),OUTPUT.NUMBER_OF_OUTPUTS))
     input_matrix = np.empty((len(T),INPUT.NUMBER_OF_INPUTS))
@@ -322,8 +343,8 @@ def math_pilot(QTG_path,T):
         output_matrix[i,OUTPUT.SIDESLIP] = reference_frame_body_freestream_beta.read()
         
         hardware_pilot_collective_position.write(MQTG_input_matrix[i,INPUT.COLLECTIVE])
-        hardware_pilot_cyclic_lateral_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LATERAL])
-        hardware_pilot_cyclic_longitudinal_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LONGITUDINAL])
+        hardware_pilot_cyclic_lateral_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LATERAL]-rel_cyc_lat_corr)
+        hardware_pilot_cyclic_longitudinal_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LONGITUDINAL]-rel_cyc_long_corr)
         hardware_pilot_pedals_position.write(MQTG_input_matrix[i,INPUT.PEDALS])
 
         
@@ -340,6 +361,103 @@ def math_pilot(QTG_path,T):
 
     simulation_mode.write(SIM_MODE.PAUSE)
     return input_matrix, output_matrix
+
+def TRIM_pilot_2(QTG_path,T):
+    MQTG_input_matrix = np.empty((len(T),INPUT.NUMBER_OF_INPUTS))
+    MQTG_pitch = np.empty((len(T),1))
+    MQTG_roll = np.empty((len(T),1))
+    
+    #Get Reference control arrays
+    Input_paths = [
+    os.path.join(QTG_path,'Control Position Collective.XY.qtgplot.sim'),
+    os.path.join(QTG_path,'Control Position Roll.XY.qtgplot.sim'),
+    os.path.join(QTG_path,'Control Position Pitch.XY.qtgplot.sim'),
+    os.path.join(QTG_path,'Control Position Yaw.XY.qtgplot.sim')]
+    
+    for path, i in zip(Input_paths,range(INPUT.NUMBER_OF_INPUTS)):
+        with open(path, 'r') as json_file:
+            data = json.load(json_file)
+        MQTG_input_matrix[:,i] = data["FTD1"]["y"]
+
+    MQTG_pitch_path = os.path.join(QTG_path, 'Pitch Angle.XY.qtgplot.sim')
+    MQTG_roll_path = os.path.join(QTG_path, 'Roll Angle.XY.qtgplot.sim')
+
+    with open(MQTG_roll_path, 'r') as json_file:
+        data = json.load(json_file)
+    MQTG_roll = data["FTD1"]["y"]
+    
+    with open(MQTG_pitch_path, 'r') as json_file:
+        data = json.load(json_file)
+    MQTG_pitch = data["FTD1"]["y"]
+    
+    desired_roll = np.mean(MQTG_roll) #rad
+    desired_pitch = np.mean(MQTG_pitch) #rad
+    
+    current_roll = reference_frame_inertial_attitude_phi.read()
+    current_pitch = reference_frame_inertial_attitude_theta.read() #rad
+    print(f"desired Pitch: {desired_pitch:.5f} rad, current Pitch: {current_pitch:.5f}")
+    print(f"desired Roll: {desired_roll:.5f} rad, current Roll: {current_roll:.5f}")
+    
+    cyc_long_init_input = MQTG_input_matrix[0,INPUT.CYCLIC_LONGITUDINAL]
+    cyc_lat_init_input = MQTG_input_matrix[0,INPUT.CYCLIC_LATERAL]
+    
+    #cyclic_limits = (cyclic_init_input-0.05,cyclic_init_input+0.05) #brunner
+    cyclic_limits = (-0.05,+0.05)
+    print(cyclic_limits)
+    
+    pid_pitch = PIDController(1, 0.1, 0, output_limits=cyclic_limits) #(P,I,D,limits)
+    pid_roll = PIDController(1, 0.1, 0, output_limits=cyclic_limits) #(P,I,D,limits)
+    
+    i = 0
+    dT = 1
+
+    simulation_mode.write(SIM_MODE.RUN) 
+    error_pitch_lis = []
+    
+    while True:
+        error_pitch = desired_pitch - current_pitch
+        error_roll = desired_roll - current_roll
+
+        cyc_long_input = pid_pitch.update(error_pitch, dT)
+        cyc_lat_input = pid_roll.update(error_roll, dT)
+        
+
+        current_pitch += cyc_long_input * dT
+        current_roll += cyc_lat_input *dT
+        
+        read_pitch = reference_frame_inertial_attitude_theta.read()
+        read_roll = reference_frame_inertial_attitude_phi.read()
+        print(f"read Pitch: {read_pitch:.5f} rad, Cyclic Input: {cyc_long_input:.5f}, e: {error_pitch:.15f}")
+        print(f"read Roll: {read_roll:.5f} rad, Cyclic Input: {cyc_lat_input:.5f}, e: {error_roll:.15f}")
+
+        
+        hardware_pilot_collective_position.write(MQTG_input_matrix[0,INPUT.COLLECTIVE])
+        #hardware_pilot_cyclic_lateral_position.write(MQTG_input_matrix[0,INPUT.CYCLIC_LATERAL])
+        #hardware_pilot_cyclic_longitudinal_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LONGITUDINAL])
+        hardware_pilot_pedals_position.write(MQTG_input_matrix[0,INPUT.PEDALS])
+        
+        hardware_pilot_cyclic_lateral_position.write(cyc_lat_init_input+cyc_lat_input)
+        hardware_pilot_cyclic_longitudinal_position.write(cyc_long_init_input+cyc_long_input)
+
+# =============================================================================
+#         error_pitch_lis.append(abs(error_pitch))
+#         pitch_mean = sum(error_pitch_lis[-20:])/20
+#         if pitch_mean < 0.001:
+#             rel_cyc_long_corr = cyclic_init_input-cyclic_input
+#             break
+# =============================================================================
+        if abs(desired_pitch-read_pitch) < 0.000001 and abs(desired_roll-read_roll) < 0.000001:
+            rel_cyc_long_corr = cyc_long_input
+            rel_cyc_lat_corr = cyc_lat_input
+            break
+
+        # sleep for dT amount of seconds
+        time.sleep(dT)
+        # increment data row index
+        i += 1
+
+    simulation_mode.write(SIM_MODE.PAUSE)
+    return rel_cyc_long_corr, rel_cyc_lat_corr
 
 def log_flyout_input_output(T):
     # pre-define numpy data matrix containing flight data (see enum above for column definitions)
@@ -670,7 +788,7 @@ def set_init_cond_recurrent(init_cond_dict):
 
     
     #Flight Parameters
-    reference_frame_body_freestream_airspeed.write(float(init_cond_dict['Airspeed']))
+    #reference_frame_body_freestream_airspeed.write(float(init_cond_dict['Airspeed']))
     reference_frame_inertial_position_v_xy.write(float(init_cond_dict['Ground Speed']))
     reference_frame_inertial_position_v_z.write(float(init_cond_dict['Vertical Velocity']))
     reference_frame_inertial_attitude_psi.write(float(init_cond_dict['Heading']))
@@ -1252,7 +1370,7 @@ if __name__ == "__main__":
     #Hole die Anfangsbedingungen des jeweiligen QTGs
     init_cond_ref_dict = get_QTG_init_cond_ref(QTG_path)
     
-
+    
     LOWL = [48.23380,14.20719]
     reference_frame_inertial_position_latitude.write(LOWL[0])
     reference_frame_inertial_position_longitude.write(LOWL[1])
@@ -1262,71 +1380,24 @@ if __name__ == "__main__":
     simulation_mode.write(SIM_MODE.TRIM)
     time.sleep(2)
     simulation_mode.write(SIM_MODE.RUN) 
-    time.sleep(4)
+    time.sleep(1)
+    
+    #For snapshottests
+    
     #Schreibe die Anfangsbedingungen des jeweiligen QTGs
     set_init_cond_recurrent(init_cond_ref_dict)
     simulation_mode.write(SIM_MODE.PAUSE)
     time.sleep(0.2)
     simulation_mode.write(SIM_MODE.TRIM)
-    time.sleep(2)    
-    TRIM_pilot(QTG_path,T)
-    time.sleep(0.1)
+    time.sleep(2)
+    rel_cyc_long_corr, rel_cyc_lat_corr = TRIM_pilot_2(QTG_path,T)    
+    simulation_mode.write(SIM_MODE.RUN)
+    time.sleep(3)
     set_init_cond_recurrent(init_cond_ref_dict)
-    time.sleep(4.5)
+    time.sleep(0)
 
 
 
-
-
-    #Setting IAS 
-# =============================================================================
-#     set_init_cond_recurrent(init_cond_ref_dict)
-#     time.sleep(0.2)
-#     simulation_mode.write(SIM_MODE.PAUSE)
-#     time.sleep(0.2)
-#     simulation_mode.write(SIM_MODE.TRIM)
-#     time.sleep(1)
-#     simulation_mode.write(SIM_MODE.RUN)
-#     time.sleep(1)
-# =============================================================================
-
-     
-
-    
-
-    
-    
-# =============================================================================
-#     set_init_cond_recurrent(init_cond_ref_dict)
-#     time.sleep(2)
-# =============================================================================
-    
-
-
-# =============================================================================
-#     simulation_mode.write(SIM_MODE.PAUSE)
-#     time.sleep(0.2)
-#     set_init_cond_recurrent(init_cond_ref_dict) 
-#     simulation_mode.write(SIM_MODE.TRIM)
-#     time.sleep(1)
-#     simulation_mode.write(SIM_MODE.RUN)
-#     time.sleep(0.2)
-#     simulation_mode.write(SIM_MODE.PAUSE)
-#     time.sleep(0.2)
-#     set_init_cond_recurrent(init_cond_ref_dict) 
-#     simulation_mode.write(SIM_MODE.TRIM)
-#     time.sleep(1)
-#     simulation_mode.write(SIM_MODE.RUN)
-# =============================================================================
-    
-# =============================================================================
-#     set_init_cond_recurrent(init_cond_ref_dict)
-#     time.sleep(1)
-#     simulation_mode.write(SIM_MODE.PAUSE)
-#     set_init_cond_recurrent(init_cond_ref_dict)
-#     time.sleep(2)
-#     set_init_cond_recurrent(init_cond_ref_dict)
-# =============================================================================
 
 
 # =============================================================================
@@ -1369,9 +1440,11 @@ if __name__ == "__main__":
 # =============================================================================
     
 
-    logandsave_flyout_init_cond(QTG_path)
+    logandsave_flyout_init_cond(QTG_path, rel_cyc_long_corr, rel_cyc_lat_corr)
     
-    input_matrix, output_matrix = math_pilot(QTG_path,T)
+    
+    
+    input_matrix, output_matrix = math_pilot(QTG_path,T, rel_cyc_long_corr, rel_cyc_lat_corr)
 
     save_io_files(QTG_path, input_matrix, output_matrix, T)
     create_comparison_table(QTG_path)
@@ -1405,7 +1478,10 @@ if __name__ == "__main__":
         
         -Probleme: Airspeed lasst sich nur mit TRIM setzen. Vertveloc und sideslip moegen den TRIM nicht
         
-        
+    -Ich werde Snapshot Tests anders behandeln. mittelwert bildung
+    -Fuer das inital Flyout genauestensfliegen, vor allem fuer snapshot tests
+    -Mit Stefan einen Termin vereinbaren bzw. nochmal mit Raimund fliegen 
+    
     """
     
     
