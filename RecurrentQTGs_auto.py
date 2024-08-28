@@ -363,6 +363,8 @@ def math_pilot(QTG_path,T, rel_cyc_long_corr, rel_cyc_lat_corr):
     return input_matrix, output_matrix
 
 def TRIM_pilot_2(QTG_path,T):
+    
+   
     MQTG_input_matrix = np.empty((len(T),INPUT.NUMBER_OF_INPUTS))
     MQTG_pitch = np.empty((len(T),1))
     MQTG_roll = np.empty((len(T),1))
@@ -392,64 +394,58 @@ def TRIM_pilot_2(QTG_path,T):
     
     desired_roll = np.mean(MQTG_roll) #rad
     desired_pitch = np.mean(MQTG_pitch) #rad
-    
-    current_roll = reference_frame_inertial_attitude_phi.read()
-    current_pitch = reference_frame_inertial_attitude_theta.read() #rad
-    print(f"desired Pitch: {desired_pitch:.5f} rad, current Pitch: {current_pitch:.5f}")
-    print(f"desired Roll: {desired_roll:.5f} rad, current Roll: {current_roll:.5f}")
+
     
     cyc_long_init_input = MQTG_input_matrix[0,INPUT.CYCLIC_LONGITUDINAL]
     cyc_lat_init_input = MQTG_input_matrix[0,INPUT.CYCLIC_LATERAL]
     
+    cyclic_limit_min = cyc_long_init_input - 0.05 * abs(cyc_long_init_input)
+    cyclic_limit_max = cyc_long_init_input + 0.05 * abs(cyc_long_init_input)
+    if cyclic_limit_min == cyclic_limit_max == 0:
+        cyclic_limit_min = -0.05
+        cyclic_limit_max = 0.05
+    
     #cyclic_limits = (cyclic_init_input-0.05,cyclic_init_input+0.05) #brunner
-    cyclic_limits = (-0.05,+0.05)
+    cyclic_limits = (cyclic_limit_min,cyclic_limit_max)
     print(cyclic_limits)
     
-    pid_pitch = PIDController(1, 0.1, 0, output_limits=cyclic_limits) #(P,I,D,limits)
-    pid_roll = PIDController(1, 0.1, 0, output_limits=cyclic_limits) #(P,I,D,limits)
+    pid_pitch = PIDController(1, 0.1, 0.05, output_limits=cyclic_limits) #(P,I,D,limits)
+    pid_roll = PIDController(2, 0.2, 0.05, output_limits=cyclic_limits) #(P,I,D,limits)
     
     i = 0
-    dT = 1
+    dT = 0.01
 
     simulation_mode.write(SIM_MODE.RUN) 
     error_pitch_lis = []
     
+    #trägheitsfaktor = 0.9
+    
     while True:
+        current_pitch = reference_frame_inertial_attitude_theta.read()
         error_pitch = desired_pitch - current_pitch
-        error_roll = desired_roll - current_roll
 
-        cyc_long_input = pid_pitch.update(error_pitch, dT)
-        cyc_lat_input = pid_roll.update(error_roll, dT)
         
+        #1deg = 0.024
+        pitch_gain = 10
+        cyc_long_input = np.rad2deg(error_pitch)*0.024*pitch_gain
 
-        current_pitch += cyc_long_input * dT
-        current_roll += cyc_lat_input *dT
+        #cyc_long_input = max(cyclic_limit_min, min(cyc_long_input, cyclic_limit_max))
+
+        #(0.2032318115234375, 0.2246246337890625)
         
-        read_pitch = reference_frame_inertial_attitude_theta.read()
-        read_roll = reference_frame_inertial_attitude_phi.read()
-        print(f"read Pitch: {read_pitch:.5f} rad, Cyclic Input: {cyc_long_input:.5f}, e: {error_pitch:.15f}")
-        print(f"read Roll: {read_roll:.5f} rad, Cyclic Input: {cyc_lat_input:.5f}, e: {error_roll:.15f}")
+        read_pitch = np.rad2deg(reference_frame_inertial_attitude_theta.read())
+        e = np.rad2deg(desired_pitch)-read_pitch
+        print(f"read Pitch: {read_pitch:.3f} grad, des Pitch: {np.rad2deg(desired_pitch):.3f} grad, Cyclic Input: {cyc_long_input:.5f}, e: {e:.3f}")
+       # print(f"read Roll: {read_roll:.5f} rad, Cyclic Input: {cyc_lat_input:.5f}, e: {error_roll:.15f}")
 
         
         hardware_pilot_collective_position.write(MQTG_input_matrix[0,INPUT.COLLECTIVE])
-        #hardware_pilot_cyclic_lateral_position.write(MQTG_input_matrix[0,INPUT.CYCLIC_LATERAL])
-        #hardware_pilot_cyclic_longitudinal_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LONGITUDINAL])
         hardware_pilot_pedals_position.write(MQTG_input_matrix[0,INPUT.PEDALS])
         
-        hardware_pilot_cyclic_lateral_position.write(cyc_lat_init_input+cyc_lat_input)
-        hardware_pilot_cyclic_longitudinal_position.write(cyc_long_init_input+cyc_long_input)
+        #hardware_pilot_cyclic_lateral_position.write(cyc_lat_init_input-cyc_lat_input)
+        hardware_pilot_cyclic_longitudinal_position.write(cyc_long_init_input-cyc_long_input)
 
-# =============================================================================
-#         error_pitch_lis.append(abs(error_pitch))
-#         pitch_mean = sum(error_pitch_lis[-20:])/20
-#         if pitch_mean < 0.001:
-#             rel_cyc_long_corr = cyclic_init_input-cyclic_input
-#             break
-# =============================================================================
-        if abs(desired_pitch-read_pitch) < 0.000001 and abs(desired_roll-read_roll) < 0.000001:
-            rel_cyc_long_corr = cyc_long_input
-            rel_cyc_lat_corr = cyc_lat_input
-            break
+
 
         # sleep for dT amount of seconds
         time.sleep(dT)
@@ -458,6 +454,139 @@ def TRIM_pilot_2(QTG_path,T):
 
     simulation_mode.write(SIM_MODE.PAUSE)
     return rel_cyc_long_corr, rel_cyc_lat_corr
+
+# =============================================================================
+# def TRIM_pilot_2(QTG_path,T):
+#     
+#     # Gegebene Messdaten
+#     pitch_angles = np.deg2rad(np.array([0, 5, -5, -10, 10]))  # Pitch-Winkel in Grad
+#     cyclic_positions = np.array([0.3, 0.15, 0.4, 0.46, -0.06])  # Cyclic-Stellungen
+#     
+#     # Polynomiale Anpassung zweiten Grades an die Messdaten
+#     coefficients = np.polyfit(pitch_angles, cyclic_positions, 2)
+#     poly_func = np.poly1d(coefficients)
+#     
+#     
+#     MQTG_input_matrix = np.empty((len(T),INPUT.NUMBER_OF_INPUTS))
+#     MQTG_pitch = np.empty((len(T),1))
+#     MQTG_roll = np.empty((len(T),1))
+#     
+#     #Get Reference control arrays
+#     Input_paths = [
+#     os.path.join(QTG_path,'Control Position Collective.XY.qtgplot.sim'),
+#     os.path.join(QTG_path,'Control Position Roll.XY.qtgplot.sim'),
+#     os.path.join(QTG_path,'Control Position Pitch.XY.qtgplot.sim'),
+#     os.path.join(QTG_path,'Control Position Yaw.XY.qtgplot.sim')]
+#     
+#     for path, i in zip(Input_paths,range(INPUT.NUMBER_OF_INPUTS)):
+#         with open(path, 'r') as json_file:
+#             data = json.load(json_file)
+#         MQTG_input_matrix[:,i] = data["FTD1"]["y"]
+# 
+#     MQTG_pitch_path = os.path.join(QTG_path, 'Pitch Angle.XY.qtgplot.sim')
+#     MQTG_roll_path = os.path.join(QTG_path, 'Roll Angle.XY.qtgplot.sim')
+# 
+#     with open(MQTG_roll_path, 'r') as json_file:
+#         data = json.load(json_file)
+#     MQTG_roll = data["FTD1"]["y"]
+#     
+#     with open(MQTG_pitch_path, 'r') as json_file:
+#         data = json.load(json_file)
+#     MQTG_pitch = data["FTD1"]["y"]
+#     
+#     desired_roll = np.mean(MQTG_roll) #rad
+#     desired_pitch = np.mean(MQTG_pitch) #rad
+#     
+#     current_roll = reference_frame_inertial_attitude_phi.read()
+#     current_pitch = reference_frame_inertial_attitude_theta.read() #rad
+#     print(f"desired Pitch: {desired_pitch:.5f} rad, current Pitch: {current_pitch:.5f}")
+#     print(f"desired Roll: {desired_roll:.5f} rad, current Roll: {current_roll:.5f}")
+#     
+#     cyc_long_init_input = MQTG_input_matrix[0,INPUT.CYCLIC_LONGITUDINAL]
+#     cyc_lat_init_input = MQTG_input_matrix[0,INPUT.CYCLIC_LATERAL]
+#     
+#     cyclic_limit_min = cyc_long_init_input - 0.3 * abs(cyc_long_init_input)
+#     cyclic_limit_max = cyc_long_init_input + 0.3 * abs(cyc_long_init_input)
+#     if cyclic_limit_min == cyclic_limit_max == 0:
+#         cyclic_limit_min = -0.3
+#         cyclic_limit_max = 0.3
+#     
+#     #cyclic_limits = (cyclic_init_input-0.05,cyclic_init_input+0.05) #brunner
+#     cyclic_limits = (cyclic_limit_min,cyclic_limit_max)
+#     print(cyclic_limits)
+#     
+#     pid_pitch = PIDController(1, 0.1, 0.05, output_limits=cyclic_limits) #(P,I,D,limits)
+#     pid_roll = PIDController(2, 0.2, 0.05, output_limits=cyclic_limits) #(P,I,D,limits)
+#     
+#     i = 0
+#     dT = 0.01
+# 
+#     simulation_mode.write(SIM_MODE.RUN) 
+#     error_pitch_lis = []
+#     
+#     #trägheitsfaktor = 0.9
+#     
+#     while True:
+#         current_pitch = reference_frame_inertial_attitude_theta.read()
+#         error_pitch = desired_pitch - current_pitch
+#         error_roll = desired_roll - current_roll
+# 
+#         cyc_long_input = pid_pitch.update(error_pitch, dT)
+#         cyc_lat_input = pid_roll.update(error_roll, dT)
+#         a = 1.5  # Verstärkungsfaktor für träge Reaktion
+#         b = 0.2  # Dämpfungsfaktor: Stabilisierender Effekt auf den Pitch-Winkel
+# 
+#         # Berechnung des neuen Cyclic-Eingangs
+#         base_cyclic_input = poly_func(current_pitch)
+#         cyclic_input = base_cyclic_input - cyc_long_input
+#         
+#         # Begrenzung des Cyclic-Eingangs
+#         cyc_long_input = max(cyclic_limit_min, min(cyclic_input, cyclic_limit_max))
+#         
+#         #current_pitch_rate = a * cyc_long_input - b * current_pitch
+#         #current_pitch = current_pitch * trägheitsfaktor + current_pitch_rate * (1 - trägheitsfaktor) * dT
+# 
+#         current_pitch += cyc_long_input * dT
+#         current_roll += cyc_lat_input *dT
+#         #current_pitch = reference_frame_inertial_attitude_theta.read()
+#         #current_roll = reference_frame_inertial_attitude_phi.read()
+#         
+#         read_pitch = np.rad2deg(reference_frame_inertial_attitude_theta.read())
+#         read_roll = reference_frame_inertial_attitude_phi.read()
+#         e = np.rad2deg(desired_pitch)-read_pitch
+#         print(f"read Pitch: {read_pitch:.3f} grad, des Pitch: {np.rad2deg(desired_pitch):.3f} grad, Cyclic Input: {cyc_long_input:.5f}, e: {e:.3f}")
+#        # print(f"read Roll: {read_roll:.5f} rad, Cyclic Input: {cyc_lat_input:.5f}, e: {error_roll:.15f}")
+# 
+#         
+#         hardware_pilot_collective_position.write(MQTG_input_matrix[0,INPUT.COLLECTIVE])
+#         #hardware_pilot_cyclic_lateral_position.write(MQTG_input_matrix[0,INPUT.CYCLIC_LATERAL])
+#         #hardware_pilot_cyclic_longitudinal_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LONGITUDINAL])
+#         hardware_pilot_pedals_position.write(MQTG_input_matrix[0,INPUT.PEDALS])
+#         
+#         #hardware_pilot_cyclic_lateral_position.write(cyc_lat_init_input+cyc_lat_input)
+#         hardware_pilot_cyclic_longitudinal_position.write(cyc_long_init_input+cyc_long_input)
+#         #hardware_pilot_cyclic_lateral_position.write(-cyc_lat_input)
+#         #hardware_pilot_cyclic_longitudinal_position.write(cyc_long_input)
+# # =============================================================================
+# #         error_pitch_lis.append(abs(error_pitch))
+# #         pitch_mean = sum(error_pitch_lis[-20:])/20
+# #         if pitch_mean < 0.001:
+# #             rel_cyc_long_corr = cyclic_init_input-cyclic_input
+# #             break
+# # =============================================================================
+#         if abs(desired_pitch-read_pitch) < 0.000001 and abs(desired_roll-read_roll) < 0.000001:
+#             rel_cyc_long_corr = cyc_long_input
+#             rel_cyc_lat_corr = cyc_lat_input
+#             break
+# 
+#         # sleep for dT amount of seconds
+#         time.sleep(dT)
+#         # increment data row index
+#         i += 1
+# 
+#     simulation_mode.write(SIM_MODE.PAUSE)
+#     return rel_cyc_long_corr, rel_cyc_lat_corr
+# =============================================================================
 
 def log_flyout_input_output(T):
     # pre-define numpy data matrix containing flight data (see enum above for column definitions)
