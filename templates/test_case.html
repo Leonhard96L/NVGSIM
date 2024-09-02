@@ -6,7 +6,52 @@
 </head>
 <body>
 <div class="content">
-    <h2 id="{{ case.id }}">{{test.id}}.{{part.id}}.{{case.id}} {{ case.name }} {{ case.condition }}</h2>
+    <h1>{{part.main_title}}</h1>
+    <h2>{{ test.id }}.{{part.id}} {{ part.test_title }}</h2>
+    <br/>
+    <br/>
+    <h3 class="center-div">Test Objective</h3>
+
+    <p>{{ part.objective }}</p>
+
+    <h3 class="center-div">Tolerances and Evaluation Criteria</h3>
+
+    <h3>FTD Level 3 and FNPT Level III:</h3>
+
+    <!--  THIS SHOULD ALSO WORK FOR A TEST_PART SO MAYBE OUTSOURCE THIS INTO AN OWN FILE  -->
+    <table class="no-outer-borders">
+        <thead>
+            <tr>
+                <th class="align-left">Parameter <span class="light-text">[U oM]</span></th>
+                <th>Tolerance</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% with criteria_list = part.tolerances_evaluation_criteria if is_mqtg else part.tolerances_recurrent_criteria %}
+            {% for criterion in criteria_list %}
+            <tr>
+                <td class="align-left">{{ criterion.parameter }} <span class="light-text">{{ criterion.unit }}</span></td>
+                <td>{{ criterion.tolerance }}</td>
+            </tr>
+            {% endfor %}
+        {% endwith %}
+        </tbody>
+    </table>
+    <br>
+
+    <p>Evaluation Criteria to be applied to Overplots figures.</p>
+
+    <h3 class="center-div">Applicability</h3>
+
+    <p>Test applicable to FTD Level 1.</p>
+
+    <h3 class="center-div">References</h3>
+
+    <p>EASA CS-FSTD(H)</p>
+</div>
+
+<div class="content">
+    <h2 id="{{ case.id }}">{{test.id}}.{{part.id}} {{case.id}}&nbsp;&nbsp;&nbsp;&nbsp;{{ case.condition }}</h2>
 
     <h3 class="center-div">Test Procedure</h3>
     <p>
@@ -14,8 +59,8 @@
         The test can be run either in automatic or manual mode.
     </p>
 
-    {% if case.automatic_testing_possible %}
     <b>Automatic testing:</b>
+    {% if case.automatic_testing_possible %}
     {% for auto_test in case.automatic_testing %}{{ auto_test }}<br><br>{% endfor %}
     <br>
     <table class="no-outer-borders centered-table">
@@ -35,39 +80,12 @@
         </tbody>
     </table>
     <br>
+    {% else %}
+    N.A.
     {% endif %}
     <p><b>Manual testing:</b> follow the Manual Procedure steps indicated in the next page.</p>
 
-    <table class="footer">
-        <tbody>
-            <tr>
-                <td><b>Test</b></td>
-                <td>{{test.id}}.{{part.id}}</td>
-                <td><b>SubCase</b></td>
-                <td>{{case.id}}</td>
-                <td><b>FLT</b></td>
-                <td>30</td>
-                <td><b>TOP</b></td>
-                <td>47</td>
-                <td><b>SW V.</b></td>
-                <td>4.2.1</td>
-                <td><b>Mode</b></td>
-                <td>Automatic</td>
-            </tr>
-            <tr>
-                <td><b>Title</b></td>
-                <td colspan="7" class="align-left">{{ case.name }} {{ case.condition }}</td>
-                <td><b>Date</b></td>
-                <td>{{ curr_date }}</td>
-                <td><b>Time</b></td>
-                <td>{{ curr_time }}</td>
-            </tr>
-            <tr>
-
-            </tr>
-            <tr></tr>
-        </tbody>
-    </table>
+    {% include 'test_case_footer.html' %}
 </div>
 
 <div class="content">
@@ -79,36 +97,8 @@
         {% endfor %}
     </ol>
 
-    <table class="footer">
-        <tbody>
-            <tr>
-                <td><b>Test</b></td>
-                <td>{{test.id}}.{{part.id}}</td>
-                <td><b>SubCase</b></td>
-                <td>{{case.id}}</td>
-                <td><b>FLT</b></td>
-                <td>30</td>
-                <td><b>TOP</b></td>
-                <td>47</td>
-                <td><b>SW V.</b></td>
-                <td>4.2.1</td>
-                <td><b>Mode</b></td>
-                <td>Automatic</td>
-            </tr>
-            <tr>
-                <td><b>Title</b></td>
-                <td colspan="7" class="align-left">{{ case.name }} {{ case.condition }}</td>
-                <td><b>Date</b></td>
-                <td>{{ curr_date }}</td>
-                <td><b>Time</b></td>
-                <td>{{ curr_time }}</td>
-            </tr>
-            <tr>
-
-            </tr>
-            <tr></tr>
-        </tbody>
-    </table>
+    <!--    PLEASE OUTSOURCE-->
+    {% include 'test_case_footer.html' %}
 </div>
 
 <div class="content">
@@ -141,68 +131,39 @@
         {% endfor %}
     </table>
     <p class="tiny-text">* Snapshot Tests: Reference initial conditions are computed as mean values over data time histories</p>
-    <table class="footer">
-        <tbody>
-            <tr>
-                <td><b>Test</b></td>
-                <td>1.d</td>
-                <td><b>SubCase</b></td>
-                <td>A1</td>
-                <td><b>FLT</b></td>
-                <td>30</td>
-                <td><b>TOP</b></td>
-                <td>47</td>
-                <td><b>SW V.</b></td>
-                <td>4.2.1</td>
-                <td><b>Mode</b></td>
-                <td>Automatic</td>
-            </tr>
-            <tr>
-                <td><b>Title</b></td>
-                <td colspan="7" class="align-left">Light GW, Aft CG - 3 ft AGL</td>
-                <td><b>Date</b></td>
-                <td>{{ curr_date }}</td>
-                <td><b>Time</b></td>
-                <td>{{ curr_time }}</td>
-            </tr>
-            <tr>
-
-            </tr>
-            <tr></tr>
-        </tbody>
-    </table>
+    {% include 'test_case_footer.html' %}
 </div>
 
 <div class="content">
-    <h3 class="center-div">Test Results</h3>
-    <table class="no-outer-borders">
-        <thead>
-        <tr>
-            <th class="align-left">Parameter <span class="light-text">[U oM]</span></th>
-            <th>Reference</th>
-            <th>Min**</th>
-            <th>FSTD</th>
-            <th>Max**</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th class="subsection" colspan="5">Snapshot Data</th>
-        </tr>
-        <tr>
-            <td class="align-left">Engine 1 Torque <span class="light-text">[%]</span></td>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-        </tr>
-        </tbody>
-    </table>
-    <br>
-    <p class="center-div tiny-text">
-        ** The Min value is computed as the Reference value minus the specific tolerance value.<br>
-        The Max value is computed as the Reference value plus the specific tolerance value
-    </p>
+<!--    <h3 class="center-div">Test Results</h3>-->
+<!--    <table class="no-outer-borders">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th class="align-left">Parameter <span class="light-text">[U oM]</span></th>-->
+<!--            <th>Reference</th>-->
+<!--            <th>Min**</th>-->
+<!--            <th>FSTD</th>-->
+<!--            <th>Max**</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        <tr>-->
+<!--            <th class="subsection" colspan="5">Snapshot Data</th>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td class="align-left">Engine 1 Torque <span class="light-text">[%]</span></td>-->
+<!--            <td>1</td>-->
+<!--            <td>2</td>-->
+<!--            <td>3</td>-->
+<!--            <td>4</td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--    <br>-->
+<!--    <p class="center-div tiny-text">-->
+<!--        ** The Min value is computed as the Reference value minus the specific tolerance value.<br>-->
+<!--        The Max value is computed as the Reference value plus the specific tolerance value-->
+<!--    </p>-->
 
     <h3 class="center-div">Notes and Rationales</h3>
 
@@ -245,37 +206,7 @@
 <!--            <td colspan="2" class="align-left"><p>No Rationales related to current SubCase are present</p></td>-->
 <!--        </tr>-->
     </table>
-
-    <table class="footer">
-        <tbody>
-            <tr>
-                <td><b>Test</b></td>
-                <td>1.d</td>
-                <td><b>SubCase</b></td>
-                <td>A1</td>
-                <td><b>FLT</b></td>
-                <td>30</td>
-                <td><b>TOP</b></td>
-                <td>47</td>
-                <td><b>SW V.</b></td>
-                <td>4.2.1</td>
-                <td><b>Mode</b></td>
-                <td>Automatic</td>
-            </tr>
-            <tr>
-                <td><b>Title</b></td>
-                <td colspan="7" class="align-left">Light GW, Aft CG - 3 ft AGL</td>
-                <td><b>Date</b></td>
-                <td>{{ curr_date }}</td>
-                <td><b>Time</b></td>
-                <td>{{ curr_time }}</td>
-            </tr>
-            <tr>
-
-            </tr>
-            <tr></tr>
-        </tbody>
-    </table>
+    {% include 'test_case_footer.html' %}
 </div>
 <div class="content">
     {% for plot in plots_base64 %}

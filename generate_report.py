@@ -41,7 +41,8 @@ def load_json_data(qtg_path):
         return init_cond_rec, init_cond_ref, init_cond_mqtg
 
 
-def process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mqtg, plot_base64, date_time):
+# returns structure data and plots for one test.
+def process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mqtg, plot_base64, date_time, is_mqtg):
     def split_string(s):
         # Find the positions of the first and last dots
         first_dot = s.find('.')
@@ -54,6 +55,7 @@ def process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mq
         return test_id, part_id, case_id
 
     test_id, part_id, case_id = split_string(test_item['id'])
+
     # 1.c.1_A1
     # Function to get the test and the specific test part
     def get_test_test_part_test_case(tests, test_id, part_id, case_id):
@@ -87,6 +89,7 @@ def process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mq
         "test": test,
         "part": part,
         "case": case,
+        "is_mqtg": is_mqtg,
         # "title": test_item['full_name'],
         # "test_objective": "The objective of this test is to demonstrate that the FSTD hover performance is compliant with the helicopter reference data.",
         # "headers": ["Parameter [UoM]", "Reference*", "FSTD"],
@@ -100,32 +103,108 @@ def process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mq
         "plots_base64": plot_base64
     }
 
-    # print(plot_base64[0])
+    case["init_cond_ref"] = []
+    case["init_cond_rec"] = []
+    case["init_cond_mqtg"] = []
 
     # Initialize subsection titles
     mass_properties = {"title": "Mass Properties", "rows": []}
     environment_parameters = {"title": "Environment Parameters", "rows": []}
     flight_parameters = {"title": "Flight Parameters", "rows": []}
 
-    # current_subsection = mass_properties
-    #
-    # for key in init_cond_ref:
-    #     current_row = [key, init_cond_ref[key], init_cond_rec.get(key, ""), ""]
-    #     current_subsection["rows"].append(current_row)
-    #
-    #     if key == "Moment of Inertia ZZ":
-    #         data["subsections"].append(current_subsection)
-    #         current_subsection = environment_parameters
-    #     elif key == "Wind Speed":
-    #         data["subsections"].append(current_subsection)
-    #         current_subsection = flight_parameters
-    #
-    # # Append the last category
-    # data["subsections"].append(current_subsection)
+    # Unit mappings
+    units_map = {
+        "Gross Weight": "kg",
+        "Fuel Weigth": "kg",
+        "CG Longitudinal": "mm",
+        "CG Lateral": "mm",
+        "Moment of Inertia XX": "kgm²",
+        "Moment of Inertia XZ": "kgm²",
+        "Moment of Inertia YY": "kgm²",
+        "Moment of Inertia ZZ": "kgm²",
+        "Pressure Altitude": "ft",
+        "OAT": "degC",
+        "Wind Direction": "deg",
+        "Wind Speed": "kts",
+        "Airspeed": "kts",
+        "Ground Speed": "kts",
+        "Vertical Velocity": "ft/min",
+        "Radar Altitude": "ft",
+        "Rotor Speed": "%",
+        "Engine 1 Torque": "%",
+        "Engine 2 Torque": "%",
+        "Pitch Angle": "deg",
+        "Bank Angle": "deg",
+        "Heading": "deg",
+        "Pitch Rate": "deg/s",
+        "Roll Rate": "deg/s",
+        "Yaw Rate": "deg/s",
+        "X Body Acceleration": "m/s²",
+        "Y Body Acceleration": "m/s²",
+        "Z Body Acceleration": "m/s²",
+        "Longitudinal Cyclic Pos.": "%",
+        "Lateral Cyclic Pos.": "%",
+        "Pedals Pos.": "%",
+        "Collective Pos.": "%",
+        "Engine 1 Main Switch": "−",
+        "Engine 2 Main Switch": "−",
+        "AFCS State": "−",
+        "HINR Button": "−",
+        "Training Mode": "−"
+    }
+
+    # Keys to categorize each section
+    mass_properties_keys = [
+        "Gross Weight", "Fuel Weigth", "CG Longitudinal", "CG Lateral", "Moment of Inertia XX", "Moment of Inertia XZ",
+        "Moment of Inertia YY", "Moment of Inertia ZZ"
+    ]
+    environment_parameters_keys = [
+        "Pressure Altitude", "OAT", "Wind Direction", "Wind Speed"
+    ]
+    flight_parameters_keys = [
+        "Airspeed", "Ground Speed", "Vertical Velocity", "Radar Altitude", "Rotor Speed", "Engine 1 Torque",
+        "Engine 2 Torque","Pitch Angle", "Bank Angle", "Heading", "Pitch Rate", "Roll Rate", "Yaw Rate",
+        "X Body Acceleration", "Y Body Acceleration", "Z Body Acceleration", "Longitudinal Cyclic Pos.",
+        "Lateral Cyclic Pos.", "Pedals Pos.", "Collective Pos.", "Engine 1 Main Switch", "Engine 2 Main Switch",
+        "AFCS State", "HINR Button", "Training Mode"
+    ]
+
+    # Function to process each Init_condition object
+    def process_condition(ptr, condition_data):
+        # Process each key-value pair
+        print(condition_data)
+        for item in condition_data:
+            print(condition_data)
+            print(condition_data)
+            print('condition_data')
+        # for key, value in condition_data:
+        #     value_with_unit = f"{value} [{units_map.get(key, 'N/A')}]"
+        #     if key in mass_properties_keys:
+        #         mass_properties["rows"].append({key: value_with_unit})
+        #     elif key in environment_parameters_keys:
+        #         environment_parameters["rows"].append({key: value_with_unit})
+        #     elif key in flight_parameters_keys:
+        #         flight_parameters["rows"].append({key: value_with_unit})
+
+        print("Mass Properties:", mass_properties)
+        print("Environment Parameters:", environment_parameters)
+        print("Flight Parameters:", flight_parameters)
+
+        ptr.append(mass_properties)
+        ptr.append(environment_parameters)
+        ptr.append(flight_parameters)
+
+    # Process each Init_condition object
+    # for condition_name in ["Init_condition_Reference", "Init_condition_MQTG", "Init_condition_Reccurent"]:
+    #     condition_data = data.get(condition_name, {})
+    # Process each Init_condition object
+    process_condition(case["init_cond_ref"], init_cond_ref)
+    print(case)
 
     return data
 
 
+# creates a test_case report for one test case with headers.
 def create_test_case_pdf(data, output_file):
     # Set up Jinja2 environment
     env = Environment(loader=FileSystemLoader('./templates'))
@@ -169,143 +248,30 @@ def load_plots(qtg_path):
     return plot_paths
 
 
-# deprecated
-# def create_plots(QTG_path):
-#     plot_paths = []
-#     for dirpath, dirnames, filenames in os.walk(QTG_path):
-#         for file in filenames:
-#             if not file.endswith('.sim'):
-#                 continue
-#
-#             file_path = os.path.join(dirpath, file)
-#
-#             with open(file_path, 'r') as json_file:
-#                 data = json.load(json_file)
-#             if 'FTD1' in data.keys():
-#                 plot_title = file.split('.')[0]
-#
-#                 x_Ref = data['Storage'][0]['x']
-#                 y_Ref = data['Storage'][0]['y']
-#                 x = data['FTD1']['x']
-#                 y = data['FTD1']['y']
-#
-#                 y[-1] = y[-2]
-#
-#                 x_label = 'Time(s)'
-#
-#                 # Korrektur mit richitgen Einheiten
-#                 plt.figure(figsize=(10, 6))
-#                 if 'Angle' in plot_title:
-#                     img_name = f"7_{plot_title}.png"
-#                     y = np.rad2deg(y)
-#                     y_label = plot_title + ' (deg)'
-#                     if 'Angle Rate' in plot_title:
-#                         img_name = f"9_{plot_title}.png"
-#                         y_label = plot_title + ' (deg/s)'
-#                     if 'Yaw Angle Unwrapped' in plot_title:
-#                         y = [map360(i) for i in y]
-#                         plot_title = 'Heading'
-#                         img_name = f"7_{plot_title}.png"
-#                         y_label = plot_title + ' (deg)'
-#                 elif 'Control Position' in plot_title:
-#                     if 'Control Position Pitch' in plot_title:  # Pitch position Signal ist bei der Referenz invertiert
-#                         y = [i * -1 for i in y]
-#                     img_name = f"8_{plot_title}.png"
-#                     y = [map_control(i) for i in y]
-#                     y_label = plot_title + ' (%)'
-#                 elif 'TRQ' in plot_title:
-#                     img_name = f"5_{plot_title}.png"
-#                     y_label = plot_title + ' (%)'
-#                 elif 'Control QTG Force Pitch' in plot_title:
-#                     y = pitch_roll_brun2N(y)
-#                     x = pitch_brun2angle(x)
-#                     img_name = f"10_{plot_title}.png"
-#                     y_label = 'Force Pitch (N)'
-#                     x_label = 'Position (deg)'
-#                 elif 'Control QTG Force Roll' in plot_title:
-#                     y = pitch_roll_brun2N(y)
-#                     x = roll_brun2angle(x)
-#                     img_name = f"10_{plot_title}.png"
-#                     y_label = 'Force Roll (N)'
-#                     x_label = 'Position (deg)'
-#                 elif 'Control QTG Force Collective' in plot_title:
-#                     y = coll_brun2N(y)
-#                     x = coll_brun2angle(x)
-#                     img_name = f"10_{plot_title}.png"
-#                     y_label = 'Force Collective (N)'
-#                     x_label = 'Position (deg)'
-#                 elif 'Control QTG Force Yaw' in plot_title:
-#                     x = yaw_brun2angle(x)
-#                     img_name = f"10_{plot_title}.png"
-#                     y_label = 'Force Yaw (N)'
-#                     x_label = 'Position (deg)'
-#                 elif 'Groundspeed' in plot_title:
-#                     img_name = f"2_{plot_title}.png"
-#                     y = [mps2kt(i) for i in y]
-#                     y_label = plot_title + ' (kt)'
-#                 elif 'Airspeed' in plot_title:
-#                     img_name = f"1_{plot_title}.png"
-#                     y = [mps2kt(i) for i in y]
-#                     y_label = plot_title + ' (kt)'
-#                 elif 'RadarAltitude' in plot_title:
-#                     img_name = f"3_{plot_title}.png"
-#                     y_label = plot_title + ' (ft)'
-#                 elif 'Barometric Altitude' in plot_title:
-#                     img_name = f"3_{plot_title}.png"
-#                     y = [m2ft(i) for i in y]
-#                     y_label = plot_title + ' (ft)'
-#                 elif 'Vertical' in plot_title:
-#                     img_name = f"4_{plot_title}.png"
-#                     y = [mps2fpm(-i) for i in y]
-#                     y_label = plot_title + ' (ft/min)'
-#                 elif 'Rotor' in plot_title:
-#                     img_name = f"6_{plot_title}.png"
-#                     y = [rpm2perc(i) for i in y]
-#                     y_label = plot_title + ' (%)'
-#                 else:
-#                     y_label = plot_title + ' (??)'
-#                     img_name = f"{plot_title}.png"
-#
-#                 plt.plot(x_Ref, y_Ref, label='Reference')
-#                 plt.plot(x, y, label='FTD1')
-#
-#                 # Section for scale
-#                 sc_fac = 1.5
-#                 plt.autoscale()
-#                 y_min, y_max = plt.ylim()
-#                 y_range = y_max - y_min
-#                 plt.ylim(y_min - y_range * sc_fac, y_max + y_range * sc_fac)
-#
-#                 plt.xlabel(x_label)
-#                 plt.ylabel(y_label)
-#                 plt.title(plot_title)
-#                 plt.legend()
-#                 plt.grid(True)
-#                 # plt.show()
-#                 save_path = os.path.join(dirpath, img_name)
-#
-#                 buffer = io.BytesIO()
-#                 plt.savefig(buffer, format='png')
-#                 plt.savefig(save_path, format='png')
-#                 plt.close()
-#                 print(plot_title + '.png created')
-#
-#                 img_data = buffer.getvalue()
-#                 plot_paths.append(base64.b64encode(img_data).decode('utf-8'))
-#
-#     return plot_paths
+# PUBLIC FUNCTIONS
+
+# create master test pdf in root directory for all executed tests.
+def create_test_pdf(data, output_file):
+    env = Environment(loader=FileSystemLoader('./templates'))
+    template = env.get_template('test.html')
+
+    # Render the HTML template with data
+    html_out = template.render(data)
+    css_path = './templates/style.css'
+    # Convert the rendered HTML to PDF
+    HTML(string=html_out).write_pdf(output_file, stylesheets=[CSS(css_path)])
 
 
-def main(test_item, test_dir, date_time, gui_output, is_mqtg=False):
+def generate_case_report(test_item, test_dir, date_time, is_mqtg=False):
     # make pdf for each test, merge them into one document. check
     init_cond_rec, init_cond_ref, init_cond_mqtg = load_json_data(test_dir)
 
     # load existing images
     plots_base64 = load_plots(test_dir)
-    data = process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mqtg, plots_base64, date_time)
-    gui_output("Creating Reports. This may take a second...")
-    create_test_case_pdf(data, "output2.pdf")
-    gui_output("Done creating Reports.")
+    data = process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mqtg, plots_base64, date_time, is_mqtg)
+
+    create_test_case_pdf(data, os.path.join(test_dir, "Report.pdf"))
+
 
 
 # Generate the PDF
@@ -324,6 +290,4 @@ if __name__ == "__main__":
     print(f"Test Case: {test_case_name}")
     input()
 
-    main("./data")
-
-
+    generate_case_report("./data")
