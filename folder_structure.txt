@@ -1,0 +1,10 @@
+data/
+    mqtg/
+        2024
+    qtg/
+        20240827/
+            gesamtreport
+            1.c.1_A1/
+                alles eine wichsn
+            1.d_A2
+            ...

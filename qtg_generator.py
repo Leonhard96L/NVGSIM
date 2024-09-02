@@ -1,6 +1,12 @@
+from datetime import datetime
+import os
 import tkinter as tk
 from tkinter import ttk, filedialog
 from qtg_data_structure import data
+import generate_report
+
+
+root_dir = './data'
 
 
 # Function to populate the Treeview with test cases
@@ -28,21 +34,21 @@ def toggle_test_type(tt):
 
 # Function to handle item transfer between Treeviews
 def on_item_click(event, source_tree, target_tree):
-    selected_item = source_tree.selection()[0]
-    if selected_item:
-        # item_id = source_tree.item(selected_item, 'iid')
-        item_text = source_tree.item(selected_item, 'text')
-        if source_tree == tree_available:
-            # Move item from left to right
-            test_type = 'Automatic'
-            target_tree.insert('', 'end', text=item_text, values=(test_type,))
-            source_tree.delete(selected_item)
-        elif source_tree == tree_selected:
-            # Move item from right to left
-            tree_available.insert('', 'end', text=item_text)
+    selected_items = source_tree.selection()
+    if selected_items:
+        for selected_item in selected_items:
+            item_text = source_tree.item(selected_item, 'text')
+            if source_tree == tree_available:
+                # Move item from left to right
+                test_type = 'Automatic'
+                target_tree.insert('', 'end', text=item_text, values=(test_type,))
+            elif source_tree == tree_selected:
+                # Move item from right to left
+                tree_available.insert('', 'end', text=item_text)
             source_tree.delete(selected_item)
         sort_treeview(source_tree)  # Sort the source treeview
         sort_treeview(target_tree)  # Sort the target treeview
+
 
 
 # Function to handle single click
@@ -137,6 +143,7 @@ def gui_output(text, nl=True):
         text = text + "\n"
     progress_text.insert(tk.END, text)
     progress_text.yview_moveto(1.0)
+    root.update()
 
 
 def on_input_submit():
@@ -154,11 +161,30 @@ def gui_input(prompt):
     return inp
 
 
+# this is basically the main method that controls all other programs
 def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output, gui_input=gui_input):
+    date_time = datetime.now()  # use this datetime for folder structure and reports
+
+    qtg_dir = "qtg"
+    if mqtg:
+        qtg_dir = "mqtg"
+
+    # Get the current date and format it as yyyymmdd
+    # directory_structure = os.path.join(output_dir, qtg_dir, date_time.strftime('%Y%m%d_%H%M%S'))
+    directory_structure = os.path.join(output_dir, qtg_dir, "20240827_091010")    # this is for testing purposes only!
+
     for test_item in tests:
-        gui_output(f"id: {test_item['id']}, is_automatic: {test_item['is_automatic']}")
+        gui_output(f"Test id: {test_item['id']}, is_automatic: {test_item['is_automatic']}")
+
+        # create directory for test
+        test_dir = os.path.join(directory_structure, test_item['id'])
+        os.makedirs(test_dir, exist_ok=True)
+        gui_output(f"Save directory: {test_dir}")
+        generate_report.main(test_item, test_dir, date_time, gui_output, mqtg)
+
         # call test here!
-    test = gui_input("Please enter something: ")
+
+    # test = gui_input("Please enter something: ")
 
 
 # Initialize and configure the Tkinter window
@@ -183,7 +209,7 @@ if __name__ == "__main__":
 
     # Labels for each list
     label_left = ttk.Label(root, text="Available Tests")
-    label_right = ttk.Label(root, text="Selected Tests (click to toggle automatic/manual mode, double click to remove)")
+    label_right = ttk.Label(root, text="Selected Tests (right-click to toggle automatic/manual mode, double click to remove)")
     label_left.grid(row=0, column=0, sticky="nsew")
     label_right.grid(row=0, column=1, sticky="nsew")
 
@@ -212,6 +238,7 @@ if __name__ == "__main__":
 
     # Create directory selector
     directory_var = tk.StringVar()
+    directory_var.set(root_dir)
     directory_entry = ttk.Entry(frame_controls, textvariable=directory_var, width=50)
     directory_entry.grid(row=0, column=0, padx=5, pady=5)
     directory_button = ttk.Button(frame_controls, text="Select Directory", command=select_directory)
