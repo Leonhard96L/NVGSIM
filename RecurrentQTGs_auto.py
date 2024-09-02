@@ -7,7 +7,7 @@ Created on Mon Aug 19 10:53:17 2024
 
 
 import json
-
+import statistics
 import os, sys, enum, ctypes
 from enum import IntEnum
 import socket
@@ -205,7 +205,7 @@ def CLS_READER_INIT():
     query_readforce_yaw_coll = build_get_force_query(AxisBitmask.Rudder + AxisBitmask.Collective)
     return sock, remoteEndpoint, query_readforce_pitch_roll, query_readforce_yaw_coll
 
-def logandsave_flyout_init_cond(QTG_path, rel_cyc_long_corr, rel_cyc_lat_corr):
+def logandsave_flyout_init_cond(QTG_path):
 
     Eng1state = 'FLIGHT' if configuration_failure_engine_1_failed.read() == False else 'OFF'
     Eng2state = 'FLIGHT' if configuration_failure_engine_2_failed.read() == False else 'OFF'
@@ -243,8 +243,8 @@ def logandsave_flyout_init_cond(QTG_path, rel_cyc_long_corr, rel_cyc_lat_corr):
        'X Body Acceleration' : reference_frame_inertial_position_a_x.read(),                            #m/s2 -> m/s2
        'Y Body Acceleration' : reference_frame_inertial_position_a_y.read(),                            #m/s2 -> m/s2
        'Z Body Acceleration' : reference_frame_inertial_position_a_z.read(),                            #m/s2 -> m/s2
-       'Longitudinal Cyclic Pos.' : hardware_pilot_cyclic_longitudinal_position.read()-rel_cyc_long_corr,                 #% -> 1
-       'Lateral Cyclic Pos.' : hardware_pilot_cyclic_lateral_position.read()-rel_cyc_lat_corr,                           #% -> 1
+       'Longitudinal Cyclic Pos.' : hardware_pilot_cyclic_longitudinal_position.read(),                 #% -> 1
+       'Lateral Cyclic Pos.' : hardware_pilot_cyclic_lateral_position.read(),                           #% -> 1
        'Pedals Pos.' : hardware_pilot_pedals_position.read(),                                           #% -> 1
        'Collective Pos.' : hardware_pilot_collective_position.read(),                                   #% -> 1
        'Engine 1 Main Switch' : Eng1state,
@@ -305,10 +305,13 @@ def TRIM_pilot(QTG_path,T):
         i += 1
 
     
-def math_pilot(QTG_path,T, rel_cyc_long_corr, rel_cyc_lat_corr):
+def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input):
     MQTG_input_matrix = np.empty((len(T),INPUT.NUMBER_OF_INPUTS))
     output_matrix = np.empty((len(T),OUTPUT.NUMBER_OF_OUTPUTS))
     input_matrix = np.empty((len(T),INPUT.NUMBER_OF_INPUTS))
+    
+    MQTG_pitch = np.empty((len(T),1))
+    MQTG_roll = np.empty((len(T),1))
     
     #Get Reference control arrays
     Input_paths = [
@@ -321,12 +324,33 @@ def math_pilot(QTG_path,T, rel_cyc_long_corr, rel_cyc_lat_corr):
         with open(path, 'r') as json_file:
             data = json.load(json_file)
         MQTG_input_matrix[:,i] = data["FTD1"]["y"]
+        
+    MQTG_pitch_path = os.path.join(QTG_path, 'Pitch Angle.XY.qtgplot.sim')
+    MQTG_roll_path = os.path.join(QTG_path, 'Roll Angle.XY.qtgplot.sim')
+
+    with open(MQTG_roll_path, 'r') as json_file:
+        data = json.load(json_file)
+    MQTG_roll = data["FTD1"]["y"]
+    
+    with open(MQTG_pitch_path, 'r') as json_file:
+        data = json.load(json_file)
+    MQTG_pitch = data["FTD1"]["y"]
     
     i = 0
+    pitch_integral = 0
+    roll_integral = 0
 
     simulation_mode.write(SIM_MODE.RUN) 
     
+    
     while i < len(T)-1:
+        
+        dT = T[i+1]-T[i]
+        
+        desired_roll = MQTG_roll[i]
+        desired_pitch = MQTG_pitch[i]
+        
+        
         output_matrix[i,OUTPUT.AIRSPEED] = reference_frame_body_freestream_airspeed.read()
         output_matrix[i,OUTPUT.GROUNDSPEED] = reference_frame_inertial_position_v_xy.read()
         output_matrix[i,OUTPUT.RADARALT] = radio_altimeter_altitude.read()
@@ -342,9 +366,35 @@ def math_pilot(QTG_path,T, rel_cyc_long_corr, rel_cyc_lat_corr):
         output_matrix[i,OUTPUT.VERTICALSPEED] = reference_frame_inertial_position_v_z.read()
         output_matrix[i,OUTPUT.SIDESLIP] = reference_frame_body_freestream_beta.read()
         
+        
+        current_pitch = output_matrix[i,OUTPUT.PITCH]
+        current_roll = output_matrix[i,OUTPUT.BANK]
+        
+        error_roll = desired_roll - current_roll
+
+        
+        roll_trafo = np.rad2deg(error_roll)*0.005
+        #1deg = 0.005
+        P_roll = 1
+        I_roll = 0
+        roll_integral = roll_integral + roll_trafo * dT
+        cyc_lat_input = P_roll*roll_trafo + I_roll*roll_integral
+        
+        
+        error_pitch = desired_pitch - current_pitch
+
+        
+        pitch_trafo = np.rad2deg(error_pitch)*0.024
+        #1deg = 0.024
+        P_pitch = 1
+        I_pitch = 0
+        pitch_integral = pitch_integral + pitch_trafo * dT
+        cyc_long_input = P_pitch*pitch_trafo + I_pitch*pitch_integral
+        
+        
         hardware_pilot_collective_position.write(MQTG_input_matrix[i,INPUT.COLLECTIVE])
-        hardware_pilot_cyclic_lateral_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LATERAL]-rel_cyc_lat_corr)
-        hardware_pilot_cyclic_longitudinal_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LONGITUDINAL]-rel_cyc_long_corr)
+        hardware_pilot_cyclic_lateral_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LATERAL]+cyc_lat_input)
+        hardware_pilot_cyclic_longitudinal_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LONGITUDINAL]-cyc_long_input)
         hardware_pilot_pedals_position.write(MQTG_input_matrix[i,INPUT.PEDALS])
 
         
@@ -352,9 +402,10 @@ def math_pilot(QTG_path,T, rel_cyc_long_corr, rel_cyc_lat_corr):
         input_matrix[i,INPUT.CYCLIC_LATERAL] = hardware_pilot_cyclic_lateral_position.read()
         input_matrix[i,INPUT.CYCLIC_LONGITUDINAL] = hardware_pilot_cyclic_longitudinal_position.read()
         input_matrix[i,INPUT.PEDALS] = hardware_pilot_pedals_position.read()
-
+        
+        print(hardware_pilot_cyclic_longitudinal_position.read())
         # sleep for dT amount of seconds
-        dT = T[i+1]-T[i]
+        
         time.sleep(dT)
         # increment data row index
         i += 1
@@ -362,7 +413,7 @@ def math_pilot(QTG_path,T, rel_cyc_long_corr, rel_cyc_lat_corr):
     simulation_mode.write(SIM_MODE.PAUSE)
     return input_matrix, output_matrix
 
-def TRIM_pilot_2(QTG_path,T):
+def TRIM_pilot_2(QTG_path,T,init_cond_dict):
     
    
     MQTG_input_matrix = np.empty((len(T),INPUT.NUMBER_OF_INPUTS))
@@ -392,9 +443,12 @@ def TRIM_pilot_2(QTG_path,T):
         data = json.load(json_file)
     MQTG_pitch = data["FTD1"]["y"]
     
+    
+    
     desired_roll = np.mean(MQTG_roll) #rad
     desired_pitch = np.mean(MQTG_pitch) #rad
-
+    #desired_roll = float(init_cond_dict['Bank Angle']) #rad
+    #desired_pitch = float(init_cond_dict['Pitch Angle']) #rad
     
     cyc_long_init_input = MQTG_input_matrix[0,INPUT.CYCLIC_LONGITUDINAL]
     cyc_lat_init_input = MQTG_input_matrix[0,INPUT.CYCLIC_LATERAL]
@@ -409,184 +463,83 @@ def TRIM_pilot_2(QTG_path,T):
     cyclic_limits = (cyclic_limit_min,cyclic_limit_max)
     print(cyclic_limits)
     
-    pid_pitch = PIDController(1, 0.1, 0.05, output_limits=cyclic_limits) #(P,I,D,limits)
-    pid_roll = PIDController(2, 0.2, 0.05, output_limits=cyclic_limits) #(P,I,D,limits)
     
     i = 0
     dT = 0.01
 
     simulation_mode.write(SIM_MODE.RUN) 
     error_pitch_lis = []
+    error_roll_lis = []
     
-    #trägheitsfaktor = 0.9
+    pitch_integral = 0
+    roll_integral = 0
+    P_roll = 5
+    I_roll = 3
+    P_pitch = 5
+    I_pitch = 1.5
+    
+    LOWL = [48.23380,14.20719]
     
     while True:
-        current_pitch = reference_frame_inertial_attitude_theta.read()
-        error_pitch = desired_pitch - current_pitch
-
         
+        reference_frame_inertial_position_latitude.write(LOWL[0])
+        reference_frame_inertial_position_longitude.write(LOWL[1])
+        reference_frame_inertial_attitude_psi.write(float(init_cond_dict['Heading']))
+        
+        current_pitch = reference_frame_inertial_attitude_theta.read()
+        current_roll = reference_frame_inertial_attitude_phi.read()
+        
+        error_roll = desired_roll - current_roll
+        error_roll_lis.append(np.rad2deg(error_roll))
+        
+        roll_trafo = np.rad2deg(error_roll)*0.005
+        #1deg = 0.005
+
+        roll_integral = roll_integral + roll_trafo * dT
+        cyc_lat_input = P_roll*roll_trafo + I_roll*roll_integral
+        
+        
+        error_pitch = desired_pitch - current_pitch
+        error_pitch_lis.append(np.rad2deg(error_pitch))
+        
+        pitch_trafo = np.rad2deg(error_pitch)*0.024
         #1deg = 0.024
-        pitch_gain = 10
-        cyc_long_input = np.rad2deg(error_pitch)*0.024*pitch_gain
+
+        pitch_integral = pitch_integral + pitch_trafo * dT
+        cyc_long_input = P_pitch*pitch_trafo + I_pitch*pitch_integral
+        
 
         #cyc_long_input = max(cyclic_limit_min, min(cyc_long_input, cyclic_limit_max))
 
         #(0.2032318115234375, 0.2246246337890625)
         
-        read_pitch = np.rad2deg(reference_frame_inertial_attitude_theta.read())
-        e = np.rad2deg(desired_pitch)-read_pitch
-        print(f"read Pitch: {read_pitch:.3f} grad, des Pitch: {np.rad2deg(desired_pitch):.3f} grad, Cyclic Input: {cyc_long_input:.5f}, e: {e:.3f}")
-       # print(f"read Roll: {read_roll:.5f} rad, Cyclic Input: {cyc_lat_input:.5f}, e: {error_roll:.15f}")
+
+        e_pitch = error_pitch_lis[-1]
+        e_roll = error_roll_lis[-1]
+        print(f"Cyclic Long Input: {cyc_long_init_input-cyc_long_input:.5f}, e: {e_pitch:.3f}")
+        print(f"Cyclic Lat Input: {cyc_lat_init_input+cyc_lat_input:.5f}, e: {e_roll:.3f}")
 
         
         hardware_pilot_collective_position.write(MQTG_input_matrix[0,INPUT.COLLECTIVE])
         hardware_pilot_pedals_position.write(MQTG_input_matrix[0,INPUT.PEDALS])
         
-        #hardware_pilot_cyclic_lateral_position.write(cyc_lat_init_input-cyc_lat_input)
+        hardware_pilot_cyclic_lateral_position.write(cyc_lat_init_input+cyc_lat_input)
         hardware_pilot_cyclic_longitudinal_position.write(cyc_long_init_input-cyc_long_input)
 
-
-
+        if len(error_pitch_lis) > 50:
+            if all(abs(i) < 0.01 for i in error_pitch_lis[-40:]) and all(abs(i) < 0.02 for i in error_roll_lis[-40:]):
+                break
+        
         # sleep for dT amount of seconds
         time.sleep(dT)
         # increment data row index
         i += 1
 
     simulation_mode.write(SIM_MODE.PAUSE)
-    return rel_cyc_long_corr, rel_cyc_lat_corr
+    print(statistics.variance(error_pitch_lis[-40:]))
+    return cyc_long_input, cyc_lat_input
 
-# =============================================================================
-# def TRIM_pilot_2(QTG_path,T):
-#     
-#     # Gegebene Messdaten
-#     pitch_angles = np.deg2rad(np.array([0, 5, -5, -10, 10]))  # Pitch-Winkel in Grad
-#     cyclic_positions = np.array([0.3, 0.15, 0.4, 0.46, -0.06])  # Cyclic-Stellungen
-#     
-#     # Polynomiale Anpassung zweiten Grades an die Messdaten
-#     coefficients = np.polyfit(pitch_angles, cyclic_positions, 2)
-#     poly_func = np.poly1d(coefficients)
-#     
-#     
-#     MQTG_input_matrix = np.empty((len(T),INPUT.NUMBER_OF_INPUTS))
-#     MQTG_pitch = np.empty((len(T),1))
-#     MQTG_roll = np.empty((len(T),1))
-#     
-#     #Get Reference control arrays
-#     Input_paths = [
-#     os.path.join(QTG_path,'Control Position Collective.XY.qtgplot.sim'),
-#     os.path.join(QTG_path,'Control Position Roll.XY.qtgplot.sim'),
-#     os.path.join(QTG_path,'Control Position Pitch.XY.qtgplot.sim'),
-#     os.path.join(QTG_path,'Control Position Yaw.XY.qtgplot.sim')]
-#     
-#     for path, i in zip(Input_paths,range(INPUT.NUMBER_OF_INPUTS)):
-#         with open(path, 'r') as json_file:
-#             data = json.load(json_file)
-#         MQTG_input_matrix[:,i] = data["FTD1"]["y"]
-# 
-#     MQTG_pitch_path = os.path.join(QTG_path, 'Pitch Angle.XY.qtgplot.sim')
-#     MQTG_roll_path = os.path.join(QTG_path, 'Roll Angle.XY.qtgplot.sim')
-# 
-#     with open(MQTG_roll_path, 'r') as json_file:
-#         data = json.load(json_file)
-#     MQTG_roll = data["FTD1"]["y"]
-#     
-#     with open(MQTG_pitch_path, 'r') as json_file:
-#         data = json.load(json_file)
-#     MQTG_pitch = data["FTD1"]["y"]
-#     
-#     desired_roll = np.mean(MQTG_roll) #rad
-#     desired_pitch = np.mean(MQTG_pitch) #rad
-#     
-#     current_roll = reference_frame_inertial_attitude_phi.read()
-#     current_pitch = reference_frame_inertial_attitude_theta.read() #rad
-#     print(f"desired Pitch: {desired_pitch:.5f} rad, current Pitch: {current_pitch:.5f}")
-#     print(f"desired Roll: {desired_roll:.5f} rad, current Roll: {current_roll:.5f}")
-#     
-#     cyc_long_init_input = MQTG_input_matrix[0,INPUT.CYCLIC_LONGITUDINAL]
-#     cyc_lat_init_input = MQTG_input_matrix[0,INPUT.CYCLIC_LATERAL]
-#     
-#     cyclic_limit_min = cyc_long_init_input - 0.3 * abs(cyc_long_init_input)
-#     cyclic_limit_max = cyc_long_init_input + 0.3 * abs(cyc_long_init_input)
-#     if cyclic_limit_min == cyclic_limit_max == 0:
-#         cyclic_limit_min = -0.3
-#         cyclic_limit_max = 0.3
-#     
-#     #cyclic_limits = (cyclic_init_input-0.05,cyclic_init_input+0.05) #brunner
-#     cyclic_limits = (cyclic_limit_min,cyclic_limit_max)
-#     print(cyclic_limits)
-#     
-#     pid_pitch = PIDController(1, 0.1, 0.05, output_limits=cyclic_limits) #(P,I,D,limits)
-#     pid_roll = PIDController(2, 0.2, 0.05, output_limits=cyclic_limits) #(P,I,D,limits)
-#     
-#     i = 0
-#     dT = 0.01
-# 
-#     simulation_mode.write(SIM_MODE.RUN) 
-#     error_pitch_lis = []
-#     
-#     #trägheitsfaktor = 0.9
-#     
-#     while True:
-#         current_pitch = reference_frame_inertial_attitude_theta.read()
-#         error_pitch = desired_pitch - current_pitch
-#         error_roll = desired_roll - current_roll
-# 
-#         cyc_long_input = pid_pitch.update(error_pitch, dT)
-#         cyc_lat_input = pid_roll.update(error_roll, dT)
-#         a = 1.5  # Verstärkungsfaktor für träge Reaktion
-#         b = 0.2  # Dämpfungsfaktor: Stabilisierender Effekt auf den Pitch-Winkel
-# 
-#         # Berechnung des neuen Cyclic-Eingangs
-#         base_cyclic_input = poly_func(current_pitch)
-#         cyclic_input = base_cyclic_input - cyc_long_input
-#         
-#         # Begrenzung des Cyclic-Eingangs
-#         cyc_long_input = max(cyclic_limit_min, min(cyclic_input, cyclic_limit_max))
-#         
-#         #current_pitch_rate = a * cyc_long_input - b * current_pitch
-#         #current_pitch = current_pitch * trägheitsfaktor + current_pitch_rate * (1 - trägheitsfaktor) * dT
-# 
-#         current_pitch += cyc_long_input * dT
-#         current_roll += cyc_lat_input *dT
-#         #current_pitch = reference_frame_inertial_attitude_theta.read()
-#         #current_roll = reference_frame_inertial_attitude_phi.read()
-#         
-#         read_pitch = np.rad2deg(reference_frame_inertial_attitude_theta.read())
-#         read_roll = reference_frame_inertial_attitude_phi.read()
-#         e = np.rad2deg(desired_pitch)-read_pitch
-#         print(f"read Pitch: {read_pitch:.3f} grad, des Pitch: {np.rad2deg(desired_pitch):.3f} grad, Cyclic Input: {cyc_long_input:.5f}, e: {e:.3f}")
-#        # print(f"read Roll: {read_roll:.5f} rad, Cyclic Input: {cyc_lat_input:.5f}, e: {error_roll:.15f}")
-# 
-#         
-#         hardware_pilot_collective_position.write(MQTG_input_matrix[0,INPUT.COLLECTIVE])
-#         #hardware_pilot_cyclic_lateral_position.write(MQTG_input_matrix[0,INPUT.CYCLIC_LATERAL])
-#         #hardware_pilot_cyclic_longitudinal_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LONGITUDINAL])
-#         hardware_pilot_pedals_position.write(MQTG_input_matrix[0,INPUT.PEDALS])
-#         
-#         #hardware_pilot_cyclic_lateral_position.write(cyc_lat_init_input+cyc_lat_input)
-#         hardware_pilot_cyclic_longitudinal_position.write(cyc_long_init_input+cyc_long_input)
-#         #hardware_pilot_cyclic_lateral_position.write(-cyc_lat_input)
-#         #hardware_pilot_cyclic_longitudinal_position.write(cyc_long_input)
-# # =============================================================================
-# #         error_pitch_lis.append(abs(error_pitch))
-# #         pitch_mean = sum(error_pitch_lis[-20:])/20
-# #         if pitch_mean < 0.001:
-# #             rel_cyc_long_corr = cyclic_init_input-cyclic_input
-# #             break
-# # =============================================================================
-#         if abs(desired_pitch-read_pitch) < 0.000001 and abs(desired_roll-read_roll) < 0.000001:
-#             rel_cyc_long_corr = cyc_long_input
-#             rel_cyc_lat_corr = cyc_lat_input
-#             break
-# 
-#         # sleep for dT amount of seconds
-#         time.sleep(dT)
-#         # increment data row index
-#         i += 1
-# 
-#     simulation_mode.write(SIM_MODE.PAUSE)
-#     return rel_cyc_long_corr, rel_cyc_lat_corr
-# =============================================================================
+
 
 def log_flyout_input_output(T):
     # pre-define numpy data matrix containing flight data (see enum above for column definitions)
@@ -885,7 +838,7 @@ def set_standard_cond():
     hardware_pilot_pedals_position.write(0)
     
 
-def set_init_cond_recurrent(init_cond_dict):
+def set_init_cond_recurrent(init_cond_dict, cyc_long_input, cyc_lat_input):
     ON = 5e-324 
     
     #init_cond_di_si = units_conversion(init_cond_dict,'SI')
@@ -929,14 +882,14 @@ def set_init_cond_recurrent(init_cond_dict):
     configuration_failure_engine_2_failed.write(False) if init_cond_dict['Engine 2 Main Switch'] == 'FLIGHT' else configuration_failure_engine_2_failed.write(True)
     
     hardware_pilot_collective_position.write(float(init_cond_dict["Collective Pos."]))
-    hardware_pilot_cyclic_lateral_position.write(float(init_cond_dict["Lateral Cyclic Pos."]))
-    hardware_pilot_cyclic_lateral_trim_position.write(float(init_cond_dict["Lateral Cyclic Pos."]))
-    hardware_pilot_cyclic_longitudinal_position.write(float(init_cond_dict["Longitudinal Cyclic Pos."]))
-    hardware_pilot_cyclic_longitudinal_trim_position.write(float(init_cond_dict["Longitudinal Cyclic Pos."]))
+    hardware_pilot_cyclic_lateral_position.write(float(init_cond_dict["Lateral Cyclic Pos."])+cyc_lat_input)
+    hardware_pilot_cyclic_lateral_trim_position.write(float(init_cond_dict["Lateral Cyclic Pos."])+cyc_lat_input)
+    hardware_pilot_cyclic_longitudinal_position.write(float(init_cond_dict["Longitudinal Cyclic Pos."])-cyc_long_input)
+    hardware_pilot_cyclic_longitudinal_trim_position.write(float(init_cond_dict["Longitudinal Cyclic Pos."])-cyc_long_input)
     hardware_pilot_pedals_position.write(float(init_cond_dict["Pedals Pos."]))
     
 
-    hardware_panel_center_hydraulics_xmsn_nr_p10.write(False) if init_cond_dict['HINR Button'] == 'NORMAL' else hardware_panel_center_hydraulics_xmsn_nr_p10.write(ON)
+    hardware_panel_center_hydraulics_xmsn_nr_p10.write(False) if init_cond_dict['HINR Button'] == 'NORMAL' else hardware_panel_center_hydraulics_xmsn_nr_p10.write(False)
     if init_cond_dict['AFCS State'] == 'DSAS':
         flightmodel_module_simple_scas_input_scas_pitch_on.write(ON) 
         flightmodel_module_simple_scas_input_scas_roll_on.write(ON) 
@@ -978,7 +931,6 @@ def create_report(QTG_path, report_file):
     pdf_merger = PdfMerger()
     # Gehe durch alle Dateien im Ordner
     for root, dirs, files in os.walk(QTG_path):
-        print(sorted(files))
         for file in sorted(files):
             if file.endswith('.pdf'):
                 # Voller Pfad der PDF-Datei
@@ -990,276 +942,41 @@ def create_report(QTG_path, report_file):
     pdf_merger.write(output_path)
     pdf_merger.close()
     
-def extract_parts(QTG_name):
-    # Muster für die verschiedenen möglichen Teile des Strings
-    pattern = r'\d+\.(\w)(?:\.\((\d+)\))?(?:\((\w+)\))?_[A-Z]\d+'
-    
-    # Extrahieren
-    match = re.match(pattern, QTG_name)
-    
-    if match:
-        # Extrahiere die einzelnen Gruppen
-        letter = match.group(1)
-        number = match.group(2) if match.group(2) else ''
-        roman_numeral = match.group(3) if match.group(3) else ''
-        
-        # Erstelle das Ergebnis basierend auf den verfügbaren Teilen
-        result = f"{letter}"
-        if number:
-            result += f".{number}"
-        if roman_numeral:
-            result += f".{roman_numeral}"
-        
-        return result
-    else:
-        return "Kein gültiges Muster gefunden"
 
-
-# =============================================================================
-# def create_plots(QTG_path,QTG_name):
-# 
-#     ID = extract_parts(QTG_name)
-#     section = int(QTG_name.split('.')[0])
-# 
-# 
-#     tol_list = qtg_data_structure.data['tests'][section-1][ID]['tolerances_recurrent_criteria']
-#     for tol in tol_list:
-#         tol
-#     
-#     para_file_dict = {
-#         'Engine 1 Torque':'Engine1 TRQ Indicated',
-#         'Engine 2 Torque':'Engine2 TRQ Indicated',
-#         'Rotor Speed' : 'Rotor RPM',
-#         'Pitch Angle' : 'Pitch Angle',
-#         'Bank Angle' : 'Roll Angle',
-#         'Heading' : 'Yaw Angle Unwrapped',
-#         'Sideslip Angle' : 'Angle of Sideslip',
-#         'Airspeed' : 'Indicated Airspeed',
-#         'Radar Altitude' : 'RadarAltitude',
-#         'Vertical Velocity' : 'Vertical Speed',
-#         'Longitudinal Cyclic Pos.' : 'Control Position Pitch',
-#         'Lateral Cyclic Pos.' : 'Control Position Roll',
-#         'Pedals Pos.' : 'Control Position Yaw',
-#         'Collective Pos.' : 'Control Position Collective',
-#         'Pitch Rate' : 'Pitch Angle Rate',
-#         'Roll Rate' : 'Roll Angle Rate' ,
-#         'Yaw Rate' : 'Yaw Angle Rate'
-#     }
-#     
-# 
-#     for dirpath, dirnames, filenames in os.walk(QTG_path): 
-#         for file in filenames:
-#             if not file.endswith('.sim'):
-#                 continue
-# 
-#             file_path = os.path.join(dirpath, file)
-# 
-#             with open(file_path, 'r') as json_file:
-#                 data = json.load(json_file)
-#             if 'FTD1' in data.keys():
-#                 plot_title = file.split('.')[0]
-#                 
-#                 x_Ref = data['Storage'][0]['x']
-#                 y_Ref = data['Storage'][0]['y']
-#                 x = data['FTD1']['x']
-#                 y = data['FTD1']['y']
-#                 x_Rec = data['FTD1_Recurrent']['x']
-#                 y_Rec = data['FTD1_Recurrent']['y']
-#                 
-#                 
-#                 y[-1] = y[-2]
-#                 x[-1] = x[-2]
-#                 y_Rec[-1] = y_Rec[-2]
-#                 x_Rec[-1] = x_Rec[-2]
-#                 #y_uptol = y
-#                 #y_lotol = y
-#                 
-#                 x_label = 'Time(s)'
-# 
-#                 #Korrektur mit richitgen Einheiten
-#                 plt.figure(figsize=(10, 6))
-#                 
-#                 if 'Yaw Angle Unwrapped' in plot_title:
-#                     y = [map360(i) for i in y]
-#                     y_uptol = [i+2 for i in y]
-#                     y_lotol = [i-2 for i in y]
-#                     y_Rec = [map360(i) for i in y_Rec]
-#                     plot_title = 'Heading'
-#                     pdfname = f"7_{plot_title}.pdf"
-#                     y_label = plot_title + ' (deg)'
-#                     plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
-#                     plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
-#                 elif 'Roll Angle' in plot_title:
-#                     pdfname = f"7_{plot_title}.pdf"
-#                     y=np.rad2deg(y)
-#                     y_uptol = [i+1.5 for i in y]
-#                     y_lotol = [i-1.5 for i in y]
-#                     y_Rec=np.rad2deg(y_Rec)
-#                     y_label = plot_title + ' (deg)'
-#                     plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
-#                     plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
-#                 elif 'Pitch Angle' in plot_title:
-#                     pdfname = f"7_{plot_title}.pdf"
-#                     y=np.rad2deg(y)
-#                     y_uptol = [i+2 for i in y]
-#                     y_lotol = [i-2 for i in y]
-#                     y_Rec=np.rad2deg(y_Rec)
-#                     y_label = plot_title + ' (deg)'                    
-#                     plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
-#                     plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
-#                 elif 'Angle of Sideslip' in plot_title:
-#                     pdfname = f"7_{plot_title}.pdf"
-#                     y=np.rad2deg(y)
-#                     y_Rec=np.rad2deg(y_Rec)
-#                     y_label = plot_title + ' (deg)'
-#                 elif 'Angle Rate' in plot_title:
-#                     pdfname = f"9_{plot_title}.pdf"
-#                     y_label = plot_title + ' (deg/s)'
-#                 elif 'Control Position Pitch' in plot_title: #Pitch position Signal ist bei der Referenz invertiert
-#                     pdfname = f"8_{plot_title}.pdf"
-#                     y=[map_control(-i) for i in y]
-#                     y_Rec=[map_control(-i) for i in y_Rec]
-#                     y_label = plot_title + ' (%)'
-#                 elif 'Control Position Collective' in plot_title:
-#                     pdfname = f"8_{plot_title}.pdf"
-#                     y=[map_control(i) for i in y]
-#                     y_Rec=[map_control(i) for i in y_Rec]
-#                     y_label = plot_title + ' (%)'
-#                 elif 'Control Position Roll' in plot_title:
-#                     pdfname = f"8_{plot_title}.pdf"
-#                     y=[map_control(i) for i in y]
-#                     y_Rec=[map_control(i) for i in y_Rec]
-#                     y_label = plot_title + ' (%)'
-#                 elif 'Control Position Yaw' in plot_title:
-#                     pdfname = f"8_{plot_title}.pdf"
-#                     y=[map_control(i) for i in y]
-#                     y_Rec=[map_control(i) for i in y_Rec]
-#                     y_label = plot_title + ' (%)'               
-#                 elif 'TRQ' in plot_title:
-#                     y_uptol = [i+3 for i in y]
-#                     y_lotol = [i-3 for i in y]
-#                     pdfname = f"5_{plot_title}.pdf"
-#                     y_label = plot_title + ' (%)'
-#                     plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
-#                     plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
-#                 elif 'Control QTG Force Pitch' in plot_title:
-#                     y = [pitch_brun2N(i) for i in y]
-#                     x = [pitch_brun2angle(i) for i in x]
-#                     y_Rec = [pitch_brun2N(i) for i in y_Rec]
-#                     x_Rec = [pitch_brun2angle(i) for i in x_Rec]
-#                     pdfname = f"10_{plot_title}.pdf"
-#                     y_label = 'Force Pitch (N)'
-#                     x_label = 'Position (deg)'
-#                 elif 'Control QTG Force Roll' in plot_title:
-#                     y = [roll_brun2N(i) for i in y]
-#                     x = [roll_brun2angle(i) for i in x]
-#                     y_Rec = [roll_brun2N(i) for i in y_Rec]
-#                     x_Rec = [roll_brun2angle(i) for i in x_Rec]
-#                     pdfname = f"10_{plot_title}.pdf"
-#                     y_label = 'Force Roll (N)'
-#                     x_label = 'Position (deg)'
-#                 elif 'Control QTG Force Collective' in plot_title:
-#                     y = [coll_brun2N(i) for i in y]
-#                     x = [coll_brun2angle(i) for i in x]
-#                     y_Rec = [coll_brun2N(i) for i in y_Rec]
-#                     x_Rec = [coll_brun2angle(i) for i in x_Rec]
-#                     pdfname = f"10_{plot_title}.pdf"
-#                     y_label = 'Force Collective (N)'
-#                     x_label = 'Position (deg)' 
-#                 elif 'Control QTG Force Yaw' in plot_title:
-#                     x = [yaw_brun2angle(i) for i in x]
-#                     y = [i*-1000 for i in y]
-#                     x_Rec = [yaw_brun2angle(i) for i in x_Rec]
-#                     y_Rec = [i*-1000 for i in y_Rec]
-#                     pdfname = f"10_{plot_title}.pdf"
-#                     y_label = 'Force Yaw (N)'
-#                     x_label = 'Position (deg)'    
-#                 elif 'Control QTG Position Pitch Velocity' in plot_title:
-#                     y = [pitch_brun2angle(i) for i in y]
-#                     y,x = ATRIM_calc(x, y)
-#                     y_Rec = [pitch_brun2angle(i) for i in y_Rec]
-#                     y_Rec,x_Rec = ATRIM_calc(x_Rec, y_Rec)
-#                     pdfname = f"11_{plot_title}.pdf"
-#                     y_label = 'Long. Cyclic Pos. Rate (deg/s)'
-#                 elif 'Control QTG Position Roll Velocity' in plot_title:
-#                     y = [coll_brun2angle(i) for i in y]
-#                     y,x = ATRIM_calc(x, y)
-#                     y_Rec = [coll_brun2angle(i) for i in y_Rec]
-#                     y_Rec,x_Rec = ATRIM_calc(x_Rec, y_Rec)
-#                     pdfname = f"11_{plot_title}.pdf"
-#                     y_label = 'Lat. Cyclic Pos. Rate (deg/s)'                
-#                 elif 'Groundspeed' in plot_title:
-#                     pdfname = f"2_{plot_title}.pdf"
-#                     y=[mps2kt(i) for i in y]
-#                     y_Rec=[mps2kt(i) for i in y_Rec]
-#                     y_label = plot_title + ' (kt)'
-#                 elif 'Airspeed' in plot_title:
-#                     pdfname = f"1_{plot_title}.pdf"
-#                     y=[mps2kt(i) for i in y]
-#                     y_uptol = [i+3 for i in y]
-#                     y_lotol = [i-3 for i in y]
-#                     y_Rec=[mps2kt(i) for i in y_Rec]
-#                     y_label = plot_title + ' (kt)'
-#                     plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
-#                     plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
-#                 elif 'RadarAltitude' in plot_title:
-#                     pdfname = f"3_{plot_title}.pdf"
-#                     y_uptol = [i+20 for i in y]
-#                     y_lotol = [i-20 for i in y]
-#                     y_label = plot_title + ' (ft)'
-#                     plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
-#                     plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
-#                 elif 'Barometric Altitude' in plot_title:   
-#                     pdfname = f"3_{plot_title}.pdf"
-#                     y=[m2ft(i) for i in y]
-#                     y_Rec=[m2ft(i) for i in y_Rec]
-#                     y_label = plot_title + ' (ft)'
-#                 elif 'Vertical' in plot_title:
-#                     pdfname = f"4_{plot_title}.pdf"
-#                     y=[mps2fpm(-i) for i in y]
-#                     y_Rec=[mps2fpm(-i) for i in y_Rec]
-#                     y_label = plot_title + ' (ft/min)'
-#                 elif 'Rotor' in plot_title:
-#                     pdfname = f"6_{plot_title}.pdf"
-#                     y=[rpm2perc(i) for i in y]
-#                     y_Rec=[rpm2perc(i) for i in y_Rec]
-#                     y_label = plot_title + ' (%)'
-#                 else:
-#                     y_label = plot_title +' (??)'
-#                     pdfname = f"{plot_title}.pdf"
-#                 
-#                 
-#                 plt.plot(x_Ref, y_Ref, label='Reference')
-#                 plt.plot(x, y, label='FTD1_MQTG')
-#                 plt.plot(x_Rec, y_Rec, label='Reccurent', color='green', linestyle='dashed')
-# 
-#                 
-#                 ##Section for scale
-#                 sc_fac = 0.5
-#                 plt.autoscale()
-#                 y_min, y_max = plt.ylim()
-#                 y_range = y_max - y_min
-#                 plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
-# 
-#                 plt.xlabel(x_label)
-#                 plt.ylabel(y_label)
-#                 plt.title(plot_title)
-#                 plt.legend()
-#                 plt.grid(True)
-#                 #plt.show() 
-#                 save_path = os.path.join(dirpath, pdfname)
-#                 
-#                 plt.savefig(save_path, format='pdf')
-#                 plt.close()
-# =============================================================================
 
 def create_plots(QTG_path,QTG_name):
+    def split_string(QTG_name):
+        # Find the positions of the first and last dots
+        first_dot = QTG_name.find('.')
+        last_dot = QTG_name.rfind('_')
 
-    ID = extract_parts(QTG_name)
-    section = int(QTG_name.split('.')[0])
+        # Split the string based on the dot positions
+        test_id = QTG_name[:first_dot]
+        part_id = QTG_name[first_dot + 1:last_dot]
+        case_id = QTG_name[last_dot + 1:]
+        return test_id, part_id, case_id
+    test_id, part_id, case_id = split_string(QTG_name)
+    
+    # Function to get the test and the specific test part
+    def get_test_test_part_test_case(tests, test_id, part_id, case_id):
+        # Find the test with the given id
+        test = next((test for test in tests if test['id'] == test_id), None)
+        if test:
+            # Find the test part with the given id within the found test
+            test_part = next((part for part in test['test_parts'] if part['id'] == part_id), None)
+            if test_part:
+                test_case = next((case for case in test_part['test_cases'] if case['id'] == case_id), None)
+                return test, test_part, test_case
+        return None, None, None
+
+    test, part, case = get_test_test_part_test_case(qtg_data_structure.data['tests'], test_id, part_id, case_id)
+    
+    
 
 
-    params = qtg_data_structure.data['tests'][section-1][ID]['tolerances_recurrent_criteria']
+
+
+    params = part['tolerances_recurrent_criteria']
     para_file_dict = {
         'Engine 1 Torque':'Engine1 TRQ Indicated',
         'Engine 2 Torque':'Engine2 TRQ Indicated',
@@ -1403,7 +1120,7 @@ def create_plots(QTG_path,QTG_name):
 
             
             ##Section for scale
-            sc_fac = 0.5
+            sc_fac = 1.5
             plt.autoscale()
             y_min, y_max = plt.ylim()
             y_range = y_max - y_min
@@ -1489,7 +1206,7 @@ if __name__ == "__main__":
     #Refernce_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\Reference_data_Init_flyout_V2'
     save_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\RecurrentQTG_save_auto'
     #Gib den Testnamen an
-    QTG_name = '1.g_A3'
+    QTG_name = '1.e_A1'
 
     #Pfad der Referenzdaten und der Speicherdaten, des jeweiligen QTGs
     QTG_path = get_QTG_path(QTG_name, save_data_path)
@@ -1512,18 +1229,20 @@ if __name__ == "__main__":
     time.sleep(1)
     
     #For snapshottests
+    cyc_long_input, cyc_lat_input = 0,0
     
     #Schreibe die Anfangsbedingungen des jeweiligen QTGs
-    set_init_cond_recurrent(init_cond_ref_dict)
+    set_init_cond_recurrent(init_cond_ref_dict, cyc_long_input, cyc_lat_input)
     simulation_mode.write(SIM_MODE.PAUSE)
     time.sleep(0.2)
     simulation_mode.write(SIM_MODE.TRIM)
     time.sleep(2)
-    rel_cyc_long_corr, rel_cyc_lat_corr = TRIM_pilot_2(QTG_path,T)    
+    cyc_long_input, cyc_lat_input = TRIM_pilot_2(QTG_path,T,init_cond_ref_dict)    
+    time.sleep(0.5)
     simulation_mode.write(SIM_MODE.RUN)
-    time.sleep(3)
-    set_init_cond_recurrent(init_cond_ref_dict)
-    time.sleep(0)
+    time.sleep(1)
+    set_init_cond_recurrent(init_cond_ref_dict, cyc_long_input, cyc_lat_input)
+    time.sleep(1)
 
 
 
@@ -1569,11 +1288,11 @@ if __name__ == "__main__":
 # =============================================================================
     
 
-    logandsave_flyout_init_cond(QTG_path, rel_cyc_long_corr, rel_cyc_lat_corr)
+    logandsave_flyout_init_cond(QTG_path)
     
     
     
-    input_matrix, output_matrix = math_pilot(QTG_path,T, rel_cyc_long_corr, rel_cyc_lat_corr)
+    input_matrix, output_matrix = math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input)
 
     save_io_files(QTG_path, input_matrix, output_matrix, T)
     create_comparison_table(QTG_path)
@@ -1598,14 +1317,7 @@ if __name__ == "__main__":
     -sortiere die pdfs richtig fuer report.pdf
     -idee ich kann in der function create plot auch parameter plotten und dann im create report nur die notwendigen reinschmeisen
     
-    -Ueberlege, soll die HI NR funktion drin gelassen werden? Weil sie ist nicht relevant fuer das Training und kann nicht vom Piloten ein/ausgeschaltet werden.
-    
-    -Probleme fuer die Reproduzierbarkeit der Tests kann sein:
-        -Trim position der Controls -> Nein
-        -M                          -> Nein
-        -flight attitude
-        
-        -Probleme: Airspeed lasst sich nur mit TRIM setzen. Vertveloc und sideslip moegen den TRIM nicht
+    -Ich muss eine Unterscheidungmachen zwischen snapshottests und normale Tests machen
         
     -Ich werde Snapshot Tests anders behandeln. mittelwert bildung
     -Fuer das inital Flyout genauestensfliegen, vor allem fuer snapshot tests
