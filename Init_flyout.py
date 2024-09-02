@@ -737,7 +737,7 @@ def set_init_cond_flyout(init_cond_dict):
 
     configuration_failure_engine_1_failed.write(False) if init_cond_dict['Training Mode'] == 'OFF' else configuration_failure_engine_1_failed.write(True)
 
-    hardware_panel_center_hydraulics_xmsn_nr_p10.write(False) if init_cond_dict['HINR Button'] == 'NORMAL' else hardware_panel_center_hydraulics_xmsn_nr_p10.write(ON)
+    hardware_panel_center_hydraulics_xmsn_nr_p10.write(False) if init_cond_dict['HINR Button'] == 'NORMAL' else hardware_panel_center_hydraulics_xmsn_nr_p10.write(False)
     if init_cond_dict['AFCS State'] == 'DSAS':
         flightmodel_module_simple_scas_input_scas_pitch_on.write(ON)
         flightmodel_module_simple_scas_input_scas_roll_on.write(ON)
@@ -977,7 +977,7 @@ if __name__ == "__main__":
     brunner_task = DSim.Variable.Enum(DSim.Node(dsim_host,"host/sim1-model/entity/as532_1/task/io_brunner_cls/mode"))
     brunner_task.write(TASK_MODE.FORCE_RUN)
     # Gib den Testnamen an
-    QTG_name = '1.e_B1'
+    QTG_name = '2.a.(1)_B2'
 
     # Pfad der Referenzdaten und der Speicherdaten, des jeweiligen QTGs
     QTG_path = get_QTG_path(QTG_name, Refernce_data_path)

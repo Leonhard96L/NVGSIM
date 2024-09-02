@@ -69,9 +69,8 @@ def process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mq
 
     test, part, case = get_test_test_part_test_case(qtg_structure['tests'], test_id, part_id, case_id)
 
-    print(test)
-    print(part)
-    print(case)
+    print(test['tolerances_recurrent_criteria'])
+
     # Format the date as mm.dd.yyyy
     formatted_date = date_time.strftime("%m.%d.%Y")
 
