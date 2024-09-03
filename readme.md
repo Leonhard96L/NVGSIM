@@ -17,10 +17,12 @@
 - Speichern der berichte ins richtige dir und mit richtigen namen.	DONE
 - Header hinzufügen	DONE
 - Struktur anpassen (mit Leo)	DONE
-- Tabelle neu generieren (änderungen von Leo)
-	- einheiten hinzufügen
-	- MQTG: Init_condition_Reference, Init_condition_MQTG
+- Tabelle neu generieren (änderungen von Leo)    DONE
+    - einheiten hinzufügen
+    - MQTG: Init_condition_Reference, Init_condition_MQTG
     - Reference Ü, MQTG
     - QTG: Init_condition_Reference, Init_condition_MQTG, Init_condition_Reccurent
     - Reference *, MQTG, Recurrent
 - IO mit Leo
+
+- Hauptbericht generieren

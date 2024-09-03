@@ -1,0 +1,69 @@
+<table class="no-outer-borders no-horizontal-borders">
+    <thead>
+        <tr>
+            <th class="align-left">Parameter [UoM]</th>
+            <th>Reference*</th>
+            <th>FSTD</th>
+            {% if not is_mqtg %}
+                <th>Recurrent</th>
+            {% endif %}
+        </tr>
+    </thead>
+
+    <!-- Mass Properties -->
+    <thead>
+        <tr>
+            <th colspan="{% if not is_mqtg %}4{% else %}3{% endif %}" class="subsection">Mass Properties</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for key, values in case["init_conds"]["mass_properties"].items() %}
+            <tr>
+                <td class="align-left">{{ key }}</td>
+                <td>{{ values['ref'] }}</td>
+                <td>{{ values['mqtg'] }}</td>
+                {% if not is_mqtg %}
+                    <td>{{ values['rec'] }}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+
+    <!-- Environment Parameters -->
+    <thead>
+        <tr>
+            <th colspan="{% if not is_mqtg %}4{% else %}3{% endif %}" class="subsection">Environment Parameters</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for key, values in case["init_conds"]["environment_parameters"].items() %}
+            <tr>
+                <td class="align-left">{{ key }}</td>
+                <td>{{ values['ref'] }}</td>
+                <td>{{ values['mqtg'] }}</td>
+                {% if not is_mqtg %}
+                    <td>{{ values['rec'] }}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+
+    <!-- Flight Parameters -->
+    <thead>
+        <tr>
+            <th colspan="{% if not is_mqtg %}4{% else %}3{% endif %}" class="subsection">Flight Parameters</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for key, values in case["init_conds"]["flight_parameters"].items() %}
+            <tr>
+                <td class="align-left">{{ key }}</td>
+                <td>{{ values['ref'] }}</td>
+                <td>{{ values['mqtg'] }}</td>
+                {% if not is_mqtg %}
+                    <td>{{ values['rec'] }}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

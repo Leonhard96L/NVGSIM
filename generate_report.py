@@ -31,9 +31,9 @@ def load_json_data(qtg_path):
     with open(file_path, 'r') as json_file:
         data = json.load(json_file)
 
-        init_cond_rec = data.get("Init_condition_Reccurent"),
-        init_cond_ref = data.get("Init_condition_Reference"),
-        init_cond_mqtg = data.get("Init_condition_MQTG"),
+        (init_cond_rec,) = data.get("Init_condition_Reccurent"),
+        (init_cond_ref,) = data.get("Init_condition_Reference"),
+        (init_cond_mqtg,) = data.get("Init_condition_MQTG"),
 
         print(init_cond_rec)
         print(init_cond_ref)
@@ -71,7 +71,7 @@ def process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mq
 
     test, part, case = get_test_test_part_test_case(qtg_structure['tests'], test_id, part_id, case_id)
 
-    print(test['tolerances_recurrent_criteria'])
+    # print(part['tolerances_recurrent_criteria'])
 
     # Format the date as mm.dd.yyyy
     formatted_date = date_time.strftime("%m.%d.%Y")
@@ -79,37 +79,6 @@ def process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mq
     # Format the time as hh:mm:ss
     formatted_time = date_time.strftime("%H:%M:%S")
 
-    # CHANGE FOR EACH TEST HERE:
-    # test_id = "1.d"
-
-    # sub_case_ids = [key for key in test_ID_dict.keys() if test_id in key]
-
-    data = {
-        "test": test,
-        "part": part,
-        "case": case,
-        "is_mqtg": is_mqtg,
-        # "title": test_item['full_name'],
-        # "test_objective": "The objective of this test is to demonstrate that the FSTD hover performance is compliant with the helicopter reference data.",
-        # "headers": ["Parameter [UoM]", "Reference*", "FSTD"],
-        # # everything below is automatically generated!
-        # "test_id": test_item['id'],
-        # "test_name": test_ID_dict.get(test_id),
-        # "sub_cases": [{"id": key, "name": test_ID_dict.get(key), "short_id": key[len(test_id)+1:]} for key in sub_case_ids],
-        # "subsections": [],
-        "curr_date": formatted_date,
-        "curr_time": formatted_time,
-        "plots_base64": plot_base64
-    }
-
-    case["init_cond_ref"] = []
-    case["init_cond_rec"] = []
-    case["init_cond_mqtg"] = []
-
-    # Initialize subsection titles
-    mass_properties = {"title": "Mass Properties", "rows": []}
-    environment_parameters = {"title": "Environment Parameters", "rows": []}
-    flight_parameters = {"title": "Flight Parameters", "rows": []}
 
     # Unit mappings
     units_map = {
@@ -168,37 +137,61 @@ def process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mq
         "AFCS State", "HINR Button", "Training Mode"
     ]
 
-    # Function to process each Init_condition object
-    def process_condition(ptr, condition_data):
+    # Define key mappings for each category
+    def process_condition(ptr_dict, condition_data, keys_map, sub_category):
         # Process each key-value pair
-        print(condition_data)
-        for item in condition_data:
-            print(condition_data)
-            print(condition_data)
-            print('condition_data')
-        # for key, value in condition_data:
-        #     value_with_unit = f"{value} [{units_map.get(key, 'N/A')}]"
-        #     if key in mass_properties_keys:
-        #         mass_properties["rows"].append({key: value_with_unit})
-        #     elif key in environment_parameters_keys:
-        #         environment_parameters["rows"].append({key: value_with_unit})
-        #     elif key in flight_parameters_keys:
-        #         flight_parameters["rows"].append({key: value_with_unit})
+        for key, value in condition_data.items():
+            key_with_unit = f"{key} [{units_map.get(key, 'N/A')}]"
 
-        print("Mass Properties:", mass_properties)
-        print("Environment Parameters:", environment_parameters)
-        print("Flight Parameters:", flight_parameters)
+            # Update or initialize the dictionary entry for the key
+            for category, keys in keys_map.items():
+                if key in keys:
+                    # Ensure that the category dictionary exists in the main dictionary
+                    if key_with_unit not in ptr_dict[category]:
+                        ptr_dict[category][key_with_unit] = {}
 
-        ptr.append(mass_properties)
-        ptr.append(environment_parameters)
-        ptr.append(flight_parameters)
+                    # Update the value for the sub-category
+                    ptr_dict[category][key_with_unit][sub_category] = value
 
-    # Process each Init_condition object
-    # for condition_name in ["Init_condition_Reference", "Init_condition_MQTG", "Init_condition_Reccurent"]:
-    #     condition_data = data.get(condition_name, {})
-    # Process each Init_condition object
-    process_condition(case["init_cond_ref"], init_cond_ref)
+    # Example initialization
+    case["init_conds"] = {
+        "mass_properties": {},
+        "environment_parameters": {},
+        "flight_parameters": {}
+    }
+
+    # Define key mappings for each category
+    keys_map = {
+        'mass_properties': mass_properties_keys,
+        'environment_parameters': environment_parameters_keys,
+        'flight_parameters': flight_parameters_keys
+    }
+
+    # Process each condition and populate the corresponding sub-categories
+    process_condition(case["init_conds"], init_cond_ref, keys_map, "ref")
+    process_condition(case["init_conds"], init_cond_mqtg, keys_map, "mqtg")
+    if not is_mqtg:
+        process_condition(case["init_conds"], init_cond_rec, keys_map, "rec")
+
     print(case)
+
+    data = {
+        "test": test,
+        "part": part,
+        "case": case,
+        "is_mqtg": is_mqtg,
+        # "title": test_item['full_name'],
+        # "test_objective": "The objective of this test is to demonstrate that the FSTD hover performance is compliant with the helicopter reference data.",
+        # "headers": ["Parameter [UoM]", "Reference*", "FSTD"],
+        # # everything below is automatically generated!
+        # "test_id": test_item['id'],
+        # "test_name": test_ID_dict.get(test_id),
+        # "sub_cases": [{"id": key, "name": test_ID_dict.get(key), "short_id": key[len(test_id)+1:]} for key in sub_case_ids],
+        # "subsections": [],
+        "curr_date": formatted_date,
+        "curr_time": formatted_time,
+        "plots_base64": plot_base64
+    }
 
     return data
 
