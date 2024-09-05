@@ -604,7 +604,7 @@ def coll_brun2N(x):
 def ATRIM_calc(x, y):
     x = np.array(x)
     x = x[::60]
-    y = abs(np.array(y))
+    y = np.array(y)
     y = y[::60]
     rate = np.diff(y) / np.diff(x)
     return rate, x[:-1]
@@ -865,7 +865,8 @@ def create_plots(QTG_path):
                     pdfname = f"11_{plot_title}.pdf"
                     y_label = 'Long. Cyclic Pos. Rate (deg/s)'
                 elif 'Control QTG Position Roll Velocity' in plot_title:
-                    y = [coll_brun2angle(i) for i in y]
+                    y = [roll_brun2angle(i) for i in y]
+                    y, x = ATRIM_calc(x, y)
                     pdfname = f"11_{plot_title}.pdf"
                     y_label = 'Lat. Cyclic Pos. Rate (deg/s)'
                 elif 'Groundspeed' in plot_title:
@@ -898,7 +899,7 @@ def create_plots(QTG_path):
                 plt.plot(x_Ref, y_Ref, label='Reference')
                 plt.plot(x, y, label='FTD1')
                 ##Section for scale
-                sc_fac = 0.5
+                sc_fac = 2.5
                 plt.autoscale()
                 y_min, y_max = plt.ylim()
                 y_range = y_max - y_min
@@ -977,7 +978,7 @@ if __name__ == "__main__":
     brunner_task = DSim.Variable.Enum(DSim.Node(dsim_host,"host/sim1-model/entity/as532_1/task/io_brunner_cls/mode"))
     brunner_task.write(TASK_MODE.FORCE_RUN)
     # Gib den Testnamen an
-    QTG_name = '2.a.(1)_B2'
+    QTG_name = '1.g_A3'
 
     # Pfad der Referenzdaten und der Speicherdaten, des jeweiligen QTGs
     QTG_path = get_QTG_path(QTG_name, Refernce_data_path)
@@ -1027,7 +1028,12 @@ Noch unsolved:
     -Multisim die EC135 CLS und beep trim als aufgabe geben
      -Trim release anpassen 
 
-
+    1.f_A1
+    1.g_B3
+    1.h.(1)_A1
+    1.j.(1)_A1
+    2.d.(2)_A2
+    2.d.(3)(ii)_A1
 """
 
 

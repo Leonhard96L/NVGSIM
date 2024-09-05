@@ -386,8 +386,8 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input):
         
         pitch_trafo = np.rad2deg(error_pitch)*0.024
         #1deg = 0.024
-        P_pitch = 1
-        I_pitch = 0
+        P_pitch = 2
+        I_pitch = 2
         pitch_integral = pitch_integral + pitch_trafo * dT
         cyc_long_input = P_pitch*pitch_trafo + I_pitch*pitch_integral
         
@@ -482,9 +482,9 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
     
     while True:
         
-        reference_frame_inertial_position_latitude.write(LOWL[0])
-        reference_frame_inertial_position_longitude.write(LOWL[1])
-        reference_frame_inertial_attitude_psi.write(float(init_cond_dict['Heading']))
+        #reference_frame_inertial_position_latitude.write(LOWL[0])
+        #reference_frame_inertial_position_longitude.write(LOWL[1])
+        #reference_frame_inertial_attitude_psi.write(float(init_cond_dict['Heading']))
         
         current_pitch = reference_frame_inertial_attitude_theta.read()
         current_roll = reference_frame_inertial_attitude_phi.read()
@@ -842,7 +842,7 @@ def set_init_cond_recurrent(init_cond_dict, cyc_long_input, cyc_lat_input):
     ON = 5e-324 
     
     #init_cond_di_si = units_conversion(init_cond_dict,'SI')
-    0
+
     #Positions
     #coordiantes LOWL RW26:
 # =============================================================================
@@ -971,9 +971,6 @@ def create_plots(QTG_path,QTG_name):
 
     test, part, case = get_test_test_part_test_case(qtg_data_structure.data['tests'], test_id, part_id, case_id)
     
-    
-
-
 
 
     params = part['tolerances_recurrent_criteria']
@@ -1206,7 +1203,7 @@ if __name__ == "__main__":
     #Refernce_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\Reference_data_Init_flyout_V2'
     save_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\RecurrentQTG_save_auto'
     #Gib den Testnamen an
-    QTG_name = '1.e_A1'
+    QTG_name = '2.d.3.ii_A1'
 
     #Pfad der Referenzdaten und der Speicherdaten, des jeweiligen QTGs
     QTG_path = get_QTG_path(QTG_name, save_data_path)
@@ -1237,7 +1234,7 @@ if __name__ == "__main__":
     time.sleep(0.2)
     simulation_mode.write(SIM_MODE.TRIM)
     time.sleep(2)
-    cyc_long_input, cyc_lat_input = TRIM_pilot_2(QTG_path,T,init_cond_ref_dict)    
+    #cyc_long_input, cyc_lat_input = TRIM_pilot_2(QTG_path,T,init_cond_ref_dict)    
     time.sleep(0.5)
     simulation_mode.write(SIM_MODE.RUN)
     time.sleep(1)
@@ -1307,13 +1304,11 @@ if __name__ == "__main__":
     
     """
     Ideen:
-        3. if else bedingung zwischen automatic and manuell test
-        4. Eine neue Referenz anlegen: mit OEI und init_cond FTD1 struktur
+
         
     -Ueberlege nochmal. Das Trim beim init flyout. -> habe ich weck gemacht, da dass Trimmen das Variometer verfaelscht
     -Achte auf die Plots bei den tests 2.d.3.ii
     -Mache noch ein paar init flyouts
-    -stelle die Jungs an die EC135 warning sounds zu holen
     -sortiere die pdfs richtig fuer report.pdf
     -idee ich kann in der function create plot auch parameter plotten und dann im create report nur die notwendigen reinschmeisen
     
@@ -1322,6 +1317,40 @@ if __name__ == "__main__":
     -Ich werde Snapshot Tests anders behandeln. mittelwert bildung
     -Fuer das inital Flyout genauestensfliegen, vor allem fuer snapshot tests
     -Mit Stefan einen Termin vereinbaren bzw. nochmal mit Raimund fliegen 
+    
+    -Im qtg_data_structure:
+        -1. neue varibale einfuegen: issnapshot -> bool
+        -2. die skalierungen pro paramter pro test
+        -3. zusatzplots, welche noch relevant sind hinzufuegen
+    -Teste noch ein  paar initial flyouts: vor allem landing, take-off, einen der letzten. -> pruefe davon die reproduzierbarkeit
+    
+    -Pruefe ob der collective auch mitgeregelt werden muss, also mach nochmal  einen test mit steigleistung
+    
+    
+    1.f_A1
+    1.g_B3
+    1.h.(1)_A1
+    1.j.(1)_A1
+    2.d.(2)_A2
+    2.d.(3)(ii)_A1
+    
+    
+    Super info bzgl. Snapshottests:
+    1. Vor dem test
+    
+    
+    Achtung: fuer take off und landing test, muss ich die position mitspeichern, da sonst das Radalt nicht stimmt, da ich sonst ueber anderes terrain fliege
+    
+
+    1. Unterscheidung: snapshot oder nicht
+    2. Duschek muss das qtg_data_structure uptodate bringen 
+    3. Startposition mitspeichern
+    4. 
+    
+    
+    
+    
+    
     
     """
     

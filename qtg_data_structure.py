@@ -989,6 +989,16 @@ data = {
                         {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': 'CT&M'},
                         {'parameter': 'Collective Pos.', 'unit': '[%]', 'tolerance': 'CT&M'}
                     ],
+                    'tolerances_recurrent_criteria': [
+                        {'parameter': 'Engine 1 Torque', 'unit': '[%]', 'tolerance': '±3'},
+                        {'parameter': 'Engine 2 Torque', 'unit': '[%]', 'tolerance': '±3'},
+                        {'parameter': 'Pitch Angle', 'unit': '[deg]', 'tolerance': '±1.5'},
+                        {'parameter': 'Sideslip Angle', 'unit': '[deg]', 'tolerance': '±2'},
+                        {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]', 'tolerance': '±5'},
+                        {'parameter': 'Lateral Cyclic Pos.', 'unit': '[%]', 'tolerance': '±5'},
+                        {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': '±5'},
+                        {'parameter': 'Collective Pos.', 'unit': '[%]', 'tolerance': '±5'}
+                    ],
                     'test_cases': [
                         {
                             'id': 'A1',
@@ -1066,6 +1076,20 @@ data = {
                         {'parameter': 'Lateral Cyclic Pos.', 'unit': '[%]', 'tolerance': 'CT&M'},
                         {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': 'CT&M'},
                         {'parameter': 'Collective Pos.', 'unit': '[%]', 'tolerance': 'CT&M'}
+                    ],
+                    'tolerances_recurrent_criteria': [
+                        {'parameter': 'Airspeed', 'unit': '[kts]', 'tolerance': '±3'},
+                        {'parameter': 'Radar Altitude', 'unit': '[ft]', 'tolerance': '±20'},
+                        {'parameter': 'Engine 1 Torque', 'unit': '[%]', 'tolerance': '±3'},
+                        {'parameter': 'Engine 2 Torque', 'unit': '[%]', 'tolerance': '±3'},
+                        {'parameter': 'Rotor Speed', 'unit': '[%]', 'tolerance': '±1.5'},
+                        {'parameter': 'Pitch Angle', 'unit': '[deg]', 'tolerance': '±1.5'},
+                        {'parameter': 'Bank Angle', 'unit': '[deg]', 'tolerance': '±1.5'},
+                        {'parameter': 'Heading', 'unit': '[deg]', 'tolerance': '±2'},
+                        {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]', 'tolerance': '±10'},
+                        {'parameter': 'Lateral Cyclic Pos.', 'unit': '[%]', 'tolerance': '±10'},
+                        {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': '±10'},
+                        {'parameter': 'Collective Pos.', 'unit': '[%]', 'tolerance': '±10'}
                     ],
                     'test_cases': [
                         {
@@ -2395,6 +2419,9 @@ data = {
                     'objective': 'The objective of this test is to demonstrate that the FSTD spiral stability is compliant with the reference data.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Correct Trend on Bank', 'unit': '[deg]', 'tolerance': 'CT&M'}
+                    ],
+                    'tolerances_recurrent_criteria': [
+                        {'parameter': 'Bank Angle', 'unit': '[deg]', 'tolerance': '±2'}
                     ],
                     'test_cases': [
                         {
