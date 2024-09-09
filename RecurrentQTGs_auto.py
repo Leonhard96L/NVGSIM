@@ -274,7 +274,7 @@ def logandsave_flyout_init_cond(QTG_path):
         
     print(filename_date + ' wurde unter ' + QTG_path + ' gespeichert!')
 
-def TRIM_pilot(QTG_path,T):
+def TRIM_pilot(QTG_path,T, cyc_long_input, cyc_lat_input):
     MQTG_input_matrix = np.empty((len(T),INPUT.NUMBER_OF_INPUTS))
     Input_paths = [
     os.path.join(QTG_path,'Control Position Collective.XY.qtgplot.sim'),
@@ -288,7 +288,7 @@ def TRIM_pilot(QTG_path,T):
         MQTG_input_matrix[:,i] = data["FTD1"]["y"]
     
     i = 0
-    T = T[0:int(len(T)*0.5)]
+    T = T[0:int(len(T)*0.3)]
     simulation_mode.write(SIM_MODE.RUN) 
     
     while i < len(T)-1:
@@ -303,9 +303,10 @@ def TRIM_pilot(QTG_path,T):
         time.sleep(dT)
         # increment data row index
         i += 1
+    simulation_mode.write(SIM_MODE.PAUSE)
 
     
-def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input):
+def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
     MQTG_input_matrix = np.empty((len(T),INPUT.NUMBER_OF_INPUTS))
     output_matrix = np.empty((len(T),OUTPUT.NUMBER_OF_OUTPUTS))
     input_matrix = np.empty((len(T),INPUT.NUMBER_OF_INPUTS))
@@ -376,7 +377,7 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input):
         roll_trafo = np.rad2deg(error_roll)*0.005
         #1deg = 0.005
         P_roll = 1
-        I_roll = 0
+        I_roll = 1
         roll_integral = roll_integral + roll_trafo * dT
         cyc_lat_input = P_roll*roll_trafo + I_roll*roll_integral
         
@@ -391,11 +392,13 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input):
         pitch_integral = pitch_integral + pitch_trafo * dT
         cyc_long_input = P_pitch*pitch_trafo + I_pitch*pitch_integral
         
-        
-        hardware_pilot_collective_position.write(MQTG_input_matrix[i,INPUT.COLLECTIVE])
-        hardware_pilot_cyclic_lateral_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LATERAL]+cyc_lat_input)
-        hardware_pilot_cyclic_longitudinal_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LONGITUDINAL]-cyc_long_input)
-        hardware_pilot_pedals_position.write(MQTG_input_matrix[i,INPUT.PEDALS])
+        if not issnapshot:
+            hardware_pilot_collective_position.write(MQTG_input_matrix[i,INPUT.COLLECTIVE])
+            hardware_pilot_cyclic_lateral_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LATERAL]+cyc_lat_input)
+            hardware_pilot_cyclic_longitudinal_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LONGITUDINAL]-cyc_long_input)
+            hardware_pilot_pedals_position.write(MQTG_input_matrix[i,INPUT.PEDALS])
+
+
 
         
         input_matrix[i,INPUT.COLLECTIVE] = hardware_pilot_collective_position.read()
@@ -473,19 +476,20 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
     
     pitch_integral = 0
     roll_integral = 0
-    P_roll = 5
+    P_roll = 8
     I_roll = 3
-    P_pitch = 5
-    I_pitch = 1.5
+    P_pitch = 8
+    I_pitch = 3
     
     LOWL = [48.23380,14.20719]
     
     while True:
         
+        
         #reference_frame_inertial_position_latitude.write(LOWL[0])
         #reference_frame_inertial_position_longitude.write(LOWL[1])
         #reference_frame_inertial_attitude_psi.write(float(init_cond_dict['Heading']))
-        
+
         current_pitch = reference_frame_inertial_attitude_theta.read()
         current_roll = reference_frame_inertial_attitude_phi.read()
         
@@ -526,8 +530,9 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
         hardware_pilot_cyclic_lateral_position.write(cyc_lat_init_input+cyc_lat_input)
         hardware_pilot_cyclic_longitudinal_position.write(cyc_long_init_input-cyc_long_input)
 
-        if len(error_pitch_lis) > 50:
-            if all(abs(i) < 0.01 for i in error_pitch_lis[-40:]) and all(abs(i) < 0.02 for i in error_roll_lis[-40:]):
+
+        if len(error_pitch_lis) > 100:
+            if all(abs(i) < 0.01 for i in error_pitch_lis[-80:]) and all(abs(i) < 0.02 for i in error_roll_lis[-80:]):
                 break
         
         # sleep for dT amount of seconds
@@ -536,7 +541,6 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
         i += 1
 
     simulation_mode.write(SIM_MODE.PAUSE)
-    print(statistics.variance(error_pitch_lis[-40:]))
     return cyc_long_input, cyc_lat_input
 
 
@@ -881,6 +885,7 @@ def set_init_cond_recurrent(init_cond_dict, cyc_long_input, cyc_lat_input):
     configuration_failure_engine_1_failed.write(False) if init_cond_dict['Engine 1 Main Switch'] == 'FLIGHT' else configuration_failure_engine_1_failed.write(True)
     configuration_failure_engine_2_failed.write(False) if init_cond_dict['Engine 2 Main Switch'] == 'FLIGHT' else configuration_failure_engine_2_failed.write(True)
     
+    
     hardware_pilot_collective_position.write(float(init_cond_dict["Collective Pos."]))
     hardware_pilot_cyclic_lateral_position.write(float(init_cond_dict["Lateral Cyclic Pos."])+cyc_lat_input)
     hardware_pilot_cyclic_lateral_trim_position.write(float(init_cond_dict["Lateral Cyclic Pos."])+cyc_lat_input)
@@ -942,36 +947,35 @@ def create_report(QTG_path, report_file):
     pdf_merger.write(output_path)
     pdf_merger.close()
     
+def split_string(QTG_name):
+    # Find the positions of the first and last dots
+    first_dot = QTG_name.find('.')
+    last_dot = QTG_name.rfind('_')
+
+    # Split the string based on the dot positions
+    test_id = QTG_name[:first_dot]
+    part_id = QTG_name[first_dot + 1:last_dot]
+    case_id = QTG_name[last_dot + 1:]
+    return test_id, part_id, case_id
 
 
-def create_plots(QTG_path,QTG_name):
-    def split_string(QTG_name):
-        # Find the positions of the first and last dots
-        first_dot = QTG_name.find('.')
-        last_dot = QTG_name.rfind('_')
+# Function to get the test and the specific test part
+def get_test_test_part_test_case(tests, test_id, part_id, case_id):
+    # Find the test with the given id
+    test = next((test for test in tests if test['id'] == test_id), None)
+    if test:
+        # Find the test part with the given id within the found test
+        test_part = next((part for part in test['test_parts'] if part['id'] == part_id), None)
+        if test_part:
+            test_case = next((case for case in test_part['test_cases'] if case['id'] == case_id), None)
+            return test, test_part, test_case
+    return None, None, None
 
-        # Split the string based on the dot positions
-        test_id = QTG_name[:first_dot]
-        part_id = QTG_name[first_dot + 1:last_dot]
-        case_id = QTG_name[last_dot + 1:]
-        return test_id, part_id, case_id
-    test_id, part_id, case_id = split_string(QTG_name)
-    
-    # Function to get the test and the specific test part
-    def get_test_test_part_test_case(tests, test_id, part_id, case_id):
-        # Find the test with the given id
-        test = next((test for test in tests if test['id'] == test_id), None)
-        if test:
-            # Find the test part with the given id within the found test
-            test_part = next((part for part in test['test_parts'] if part['id'] == part_id), None)
-            if test_part:
-                test_case = next((case for case in test_part['test_cases'] if case['id'] == case_id), None)
-                return test, test_part, test_case
-        return None, None, None
 
-    test, part, case = get_test_test_part_test_case(qtg_data_structure.data['tests'], test_id, part_id, case_id)
-    
 
+
+
+def create_plots(QTG_path, part):
 
     params = part['tolerances_recurrent_criteria']
     para_file_dict = {
@@ -991,7 +995,8 @@ def create_plots(QTG_path,QTG_name):
         'Collective Pos.' : 'Control Position Collective',
         'Pitch Rate' : 'Pitch Angle Rate',
         'Roll Rate' : 'Roll Angle Rate' ,
-        'Yaw Rate' : 'Yaw Angle Rate'
+        'Yaw Rate' : 'Yaw Angle Rate',
+        'Correct Trend on Bank' : 'Roll Angle'
         
     }
     
@@ -1203,7 +1208,12 @@ if __name__ == "__main__":
     #Refernce_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\Reference_data_Init_flyout_V2'
     save_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\RecurrentQTG_save_auto'
     #Gib den Testnamen an
-    QTG_name = '2.d.3.ii_A1'
+    QTG_name = '1.e_A1'
+
+    test_id, part_id, case_id = split_string(QTG_name)
+    test, part, case = get_test_test_part_test_case(qtg_data_structure.data['tests'], test_id, part_id, case_id)
+    
+    issnapshot = part['snapshot']
 
     #Pfad der Referenzdaten und der Speicherdaten, des jeweiligen QTGs
     QTG_path = get_QTG_path(QTG_name, save_data_path)
@@ -1223,7 +1233,7 @@ if __name__ == "__main__":
     simulation_mode.write(SIM_MODE.TRIM)
     time.sleep(2)
     simulation_mode.write(SIM_MODE.RUN) 
-    time.sleep(1)
+    time.sleep(1.5)
     
     #For snapshottests
     cyc_long_input, cyc_lat_input = 0,0
@@ -1234,70 +1244,31 @@ if __name__ == "__main__":
     time.sleep(0.2)
     simulation_mode.write(SIM_MODE.TRIM)
     time.sleep(2)
-    #cyc_long_input, cyc_lat_input = TRIM_pilot_2(QTG_path,T,init_cond_ref_dict)    
-    time.sleep(0.5)
+    
+    if issnapshot:
+        
+        cyc_long_input, cyc_lat_input = TRIM_pilot_2(QTG_path,T,init_cond_ref_dict) 
+
+
     simulation_mode.write(SIM_MODE.RUN)
-    time.sleep(1)
+    time.sleep(0.2)
     set_init_cond_recurrent(init_cond_ref_dict, cyc_long_input, cyc_lat_input)
-    time.sleep(1)
+    time.sleep(0.2)
 
-
-
-
-
-# =============================================================================
-#     simulation_mode.write(SIM_MODE.PAUSE)
-#     time.sleep(0.2)
-#     set_init_cond_recurrent(init_cond_ref_dict) 
-#     simulation_mode.write(SIM_MODE.TRIM)
-#     time.sleep(1)
-#     simulation_mode.write(SIM_MODE.RUN)
-#     time.sleep(0.2)
-#     set_init_cond_recurrent(init_cond_ref_dict)
-#     time.sleep(1)
-#     simulation_mode.write(SIM_MODE.PAUSE)
-#     set_init_cond_recurrent(init_cond_ref_dict)
-#     time.sleep(2)
-#     set_init_cond_recurrent(init_cond_ref_dict)
-# =============================================================================
-
-
-
-# =============================================================================
-#     simulation_mode.write(SIM_MODE.PAUSE)
-#     time.sleep(0.2)
-#     set_init_cond_recurrent(init_cond_ref_dict) 
-#     simulation_mode.write(SIM_MODE.TRIM)
-#     time.sleep(1)
-#     simulation_mode.write(SIM_MODE.RUN)
-#     set_init_cond_recurrent(init_cond_ref_dict)
-#     time.sleep(3)
-#     set_init_cond_recurrent(init_cond_ref_dict)
-#     time.sleep(2)
-#     set_init_cond_recurrent(init_cond_ref_dict)
-#     time.sleep(1)
-#     set_init_cond_recurrent(init_cond_ref_dict)
-#     time.sleep(0.5)
-#     set_init_cond_recurrent(init_cond_ref_dict)
-#     time.sleep(0.2)
-#     set_init_cond_recurrent(init_cond_ref_dict)
-#     simulation_mode.write(SIM_MODE.PAUSE)
-# =============================================================================
     
 
     logandsave_flyout_init_cond(QTG_path)
     
     
     
-    input_matrix, output_matrix = math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input)
+    input_matrix, output_matrix = math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot)
 
     save_io_files(QTG_path, input_matrix, output_matrix, T)
     create_comparison_table(QTG_path)
-    create_plots(QTG_path,QTG_name)
+    create_plots(QTG_path,part)
     create_report(QTG_path, 'Report.pdf')
 
     
-    #input_matrix, output_matrix, force_matrix = log_flyout_input_output(T)
 
 
     set_standard_cond()
@@ -1324,7 +1295,7 @@ if __name__ == "__main__":
         -3. zusatzplots, welche noch relevant sind hinzufuegen
     -Teste noch ein  paar initial flyouts: vor allem landing, take-off, einen der letzten. -> pruefe davon die reproduzierbarkeit
     
-    -Pruefe ob der collective auch mitgeregelt werden muss, also mach nochmal  einen test mit steigleistung
+
     
     
     1.f_A1
@@ -1342,10 +1313,11 @@ if __name__ == "__main__":
     Achtung: fuer take off und landing test, muss ich die position mitspeichern, da sonst das Radalt nicht stimmt, da ich sonst ueber anderes terrain fliege
     
 
-    1. Unterscheidung: snapshot oder nicht
+
     2. Duschek muss das qtg_data_structure uptodate bringen 
-    3. Startposition mitspeichern
-    4. 
+    3. Startposition mitspeichern (Bzw. nur fuer die 2 noetigen tests mitspeichern)
+    4. Eventuell, das HDG mit den Pedalen Regeln, wenn IAS sehr gering ist.
+
     
     
     

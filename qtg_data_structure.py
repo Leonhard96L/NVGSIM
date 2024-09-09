@@ -13,6 +13,7 @@ data = {
             'test_parts': [
                 {
                     'id': 'a.3',
+                    'snapshot' : False,
                     'main_title': 'Engine Assessment',
                     'test_title': 'Engine & Rotor Speed Governing',
                     'objective': 'The objective of this test is to demonstrate that the FSTD engine and rotor speed governing is compliant with the reference data.',
@@ -85,6 +86,7 @@ data = {
                 },
                 {
                     'id': 'c.1',
+                    'snapshot' : False,
                     'main_title': 'Take-Off',
                     'test_title': 'Take-off All engines',
                     'objective': 'The objective of this test is to demonstrate that the FSTD all engines take-off is compliant with the reference data.',
@@ -149,6 +151,7 @@ data = {
                 },
                 {
                     'id': 'c.2',
+                    'snapshot' : False,
                     'main_title': 'Take-Off',
                     'test_title': 'OEI continued take-off',
                     'objective': 'The objective of this test is to demonstrate that the FSTD one engine inoperative continued take-off is compliant with the reference data.',
@@ -212,6 +215,7 @@ data = {
                 },
                 {
                     'id': 'd',
+                    'snapshot' : True,
                     'main_title': 'Hover Performance',
                     'test_title': '',
                     'objective': 'The objective of this test is to demonstrate that the FSTD hover performance is compliant with the reference data.',
@@ -456,6 +460,7 @@ data = {
                 },
                 {
                     'id': 'e',
+                    'snapshot' : True,
                     'main_title': 'Vertical Climb Performance',
                     'test_title': 'Vertical Climb Performance',
                     'objective': 'The objective of this test is to demonstrate that the FSTD vertical climb performance is compliant with the reference data.',
@@ -528,6 +533,7 @@ data = {
                 },
                 {
                     'id': 'f',
+                    'snapshot' : True,
                     'main_title': 'Level Flight Performance and Trimmed Flight Control Position',
                     'test_title': 'Level Flight Performance and Trimmed Flight Control Position',
                     'objective': 'The objective of this test is to demonstrate that the FSTD level flight performance is compliant with the reference data.',
@@ -668,6 +674,7 @@ data = {
                 },
                 {
                     'id': 'g',
+                    'snapshot' : True,
                     'main_title': 'Climb Performance and Trimmed Flight Control Position',
                     'test_title': 'Climb Performance and Trimmed Flight Control Position',
                     'objective': 'The objective of this test is to demonstrate that the FSTD climb performance is compliant with the reference data.',
@@ -976,6 +983,7 @@ data = {
                 },
                 {
                     'id': 'h.1',
+                    'snapshot' : True,
                     'main_title': 'Descent',
                     'test_title': 'Descent Performance and Trimmed Flight Control Position',
                     'objective': 'The objective of this test is to demonstrate that the FSTD descent performance is compliant with the reference data.',
@@ -1060,6 +1068,7 @@ data = {
                 },
                 {
                     'id': 'j.1',
+                    'snapshot' : False,
                     'main_title': 'Landing',
                     'test_title': 'Landing - All Engines',
                     'objective': 'The objective of this test is to demonstrate that the FSTD landing performance with all engines operative is compliant with the reference data.',
@@ -1127,6 +1136,7 @@ data = {
                 },
                 {
                     'id': 'j.2',
+                    'snapshot' : False,
                     'main_title': 'Landing',
                     'test_title': 'Landing - One Engine Inoperative',
                     'objective': 'The objective of this test is to demonstrate that the FSTD one engine inoperative landing is compliant with the reference data.',
@@ -1143,6 +1153,20 @@ data = {
                         {'parameter': 'Lateral Cyclic Pos.', 'unit': '[%]', 'tolerance': 'CT&M'},
                         {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': 'CT&M'},
                         {'parameter': 'Collective Pos.', 'unit': '[%]', 'tolerance': 'CT&M'}
+                    ],
+		            'tolerances_recurrent_criteria': [
+                        {'parameter': 'Airspeed', 'unit': '[kts]', 'tolerance': '±3'},
+                        {'parameter': 'Radar Altitude', 'unit': '[ft]', 'tolerance': '±20'},
+                        {'parameter': 'Engine 1 Torque', 'unit': '[%]', 'tolerance': '±3'},
+                        {'parameter': 'Engine 2 Torque', 'unit': '[%]', 'tolerance': '±3'},
+                        {'parameter': 'Rotor Speed', 'unit': '[%]', 'tolerance': '±1.5'},
+                        {'parameter': 'Pitch Angle', 'unit': '[deg]', 'tolerance': '±1.5'},
+                        {'parameter': 'Bank Angle', 'unit': '[deg]', 'tolerance': '±1.5'},
+                        {'parameter': 'Heading', 'unit': '[deg]', 'tolerance': '±2'},
+                        {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]', 'tolerance': '±10'},
+                        {'parameter': 'Lateral Cyclic Pos.', 'unit': '[%]', 'tolerance': '±10'},
+                        {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': '±10'},
+                        {'parameter': 'Collective Pos.', 'unit': '[%]', 'tolerance': '±10'}
                     ],
                     'test_cases': [
                         {
@@ -1223,12 +1247,17 @@ data = {
             'test_parts': [
                 {
                     'id': 'a.1',
+                    'snapshot' : False,
                     'main_title': 'Control System Mechanical Characteristics',
                     'test_title': 'Cyclic Force vs Position',
                     'objective': 'The objective of this test is to demonstrate that the FSTD Cyclic Control System Mechanical Characteristics are compliant with the reference data.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Breakout', 'unit': '[daN]', 'tolerance': 'CT&M'},
                         {'parameter': 'Force', 'unit': '[daN]', 'tolerance': 'CT&M'}
+                    ],
+                    'tolerances_recurrent_criteria': [
+                        {'parameter': 'Breakout', 'unit': '[daN]', 'tolerance': '±0.112'},
+                        {'parameter': 'Force', 'unit': '[daN]', 'tolerance': '±0.224'}
                     ],
                     'test_cases': [
                         {
@@ -1339,12 +1368,17 @@ data = {
                 },
                 {
                     'id': 'a.2',
+                    'snapshot' : False,
                     'main_title': 'Control System Mechanical Characteristics',
                     'test_title': 'Collective/Pedals Force vs Position',
                     'objective': 'The objective of this test is to demonstrate that the FSTD Collective/Pedals Control System Mechanical Characteristics are compliant with the reference data.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Breakout', 'unit': '[daN]', 'tolerance': 'CT&M'},
                         {'parameter': 'Force', 'unit': '[daN]', 'tolerance': 'CT&M'}
+                    ],
+        		    'tolerances_recurrent_criteria': [
+                        {'parameter': 'Breakout', 'unit': '[daN]', 'tolerance': '±0.224'},
+                        {'parameter': 'Force', 'unit': '[daN]', 'tolerance': '±0.448'}
                     ],
                     'test_cases': [
                         {
@@ -1403,11 +1437,15 @@ data = {
                 },
                 {
                     'id': 'a.4',
+                    'snapshot' : False,
                     'main_title': 'Control System Mechanical Characteristics',
                     'test_title': 'Trim System Rate',
                     'objective': 'The objective of this test is to demonstrate that the FSTD Trim System Rate Characteristics are compliant with the reference data.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Trim Rate', 'unit': '[%]', 'tolerance': 'CT&M'}
+                    ],
+		            'tolerances_recurrent_criteria': [
+                        {'parameter': 'Trim Rate', 'unit': '[%]', 'tolerance': '±10'}
                     ],
                     'test_cases': [
                         {
@@ -1466,11 +1504,15 @@ data = {
                 },
                 {
                     'id': 'c.2',
+                    'snapshot' : True,
                     'main_title': 'Longitudinal Handling Qualities',
                     'test_title': 'Longitudinal Static Stability',
                     'objective': 'The objective of this test is to demonstrate that the FSTD longitudinal static stability is compliant with the reference data.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]', 'tolerance': 'CT&M'}
+                    ],
+        		    'tolerances_recurrent_criteria': [
+                        {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]', 'tolerance': '±10'}
                     ],
                     'test_cases': [
                         {
@@ -1800,11 +1842,15 @@ data = {
                 },
                 {
                     'id': 'c.4',
+                    'snapshot' : True,
                     'main_title': 'Longitudinal Handling Qualities',
                     'test_title': 'Manoeuvring Stability',
                     'objective': 'The objective of this test is to demonstrate that the FSTD longitudinal manoeuvring stability is compliant with the reference data.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]', 'tolerance': 'CT&M'}
+                    ],
+        		    'tolerances_recurrent_criteria': [
+                            {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]', 'tolerance': '±10'}
                     ],
                     'test_cases': [
                         {
@@ -2123,6 +2169,7 @@ data = {
                 },
                 {
                     'id': 'd.2',
+                    'snapshot' : True,
                     'main_title': 'Lateral & Directional Handling Qualities',
                     'test_title': 'Directional Static Stability',
                     'objective': 'The objective of this test is to demonstrate that the FSTD directional static stability is compliant with the reference data.',
@@ -2131,6 +2178,12 @@ data = {
                         {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]', 'tolerance': 'CT&M'},
                         {'parameter': 'Lateral Cyclic Pos.', 'unit': '[%]', 'tolerance': 'CT&M'},
                         {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': 'CT&M'}
+                    ],
+        		    'tolerances_recurrent_criteria': [
+                        {'parameter': 'Bank Angle', 'unit': '[deg]', 'tolerance': '±1.5'},
+                        {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]', 'tolerance': '±10'},
+                        {'parameter': 'Lateral Cyclic Pos.', 'unit': '[%]', 'tolerance': '±10'},
+                        {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': '±10'}
                     ],
                     'test_cases': [
                         {
@@ -2293,6 +2346,7 @@ data = {
                 },
                 {
                     'id': 'd.3.i',
+                    'snapshot' : False,
                     'main_title': 'Dynamic Lateral and Directional Stability',
                     'test_title': 'Lateral-Directional Oscillations',
                     'objective': 'The objective of this test is to demonstrate that the FSTD dynamic lateral-directional stability (oscillations) is compliant with the reference data.',
@@ -2303,6 +2357,15 @@ data = {
                         {'parameter': 'or Damping Ratio', 'unit': '[%]', 'tolerance': 'CT&M'},
                         {'parameter': 'Time difference between peaks of Bank and Sideslip', 'unit': '[s]',
                          'tolerance': 'CT&M'},
+                        {'parameter': 'Non-periodic response', 'unit': '[-]', 'tolerance': 'Time history'}
+                    ],
+        		    'tolerances_recurrent_criteria': [
+                        {'parameter': 'Calculated period', 'unit': '[%]', 'tolerance': '±10'},
+                        {'parameter': 'Time to 1/2 amplitude', 'unit': '[%]', 'tolerance': '±10'},
+                        {'parameter': 'or Time to Double amplitude', 'unit': '[%]', 'tolerance': '±10'},
+                        {'parameter': 'or Damping Ratio', 'unit': '[%]', 'tolerance': '±10'},
+                        {'parameter': 'Time difference between peaks of Bank and Sideslip', 'unit': '[s]',
+                         'tolerance': '±1'},
                         {'parameter': 'Non-periodic response', 'unit': '[-]', 'tolerance': 'Time history'}
                     ],
                     'test_cases': [
@@ -2414,6 +2477,7 @@ data = {
                 },
                 {
                     'id': 'd.3.ii',
+                    'snapshot' : False,
                     'main_title': 'Dynamic Lateral and Directional Stability',
                     'test_title': 'Spiral Stability',
                     'objective': 'The objective of this test is to demonstrate that the FSTD spiral stability is compliant with the reference data.',
@@ -2421,7 +2485,7 @@ data = {
                         {'parameter': 'Correct Trend on Bank', 'unit': '[deg]', 'tolerance': 'CT&M'}
                     ],
                     'tolerances_recurrent_criteria': [
-                        {'parameter': 'Bank Angle', 'unit': '[deg]', 'tolerance': '±2'}
+                        {'parameter': 'Correct Trend on Bank', 'unit': '[deg]', 'tolerance': '±2'}
                     ],
                     'test_cases': [
                         {
