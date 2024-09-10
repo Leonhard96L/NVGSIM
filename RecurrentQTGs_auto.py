@@ -1101,14 +1101,14 @@ def create_plots(QTG_path, part):
                 y_Rec=[rpm2perc(i) for i in y_Rec]
             else:
                 y_label = plot_title +' (??)'
-                pdfname = f"{plot_title}.pdf"
+                pdfname = f"{plot_title}.png"
             
             x_label = 'Time(s)'
             
             y_uptol = [i+tol for i in y]
             y_lotol = [i-tol for i in y]
             
-            pdfname = f"{count}_{plot_title}.pdf"
+            pdfname = f"{count}_{plot_title}.png"
             y_label = plot_title +' '+ param['unit']
 
             plt.figure(figsize=(10, 6))
@@ -1136,7 +1136,7 @@ def create_plots(QTG_path, part):
             #plt.show() 
             save_path = os.path.join(dirpath, pdfname)
             
-            plt.savefig(save_path, format='pdf')
+            plt.savefig(save_path, format='png')
             plt.close()
 
 def create_comparison_table(QTG_path):
@@ -1208,7 +1208,7 @@ if __name__ == "__main__":
     #Refernce_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\Reference_data_Init_flyout_V2'
     save_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\RecurrentQTG_save_auto'
     #Gib den Testnamen an
-    QTG_name = '1.e_A1'
+    QTG_name = '1.f_A1'
 
     test_id, part_id, case_id = split_string(QTG_name)
     test, part, case = get_test_test_part_test_case(qtg_data_structure.data['tests'], test_id, part_id, case_id)
@@ -1264,9 +1264,9 @@ if __name__ == "__main__":
     input_matrix, output_matrix = math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot)
 
     save_io_files(QTG_path, input_matrix, output_matrix, T)
-    create_comparison_table(QTG_path)
+    #create_comparison_table(QTG_path)
     create_plots(QTG_path,part)
-    create_report(QTG_path, 'Report.pdf')
+    #create_report(QTG_path, 'Report.pdf')
 
     
 
