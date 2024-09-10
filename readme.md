@@ -23,6 +23,13 @@
 6. git push
 
 ## TODO:
+ - Überlegung - zzt: ref_dir und test_dir an tester übergeben
+   - Können wir nicht einfach ref -> test dir kopieren und dann in test_dir arbeiten?
+   - Dazu ein neues feld zum Eingeben der ref_dir (sont automatisch das neuste MQTG)
+ - evtl noch checks für valid file handles und dirs
+ - generell error catching und handling (in gui)
+
+### DONE
 - Speichern der berichte ins richtige dir und mit richtigen namen.	DONE
 - Header hinzufügen	DONE
 - Struktur anpassen (mit Leo)	DONE
@@ -32,6 +39,6 @@
     - Reference Ü, MQTG
     - QTG: Init_condition_Reference, Init_condition_MQTG, Init_condition_Reccurent
     - Reference *, MQTG, Recurrent
-- IO mit Leo
+- IO mit Leo    DONE
 
 - Hauptbericht generieren    DONE

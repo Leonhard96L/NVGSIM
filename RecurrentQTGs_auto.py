@@ -18,6 +18,8 @@ from PyPDF2 import PdfMerger
 import pandas as pd
 from matplotlib.backends.backend_pdf import PdfPages
 
+from function_lib import split_string
+
 dsim_root_directory = os.path.join(os.path.dirname(sys.path[0]), "D:/")
 sys.path.append(os.path.join(dsim_root_directory, "entity/multisim/dsim/sdk/python/include"))
 sys.path.append(os.path.join(dsim_root_directory, "entity/multisim/simulation/sdk/python/include"))
@@ -947,16 +949,16 @@ def create_report(QTG_path, report_file):
     pdf_merger.write(output_path)
     pdf_merger.close()
     
-def split_string(QTG_name):
-    # Find the positions of the first and last dots
-    first_dot = QTG_name.find('.')
-    last_dot = QTG_name.rfind('_')
-
-    # Split the string based on the dot positions
-    test_id = QTG_name[:first_dot]
-    part_id = QTG_name[first_dot + 1:last_dot]
-    case_id = QTG_name[last_dot + 1:]
-    return test_id, part_id, case_id
+# def split_string(QTG_name):
+#     # Find the positions of the first and last dots
+#     first_dot = QTG_name.find('.')
+#     last_dot = QTG_name.rfind('_')
+#
+#     # Split the string based on the dot positions
+#     test_id = QTG_name[:first_dot]
+#     part_id = QTG_name[first_dot + 1:last_dot]
+#     case_id = QTG_name[last_dot + 1:]
+#     return test_id, part_id, case_id
 
 
 # Function to get the test and the specific test part

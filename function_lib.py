@@ -1,4 +1,40 @@
+import copy
 import numpy as np
+
+
+def split_string(s):
+    # Find the positions of the first and last dots
+    first_dot = s.find('.')
+    last_dot = s.rfind('_')
+
+    # Split the string based on the dot positions
+    test_id = s[:first_dot]
+    part_id = s[first_dot + 1:last_dot]
+    case_id = s[last_dot + 1:]
+    return test_id, part_id, case_id
+
+
+# Function to get the test and the specific test part
+def get_test_test_part_test_case(tests_orig, test_id, part_id, case_id):
+    tests = copy.deepcopy(tests_orig)
+    # Find the test with the given id
+    test = next((test for test in tests if test['id'] == test_id), None)
+
+    if test:
+        # Find the test part with the given id within the found test
+        test_part = next((part for part in test.get('test_parts', []) if part['id'] == part_id), None)
+
+        if test_part:
+            # Find the test case with the given id within the found test part
+            test_case = next((case for case in test_part.get('test_cases', []) if case['id'] == case_id), None)
+
+            test['test_parts'] = [test_part]    # Clean up the test_parts list within the test
+            test_part['test_cases'] = [test_case]   # Clean up the test_cases list within the test_part
+
+            return test, test_part, test_case
+
+    return None, None, None
+
 
 # TODO: Update these mappers
 
@@ -183,7 +219,6 @@ def units_conversion(init_cond_dict, unit):
         init_cond_dict_Avi['Pedals Pos.'] = map_control(float(init_cond_dict['Pedals Pos.']))
         init_cond_dict_Avi['Collective Pos.'] = map_control(float(init_cond_dict['Collective Pos.']))
         return init_cond_dict_Avi
-
 
 # automatic_data_template = {
 #     'tests': [

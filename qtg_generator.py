@@ -9,6 +9,7 @@ import generate_report
 
 root_dir = './data'
 
+
 # Function to populate the Treeview with test cases
 def populate_tree(tree, data):
     for test in data['tests']:
@@ -48,7 +49,6 @@ def on_item_click(event, source_tree, target_tree):
             source_tree.delete(selected_item)
         sort_treeview(source_tree)  # Sort the source treeview
         sort_treeview(target_tree)  # Sort the target treeview
-
 
 
 # Function to handle single click

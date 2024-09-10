@@ -5,18 +5,9 @@ import os
 
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML, CSS
-# from PyPDF2 import PdfMerger
 
 from qtg_data_structure import data as qtg_structure
-
-
-# import matplotlib.pyplot as plt
-
-# from Init_flyout import *
-
-
-# from html2docx import html2docx
-# from docx import Document
+from function_lib import split_string, get_test_test_part_test_case
 
 
 def load_json_data(qtg_path):
@@ -32,42 +23,6 @@ def load_json_data(qtg_path):
         print(init_cond_ref)
         print(init_cond_mqtg)
         return init_cond_rec, init_cond_ref, init_cond_mqtg
-
-
-def split_string(s):
-    # Find the positions of the first and last dots
-    first_dot = s.find('.')
-    last_dot = s.rfind('_')
-
-    # Split the string based on the dot positions
-    test_id = s[:first_dot]
-    part_id = s[first_dot + 1:last_dot]
-    case_id = s[last_dot + 1:]
-    return test_id, part_id, case_id
-
-
-# Function to get the test and the specific test part
-def get_test_test_part_test_case(tests, test_id, part_id, case_id):
-    # Find the test with the given id
-    test = next((test for test in tests if test['id'] == test_id), None)
-
-    if test:
-        # Find the test part with the given id within the found test
-        test_part = next((part for part in test.get('test_parts', []) if part['id'] == part_id), None)
-
-        if test_part:
-            # Find the test case with the given id within the found test part
-            test_case = next((case for case in test_part.get('test_cases', []) if case['id'] == case_id), None)
-
-            # Clean up the test_parts list within the test
-            test['test_parts'] = [test_part]
-            # Clean up the test_cases list within the test_part
-            test_part['test_cases'] = [test_case]
-
-            return test, test_part, test_case
-
-    # Return the cleaned list of tests with None values for test, test_part, and test_case if not found
-    return None, None, None
 
 
 # load plots instead of creating them.
@@ -151,6 +106,19 @@ def get_initial_conditions(case, init_cond_ref, init_cond_mqtg, init_cond_rec, i
         "AFCS State", "HINR Button", "Training Mode"
     ]
 
+    case["init_conds"] = {
+        "mass_properties": {},
+        "environment_parameters": {},
+        "flight_parameters": {}
+    }
+
+    # Define key mappings for each category
+    keys_map = {
+        'mass_properties': mass_properties_keys,
+        'environment_parameters': environment_parameters_keys,
+        'flight_parameters': flight_parameters_keys
+    }
+
     # Define key mappings for each category
     def process_condition(ptr_dict, condition_data, keys_map, sub_category):
         # Process each key-value pair
@@ -167,20 +135,6 @@ def get_initial_conditions(case, init_cond_ref, init_cond_mqtg, init_cond_rec, i
                     # Update the value for the sub-category
                     ptr_dict[category][key_with_unit][sub_category] = value
 
-    # Example initialization
-    case["init_conds"] = {
-        "mass_properties": {},
-        "environment_parameters": {},
-        "flight_parameters": {}
-    }
-
-    # Define key mappings for each category
-    keys_map = {
-        'mass_properties': mass_properties_keys,
-        'environment_parameters': environment_parameters_keys,
-        'flight_parameters': flight_parameters_keys
-    }
-
     # Process each condition and populate the corresponding sub-categories
     process_condition(case["init_conds"], init_cond_ref, keys_map, "ref")
     process_condition(case["init_conds"], init_cond_mqtg, keys_map, "mqtg")
@@ -191,12 +145,9 @@ def get_initial_conditions(case, init_cond_ref, init_cond_mqtg, init_cond_rec, i
 # returns structure data and plots for one test.
 def process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mqtg, plot_base64, date_time, is_mqtg):
     test_id, part_id, case_id = split_string(test_item['id'])
-    test, part, case = get_test_test_part_test_case(copy.deepcopy(qtg_structure['tests']), test_id, part_id, case_id)
+    test, part, case = get_test_test_part_test_case(qtg_structure['tests'], test_id, part_id, case_id)
 
-    # Format the date as mm.dd.yyyy
     formatted_date = date_time.strftime("%m.%d.%Y")
-
-    # Format the time as hh:mm:ss
     formatted_time = date_time.strftime("%H:%M:%S")
 
     get_initial_conditions(case, init_cond_ref, init_cond_mqtg, init_cond_rec, is_mqtg)
@@ -208,8 +159,6 @@ def process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mq
         "curr_time": formatted_time,
         "plots_base64": plot_base64
     })
-
-    # print(case)
 
     data = {
         "test": test,
@@ -250,14 +199,9 @@ def create_test_report(test_results, output_dir):
 
     # Step 2: Populate the structure
     for key, item in test_results.items():
-        test = item["test"]
-        test = find_or_create(grouped_data, "tests", test)
-
-        part = item["part"]
-        part = find_or_create(test, "test_parts", part)
-
-        case = item["case"]
-        case = find_or_create(part, "test_cases", case)
+        test = find_or_create(grouped_data, "tests", item["test"])
+        part = find_or_create(test, "test_parts", item["part"])
+        find_or_create(part, "test_cases", item["case"])
 
     env = Environment(loader=FileSystemLoader('./templates'))
     template = env.get_template('test.html')
