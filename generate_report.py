@@ -1,21 +1,12 @@
 import base64
 import copy
-import io
 import json
 import os
-import re
-from collections import defaultdict
-from datetime import datetime
 
-import numpy as np
 from jinja2 import Environment, FileSystemLoader
-from matplotlib import pyplot as plt
 from weasyprint import HTML, CSS
 # from PyPDF2 import PdfMerger
-import pandas as pd
-from matplotlib.backends.backend_pdf import PdfPages
 
-from function_lib import *
 from qtg_data_structure import data as qtg_structure
 
 

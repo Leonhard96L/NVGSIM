@@ -351,7 +351,7 @@ def math_pilot(QTG_path, T):
     return input_matrix, output_matrix
 
 
-def log_flyout_input_output(T):
+def log_flyout_input_output(T, gui_output):
     # pre-define numpy data matrix containing flight data (see enum above for column definitions)
     input_matrix = np.empty((len(T), INPUT.NUMBER_OF_INPUTS))
     output_matrix = np.empty((len(T), OUTPUT.NUMBER_OF_OUTPUTS))
@@ -410,6 +410,7 @@ def log_flyout_input_output(T):
 
         if int(accumulated_time) > int(accumulated_time - dT):
             print(round(accumulated_time - dT))
+            gui_output(str(round(accumulated_time - dT)))
 
         if prev_force_pitch != force_pitch \
                 or prev_force_roll != force_roll \
@@ -1003,8 +1004,7 @@ def main(ref_dir, test_item, gui_output, gui_input):
     time.sleep(1.5)
     simulation_mode.write(SIM_MODE.RUN)
     
-    
-    gui_input("Hit Enter if Pilot is ready")
+    gui_input("Hit Enter if Pilot is ready ")
 
 # =============================================================================
 #     tmp_vertveloc = reference_frame_inertial_position_v_z.read()
@@ -1016,7 +1016,7 @@ def main(ref_dir, test_item, gui_output, gui_input):
 
     
     logandsave_flyout_init_cond(QTG_path)
-    input_matrix, output_matrix, force_matrix = log_flyout_input_output(T)
+    input_matrix, output_matrix, force_matrix = log_flyout_input_output(T, gui_output)
 
     # input_matrix, output_matrix = math_pilot(QTG_path,T)
 

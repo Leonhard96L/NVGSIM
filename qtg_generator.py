@@ -7,9 +7,7 @@ import execute_test
 from qtg_data_structure import data
 import generate_report
 
-
 root_dir = './data'
-
 
 # Function to populate the Treeview with test cases
 def populate_tree(tree, data):
@@ -169,6 +167,7 @@ def get_newest_folder(directory_path):
 
     # Get the folder with the newest date in the name
     return os.path.join(directory_path, max(folders, key=lambda f: datetime.strptime(f, "%Y%m%d_%H%M%S")))
+
 
 # this is basically the main method that controls all other programs
 def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output, gui_input=gui_input):
