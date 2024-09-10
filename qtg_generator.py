@@ -2,6 +2,8 @@ from datetime import datetime
 import os
 import tkinter as tk
 from tkinter import ttk, filedialog
+
+import execute_test
 from qtg_data_structure import data
 import generate_report
 
@@ -161,18 +163,26 @@ def gui_input(prompt):
     return inp
 
 
+def get_newest_folder(directory_path):
+    # Get all folder names that match the format yyyymmdd:HHMMSS
+    folders = [f for f in os.listdir(directory_path) if os.path.isdir(os.path.join(directory_path, f))]
+
+    # Get the folder with the newest date in the name
+    return os.path.join(directory_path, max(folders, key=lambda f: datetime.strptime(f, "%Y%m%d_%H%M%S")))
+
 # this is basically the main method that controls all other programs
 def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output, gui_input=gui_input):
     date_time = datetime.now()  # use this datetime for folder structure and reports
+
+    reference_data = get_newest_folder(os.path.join(output_dir, "mqtg"))
 
     qtg_dir = "qtg"
     if mqtg:
         qtg_dir = "mqtg"
 
     # Get the current date and format it as yyyymmdd
-    # directory_structure = os.path.join(output_dir, qtg_dir, date_time.strftime('%Y%m%d_%H%M%S'))
-    directory_structure = os.path.join(output_dir, qtg_dir, "20240827_091010")    # this is for testing purposes only!
-
+    directory_structure = os.path.join(output_dir, qtg_dir, date_time.strftime('%Y%m%d_%H%M%S'))
+    # directory_structure = os.path.join(output_dir, qtg_dir, "20240827_091010")    # this is for testing purposes only!
     test_results = {}
 
     for test_item in tests:
@@ -180,10 +190,15 @@ def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output,
 
         # create directory for test
         test_dir = os.path.join(directory_structure, test_item['id'])
+        ref_dir = os.path.join(reference_data, test_item['id'])
+
+        # todo: check if ref_dir is existing and full with data
+
         os.makedirs(test_dir, exist_ok=True)
         gui_output(f"Save directory: {test_dir}")
 
         # execute test
+        execute_test.execute_test(test_item, ref_dir, test_dir, mqtg, gui_output, gui_input)
 
         # generate report
         gui_output("Creating Test Report. This may take a second...")

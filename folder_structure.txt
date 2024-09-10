@@ -1,6 +1,6 @@
 data/
     mqtg/
-        2024
+        202420240827
     qtg/
         20240827/
             gesamtreport

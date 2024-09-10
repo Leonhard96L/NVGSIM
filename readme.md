@@ -13,6 +13,15 @@
 	C) Code für test_case kopieren, jedes mal alles neu rendern	<THIS.>
 5. Fertig :)
 
+
+## Using github:
+1. Git bash open in dir NVGSIM
+2. git status 
+3. git pull
+4. git add . -> alles in diesem Verzeichnis
+5. git commit -m "Schreibe Information ueber diesen commit"
+6. git push
+
 ## TODO:
 - Speichern der berichte ins richtige dir und mit richtigen namen.	DONE
 - Header hinzufügen	DONE
@@ -25,4 +34,4 @@
     - Reference *, MQTG, Recurrent
 - IO mit Leo
 
-- Hauptbericht generieren
+- Hauptbericht generieren    DONE
