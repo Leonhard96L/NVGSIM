@@ -12,15 +12,15 @@
             <td><b>SW V.</b></td>
             <td>-</td>
             <td><b>Mode</b></td>
-            <td>Automatic</td>
+            <td>{% if case.is_automatic %}Automatic{% else %}Manual{% endif %}</td>
         </tr>
         <tr>
             <td><b>Title</b></td>
             <td colspan="3" class="align-left">{{ case.name }} - {{ case.condition }}</td>
             <td><b>Date</b></td>
-            <td>{{ curr_date }}</td>
+            <td>{{ case.curr_date }}</td>
             <td><b>Time</b></td>
-            <td>{{ curr_time }}</td>
+            <td>{{ case.curr_time }}</td>
         </tr>
         <tr>
 

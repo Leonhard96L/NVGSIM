@@ -173,6 +173,8 @@ def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output,
     # directory_structure = os.path.join(output_dir, qtg_dir, date_time.strftime('%Y%m%d_%H%M%S'))
     directory_structure = os.path.join(output_dir, qtg_dir, "20240827_091010")    # this is for testing purposes only!
 
+    test_results = {}
+
     for test_item in tests:
         gui_output(f"Test id: {test_item['id']}\tautomatic Test: {test_item['is_automatic']}")
 
@@ -185,10 +187,11 @@ def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output,
 
         # generate report
         gui_output("Creating Test Report. This may take a second...")
-        generate_report.generate_case_report(test_item, test_dir, date_time, mqtg)
+        test_results[test_item['id']] = generate_report.generate_case_report(test_item, test_dir, date_time, mqtg)
         gui_output("Done creating Report.\n")
 
     gui_output("Creating Full Report. This may take a second...")
+    generate_report.create_test_report(test_results, output_dir)
     gui_output("Done creating Full Report.\n")
 
     gui_output("COMPLETED!")

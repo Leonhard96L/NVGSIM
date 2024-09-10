@@ -6,89 +6,112 @@ from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML, CSS
 
 
-def load_json_data(qtg_path):
-    for dirpath, dirnames, filenames in os.walk(qtg_path):
-        init_cond = None
-        ref_init_cond = None
-
-        for file in filenames:
-            if 'FTD1_log_init_cond' in file:
-                file_path = os.path.join(dirpath, file)
-                with open(file_path, 'r') as json_file:
-                    init_cond = json.load(json_file)
-            if 'Reference_init_cond' in file:
-                print(file)
-                file_path = os.path.join(dirpath, file)
-                with open(file_path, 'r') as json_file:
-                    ref_init_cond = json.load(json_file)
-
-    # print(init_cond)
-    # print(ref_init_cond)
-    return init_cond, ref_init_cond
-
-
-def process_data(ref_init_cond, init_cond):
-    # Get the current date and time
-    now = datetime.now()
-
-    # Format the date as mm.dd.yyyy
-    formatted_date = now.strftime("%m.%d.%Y")
-
-    # Format the time as hh:mm:ss
-    formatted_time = now.strftime("%H:%M:%S")
-
-    data = {
-        "test": "hi leo",
-        "title": "QTG Document",
-        "curr_date": formatted_date,
-        "curr_time": formatted_time,
-        "headers": ["Parameter [UoM]", "Reference*", "FSTD"],
-        "subsections": []
-    }
-
-    # Initialize subsection titles
-    mass_properties = {"title": "Mass Properties", "rows": []}
-    environment_parameters = {"title": "Environment Parameters", "rows": []}
-    flight_parameters = {"title": "Flight Parameters", "rows": []}
-
-    current_subsection = mass_properties
-
-    for key in ref_init_cond:
-        current_row = [key, ref_init_cond[key], init_cond.get(key, ""), ""]
-        current_subsection["rows"].append(current_row)
-
-        if key == "Moment of Inertia ZZ":
-            data["subsections"].append(current_subsection)
-            current_subsection = environment_parameters
-        elif key == "Wind Speed":
-            data["subsections"].append(current_subsection)
-            current_subsection = flight_parameters
-
-    # Append the last category
-    data["subsections"].append(current_subsection)
-
-    return data
-
-
-def create_pdf(data, output_file):
-    # Set up Jinja2 environment
-    env = Environment(loader=FileSystemLoader('./templates'))
-    template = env.get_template('test.html')
-
-    # Render the HTML template with data
-    html_out = template.render(data)
-    css_path = './templates/style.css'
-    # Convert the rendered HTML to PDF
-    HTML(string=html_out).write_pdf(output_file, stylesheets=[CSS(css_path)])
-
-
-# Generate the PDF
 if __name__ == "__main__":
-    init_cond, ref_init_cond = load_json_data("./data")
-    data = process_data(ref_init_cond, init_cond)
-    create_pdf(data, "output.pdf")
+    from collections import defaultdict
 
-    
+    # Example data with detailed test cases
+    data = [
+        {
+            "test": "1",
+            "part": "a.3",
+            "case": {
+                'id': 'A1',
+                'name': 'OEI continued take-off',
+                'condition': 'OEI',
+                'automatic_testing_possible': True,
+                'generic_flight_controls': [
+                    {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
+                    {'fc': 'Lateral', 'status': 'MATH PILOT'},
+                    {'fc': 'Collective', 'status': 'MATH PILOT'}
+                ]
+            },
+            "is_mqtg": True,
+            "curr_date": "2024-09-01",
+            "curr_time": "14:00",
+            "plots_base64": "base64string1"
+        },
+        {
+            "test": "1",
+            "part": "a.3",
+            "case": {
+                'id': 'A2',
+                'name': 'Autorotation descent',
+                'condition': 'Power-off',
+                'automatic_testing_possible': False,
+                'generic_flight_controls': [
+                    {'fc': 'Longitudinal', 'status': 'MANUAL PILOT'},
+                    {'fc': 'Lateral', 'status': 'MANUAL PILOT'}
+                ]
+            },
+            "is_mqtg": False,
+            "curr_date": "2024-09-01",
+            "curr_time": "14:30",
+            "plots_base64": "base64string2"
+        },
+        {
+            "test": "1",
+            "part": "b.5",
+            "case": {
+                'id': 'B1',
+                'name': 'Hover check',
+                'condition': 'Hover',
+                'automatic_testing_possible': True,
+                'generic_flight_controls': [
+                    {'fc': 'Yaw', 'status': 'MATH PILOT'}
+                ]
+            },
+            "is_mqtg": True,
+            "curr_date": "2024-09-02",
+            "curr_time": "09:00",
+            "plots_base64": "base64string3"
+        }
+    ]
+
+    # Step 1: Create the structure to hold the grouped data
+    grouped_data = {"tests": []}
+    test_dict = defaultdict(lambda: {"test_parts": defaultdict(lambda: {"test_cases": []})})
+
+    # Step 2: Populate the structure
+    for item in data:
+        test_id = item["test"]
+        part_id = item["part"]
+        test_case = item["case"]
+
+        # Add additional metadata to the test case
+        test_case.update({
+            "is_mqtg": item["is_mqtg"],
+            "curr_date": item["curr_date"],
+            "curr_time": item["curr_time"],
+            "plots_base64": item["plots_base64"]
+        })
+
+        # Organize test cases under their respective parts and tests
+        test_dict[test_id]["test_parts"][part_id]["test_cases"].append(test_case)
+
+    # Step 3: Convert defaultdict to normal dict and populate the grouped_data
+    for test_id, test_content in test_dict.items():
+        test_entry = {
+            "id": test_id,
+            "name": f"Test {test_id}",  # You can customize the name here if needed
+            "test_parts": []
+        }
+
+        for part_id, part_content in test_content["test_parts"].items():
+            test_part = {
+                "id": part_id,
+                "main_title": f"Main Title {part_id}",  # You can customize the title here if needed
+                "test_title": f"Test Title {part_id}",  # You can customize the test title here if needed
+                "test_cases": part_content["test_cases"]
+            }
+            test_entry["test_parts"].append(test_part)
+
+        grouped_data["tests"].append(test_entry)
+
+    # Now grouped_data holds the restructured data
+    import pprint
+
+    pprint.pprint(grouped_data)
+
     """
         -Ziel ist es  eine Funktion, bei welcher ich die Sektion eingebe und die Test-ID und es wird ein Report erstellt.
         -QTG_report(1.d, 1.d.A1) und es wird pro test ein eigener Report erstellt. Also ein Report Pro test.
