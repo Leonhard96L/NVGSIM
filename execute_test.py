@@ -15,6 +15,6 @@ def execute_test(test_item, test_dir, ismqtg, gui_output, gui_input):
         Init_flyout.main(test_item, test_dir, gui_output, gui_input)
     else:
         if test_item['is_automatic']:
-            RecurrentQTGs_auto()
+            RecurrentQTGs_auto.main(test_item, test_dir, gui_output, gui_input)
         else:
-            RecurrentQTGs_manu()
+            RecurrentQTGs_manu.main(test_item, test_dir, gui_output, gui_input)

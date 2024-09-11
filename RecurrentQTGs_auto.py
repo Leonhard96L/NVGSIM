@@ -455,8 +455,8 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
     
     
     
-    desired_roll = np.mean(MQTG_roll) #rad
-    desired_pitch = np.mean(MQTG_pitch) #rad
+    desired_roll = np.mean(MQTG_roll[:-1]) #rad
+    desired_pitch = np.mean(MQTG_pitch[:-1]) #rad
     #desired_roll = float(init_cond_dict['Bank Angle']) #rad
     #desired_pitch = float(init_cond_dict['Pitch Angle']) #rad
     
@@ -492,7 +492,7 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
     
     while True:
         
-        
+        print(desired_roll)
         #reference_frame_inertial_position_latitude.write(LOWL[0])
         #reference_frame_inertial_position_longitude.write(LOWL[1])
         #reference_frame_inertial_attitude_psi.write(float(init_cond_dict['Heading']))
@@ -833,13 +833,7 @@ def get_test_test_part_test_case(tests, test_id, part_id, case_id):
 
 def create_plots(QTG_path, part):
     
-    def plot_scale(y, y_Ref,factor):
-        diff = abs(max(y)-max(y_Ref))
-        
-        if diff < 0 : diff = 1.1
-        
-        sc_fac = 20 +(5-20)/(5-1)*(diff-1)
-        return sc_fac
+
         
         
 
@@ -954,18 +948,15 @@ def create_plots(QTG_path, part):
             elif 'Groundspeed' in para_file_dict[plot_title]:
                 y=[mps2kt(i) for i in y]
                 y_Rec=[mps2kt(i) for i in y_Rec]
-                sc_fac=plot_scale(y, y_Ref,0)
             elif 'Airspeed' in para_file_dict[plot_title]:
                 y=[mps2kt(i) for i in y]
                 y_Rec=[mps2kt(i) for i in y_Rec]
-                sc_fac=plot_scale(y, y_Ref,0)
             elif 'Barometric Altitude' in para_file_dict[plot_title]:
                 y=[m2ft(i) for i in y]
                 y_Rec=[m2ft(i) for i in y_Rec]
             elif 'Vertical' in para_file_dict[plot_title]:
                 y=[mps2fpm(-i) for i in y]
                 y_Rec=[mps2fpm(-i) for i in y_Rec]
-                sc_fac=plot_scale(y, y_Ref,0)
             elif 'Rotor' in para_file_dict[plot_title]:
                 y=[rpm2perc(i) for i in y]
                 y_Rec=[rpm2perc(i) for i in y_Rec]
@@ -1006,7 +997,7 @@ def create_plots(QTG_path, part):
             #plt.show() 
             save_path = os.path.join(dirpath, pdfname)
             
-            plt.savefig(save_path, format='png')
+            plt.savefig(save_path, format='svg')
             plt.close()
 
 def create_comparison_table(QTG_path):
@@ -1071,18 +1062,13 @@ def create_comparison_table(QTG_path):
     
 
 def main(test_item, test_dir, gui_output, gui_input):
-    pass
-
-
-if __name__ == "__main__":
-    
     brunner_task = DSim.Variable.Enum(DSim.Node(dsim_host,"host/sim1-model/entity/as532_1/task/io_brunner_cls/mode"))
     brunner_task.write(TASK_MODE.FORCE_STOP)
     
-    #Refernce_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\Reference_data_Init_flyout_V2'
-    save_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\RecurrentQTG_save_auto'
+    QTG_path = test_dir
+    #save_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\RecurrentQTG_save_auto'
     #Gib den Testnamen an
-    QTG_name = '1.g_A1'
+    QTG_name = test_item['id']
 
     test_id, part_id, case_id = split_string(QTG_name)
     test, part, case = get_test_test_part_test_case(qtg_data_structure.data['tests'], test_id, part_id, case_id)
@@ -1090,7 +1076,8 @@ if __name__ == "__main__":
     issnapshot = part['snapshot']
 
     #Pfad der Referenzdaten und der Speicherdaten, des jeweiligen QTGs
-    QTG_path = get_QTG_path(QTG_name, save_data_path)
+    #QTG_path = get_QTG_path(QTG_name, save_data_path)
+    
     #Zeitdauer des Tests
     T = get_QTG_time(QTG_path)
     

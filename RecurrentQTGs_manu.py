@@ -313,7 +313,7 @@ def math_pilot(QTG_path,T):
     simulation_mode.write(SIM_MODE.PAUSE)
     return input_matrix, output_matrix
 
-def log_flyout_input_output(T):
+def log_flyout_input_output(T, gui_output):
     # pre-define numpy data matrix containing flight data (see enum above for column definitions)
     input_matrix = np.empty((len(T),INPUT.NUMBER_OF_INPUTS))
     output_matrix = np.empty((len(T),OUTPUT.NUMBER_OF_OUTPUTS))
@@ -372,6 +372,7 @@ def log_flyout_input_output(T):
         
         if int(accumulated_time) > int(accumulated_time - dT):
             print(round(accumulated_time-dT))
+            gui_output(str(round(accumulated_time - dT)))
             
         if prev_force_pitch != force_pitch \
             or prev_force_roll != force_roll \
@@ -1186,7 +1187,7 @@ def create_plots(QTG_path, part):
     
             
             ##Section for scale
-            sc_fac = 1.5
+            sc_fac = 2.5
             plt.autoscale()
             y_min, y_max = plt.ylim()
             y_range = y_max - y_min
@@ -1200,7 +1201,7 @@ def create_plots(QTG_path, part):
             #plt.show() 
             save_path = os.path.join(dirpath, pdfname)
             
-            plt.savefig(save_path, format='pdf')
+            plt.savefig(save_path, format='svg')
             plt.close()
 
 
@@ -1267,29 +1268,24 @@ def create_comparison_table(QTG_path):
 
 
 def main(test_item, test_dir, gui_output, gui_input):
-    pass
-
-
-if __name__ == "__main__":
-    
     brunner_task = DSim.Variable.Enum(DSim.Node(dsim_host,"host/sim1-model/entity/as532_1/task/io_brunner_cls/mode"))
     brunner_task.write(TASK_MODE.FORCE_RUN)
-    
-    #Refernce_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\Reference_data_Init_flyout_V2'
-    save_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\RecurrentQTG_save_manu'
+
+    #save_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\RecurrentQTG_save_manu'
     #Gib den Testnamen an
-    QTG_name = '2.a.1_B2'
+    QTG_path = test_dir
+    QTG_name = test_item['id']
     test_id, part_id, case_id = split_string(QTG_name)
     test, part, case = get_test_test_part_test_case(qtg_data_structure.data['tests'], test_id, part_id, case_id)
 
     #Pfad der Referenzdaten und der Speicherdaten, des jeweiligen QTGs
-    QTG_path = get_QTG_path(QTG_name, save_data_path)
+    #QTG_path = get_QTG_path(QTG_name, save_data_path)
     #Zeitdauer des Tests
     T = get_QTG_time(QTG_path)
     dT = np.mean(np.diff(T))
     
     #Definiere selbst wie lange der Test dauern soll
-    desired_time = 20
+    desired_time = int(gui_input("Enter desired time in seconds "))
     
     
     T = np.arange(0,desired_time,dT)
@@ -1303,18 +1299,32 @@ if __name__ == "__main__":
     simulation_mode.write(SIM_MODE.PAUSE)
     time.sleep(2)
     simulation_mode.write(SIM_MODE.RUN) 
-    input("Hit Enter if Pilot is ready")
+    gui_input("Hit Enter if Pilot is ready ")
     
     
     logandsave_flyout_init_cond(QTG_path)
     
-    input_matrix, output_matrix, force_matrix = log_flyout_input_output(T)
+    input_matrix, output_matrix, force_matrix = log_flyout_input_output(T, gui_output)
 
     save_io_files(QTG_path, input_matrix, output_matrix, force_matrix, T)
-    create_comparison_table(QTG_path)
+    #create_comparison_table(QTG_path)
     create_plots(QTG_path,part)
-    create_report(QTG_path, 'Report.pdf')
+    #create_report(QTG_path, 'Report.pdf')
 
     
     
     set_standard_cond()
+    
+    LOWL = [48.23380,14.20719]
+    reference_frame_inertial_position_latitude.write(LOWL[0])
+    reference_frame_inertial_position_longitude.write(LOWL[1])
+    reference_frame_inertial_position_altitude.write(295)
+    reference_frame_body_freestream_airspeed.write(0)
+    reference_frame_inertial_position_v_xy.write(0)
+    simulation_mode.write(SIM_MODE.TRIM)
+    time.sleep(2)
+    simulation_mode.write(SIM_MODE.RUN) 
+    time.sleep(1.5)
+    
+    
+    
