@@ -1,10 +1,18 @@
 data/
+     reference_data/
+        20240911_090000/
+            1.c.1_A1/
+            ...
     mqtg/
-        202420240827
+        202420240827/
+            1.c.1_A1/
+                Report.pdf
+            ...
+            Report.pdf
     qtg/
         20240827/
-            gesamtreport
             1.c.1_A1/
-                alles eine wichsn
-            1.d_A2
+                Report.pdf
+            1.d_A2/
             ...
+            Report.pdf

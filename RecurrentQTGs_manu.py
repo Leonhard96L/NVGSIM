@@ -1264,7 +1264,11 @@ def create_comparison_table(QTG_path):
         pdf.savefig(fig, bbox_inches='tight')
     
     print(f"Tabelle erfolgreich als {table_path} gespeichert.")
-    
+
+
+def main(test_item, test_dir, gui_output, gui_input):
+    pass
+
 
 if __name__ == "__main__":
     

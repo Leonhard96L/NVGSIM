@@ -14,6 +14,27 @@
 5. Fertig :)
 
 
+## Verzeichnisstruktur
+```
+data/
+├── reference_data/
+│   └── 20240911_090000/
+│       ├── 1.c.1_A1/
+│       └── ... (other folders or files)
+├── mqtg/
+│   └── 202420240827/
+│       ├── 1.c.1_A1/
+│       │   └── Report.pdf
+│       └── Report.pdf
+└── qtg/
+    └── 20240827/
+        ├── 1.c.1_A1/
+        │   └── Report.pdf
+        ├── 1.d_A2/
+        └── ... (other folders or files)
+        └── Report.pdf
+```
+
 ## Using github:
 1. Git bash open in dir NVGSIM
 2. git status 
@@ -22,14 +43,16 @@
 5. git commit -m "Schreibe Information ueber diesen commit"
 6. git push
 
+
 ## TODO:
- - Überlegung - zzt: ref_dir und test_dir an tester übergeben
    - Können wir nicht einfach ref -> test dir kopieren und dann in test_dir arbeiten?
    - Dazu ein neues feld zum Eingeben der ref_dir (sont automatisch das neuste MQTG)
  - evtl noch checks für valid file handles und dirs
  - generell error catching und handling (in gui)
 
+
 ### DONE
+ - Überlegung - zzt: ref_dir und test_dir an tester übergeben    DONE
 - Speichern der berichte ins richtige dir und mit richtigen namen.	DONE
 - Header hinzufügen	DONE
 - Struktur anpassen (mit Leo)	DONE
