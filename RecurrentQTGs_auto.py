@@ -833,7 +833,10 @@ def get_test_test_part_test_case(tests, test_id, part_id, case_id):
 
 def create_plots(QTG_path, part):
     
-    #def plot_scale()
+    def plot_scale(y, y_Ref):
+        diff = abs(max(y)-max(y_Ref))
+        
+        
 
     params = part['tolerances_recurrent_criteria']
     para_file_dict = {
