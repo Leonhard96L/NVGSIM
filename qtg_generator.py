@@ -1,3 +1,4 @@
+import shutil
 from datetime import datetime
 import os
 import tkinter as tk
@@ -169,6 +170,35 @@ def get_newest_folder(directory_path):
     return os.path.join(directory_path, max(folders, key=lambda f: datetime.strptime(f, "%Y%m%d_%H%M%S")))
 
 
+def copy_directory_contents(src_dir, dest_dir):
+    """
+    Copies the contents of src_dir to dest_dir.
+    It will create the destination directory if it doesn't exist.
+
+    :param src_dir: Source directory path
+    :param dest_dir: Destination directory path
+    """
+    # Check if source directory exists
+    if not os.path.exists(src_dir):
+        raise FileNotFoundError(f"The source directory '{src_dir}' does not exist.")
+
+    # Create destination directory if it doesn't exist
+    if not os.path.exists(dest_dir):
+        os.makedirs(dest_dir)
+
+    # Copy contents from source to destination
+    for item in os.listdir(src_dir):
+        src_path = os.path.join(src_dir, item)
+        dest_path = os.path.join(dest_dir, item)
+
+        if os.path.isdir(src_path):
+            # Recursively copy directories
+            shutil.copytree(src_path, dest_path, dirs_exist_ok=True)
+        else:
+            # Copy individual files
+            shutil.copy2(src_path, dest_path)
+
+
 # this is basically the main method that controls all other programs
 def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output, gui_input=gui_input):
     date_time = datetime.now()  # use this datetime for folder structure and reports
@@ -178,6 +208,7 @@ def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output,
     qtg_dir = "qtg"
     if mqtg:
         qtg_dir = "mqtg"
+        reference_data = get_newest_folder(os.path.join(output_dir, "reference_data"))
 
     # Get the current date and format it as yyyymmdd
     directory_structure = os.path.join(output_dir, qtg_dir, date_time.strftime('%Y%m%d_%H%M%S'))
@@ -187,17 +218,17 @@ def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output,
     for test_item in tests:
         gui_output(f"Test id: {test_item['id']}\tautomatic Test: {test_item['is_automatic']}")
 
-        # create directory for test
-        test_dir = os.path.join(directory_structure, test_item['id'])
         ref_dir = os.path.join(reference_data, test_item['id'])
+        test_dir = os.path.join(directory_structure, test_item['id'])
+
+        copy_directory_contents(ref_dir, test_dir)
 
         # todo: check if ref_dir is existing and full with data
 
-        os.makedirs(test_dir, exist_ok=True)
         gui_output(f"Save directory: {test_dir}")
 
         # execute test
-        execute_test.execute_test(test_item, ref_dir, test_dir, mqtg, gui_output, gui_input)
+        execute_test.execute_test(test_item, test_dir, mqtg, gui_output, gui_input)
 
         # generate report
         gui_output("Creating Test Report. This may take a second...")
