@@ -172,7 +172,7 @@ def get_newest_folder(directory_path):
 
 def copy_directory_contents(src_dir, dest_dir):
     """
-    Copies the contents of src_dir to dest_dir.
+    Copies only .xml, .json, and .sim files from src_dir to dest_dir.
     It will create the destination directory if it doesn't exist.
 
     :param src_dir: Source directory path
@@ -186,25 +186,29 @@ def copy_directory_contents(src_dir, dest_dir):
     if not os.path.exists(dest_dir):
         os.makedirs(dest_dir)
 
+    # Allowed file extensions
+    allowed_extensions = {'.xml', '.json', '.sim'}
+
     # Copy contents from source to destination
     for item in os.listdir(src_dir):
         src_path = os.path.join(src_dir, item)
         dest_path = os.path.join(dest_dir, item)
-        print(src_path)
-        print(dest_path)
 
         if os.path.isdir(src_path):
             # Recursively copy directories
             shutil.copytree(src_path, dest_path, dirs_exist_ok=True)
         else:
-            # Copy individual files
-            shutil.copy2(src_path, dest_path)
+            # Check if the file has an allowed extension
+            _, extension = os.path.splitext(item)
+            if extension in allowed_extensions:
+                print(f"Copying {src_path} to {dest_path}")
+                # Copy individual files with allowed extensions
+                shutil.copy2(src_path, dest_path)
 
 
 # this is basically the main method that controls all other programs
 def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output, gui_input=gui_input):
     date_time = datetime.now()  # use this datetime for folder structure and reports
-
     
     qtg_dir = "qtg"
     if mqtg:
