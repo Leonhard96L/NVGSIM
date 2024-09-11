@@ -1070,6 +1070,10 @@ def create_comparison_table(QTG_path):
     print(f"Tabelle erfolgreich als {table_path} gespeichert.")
     
 
+def main(test_item, test_dir, gui_output, gui_input):
+    pass
+
+
 if __name__ == "__main__":
     
     brunner_task = DSim.Variable.Enum(DSim.Node(dsim_host,"host/sim1-model/entity/as532_1/task/io_brunner_cls/mode"))
