@@ -11,7 +11,7 @@ from qtg_data_structure import data as qtg_structure
 from function_lib import split_string, get_test_test_part_test_case, units_conversion
 
 
-def load_json_data(qtg_path):
+def load_json_data(qtg_path, is_mqtg):
     file_path = os.path.join(qtg_path, 'init_conditions.json')
     with open(file_path, 'r') as json_file:
         data = json.load(json_file)
@@ -21,7 +21,8 @@ def load_json_data(qtg_path):
         (init_cond_mqtg,) = data.get("Init_condition_MQTG"),
 
         units_conversion(init_cond_mqtg, 'Avi')
-        units_conversion(init_cond_rec, 'Avi')
+        if not is_mqtg:
+            units_conversion(init_cond_rec, 'Avi')
 
         print(init_cond_rec)
         print(init_cond_ref)
@@ -226,7 +227,7 @@ def create_test_report(test_results, output_dir):
 
 def generate_case_report(test_item, test_dir, date_time, is_mqtg=False):
     # make pdf for each test, merge them into one document. check
-    init_cond_rec, init_cond_ref, init_cond_mqtg = load_json_data(test_dir)
+    init_cond_rec, init_cond_ref, init_cond_mqtg = load_json_data(test_dir, is_mqtg)
 
     # load existing images
     plots_base64 = load_plots(test_dir)
