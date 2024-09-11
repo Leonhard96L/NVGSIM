@@ -2,6 +2,7 @@ import base64
 import copy
 import json
 import os
+import re
 
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML, CSS
@@ -33,7 +34,14 @@ def load_plots(qtg_path):
     plot_paths = []
 
     # Get a sorted list of all .svg files in the directory
-    image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('.svg')])
+    # Function to extract the leading number from the filename
+    def numerical_sort(value):
+        # Extract the leading number (before any non-digit character)
+        match = re.match(r'^(\d+)', value)
+        return int(match.group(1)) if match else 0  # Use the number if found, else 0
+
+    # Get the sorted list of .svg files in numerical order
+    image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('.svg')], key=numerical_sort)
 
     # Loop through all files in the directory
     for file_name in image_files:
