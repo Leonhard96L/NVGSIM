@@ -36,6 +36,11 @@ import re
 import time
 from datetime import datetime
 
+from function_lib import units_conversion, GW_map, CG_x_map, ft2m, map360, map_control, pitch_brun2N, pitch_brun2angle, \
+    roll_brun2N, roll_brun2angle, coll_brun2N, coll_brun2angle, yaw_brun2angle, ATRIM_calc, mps2kt, m2ft, mps2fpm, \
+    rpm2perc, inv_map_control
+
+
 # get more accurate timer (using windows multimedia dll)
 winmm = ctypes.WinDLL('winmm')
 winmm.timeBeginPeriod(1)
@@ -680,158 +685,7 @@ def save_io_files(QTG_path, input_matrix, output_matrix, T):
              
         
     #print(filename_date + ' wurde unter ' + QTG_path + ' gespeichert!')
-def map_control(x):return round(50 * (x + 1),2)#Brunner2Moog
-def inv_map_control(x):return (x/50)-1 #Moog2Brunner
-def rpm2perc(x): return round((np.rad2deg(x) / 1590) * 100,2)
-def perc2rpm(x): return round(((np.deg2rad(x) / 100) * 1590),2)
-def m2ft(x): return x*3.281
-def ft2m(x): return x*(1/3.281)
-def mps2fpm(x): return x*196.9
-def fpm2mps(x): return x*(1/196.9)
-def mps2kt(x): return x*1.944
-def kt2mps(x): return x*(1/1.944)
-def map360(x): return round(x%360,2)
 
-def pitch_brun2angle(x):
-    #Factors for the control angles
-    pitchP_factor_pos = 12.5
-    pitchP_factor_neg = 12.3
-    x=x*pitchP_factor_pos if x > 0 else x*pitchP_factor_neg
-    #x[x>0] *= pitchP_factor_pos
-    #x[x<0] *= pitchP_factor_neg
-    return x
-
-def roll_brun2angle(x):
-    #Factors for the control angles
-    rollP_factor_pos = 10.2
-    rollP_factor_neg = 10.1
-    x=x*rollP_factor_pos if x > 0 else x*rollP_factor_neg
-    #x[x>0] *= rollP_factor_pos
-    #x[x<0] *= rollP_factor_neg
-    return x
-
-def yaw_brun2angle(x):
-    yawP_factor_pos = 17.5
-    yawP_factor_neg = 21.7
-    x=x*yawP_factor_pos if x > 0 else x*yawP_factor_neg
-    #x[x>0] *= yawP_factor_pos
-    #x[x<0] *= yawP_factor_neg
-    return x
-
-def coll_brun2angle(x):
-    collP_factor_pos = 28
-    x=x*collP_factor_pos
-    #x[x>0] *= collP_factor_pos
-    return x
-    
-def pitch_brun2N(x):
-    #Cyclic: Abstand Griff zu Drehpunkt_Longitudinal
-    L_P = 0.7124
-    x = x*100/L_P
-    return x
-def roll_brun2N(x):
-    #Cyclic: Abstand Griff zu Drehpunkt_Lateral_Longitudinal
-    L_R = 0.7806
-    x = x*100/L_R
-    return x
-
-def coll_brun2N(x):
-    #Collective: Abstand Griff zu Drehpunkt
-    LC = 0.61
-    x = x*100/LC
-    return x
-
-def ATRIM_calc(x,y):
-
-    x = np.array(x)
-    x = x[::60]
-    y = abs(np.array(y))
-    y = y[::60]
-    rate = np.diff(y)/np.diff(x)
-    return rate, x[:-1]
-
-
-#Gross Weight
-#Linear interpolation of GW:
-#EC135T2+ min. GW = 1700kg max.GW = 2980kg
-#AS532 min. GW = 4500kg max.GW = 8600kg
-def GW_map(x):
-    return 4500+(4100/1280)*(float(x)-1700)
-
-#CG_Long
-#Linear interpolation of CG_x:
-#EC135T2+ max.AFT = 4541mm max.FWD=4121mm
-#AS532 max.AFT = -4.97m max.FWD=-4.47m
-def CG_x_map(x):
-    return -4.97+(0.5/-0.42)*(x-4.541)
-
-def units_conversion(init_cond_dict,unit):
-    
-    m2ft = 3.281
-    ft2m = 1/m2ft
-    mps2fpm = 196.9
-    fpm2mps = 1/mps2fpm
-    mps2kt = 1.944
-    kt2mps = 1/mps2kt
-    m2mm = 1e3
-    mm2m = 1/m2mm
-    
-    if unit == 'SI':
-        init_cond_dict_SI = init_cond_dict
-        
-        init_cond_dict_SI['CG Longitudinal'] = round(float(init_cond_dict['CG Longitudinal'])*mm2m,2)          
-        init_cond_dict_SI['CG Lateral'] = round(float(init_cond_dict['CG Lateral'])*mm2m,2)                     
-        init_cond_dict_SI['Pressure Altitude']  = round(float(init_cond_dict['Pressure Altitude'])*ft2m,2)  
-        init_cond_dict_SI['Wind Direction'] = round(np.deg2rad(float(init_cond_dict['Wind Direction'])),2) 
-        init_cond_dict_SI['Wind Speed'] = round(float(init_cond_dict['Wind Speed'])*kt2mps,2)
-        init_cond_dict_SI['Airspeed'] = round(float(init_cond_dict['Airspeed'])*kt2mps,2)                               
-        init_cond_dict_SI['Ground Speed'] = round(float(init_cond_dict['Ground Speed'])*kt2mps,2)                        
-        init_cond_dict_SI['Vertical Velocity'] = round(float(init_cond_dict['Vertical Velocity'])*fpm2mps,2)
-        if init_cond_dict['Radar Altitude'] == 'N/A':
-            init_cond_dict_SI['Radar Altitude'] = 'N/A'
-        else: 
-            init_cond_dict_SI['Radar Altitude'] = round(float(init_cond_dict['Radar Altitude'])*ft2m,2)               
-        init_cond_dict_SI['Rotor Speed'] = perc2rpm(float(init_cond_dict['Rotor Speed']))
-        init_cond_dict_SI['Engine 1 Torque'] = round(float(init_cond_dict['Engine 1 Torque']),2)
-        init_cond_dict_SI['Engine 2 Torque'] = round(float(init_cond_dict['Engine 2 Torque']),2)                        
-        init_cond_dict_SI['Pitch Angle'] = round(np.deg2rad(float(init_cond_dict['Pitch Angle'])),2)                        
-        init_cond_dict_SI['Bank Angle']  = round(np.deg2rad(float(init_cond_dict['Bank Angle'])),2)
-        init_cond_dict_SI['Heading'] = round(np.deg2rad(float(init_cond_dict['Heading'])),2)
-        init_cond_dict_SI['Pitch Rate'] = round(np.deg2rad(float(init_cond_dict['Pitch Rate'])),2)                    
-        init_cond_dict_SI['Roll Rate'] = round(np.deg2rad(float(init_cond_dict['Roll Rate'])),2)                      
-        init_cond_dict_SI['Yaw Rate'] = round(np.deg2rad(float(init_cond_dict['Yaw Rate'])),2)
-        init_cond_dict_SI['Longitudinal Cyclic Pos.'] = inv_map_control(float(init_cond_dict['Longitudinal Cyclic Pos.']))                     
-        init_cond_dict_SI['Lateral Cyclic Pos.'] = inv_map_control(float(init_cond_dict['Lateral Cyclic Pos.']))                       
-        init_cond_dict_SI['Pedals Pos.'] = inv_map_control(float(init_cond_dict['Pedals Pos.']))                                          
-        init_cond_dict_SI['Collective Pos.'] = inv_map_control(float(init_cond_dict['Collective Pos.']))
-        return init_cond_dict_SI
-        
-    elif unit == 'Avi':
-        init_cond_dict_Avi = init_cond_dict
-        init_cond_dict_Avi['CG Longitudinal'] = round(float(init_cond_dict['CG Longitudinal'])*m2mm,2)          
-        init_cond_dict_Avi['CG Lateral'] = round(float(init_cond_dict['CG Lateral'])*m2mm,1)                     
-        init_cond_dict_Avi['Pressure Altitude']  = round(float(init_cond_dict['Pressure Altitude'])*m2ft,2)  
-        init_cond_dict_Avi['Wind Direction'] = round(np.rad2deg(float(init_cond_dict['Wind Direction'])),2) 
-        init_cond_dict_Avi['Wind Speed'] = round(float(init_cond_dict['Wind Speed'])*mps2kt,2)
-        init_cond_dict_Avi['Airspeed'] = round(float(init_cond_dict['Airspeed'])*mps2kt,2)                               
-        init_cond_dict_Avi['Ground Speed'] = round(float(init_cond_dict['Ground Speed'])*mps2kt,2)                        
-        init_cond_dict_Avi['Vertical Velocity'] = round(float(init_cond_dict['Vertical Velocity'])*mps2fpm,2)
-        init_cond_dict_Avi['Radar Altitude'] = round(float(init_cond_dict['Radar Altitude']),2)               
-        init_cond_dict_Avi['Rotor Speed'] = rpm2perc(float(init_cond_dict['Rotor Speed']))
-        init_cond_dict_Avi['Engine 1 Torque'] = round(float(init_cond_dict['Engine 1 Torque']),2)
-        init_cond_dict_Avi['Engine 2 Torque'] = round(float(init_cond_dict['Engine 2 Torque']),2)                            
-        init_cond_dict_Avi['Pitch Angle'] = round(np.rad2deg(float(init_cond_dict['Pitch Angle'])),2)                  
-        init_cond_dict_Avi['Bank Angle']  = round(np.rad2deg(float(init_cond_dict['Bank Angle'])),2)  
-        init_cond_dict_Avi['Heading'] = map360(np.rad2deg(float(init_cond_dict['Heading'])))
-        init_cond_dict_Avi['Pitch Rate'] = round(np.rad2deg(float(init_cond_dict['Pitch Rate'])),2)                   
-        init_cond_dict_Avi['Roll Rate'] = round(np.rad2deg(float(init_cond_dict['Roll Rate'])),2)                       
-        init_cond_dict_Avi['Yaw Rate'] = round(np.rad2deg(float(init_cond_dict['Yaw Rate'])),2)  
-        init_cond_dict_Avi['Longitudinal Cyclic Pos.'] = map_control(float(init_cond_dict['Longitudinal Cyclic Pos.']))                     
-        init_cond_dict_Avi['Lateral Cyclic Pos.'] = map_control(float(init_cond_dict['Lateral Cyclic Pos.']))                       
-        init_cond_dict_Avi['Pedals Pos.'] = map_control(float(init_cond_dict['Pedals Pos.']))                                          
-        init_cond_dict_Avi['Collective Pos.'] = map_control(float(init_cond_dict['Collective Pos.']))
-        return init_cond_dict_Avi
-        
     
 def set_standard_cond():
     configuration_loading_empty_mass.write(7500)

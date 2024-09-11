@@ -12,8 +12,7 @@
 <h1>{{ test.id }} {{ test.name }}</h1>
 
 {% for part in test.test_parts %}
-    <h2>{{ test.id }}.{{ part.id }} {{ part.main_title }}</h2>
-    <h2>{{ test.id }}.{{ part.id }} {{ part.test_title }}</h2>
+    <h2>{{ test.id }}.{{ part.id }} {{ part.main_title }} - {{ part.test_title }}</h2>
     <br/>
     <br/>
     <h3 class="center-div">Test Objective</h3>
