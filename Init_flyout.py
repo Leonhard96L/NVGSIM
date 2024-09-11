@@ -1006,14 +1006,6 @@ def main(test_item, test_dir, gui_output, gui_input):
     
     gui_input("Hit Enter if Pilot is ready ")
 
-# =============================================================================
-#     tmp_vertveloc = reference_frame_inertial_position_v_z.read()
-#     simulation_mode.write(SIM_MODE.TRIM)
-#     time.sleep(0.8)
-#     logandsave_flyout_init_cond(QTG_path,tmp_vertveloc)
-#     simulation_mode.write(SIM_MODE.RUN)
-# =============================================================================
-
     
     logandsave_flyout_init_cond(QTG_path)
     input_matrix, output_matrix, force_matrix = log_flyout_input_output(T, gui_output)
@@ -1027,7 +1019,18 @@ def main(test_item, test_dir, gui_output, gui_input):
 
     set_standard_cond()
     
-    simulation_mode.write(SIM_MODE.RUN)
+    LOWL = [48.23380,14.20719]
+    reference_frame_inertial_position_latitude.write(LOWL[0])
+    reference_frame_inertial_position_longitude.write(LOWL[1])
+    reference_frame_inertial_position_altitude.write(295)
+    reference_frame_body_freestream_airspeed.write(0)
+    reference_frame_inertial_position_v_xy.write(0)
+    simulation_mode.write(SIM_MODE.TRIM)
+    time.sleep(2)
+    simulation_mode.write(SIM_MODE.RUN) 
+    time.sleep(1.5)
+    
+
 
 """
 
