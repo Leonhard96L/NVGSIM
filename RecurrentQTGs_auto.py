@@ -978,6 +978,8 @@ def get_test_test_part_test_case(tests, test_id, part_id, case_id):
 
 
 def create_plots(QTG_path, part):
+    
+    #def plot_scale()
 
     params = part['tolerances_recurrent_criteria']
     para_file_dict = {
@@ -1266,9 +1268,9 @@ if __name__ == "__main__":
     input_matrix, output_matrix = math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot)
 
     save_io_files(QTG_path, input_matrix, output_matrix, T)
-    #create_comparison_table(QTG_path)
+    create_comparison_table(QTG_path)
     create_plots(QTG_path,part)
-    #create_report(QTG_path, 'Report.pdf')
+    create_report(QTG_path, 'Report.pdf')
 
     
 
