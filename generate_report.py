@@ -20,6 +20,8 @@ def load_json_data(qtg_path):
         (init_cond_mqtg,) = data.get("Init_condition_MQTG"),
 
         units_conversion(init_cond_mqtg, 'Avi')
+        units_conversion(init_cond_rec, 'Avi')
+
         print(init_cond_rec)
         print(init_cond_ref)
         print(init_cond_mqtg)
