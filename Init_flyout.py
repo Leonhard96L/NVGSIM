@@ -973,12 +973,12 @@ def create_comparison_table(QTG_path):
     print(f"Tabelle erfolgreich als {table_path} gespeichert.")
 
 
-def main(ref_dir, test_item, gui_output, gui_input):
+def main(test_item, test_dir, gui_output, gui_input):
     #ref_dir = folder 
 
     #QTG_name = test_item.id
     
-    QTG_path = ref_dir
+    QTG_path = test_dir
     
 
     #Refernce_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\Reference_data_Init_flyout_V3'

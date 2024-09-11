@@ -161,7 +161,7 @@ def gui_input(prompt):
     inp = input_text.get()
     return inp
 
-
+# todo: error handling if null
 def get_newest_folder(directory_path):
     # Get all folder names that match the format yyyymmdd:HHMMSS
     folders = [f for f in os.listdir(directory_path) if os.path.isdir(os.path.join(directory_path, f))]
@@ -190,6 +190,8 @@ def copy_directory_contents(src_dir, dest_dir):
     for item in os.listdir(src_dir):
         src_path = os.path.join(src_dir, item)
         dest_path = os.path.join(dest_dir, item)
+        print(src_path)
+        print(dest_path)
 
         if os.path.isdir(src_path):
             # Recursively copy directories
@@ -203,13 +205,14 @@ def copy_directory_contents(src_dir, dest_dir):
 def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output, gui_input=gui_input):
     date_time = datetime.now()  # use this datetime for folder structure and reports
 
-    reference_data = get_newest_folder(os.path.join(output_dir, "mqtg"))
-
+    
     qtg_dir = "qtg"
     if mqtg:
         qtg_dir = "mqtg"
         reference_data = get_newest_folder(os.path.join(output_dir, "reference_data"))
-
+    else:
+        reference_data = get_newest_folder(os.path.join(output_dir, "mqtg"))
+    
     # Get the current date and format it as yyyymmdd
     directory_structure = os.path.join(output_dir, qtg_dir, date_time.strftime('%Y%m%d_%H%M%S'))
     # directory_structure = os.path.join(output_dir, qtg_dir, "20240827_091010")    # this is for testing purposes only!
@@ -227,6 +230,9 @@ def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output,
 
         gui_output(f"Save directory: {test_dir}")
 
+        if mqtg:
+            test_item['is_automatic'] = False
+            
         # execute test
         execute_test.execute_test(test_item, test_dir, mqtg, gui_output, gui_input)
 
@@ -236,7 +242,7 @@ def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output,
         gui_output("Done creating Report.\n")
 
     gui_output("Creating Full Report. This may take a second...")
-    generate_report.create_test_report(test_results, output_dir)
+    generate_report.create_test_report(test_results, directory_structure)
     gui_output("Done creating Full Report.\n")
 
     gui_output("COMPLETED!")
