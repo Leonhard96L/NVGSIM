@@ -42,7 +42,7 @@
     </p>
 
     <b>Automatic testing:</b>
-    {% if case.automatic_testing_possible %}
+    {% if case.automatic_testing_possible and not case.is_mqtg %}
     {% for auto_test in case.automatic_testing %}{{ auto_test }}<br><br>{% endfor %}
     <br>
     <table class="no-outer-borders centered-table">
