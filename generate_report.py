@@ -7,7 +7,7 @@ from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML, CSS
 
 from qtg_data_structure import data as qtg_structure
-from function_lib import split_string, get_test_test_part_test_case
+from function_lib import split_string, get_test_test_part_test_case, units_conversion
 
 
 def load_json_data(qtg_path):
@@ -19,6 +19,7 @@ def load_json_data(qtg_path):
         (init_cond_ref,) = data.get("Init_condition_Reference"),
         (init_cond_mqtg,) = data.get("Init_condition_MQTG"),
 
+        units_conversion(init_cond_mqtg, 'Avi')
         print(init_cond_rec)
         print(init_cond_ref)
         print(init_cond_mqtg)
@@ -29,8 +30,8 @@ def load_json_data(qtg_path):
 def load_plots(qtg_path):
     plot_paths = []
 
-    # Get a sorted list of all .png files in the directory
-    image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('.png')])
+    # Get a sorted list of all .svg files in the directory
+    image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('.svg')])
 
     # Loop through all files in the directory
     for file_name in image_files:

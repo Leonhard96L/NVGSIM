@@ -166,7 +166,7 @@
 </div>
 <div class="content">
     {% for plot in case.plots_base64 %}
-        <img src="data:image/png;base64,{{ plot }}" alt="Plot Image">
+        <img src="data:image/svg;base64,{{ plot }}" alt="Plot Image">
     {% endfor %}
 </div>
 </body>
