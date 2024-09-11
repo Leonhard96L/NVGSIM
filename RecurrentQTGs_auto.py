@@ -1103,14 +1103,14 @@ def create_plots(QTG_path, part):
                 y_Rec=[rpm2perc(i) for i in y_Rec]
             else:
                 y_label = plot_title +' (??)'
-                pdfname = f"{plot_title}.png"
+                pdfname = f"{plot_title}.svg"
             
             x_label = 'Time(s)'
             
             y_uptol = [i+tol for i in y]
             y_lotol = [i-tol for i in y]
             
-            pdfname = f"{count}_{plot_title}.png"
+            pdfname = f"{count}_{plot_title}.svg"
             y_label = plot_title +' '+ param['unit']
 
             plt.figure(figsize=(10, 6))

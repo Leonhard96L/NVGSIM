@@ -816,86 +816,86 @@ def create_plots(QTG_path):
                 # Korrektur mit richitgen Einheiten
                 plt.figure(figsize=(10, 6))
                 if 'Angle' in plot_title:
-                    pdfname = f"7_{plot_title}.png"
+                    pdfname = f"7_{plot_title}.svg"
                     y = np.rad2deg(y)
                     y_label = plot_title + ' (deg)'
                     if 'Angle Rate' in plot_title:
-                        pdfname = f"9_{plot_title}.png"
+                        pdfname = f"9_{plot_title}.svg"
                         y_label = plot_title + ' (deg/s)'
                     if 'Yaw Angle Unwrapped' in plot_title:
                         y = [map360(i) for i in y]
                         plot_title = 'Heading'
-                        pdfname = f"7_{plot_title}.png"
+                        pdfname = f"7_{plot_title}.svg"
                         y_label = plot_title + ' (deg)'
                 elif 'Control Position' in plot_title:
                     if 'Control Position Pitch' in plot_title:  # Pitch position Signal ist bei der Referenz invertiert
                         y = [i * -1 for i in y]
-                    pdfname = f"8_{plot_title}.png"
+                    pdfname = f"8_{plot_title}.svg"
                     y = [map_control(i) for i in y]
                     y_label = plot_title + ' (%)'
                 elif 'TRQ' in plot_title:
-                    pdfname = f"5_{plot_title}.png"
+                    pdfname = f"5_{plot_title}.svg"
                     y_label = plot_title + ' (%)'
                 elif 'Control QTG Force Pitch' in plot_title:
                     y = [pitch_brun2N(i) for i in y]
                     x = [pitch_brun2angle(i) for i in x]
-                    pdfname = f"10_{plot_title}.png"
+                    pdfname = f"10_{plot_title}.svg"
                     y_label = 'Force Pitch (N)'
                     x_label = 'Position (deg)'
                 elif 'Control QTG Force Roll' in plot_title:
                     y = [roll_brun2N(i) for i in y]
                     x = [roll_brun2angle(i) for i in x]
-                    pdfname = f"10_{plot_title}.png"
+                    pdfname = f"10_{plot_title}.svg"
                     y_label = 'Force Roll (N)'
                     x_label = 'Position (deg)'
                 elif 'Control QTG Force Collective' in plot_title:
                     y = [coll_brun2N(i) for i in y]
                     x = [coll_brun2angle(i) for i in x]
-                    pdfname = f"10_{plot_title}.png"
+                    pdfname = f"10_{plot_title}.svg"
                     y_label = 'Force Collective (N)'
                     x_label = 'Position (deg)'
                 elif 'Control QTG Force Yaw' in plot_title:
                     x = [yaw_brun2angle(i) for i in x]
                     y = [i * -1000 for i in y]
-                    pdfname = f"10_{plot_title}.png"
+                    pdfname = f"10_{plot_title}.svg"
                     y_label = 'Force Yaw (N)'
                     x_label = 'Position (deg)'
                 elif 'Control QTG Position Pitch Velocity' in plot_title:
                     y = [pitch_brun2angle(i) for i in y]
                     y, x = ATRIM_calc(x, y)
-                    pdfname = f"11_{plot_title}.png"
+                    pdfname = f"11_{plot_title}.svg"
                     y_label = 'Long. Cyclic Pos. Rate (deg/s)'
                 elif 'Control QTG Position Roll Velocity' in plot_title:
                     y = [roll_brun2angle(i) for i in y]
                     y, x = ATRIM_calc(x, y)
-                    pdfname = f"11_{plot_title}.png"
+                    pdfname = f"11_{plot_title}.svg"
                     y_label = 'Lat. Cyclic Pos. Rate (deg/s)'
                 elif 'Groundspeed' in plot_title:
-                    pdfname = f"2_{plot_title}.png"
+                    pdfname = f"2_{plot_title}.svg"
                     y = [mps2kt(i) for i in y]
                     y_label = plot_title + ' (kt)'
                 elif 'Airspeed' in plot_title:
-                    pdfname = f"1_{plot_title}.png"
+                    pdfname = f"1_{plot_title}.svg"
                     y = [mps2kt(i) for i in y]
                     y_label = plot_title + ' (kt)'
                 elif 'RadarAltitude' in plot_title:
-                    pdfname = f"3_{plot_title}.png"
+                    pdfname = f"3_{plot_title}.svg"
                     y_label = plot_title + ' (ft)'
                 elif 'Barometric Altitude' in plot_title:
-                    pdfname = f"3_{plot_title}.png"
+                    pdfname = f"3_{plot_title}.svg"
                     y = [m2ft(i) for i in y]
                     y_label = plot_title + ' (ft)'
                 elif 'Vertical' in plot_title:
-                    pdfname = f"4_{plot_title}.png"
+                    pdfname = f"4_{plot_title}.svg"
                     y = [mps2fpm(-i) for i in y]
                     y_label = plot_title + ' (ft/min)'
                 elif 'Rotor' in plot_title:
-                    pdfname = f"6_{plot_title}.png"
+                    pdfname = f"6_{plot_title}.svg"
                     y = [rpm2perc(i) for i in y]
                     y_label = plot_title + ' (%)'
                 else:
                     y_label = plot_title + ' (??)'
-                    pdfname = f"{plot_title}.png"
+                    pdfname = f"{plot_title}.svg"
 
                 plt.plot(x_Ref, y_Ref, label='Reference')
                 plt.plot(x, y, label='FTD1')
@@ -916,7 +916,7 @@ def create_plots(QTG_path):
 
                 plt.savefig(save_path, format='png')
                 plt.close()
-                print(plot_title + '.png created')
+                print(plot_title + '.svg created')
 
 
 def create_comparison_table(QTG_path):

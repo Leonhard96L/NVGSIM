@@ -36,8 +36,6 @@ def get_test_test_part_test_case(tests_orig, test_id, part_id, case_id):
     return None, None, None
 
 
-# TODO: Update these mappers
-
 def map_control(x): return round(50 * (x + 1), 2)  # Brunner2Moog
 
 
@@ -131,7 +129,7 @@ def coll_brun2N(x):
 def ATRIM_calc(x, y):
     x = np.array(x)
     x = x[::60]
-    y = abs(np.array(y))
+    y = np.array(y)
     y = y[::60]
     rate = np.diff(y) / np.diff(x)
     return rate, x[:-1]
@@ -219,6 +217,7 @@ def units_conversion(init_cond_dict, unit):
         init_cond_dict_Avi['Pedals Pos.'] = map_control(float(init_cond_dict['Pedals Pos.']))
         init_cond_dict_Avi['Collective Pos.'] = map_control(float(init_cond_dict['Collective Pos.']))
         return init_cond_dict_Avi
+
 
 # automatic_data_template = {
 #     'tests': [

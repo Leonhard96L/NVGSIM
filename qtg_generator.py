@@ -232,14 +232,19 @@ def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output,
 
         if mqtg:
             test_item['is_automatic'] = False
-            
-        # execute test
-        execute_test.execute_test(test_item, test_dir, mqtg, gui_output, gui_input)
 
-        # generate report
-        gui_output("Creating Test Report. This may take a second...")
-        test_results[test_item['id']] = generate_report.generate_case_report(test_item, test_dir, date_time, mqtg)
-        gui_output("Done creating Report.\n")
+        while True:
+            # execute test
+            execute_test.execute_test(test_item, test_dir, mqtg, gui_output, gui_input)
+
+            # generate report
+            gui_output("Creating Test Report. This may take a second...")
+            test_results[test_item['id']] = generate_report.generate_case_report(test_item, test_dir, date_time, mqtg)
+            gui_output("Done creating Report.\n")
+
+            if gui_input("Do you want to continue with the next test (y) or repeat the current test (n) ? ").lower() == 'y':
+                break
+
 
     gui_output("Creating Full Report. This may take a second...")
     generate_report.create_test_report(test_results, directory_structure)
