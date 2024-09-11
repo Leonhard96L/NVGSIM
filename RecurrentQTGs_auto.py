@@ -833,8 +833,13 @@ def get_test_test_part_test_case(tests, test_id, part_id, case_id):
 
 def create_plots(QTG_path, part):
     
-    def plot_scale(y, y_Ref):
+    def plot_scale(y, y_Ref,factor):
         diff = abs(max(y)-max(y_Ref))
+        
+        if diff < 0 : diff = 1.1
+        
+        sc_fac = 20 +(5-20)/(5-1)*(diff-1)
+        return sc_fac
         
         
 
@@ -887,6 +892,7 @@ def create_plots(QTG_path, part):
             x[-1] = x[-2]
             y_Rec[-1] = y_Rec[-2]
             x_Rec[-1] = x_Rec[-2]
+            sc_fac = 1.5
                             
             if 'Yaw Angle Unwrapped' in para_file_dict[plot_title]:
                 y = [map360(i) for i in y]
@@ -948,15 +954,18 @@ def create_plots(QTG_path, part):
             elif 'Groundspeed' in para_file_dict[plot_title]:
                 y=[mps2kt(i) for i in y]
                 y_Rec=[mps2kt(i) for i in y_Rec]
+                sc_fac=plot_scale(y, y_Ref,0)
             elif 'Airspeed' in para_file_dict[plot_title]:
                 y=[mps2kt(i) for i in y]
                 y_Rec=[mps2kt(i) for i in y_Rec]
+                sc_fac=plot_scale(y, y_Ref,0)
             elif 'Barometric Altitude' in para_file_dict[plot_title]:
                 y=[m2ft(i) for i in y]
                 y_Rec=[m2ft(i) for i in y_Rec]
             elif 'Vertical' in para_file_dict[plot_title]:
                 y=[mps2fpm(-i) for i in y]
                 y_Rec=[mps2fpm(-i) for i in y_Rec]
+                sc_fac=plot_scale(y, y_Ref,0)
             elif 'Rotor' in para_file_dict[plot_title]:
                 y=[rpm2perc(i) for i in y]
                 y_Rec=[rpm2perc(i) for i in y_Rec]
@@ -983,7 +992,7 @@ def create_plots(QTG_path, part):
 
             
             ##Section for scale
-            sc_fac = 1.5
+            
             plt.autoscale()
             y_min, y_max = plt.ylim()
             y_range = y_max - y_min
@@ -1073,7 +1082,7 @@ if __name__ == "__main__":
     #Refernce_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\Reference_data_Init_flyout_V2'
     save_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\RecurrentQTG_save_auto'
     #Gib den Testnamen an
-    QTG_name = '1.f_A1'
+    QTG_name = '1.g_A1'
 
     test_id, part_id, case_id = split_string(QTG_name)
     test, part, case = get_test_test_part_test_case(qtg_data_structure.data['tests'], test_id, part_id, case_id)
@@ -1111,7 +1120,6 @@ if __name__ == "__main__":
     time.sleep(2)
     
     if issnapshot:
-        
         cyc_long_input, cyc_lat_input = TRIM_pilot_2(QTG_path,T,init_cond_ref_dict) 
 
 
@@ -1129,9 +1137,9 @@ if __name__ == "__main__":
     input_matrix, output_matrix = math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot)
 
     save_io_files(QTG_path, input_matrix, output_matrix, T)
-    create_comparison_table(QTG_path)
+    #create_comparison_table(QTG_path)
     create_plots(QTG_path,part)
-    create_report(QTG_path, 'Report.pdf')
+    #create_report(QTG_path, 'Report.pdf')
 
     
 
