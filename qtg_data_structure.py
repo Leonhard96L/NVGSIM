@@ -27,6 +27,17 @@ data = {
                         {'parameter': 'Engine 2 Torque', 'unit': '[%]', 'tolerance': '±5'},
                         {'parameter': 'Rotor Speed', 'unit': '[%]', 'tolerance': '±1.5'}
                     ],
+                    'add_plots' : [
+                        {'parameter': 'Airspeed', 'unit': '[kts]'},
+                        {'parameter': 'Vertical Velocity', 'unit': '[ft/min]'},
+                        {'parameter': 'Pitch Angle', 'unit': '[deg]'},
+                        {'parameter': 'Bank Angle', 'unit': '[deg]'},
+                        {'parameter': 'Heading', 'unit': '[deg]'},
+                        {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]'},
+                        {'parameter': 'Lateral Cyclic Pos.', 'unit': '[%]'},
+                        {'parameter': 'Pedals Pos.', 'unit': '[%]'},
+                        {'parameter': 'Collective Pos.', 'unit': '[%]'}
+                    ],
                     'test_cases': [
                         {
                             'id': 'A1',
@@ -118,6 +129,9 @@ data = {
                         {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': '±10'},
                         {'parameter': 'Collective Pos.', 'unit': '[%]', 'tolerance': '±10'}
                     ],
+                    'add_plots' : [
+                        {'parameter': 'Sideslip Angle', 'unit': '[deg]'}
+                    ],
                     'test_cases': [
                         {
                             'id': 'A1',
@@ -183,6 +197,9 @@ data = {
                         {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': '±10'},
                         {'parameter': 'Collective Pos.', 'unit': '[%]', 'tolerance': '±10'}
                     ],
+                    'add_plots' : [
+                        {'parameter': 'Sideslip Angle', 'unit': '[deg]'}
+                    ],
                     'test_cases': [
                         {
                             'id': 'A1',
@@ -238,6 +255,9 @@ data = {
                         {'parameter': 'Lateral Cyclic Pos.', 'unit': '[%]', 'tolerance': '±5'},
                         {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': '±5'},
                         {'parameter': 'Collective Pos.', 'unit': '[%]', 'tolerance': '±5'}
+                    ],
+                    'add_plots' : [
+                        {'parameter': 'Radar Altitude', 'unit': '[ft]'}
                     ],
                     'test_cases': [
                         {
@@ -474,6 +494,16 @@ data = {
                         {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': '±5'},
                         {'parameter': 'Collective Pos.', 'unit': '[%]', 'tolerance': '±5'}
                     ],
+                    'add_plots' : [
+                        {'parameter': 'Engine 1 Torque', 'unit': '[%]'},
+                        {'parameter': 'Engine 2 Torque', 'unit': '[%]'},
+                        {'parameter': 'Pitch Angle', 'unit': '[deg]'},
+                        {'parameter': 'Bank Angle', 'unit': '[deg]'},
+                        {'parameter': 'Heading', 'unit': '[deg]'},
+                        {'parameter': 'Groundspeed', 'unit': '[kts]'},
+                        {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]'},
+                        {'parameter': 'Lateral Cyclic Pos.', 'unit': '[%]'}
+                    ],
                     'test_cases': [
                         {
                             'id': 'A1',
@@ -556,6 +586,10 @@ data = {
                         {'parameter': 'Lateral Cyclic Pos.', 'unit': '[%]', 'tolerance': '±5'},
                         {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': '±5'},
                         {'parameter': 'Collective Pos.', 'unit': '[%]', 'tolerance': '±5'}
+                    ],
+                    'add_plots' : [
+                        {'parameter': 'Airspeed', 'unit': '[kts]'},
+                        {'parameter': 'Rotor Speed', 'unit': '[%]'}
                     ],
                     'test_cases': [
                         {
@@ -697,6 +731,12 @@ data = {
                         {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': '±5'},
                         {'parameter': 'Collective Pos.', 'unit': '[%]', 'tolerance': '±5'},
                         {'parameter': 'Airspeed', 'unit': '[kts]', 'tolerance': '±3'}
+                    ],
+                    'add_plots' : [
+                        {'parameter': 'Engine 1 Torque', 'unit': '[%]'},
+                        {'parameter': 'Engine 2 Torque', 'unit': '[%]'},
+                        {'parameter': 'Heading', 'unit': '[deg]'},
+                        {'parameter': 'Bank Angle', 'unit': '[deg]'}
                     ],
                     'test_cases': [
                         {
@@ -1007,6 +1047,13 @@ data = {
                         {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': '±5'},
                         {'parameter': 'Collective Pos.', 'unit': '[%]', 'tolerance': '±5'}
                     ],
+                    'add_plots' : [
+                        {'parameter': 'Airspeed', 'unit': '[kts]'},
+                        {'parameter': 'Pitch Angle', 'unit': '[deg]'},
+                        {'parameter': 'Bank Angle', 'unit': '[deg]'},
+                        {'parameter': 'Heading', 'unit': '[deg]'},
+                        {'parameter': 'Vertical Velocity', 'unit': '[ft/min]'}
+                    ],
                     'test_cases': [
                         {
                             'id': 'A1',
@@ -1100,6 +1147,10 @@ data = {
                         {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': '±10'},
                         {'parameter': 'Collective Pos.', 'unit': '[%]', 'tolerance': '±10'}
                     ],
+                    'add_plots' : [
+                        {'parameter': 'Sideslip Angle', 'unit': '[deg]'},
+                        {'parameter': 'Vertical Velocity', 'unit': '[ft/min]'}
+                    ],
                     'test_cases': [
                         {
                             'id': 'A1',
@@ -1167,6 +1218,10 @@ data = {
                         {'parameter': 'Lateral Cyclic Pos.', 'unit': '[%]', 'tolerance': '±10'},
                         {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': '±10'},
                         {'parameter': 'Collective Pos.', 'unit': '[%]', 'tolerance': '±10'}
+                    ],
+                    'add_plots' : [
+                        {'parameter': 'Sideslip Angle', 'unit': '[deg]'},
+                        {'parameter': 'Vertical Velocity', 'unit': '[ft/min]'}
                     ],
                     'test_cases': [
                         {
@@ -1258,6 +1313,9 @@ data = {
                     'tolerances_recurrent_criteria': [
                         {'parameter': 'Breakout', 'unit': '[daN]', 'tolerance': '±0.112'},
                         {'parameter': 'Force', 'unit': '[daN]', 'tolerance': '±0.224'}
+                    ],
+                    'add_plots' : [
+                        {'parameter': 'Dummy'}
                     ],
                     'test_cases': [
                         {
@@ -1513,6 +1571,19 @@ data = {
                     ],
         		    'tolerances_recurrent_criteria': [
                         {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]', 'tolerance': '±10'}
+                    ],
+                    'add_plots' : [
+                        {'parameter': 'Airspeed', 'unit': '[kts]'},
+                        {'parameter': 'Pitch Angle', 'unit': '[deg]'},
+                        {'parameter': 'Bank Angle', 'unit': '[deg]'},
+                        {'parameter': 'Heading', 'unit': '[deg]'},
+                        {'parameter': 'Engine 1 Torque', 'unit': '[%]'},
+                        {'parameter': 'Engine 2 Torque', 'unit': '[%]'},
+                        {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]'},
+                        {'parameter': 'Lateral Cyclic Pos.', 'unit': '[%]'},
+                        {'parameter': 'Pedals Pos.', 'unit': '[%]'},
+                        {'parameter': 'Collective Pos.', 'unit': '[%]'},
+                        {'parameter': 'Rotor Speed', 'unit': '[%]'}
                     ],
                     'test_cases': [
                         {
@@ -1852,6 +1923,20 @@ data = {
         		    'tolerances_recurrent_criteria': [
                             {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]', 'tolerance': '±10'}
                     ],
+                    'add_plots' : [
+                        {'parameter': 'Airspeed', 'unit': '[kts]'},
+                        {'parameter': 'Pitch Angle', 'unit': '[deg]'},
+                        {'parameter': 'Bank Angle', 'unit': '[deg]'},
+                        {'parameter': 'Heading', 'unit': '[deg]'},
+                        {'parameter': 'Engine 1 Torque', 'unit': '[%]'},
+                        {'parameter': 'Engine 2 Torque', 'unit': '[%]'},
+                        {'parameter': 'Rotor Speed', 'unit': '[%]'},
+                        {'parameter': 'Sideslip Angle', 'unit': '[deg]'},
+                        {'parameter': 'Vertical Velocity', 'unit': '[ft/min]'},
+                        {'parameter': 'Lateral Cyclic Pos.', 'unit': '[%]'},
+                        {'parameter': 'Pedals Pos.', 'unit': '[%]'},
+                        {'parameter': 'Collective Pos.', 'unit': '[%]'}
+                    ],
                     'test_cases': [
                         {
                             'id': 'A1',
@@ -2185,6 +2270,16 @@ data = {
                         {'parameter': 'Lateral Cyclic Pos.', 'unit': '[%]', 'tolerance': '±10'},
                         {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': '±10'}
                     ],
+                    'add_plots' : [
+                        {'parameter': 'Airspeed', 'unit': '[kts]'},
+                        {'parameter': 'Pitch Angle', 'unit': '[deg]'},
+                        {'parameter': 'Heading', 'unit': '[deg]'},
+                        {'parameter': 'Engine 1 Torque', 'unit': '[%]'},
+                        {'parameter': 'Engine 2 Torque', 'unit': '[%]'},
+                        {'parameter': 'Sideslip Angle', 'unit': '[deg]'},
+                        {'parameter': 'Pedals Pos.', 'unit': '[%]'},
+                        {'parameter': 'Collective Pos.', 'unit': '[%]'}
+                    ],
                     'test_cases': [
                         {
                             'id': 'A1',
@@ -2350,23 +2445,48 @@ data = {
                     'main_title': 'Dynamic Lateral and Directional Stability',
                     'test_title': 'Lateral-Directional Oscillations',
                     'objective': 'The objective of this test is to demonstrate that the FSTD dynamic lateral-directional stability (oscillations) is compliant with the reference data.',
+# =============================================================================
+#                     'tolerances_evaluation_criteria': [
+#                         {'parameter': 'Calculated period', 'unit': '[%]', 'tolerance': 'CT&M'},
+#                         {'parameter': 'Time to 1/2 amplitude', 'unit': '[%]', 'tolerance': 'CT&M'},
+#                         {'parameter': 'or Time to Double amplitude', 'unit': '[%]', 'tolerance': 'CT&M'},
+#                         {'parameter': 'or Damping Ratio', 'unit': '[%]', 'tolerance': 'CT&M'},
+#                         {'parameter': 'Time difference between peaks of Bank and Sideslip', 'unit': '[s]',
+#                          'tolerance': 'CT&M'},
+#                         {'parameter': 'Non-periodic response', 'unit': '[-]', 'tolerance': 'Time history'}
+#                     ],
+#         		    'tolerances_recurrent_criteria': [
+#                         {'parameter': 'Calculated period', 'unit': '[%]', 'tolerance': '±10'},
+#                         {'parameter': 'Time to 1/2 amplitude', 'unit': '[%]', 'tolerance': '±10'},
+#                         {'parameter': 'or Time to Double amplitude', 'unit': '[%]', 'tolerance': '±10'},
+#                         {'parameter': 'or Damping Ratio', 'unit': '[%]', 'tolerance': '±10'},
+#                         {'parameter': 'Time difference between peaks of Bank and Sideslip', 'unit': '[s]',
+#                          'tolerance': '±1'},
+#                         {'parameter': 'Non-periodic response', 'unit': '[-]', 'tolerance': 'Time history'}
+#                     ],
+# =============================================================================
                     'tolerances_evaluation_criteria': [
-                        {'parameter': 'Calculated period', 'unit': '[%]', 'tolerance': 'CT&M'},
-                        {'parameter': 'Time to 1/2 amplitude', 'unit': '[%]', 'tolerance': 'CT&M'},
-                        {'parameter': 'or Time to Double amplitude', 'unit': '[%]', 'tolerance': 'CT&M'},
-                        {'parameter': 'or Damping Ratio', 'unit': '[%]', 'tolerance': 'CT&M'},
-                        {'parameter': 'Time difference between peaks of Bank and Sideslip', 'unit': '[s]',
-                         'tolerance': 'CT&M'},
-                        {'parameter': 'Non-periodic response', 'unit': '[-]', 'tolerance': 'Time history'}
+                        {'parameter': 'Airspeed', 'unit': '[kts]', 'tolerance': 'CT&M'},
+                        {'parameter': 'Roll Rate', 'unit': '[deg/s]', 'tolerance': 'CT&M'},
+                        {'parameter': 'Yaw Rate', 'unit': '[deg/s]', 'tolerance': 'CT&M'}
                     ],
-        		    'tolerances_recurrent_criteria': [
-                        {'parameter': 'Calculated period', 'unit': '[%]', 'tolerance': '±10'},
-                        {'parameter': 'Time to 1/2 amplitude', 'unit': '[%]', 'tolerance': '±10'},
-                        {'parameter': 'or Time to Double amplitude', 'unit': '[%]', 'tolerance': '±10'},
-                        {'parameter': 'or Damping Ratio', 'unit': '[%]', 'tolerance': '±10'},
-                        {'parameter': 'Time difference between peaks of Bank and Sideslip', 'unit': '[s]',
-                         'tolerance': '±1'},
-                        {'parameter': 'Non-periodic response', 'unit': '[-]', 'tolerance': 'Time history'}
+		            'tolerances_recurrent_criteria': [
+                        {'parameter': 'Airspeed', 'unit': '[kts]', 'tolerance': '±10'},
+                        {'parameter': 'Roll Rate', 'unit': '[deg/s]', 'tolerance': '±5'},
+                        {'parameter': 'Yaw Rate', 'unit': '[deg/s]', 'tolerance': '±4'}
+                    ],
+                    'add_plots' : [
+                        {'parameter': 'Pitch Angle', 'unit': '[deg]'},
+                        {'parameter': 'Bank Angle', 'unit': '[deg]'},
+                        {'parameter': 'Heading', 'unit': '[deg]'},
+                        {'parameter': 'Pitch Rate', 'unit': '[deg/s]'},
+                        {'parameter': 'Engine 1 Torque', 'unit': '[%]'},
+                        {'parameter': 'Engine 2 Torque', 'unit': '[%]'},
+                        {'parameter': 'Sideslip Angle', 'unit': '[deg]'},
+                        {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]'},
+                        {'parameter': 'Lateral Cyclic Pos.', 'unit': '[%]'},
+                        {'parameter': 'Pedals Pos.', 'unit': '[%]'},
+                        {'parameter': 'Collective Pos.', 'unit': '[%]'}
                     ],
                     'test_cases': [
                         {
@@ -2486,6 +2606,22 @@ data = {
                     ],
                     'tolerances_recurrent_criteria': [
                         {'parameter': 'Correct Trend on Bank', 'unit': '[deg]', 'tolerance': '±2'}
+                    ],
+                    'add_plots' : [
+                        {'parameter': 'Airspeed', 'unit': '[kts]'},
+                        {'parameter': 'Heading', 'unit': '[deg]'},
+                        {'parameter': 'Sideslip Angle', 'unit': '[deg]'},
+                        {'parameter': 'Pitch Angle', 'unit': '[deg]'},
+                        {'parameter': 'Pitch Rate', 'unit': '[deg/s]'},
+                        {'parameter': 'Roll Rate', 'unit': '[deg/s]'},
+                        {'parameter': 'Yaw Rate', 'unit': '[deg/s]'},
+                        {'parameter': 'Engine 1 Torque', 'unit': '[%]'},
+                        {'parameter': 'Engine 2 Torque', 'unit': '[%]'},
+                        {'parameter': 'Vertical Velocity', 'unit': '[ft/min]'},                      
+                        {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]'},
+                        {'parameter': 'Lateral Cyclic Pos.', 'unit': '[%]'},
+                        {'parameter': 'Pedals Pos.', 'unit': '[%]'},
+                        {'parameter': 'Collective Pos.', 'unit': '[%]'}
                     ],
                     'test_cases': [
                         {
