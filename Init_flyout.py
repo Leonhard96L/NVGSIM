@@ -28,14 +28,18 @@ sys.path.append(os.path.join(dsim_root_directory, "entity/multisim/simulation/sd
 import DSim
 import ctypes
 
+import qtg_data_structure
+
 import numpy as np
+
+
 
 import time
 from datetime import datetime
 
 from function_lib import units_conversion, GW_map, CG_x_map, ft2m, map360, map_control, pitch_brun2N, pitch_brun2angle, \
     roll_brun2N, roll_brun2angle, coll_brun2N, coll_brun2angle, yaw_brun2angle, ATRIM_calc, mps2kt, m2ft, mps2fpm, \
-    rpm2perc, inv_map_control
+    rpm2perc, inv_map_control, split_string
 
 
 # get more accurate timer (using windows multimedia dll)
@@ -613,132 +617,351 @@ def create_report(QTG_path, report_file):
     pdf_merger.close()
 
 
-def create_plots(QTG_path):
-    for dirpath, dirnames, filenames in os.walk(QTG_path):
-        for file in filenames:
-            if not file.endswith('.sim'):
-                continue
+# Function to get the test and the specific test part
+def get_test_test_part_test_case(tests, test_id, part_id, case_id):
+    # Find the test with the given id
+    test = next((test for test in tests if test['id'] == test_id), None)
+    if test:
+        # Find the test part with the given id within the found test
+        test_part = next((part for part in test['test_parts'] if part['id'] == part_id), None)
+        if test_part:
+            test_case = next((case for case in test_part['test_cases'] if case['id'] == case_id), None)
+            return test, test_part, test_case
+    return None, None, None
 
-            file_path = os.path.join(dirpath, file)
 
-            with open(file_path, 'r') as json_file:
-                data = json.load(json_file)
-            if 'FTD1' in data.keys():
-                plot_title = file.split('.')[0]
+def create_plots(QTG_path, part):
+    
+    def plot_cases(data,compare_name,sc_fac):
+        if 'FTD1' in data.keys():
+            x_Ref = data['Storage'][0]['x']
+            y_Ref = data['Storage'][0]['y']
+            x = data['FTD1']['x']
+            y = data['FTD1']['y']
+      
+        
+            y[-1] = y[-2]
+            x[-1] = x[-2]
 
-                x_Ref = data['Storage'][0]['x']
-                y_Ref = data['Storage'][0]['y']
-                x = data['FTD1']['x']
-                y = data['FTD1']['y']
+            
+                            
+            if 'Yaw Angle Unwrapped' in para_file_dict[plot_title]:
+                y = [map360(i) for i in y]
+            elif 'Roll Angle' in para_file_dict[plot_title]:
+                y=np.rad2deg(y)
+            elif 'Pitch Angle' in para_file_dict[plot_title]:
+                y=np.rad2deg(y)
+            elif 'Angle of Sideslip' in para_file_dict[plot_title]:
+                y=np.rad2deg(y)
+            elif 'Angle Rate' in para_file_dict[plot_title]:
+                y=np.rad2deg(y)
+            elif 'Control Position Pitch' in para_file_dict[plot_title]: #Pitch position Signal ist bei der Referenz invertiert
+                y=[map_control(-i) for i in y]
+            elif 'Control Position Collective' in para_file_dict[plot_title]:
+                y=[map_control(i) for i in y]
+            elif 'Control Position Roll' in para_file_dict[plot_title]:
+                y=[map_control(i) for i in y]
+            elif 'Control Position Yaw' in para_file_dict[plot_title]:
+                y=[map_control(i) for i in y]              
+            elif 'Control QTG Force Pitch' in compare_name:
+                y = [pitch_brun2N(i) for i in y]
+                x = [pitch_brun2angle(i) for i in x] 
+                sc_fac = 0.5
+            elif 'Control QTG Force Roll' in compare_name:
+                y = [roll_brun2N(i) for i in y]
+                x = [roll_brun2angle(i) for i in x]
+                sc_fac = 0.5
+            elif 'Control QTG Force Collective' in compare_name:
+                y = [coll_brun2N(i) for i in y]
+                x = [coll_brun2angle(i) for i in x]
+                sc_fac = 0.5
+            elif 'Control QTG Force Yaw' in compare_name:
+                x = [yaw_brun2angle(i) for i in x]
+                y = [i*-1000 for i in y]
+                sc_fac = 0.5
+            elif 'Control QTG Position Pitch Velocity' in para_file_dict[plot_title]:
+                y = [pitch_brun2angle(i) for i in y]
+                y,x = ATRIM_calc(x, y)
+            elif 'Control QTG Position Roll Velocity' in para_file_dict[plot_title]:
+                y = [coll_brun2angle(i) for i in y]
+                y,x = ATRIM_calc(x, y)
+            elif 'Groundspeed' in para_file_dict[plot_title]:
+                y=[mps2kt(i) for i in y]
+            elif 'Airspeed' in para_file_dict[plot_title]:
+                y=[mps2kt(i) for i in y]
+                sc_fac = 3
+            elif 'Barometric Altitude' in para_file_dict[plot_title]:
+                y=[m2ft(i) for i in y]
+            elif 'Vertical' in para_file_dict[plot_title]:
+                y=[mps2fpm(-i) for i in y]
+                sc_fac = 3
+            elif 'Rotor' in para_file_dict[plot_title]:
+                y=[rpm2perc(i) for i in y]
+            else:
+                y_label = plot_title +' (??)'
+                pdfname = f"{plot_title}.svg"
+        return x,y,x_Ref,y_Ref, sc_fac
+    
+    
+    params = part['tolerances_evaluation_criteria']
 
-                y[-1] = y[-2]
-                x[-1] = x[-2]
-                x_label = 'Time(s)'
+    
 
-                # Korrektur mit richitgen Einheiten
-                plt.figure(figsize=(10, 6))
-                if 'Angle' in plot_title:
-                    pdfname = f"7_{plot_title}.svg"
-                    y = np.rad2deg(y)
-                    y_label = plot_title + ' (deg)'
-                    if 'Angle Rate' in plot_title:
-                        pdfname = f"9_{plot_title}.svg"
-                        y_label = plot_title + ' (deg/s)'
-                    if 'Yaw Angle Unwrapped' in plot_title:
-                        y = [map360(i) for i in y]
-                        plot_title = 'Heading'
-                        pdfname = f"7_{plot_title}.svg"
-                        y_label = plot_title + ' (deg)'
-                elif 'Control Position' in plot_title:
-                    if 'Control Position Pitch' in plot_title:  # Pitch position Signal ist bei der Referenz invertiert
-                        y = [i * -1 for i in y]
-                    pdfname = f"8_{plot_title}.svg"
-                    y = [map_control(i) for i in y]
-                    y_label = plot_title + ' (%)'
-                elif 'TRQ' in plot_title:
-                    pdfname = f"5_{plot_title}.svg"
-                    y_label = plot_title + ' (%)'
-                elif 'Control QTG Force Pitch' in plot_title:
-                    y = [pitch_brun2N(i) for i in y]
-                    x = [pitch_brun2angle(i) for i in x]
-                    pdfname = f"10_{plot_title}.svg"
-                    y_label = 'Force Pitch (N)'
-                    x_label = 'Position (deg)'
-                elif 'Control QTG Force Roll' in plot_title:
-                    y = [roll_brun2N(i) for i in y]
-                    x = [roll_brun2angle(i) for i in x]
-                    pdfname = f"10_{plot_title}.svg"
-                    y_label = 'Force Roll (N)'
-                    x_label = 'Position (deg)'
-                elif 'Control QTG Force Collective' in plot_title:
-                    y = [coll_brun2N(i) for i in y]
-                    x = [coll_brun2angle(i) for i in x]
-                    pdfname = f"10_{plot_title}.svg"
-                    y_label = 'Force Collective (N)'
-                    x_label = 'Position (deg)'
-                elif 'Control QTG Force Yaw' in plot_title:
-                    x = [yaw_brun2angle(i) for i in x]
-                    y = [i * -1000 for i in y]
-                    pdfname = f"10_{plot_title}.svg"
-                    y_label = 'Force Yaw (N)'
-                    x_label = 'Position (deg)'
-                elif 'Control QTG Position Pitch Velocity' in plot_title:
-                    y = [pitch_brun2angle(i) for i in y]
-                    y, x = ATRIM_calc(x, y)
-                    pdfname = f"11_{plot_title}.svg"
-                    y_label = 'Long. Cyclic Pos. Rate (deg/s)'
-                elif 'Control QTG Position Roll Velocity' in plot_title:
-                    y = [roll_brun2angle(i) for i in y]
-                    y, x = ATRIM_calc(x, y)
-                    pdfname = f"11_{plot_title}.svg"
-                    y_label = 'Lat. Cyclic Pos. Rate (deg/s)'
-                elif 'Groundspeed' in plot_title:
-                    pdfname = f"2_{plot_title}.svg"
-                    y = [mps2kt(i) for i in y]
-                    y_label = plot_title + ' (kt)'
-                elif 'Airspeed' in plot_title:
-                    pdfname = f"1_{plot_title}.svg"
-                    y = [mps2kt(i) for i in y]
-                    y_label = plot_title + ' (kt)'
-                elif 'RadarAltitude' in plot_title:
-                    pdfname = f"3_{plot_title}.svg"
-                    y_label = plot_title + ' (ft)'
-                elif 'Barometric Altitude' in plot_title:
-                    pdfname = f"3_{plot_title}.svg"
-                    y = [m2ft(i) for i in y]
-                    y_label = plot_title + ' (ft)'
-                elif 'Vertical' in plot_title:
-                    pdfname = f"4_{plot_title}.svg"
-                    y = [mps2fpm(-i) for i in y]
-                    y_label = plot_title + ' (ft/min)'
-                elif 'Rotor' in plot_title:
-                    pdfname = f"6_{plot_title}.svg"
-                    y = [rpm2perc(i) for i in y]
-                    y_label = plot_title + ' (%)'
-                else:
-                    y_label = plot_title + ' (??)'
-                    pdfname = f"{plot_title}.svg"
+    para_file_dict = {
+        'Engine 1 Torque':'Engine1 TRQ Indicated',
+        'Engine 2 Torque':'Engine2 TRQ Indicated',
+        'Rotor Speed' : 'Rotor RPM',
+        'Pitch Angle' : 'Pitch Angle',
+        'Bank Angle' : 'Roll Angle',
+        'Heading' : 'Yaw Angle Unwrapped',
+        'Sideslip Angle' : 'Angle of Sideslip',
+        'Airspeed' : 'Indicated Airspeed',
+        'Radar Altitude' : 'RadarAltitude',
+        'Vertical Velocity' : 'Vertical Speed',
+        'Longitudinal Cyclic Pos.' : 'Control Position Pitch',
+        'Lateral Cyclic Pos.' : 'Control Position Roll',
+        'Pedals Pos.' : 'Control Position Yaw',
+        'Collective Pos.' : 'Control Position Collective',
+        'Pitch Rate' : 'Pitch Angle Rate',
+        'Roll Rate' : 'Roll Angle Rate' ,
+        'Yaw Rate' : 'Yaw Angle Rate',
+        'Pressure Altitude' : 'Barometric Altitude',
+        'Groundspeed':'Groundspeed',
+        'Correct Trend on Bank' : 'Roll Angle',
+        'Dummy' : None,
+        'Force' : 'Control QTG Force',
+        'Breakout' : None
+    }
+    
+    
+    for count,param in enumerate(params):
+        count = count+1
+        plot_title = param['parameter']
+        if para_file_dict[plot_title] == None:
+            continue
+        for dirpath, dirnames, filenames in os.walk(QTG_path):     
+            for file in filenames:
+                if para_file_dict[plot_title] in file.split('.')[0]  and file.endswith('.sim'):
+                    file_path = os.path.join(dirpath, file)
+                    compare_name = file.split('.')[0]
+                    break
+                
+        with open(file_path, 'r') as json_file:
+            data = json.load(json_file)
+            
+            sc_fac = 1.5
+            x,y,x_Ref,y_Ref, sc_fac=plot_cases(data,compare_name,sc_fac)
+            
+            x_label = 'Time(s)'
 
-                plt.plot(x_Ref, y_Ref, label='Reference')
-                plt.plot(x, y, label='FTD1')
-                ##Section for scale
-                sc_fac = 2.5
-                plt.autoscale()
-                y_min, y_max = plt.ylim()
-                y_range = y_max - y_min
-                plt.ylim(y_min - y_range * sc_fac, y_max + y_range * sc_fac)
+            
+            pdfname = f"{count}_{plot_title}.svg"
+            y_label = plot_title +' '+ param['unit']
 
-                plt.xlabel(x_label)
-                plt.ylabel(y_label)
-                plt.title(plot_title)
-                plt.legend()
-                plt.grid(True)
-                # plt.show()
-                save_path = os.path.join(dirpath, pdfname)
+            plt.figure(figsize=(10, 6))
 
-                plt.savefig(save_path, format='png')
-                plt.close()
-                print(plot_title + '.svg created')
+            
+            plt.plot(x_Ref, y_Ref, label='Reference')
+            plt.plot(x, y, label='FTD1_MQTG')
+
+            
+            ##Section for scale
+            
+            plt.autoscale()
+            y_min, y_max = plt.ylim()
+            y_range = y_max - y_min
+            plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
+
+            plt.xlabel(x_label)
+            plt.ylabel(y_label)
+            plt.title(plot_title)
+            plt.legend()
+            plt.grid(True)
+            #plt.show() 
+            save_path = os.path.join(dirpath, pdfname)
+            
+            plt.savefig(save_path, format='svg')
+            plt.close()
+
+
+    params_add = part['add_plots']
+
+    for count_add,param_add in enumerate(params_add):
+        count_add = count_add+count+1
+        plot_title = param_add['parameter']
+        if para_file_dict[plot_title] == None:
+            break
+        for dirpath, dirnames, filenames in os.walk(QTG_path):     
+            for file in filenames:
+                if para_file_dict[plot_title] in file.split('.')[0]  and file.endswith('.sim'):
+                    file_path = os.path.join(dirpath, file)
+                    compare_name = file.split('.')[0]
+                    break
+        
+        with open(file_path, 'r') as json_file:
+            data = json.load(json_file)
+            sc_fac = 1.5
+            x,y,x_Ref,y_Ref, sc_fac=plot_cases(data,compare_name,sc_fac)
+            
+            x_label = 'Time(s)'
+            
+
+            pdfname = f"{count_add}_{plot_title}.svg"
+            y_label = plot_title +' '+ param['unit']
+
+            plt.figure(figsize=(10, 6))
+            plt.plot(x_Ref, y_Ref, label='Reference')
+            plt.plot(x, y, label='Additional', color='green', linestyle='dashed')
+
+            
+            ##Section for scale
+
+            plt.autoscale()
+            y_min, y_max = plt.ylim()
+            y_range = y_max - y_min
+            plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
+
+            plt.xlabel(x_label)
+            plt.ylabel(y_label)
+            plt.title(plot_title)
+            plt.legend()
+            plt.grid(True)
+            #plt.show() 
+            save_path = os.path.join(dirpath, pdfname)
+            
+            plt.savefig(save_path, format='svg')
+            plt.close()
+
+
+
+# =============================================================================
+# def create_plots(QTG_path):
+#     for dirpath, dirnames, filenames in os.walk(QTG_path):
+#         for file in filenames:
+#             if not file.endswith('.sim'):
+#                 continue
+# 
+#             file_path = os.path.join(dirpath, file)
+# 
+#             with open(file_path, 'r') as json_file:
+#                 data = json.load(json_file)
+#             if 'FTD1' in data.keys():
+#                 plot_title = file.split('.')[0]
+# 
+#                 x_Ref = data['Storage'][0]['x']
+#                 y_Ref = data['Storage'][0]['y']
+#                 x = data['FTD1']['x']
+#                 y = data['FTD1']['y']
+# 
+#                 y[-1] = y[-2]
+#                 x[-1] = x[-2]
+#                 x_label = 'Time(s)'
+# 
+#                 # Korrektur mit richitgen Einheiten
+#                 plt.figure(figsize=(10, 6))
+#                 if 'Angle' in plot_title:
+#                     pdfname = f"7_{plot_title}.svg"
+#                     y = np.rad2deg(y)
+#                     y_label = plot_title + ' (deg)'
+#                     if 'Angle Rate' in plot_title:
+#                         pdfname = f"9_{plot_title}.svg"
+#                         y_label = plot_title + ' (deg/s)'
+#                     if 'Yaw Angle Unwrapped' in plot_title:
+#                         y = [map360(i) for i in y]
+#                         plot_title = 'Heading'
+#                         pdfname = f"7_{plot_title}.svg"
+#                         y_label = plot_title + ' (deg)'
+#                 elif 'Control Position' in plot_title:
+#                     if 'Control Position Pitch' in plot_title:  # Pitch position Signal ist bei der Referenz invertiert
+#                         y = [i * -1 for i in y]
+#                     pdfname = f"8_{plot_title}.svg"
+#                     y = [map_control(i) for i in y]
+#                     y_label = plot_title + ' (%)'
+#                 elif 'TRQ' in plot_title:
+#                     pdfname = f"5_{plot_title}.svg"
+#                     y_label = plot_title + ' (%)'
+#                 elif 'Control QTG Force Pitch' in plot_title:
+#                     y = [pitch_brun2N(i) for i in y]
+#                     x = [pitch_brun2angle(i) for i in x]
+#                     pdfname = f"10_{plot_title}.svg"
+#                     y_label = 'Force Pitch (N)'
+#                     x_label = 'Position (deg)'
+#                 elif 'Control QTG Force Roll' in plot_title:
+#                     y = [roll_brun2N(i) for i in y]
+#                     x = [roll_brun2angle(i) for i in x]
+#                     pdfname = f"10_{plot_title}.svg"
+#                     y_label = 'Force Roll (N)'
+#                     x_label = 'Position (deg)'
+#                 elif 'Control QTG Force Collective' in plot_title:
+#                     y = [coll_brun2N(i) for i in y]
+#                     x = [coll_brun2angle(i) for i in x]
+#                     pdfname = f"10_{plot_title}.svg"
+#                     y_label = 'Force Collective (N)'
+#                     x_label = 'Position (deg)'
+#                 elif 'Control QTG Force Yaw' in plot_title:
+#                     x = [yaw_brun2angle(i) for i in x]
+#                     y = [i * -1000 for i in y]
+#                     pdfname = f"10_{plot_title}.svg"
+#                     y_label = 'Force Yaw (N)'
+#                     x_label = 'Position (deg)'
+#                 elif 'Control QTG Position Pitch Velocity' in plot_title:
+#                     y = [pitch_brun2angle(i) for i in y]
+#                     y, x = ATRIM_calc(x, y)
+#                     pdfname = f"11_{plot_title}.svg"
+#                     y_label = 'Long. Cyclic Pos. Rate (deg/s)'
+#                 elif 'Control QTG Position Roll Velocity' in plot_title:
+#                     y = [roll_brun2angle(i) for i in y]
+#                     y, x = ATRIM_calc(x, y)
+#                     pdfname = f"11_{plot_title}.svg"
+#                     y_label = 'Lat. Cyclic Pos. Rate (deg/s)'
+#                 elif 'Groundspeed' in plot_title:
+#                     pdfname = f"2_{plot_title}.svg"
+#                     y = [mps2kt(i) for i in y]
+#                     y_label = plot_title + ' (kt)'
+#                 elif 'Airspeed' in plot_title:
+#                     pdfname = f"1_{plot_title}.svg"
+#                     y = [mps2kt(i) for i in y]
+#                     y_label = plot_title + ' (kt)'
+#                 elif 'RadarAltitude' in plot_title:
+#                     pdfname = f"3_{plot_title}.svg"
+#                     y_label = plot_title + ' (ft)'
+#                 elif 'Barometric Altitude' in plot_title:
+#                     pdfname = f"3_{plot_title}.svg"
+#                     y = [m2ft(i) for i in y]
+#                     y_label = plot_title + ' (ft)'
+#                 elif 'Vertical' in plot_title:
+#                     pdfname = f"4_{plot_title}.svg"
+#                     y = [mps2fpm(-i) for i in y]
+#                     y_label = plot_title + ' (ft/min)'
+#                 elif 'Rotor' in plot_title:
+#                     pdfname = f"6_{plot_title}.svg"
+#                     y = [rpm2perc(i) for i in y]
+#                     y_label = plot_title + ' (%)'
+#                 else:
+#                     y_label = plot_title + ' (??)'
+#                     pdfname = f"{plot_title}.svg"
+# 
+#                 plt.plot(x_Ref, y_Ref, label='Reference')
+#                 plt.plot(x, y, label='FTD1')
+#                 ##Section for scale
+#                 sc_fac = 2.5
+#                 plt.autoscale()
+#                 y_min, y_max = plt.ylim()
+#                 y_range = y_max - y_min
+#                 plt.ylim(y_min - y_range * sc_fac, y_max + y_range * sc_fac)
+# 
+#                 plt.xlabel(x_label)
+#                 plt.ylabel(y_label)
+#                 plt.title(plot_title)
+#                 plt.legend()
+#                 plt.grid(True)
+#                 # plt.show()
+#                 save_path = os.path.join(dirpath, pdfname)
+# 
+#                 plt.savefig(save_path, format='png')
+#                 plt.close()
+#                 print(plot_title + '.svg created')
+# =============================================================================
 
 
 def create_comparison_table(QTG_path):
@@ -796,22 +1019,21 @@ def create_comparison_table(QTG_path):
 
 
 def main(test_item, test_dir, gui_output, gui_input):
-    #ref_dir = folder 
-
-    #QTG_name = test_item.id
-    
-    QTG_path = test_dir
-    
-
-    #Refernce_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\Reference_data_Init_flyout_V3'
-    
     brunner_task = DSim.Variable.Enum(DSim.Node(dsim_host,"host/sim1-model/entity/as532_1/task/io_brunner_cls/mode"))
     brunner_task.write(TASK_MODE.FORCE_RUN)
-    # Gib den Testnamen an
-    #QTG_name = '1.g_A3'
 
-    # Pfad der Referenzdaten und der Speicherdaten, des jeweiligen QTGs
-    #QTG_path = get_QTG_path(QTG_name, Refernce_data_path)
+
+    QTG_path = test_dir
+    
+    QTG_name = test_item['id']
+
+    test_id, part_id, case_id = split_string(QTG_name)
+    test, part, case = get_test_test_part_test_case(qtg_data_structure.data['tests'], test_id, part_id, case_id)
+
+    
+
+
+
     # Zeitdauer des Tests
     T = get_QTG_time(QTG_path)
 
@@ -836,7 +1058,7 @@ def main(test_item, test_dir, gui_output, gui_input):
 
     save_io_files(QTG_path, input_matrix, output_matrix, force_matrix, T)
     #create_comparison_table(QTG_path)
-    create_plots(QTG_path)
+    create_plots(QTG_path, part)
     #create_report(QTG_path, 'Report.pdf')
 
     set_standard_cond()
