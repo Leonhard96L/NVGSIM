@@ -43,7 +43,7 @@ winmm.timeBeginPeriod(1)
 # host definition
 dsim_host = DSim.Entity("sim1")
 # entity definition
-dsim_entity   = DSim.Entity("as532_1")
+dsim_entity   = DSim.Entity("ec135_1")
 
 dworld_entity = DSim.Entity("world")
 # control simulation mode in D-SIM
@@ -155,7 +155,7 @@ environment_weather_layer_1_wind_speed = DSim.Variable.Double(DSim.Node(dworld_e
 environment_weather_layer_1_top = DSim.Variable.Double(DSim.Node(dworld_entity,"environment/weather/layer/1/top"))
 
 def CLS(inp):
-    brunner_task = DSim.Variable.Enum(DSim.Node(dsim_host,"host/sim1-model/entity/as532_1/task/io_brunner_cls/mode"))
+    brunner_task = DSim.Variable.Enum(DSim.Node(dsim_host,"host/sim1-model/entity/ec135_1/task/io_brunner_cls/mode"))
     if inp == 'S':
         brunner_task.write(TASK_MODE.FORCE_STOP) 
     elif inp == 'R':
@@ -359,8 +359,8 @@ def log_flyout_input_output(T, gui_output):
         #Read control forces
         force_response_pitch_roll = sendThenReceive(query_readforce_pitch_roll, remoteEndpoint, sock)
         force_response_yaw_coll = sendThenReceive(query_readforce_yaw_coll, remoteEndpoint, sock)
-        length, status, node_pitch, force_pitch, node_roll, force_roll = struct.unpack('<HBHfHf', force_response_pitch_roll)
-        length, status, node_yaw, force_yaw, node_coll, force_coll = struct.unpack('<HBHfHf', force_response_yaw_coll)
+        length, status, node_pitch, force_pitch, node_roll, force_roll = struct.unpack('<HBHfHf', force_response_pitch_roll[0:15])
+        length, status, node_yaw, force_yaw, node_coll, force_coll = struct.unpack('<HBHfHf', force_response_yaw_coll[0:15])
         force_matrix[i,INPUT.CYCLIC_LONGITUDINAL] = number_format.format(force_pitch)
         force_matrix[i,INPUT.CYCLIC_LATERAL] = number_format.format(force_roll)
         force_matrix[i,INPUT.PEDALS] = number_format.format(force_yaw)    
@@ -1268,7 +1268,7 @@ def create_comparison_table(QTG_path):
 
 
 def main(test_item, test_dir, gui_output, gui_input):
-    brunner_task = DSim.Variable.Enum(DSim.Node(dsim_host,"host/sim1-model/entity/as532_1/task/io_brunner_cls/mode"))
+    brunner_task = DSim.Variable.Enum(DSim.Node(dsim_host,"host/sim1-model/entity/ec135_1/task/io_brunner_cls/mode"))
     brunner_task.write(TASK_MODE.FORCE_RUN)
 
     #save_data_path = r'D:\entity\rotorsky\as532\resources\MQTG_Comparison_with_MQTG_FTD3\RecurrentQTG_save_manu'

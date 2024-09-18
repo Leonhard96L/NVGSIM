@@ -48,11 +48,13 @@ winmm.timeBeginPeriod(1)
 # host definition
 dsim_host = DSim.Entity("sim1")
 # entity definition
-dsim_entity   = DSim.Entity("as532_1")
+dsim_entity   = DSim.Entity("ec135_1")
 
 dworld_entity = DSim.Entity("world")
 # control simulation mode in D-SIM
 simulation_mode  = DSim.Variable.Enum(DSim.Node(dsim_entity, "SIMULATION/mode"))
+
+
 
 class PIDController:
     def __init__(self, kp, ki, kd, output_limits=None):
@@ -181,7 +183,7 @@ environment_weather_layer_1_wind_speed = DSim.Variable.Double(DSim.Node(dworld_e
 environment_weather_layer_1_top = DSim.Variable.Double(DSim.Node(dworld_entity,"environment/weather/layer/1/top"))
 
 def CLS(inp):
-    brunner_task = DSim.Variable.Enum(DSim.Node(dsim_host,"host/sim1-model/entity/as532_1/task/io_brunner_cls/mode"))
+    brunner_task = DSim.Variable.Enum(DSim.Node(dsim_host,"host/sim1-model/entity/ec135_1/task/io_brunner_cls/mode"))
     if inp == 'S':
         brunner_task.write(TASK_MODE.FORCE_STOP) 
     elif inp == 'R':
@@ -535,7 +537,7 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
         hardware_pilot_pedals_position.write(MQTG_input_matrix[0,INPUT.PEDALS])
         
         hardware_pilot_cyclic_lateral_position.write(cyc_lat_init_input+cyc_lat_input)
-        hardware_pilot_cyclic_longitudinal_position.write(cyc_long_init_input-cyc_long_input)
+        hardware_pilot_cyclic_longitudinal_position.write(cyc_long_init_input+cyc_long_input)
 
 
         if len(error_pitch_lis) > 100:
@@ -1108,7 +1110,7 @@ def create_comparison_table(QTG_path):
     
 
 def main(test_item, test_dir, gui_output, gui_input):
-    brunner_task = DSim.Variable.Enum(DSim.Node(dsim_host,"host/sim1-model/entity/as532_1/task/io_brunner_cls/mode"))
+    brunner_task = DSim.Variable.Enum(DSim.Node(dsim_host,"host/sim1-model/entity/ec135_1/task/io_brunner_cls/mode"))
     brunner_task.write(TASK_MODE.FORCE_STOP)
     
     QTG_path = test_dir
