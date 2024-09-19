@@ -150,7 +150,7 @@ flightmodel_configuration_cg_y = DSim.Variable.Double(DSim.Node(dsim_entity, "fl
 
 # written
 hardware_pilot_collective_position = DSim.Variable.Double(
-    DSim.Node(dsim_entity, "hardware/pilot/collective/position_uncalibrated"))
+    DSim.Node(dsim_entity, "hardware/pilot/collective/position"))
 hardware_pilot_collective_trim_position = DSim.Variable.Double(
     DSim.Node(dsim_entity, "hardware/pilot/collective/trim/position"))
 hardware_pilot_cyclic_lateral_position = DSim.Variable.Double(
@@ -366,7 +366,7 @@ def log_flyout_input_output(T, gui_output):
     input_matrix = np.empty((len(T), INPUT.NUMBER_OF_INPUTS))
     output_matrix = np.empty((len(T), OUTPUT.NUMBER_OF_OUTPUTS))
 
-    sock, remoteEndpoint, query_readforce_pitch_roll, query_readforce_yaw_coll = CLS_READER_INIT()
+    #sock, remoteEndpoint, query_readforce_pitch_roll, query_readforce_yaw_coll = CLS_READER_INIT()
     force_pitch, force_roll, force_yaw, force_coll = 0, 0, 0, 0
     prev_force_pitch, prev_force_roll, prev_force_yaw, prev_force_coll = 0, 0, 0, 0
 
@@ -404,14 +404,16 @@ def log_flyout_input_output(T, gui_output):
         output_matrix[i, OUTPUT.SIDESLIP] = reference_frame_body_freestream_beta.read()
 
         # Read control forces
-        force_response_pitch_roll = sendThenReceive(query_readforce_pitch_roll, remoteEndpoint, sock)
-        force_response_yaw_coll = sendThenReceive(query_readforce_yaw_coll, remoteEndpoint, sock)
+        #force_response_pitch_roll = sendThenReceive(query_readforce_pitch_roll, remoteEndpoint, sock)
+        #force_response_yaw_coll = sendThenReceive(query_readforce_yaw_coll, remoteEndpoint, sock)
 
         
         #print(struct.unpack('<HBHfH',force_response_pitch_roll))
-        length, status, node_pitch, force_pitch, node_roll, force_roll = struct.unpack('<HBHfHf',force_response_pitch_roll[0:15])
+        #length, status, node_pitch, force_pitch, node_roll, force_roll = struct.unpack('<HBHfHf',force_response_pitch_roll[0:15])
 
-        length, status, node_yaw, force_yaw, node_coll, force_coll = struct.unpack('<HBHfHf', force_response_yaw_coll[0:15])
+        #length, status, node_yaw, force_yaw, node_coll, force_coll = struct.unpack('<HBHfHf', force_response_yaw_coll[0:15])
+
+        
 
         force_matrix[i, INPUT.CYCLIC_LONGITUDINAL] = number_format.format(force_pitch)
         force_matrix[i, INPUT.CYCLIC_LATERAL] = number_format.format(force_roll)
@@ -437,7 +439,7 @@ def log_flyout_input_output(T, gui_output):
 
         # increment data row index
         i += 1
-    sock.close()
+    #sock.close()
     simulation_mode.write(SIM_MODE.PAUSE)
     return input_matrix, output_matrix, force_matrix
 
@@ -660,10 +662,10 @@ def create_plots(QTG_path, part):
                 y=np.rad2deg(y)
             elif 'Angle Rate' in para_file_dict[plot_title]:
                 y=np.rad2deg(y)
-            elif 'Control Position Pitch' in para_file_dict[plot_title]: #Pitch position Signal ist bei der Referenz invertiert
-                y=[map_control(-i) for i in y]
-            elif 'Control Position Collective' in para_file_dict[plot_title]:
+            elif 'Control Position Pitch' in para_file_dict[plot_title]: 
                 y=[map_control(i) for i in y]
+            elif 'Control Position Collective' in para_file_dict[plot_title]:
+                y=[i*100 for i in y]
             elif 'Control Position Roll' in para_file_dict[plot_title]:
                 y=[map_control(i) for i in y]
             elif 'Control Position Yaw' in para_file_dict[plot_title]:
@@ -1082,25 +1084,32 @@ def main(test_item, test_dir, gui_output, gui_input):
 
 
 """
+1. Idee alle konstanten in einem file definieren
 
-
-Noch unsolved:
-
-    -Multisim die EC135 CLS und beep trim als aufgabe geben
-     -Trim release anpassen 
-
-    1.f_A1
-    1.g_B3
-    1.h.(1)_A1
-    1.j.(1)_A1
-    2.d.(2)_A2
-    2.d.(3)(ii)_A1
 """
+"""
+DSIM: 
+    1. Longitudinal: Pulled -> +1 , Pushed -> -0.83249
+    2. Lateral: Right: -> 1, Left -> -1
+    3. Collective: Full down -> 0.02 , full up -> 1
+    4. Pedals: Press left -> -1 , Press right -> 1
+    
+Reiser: 
+    1. Longitudinal: Pulled -> 100% , Pushed -> 0%
+    2. Lateral: Right: -> 100%, Left -> 0%
+    3. Collective: Full down -> 0% , full up -> 100%
+    4. Pedals: Press left -> 0% , Press right -> 100%
+"""
+
 
 """
 Einige neue probleme seit dem update:
+    
     1. Ich die Kraefte nicht mehr auslesen
-    2. die Collective position stimmt nicht mehr
-    3. die laterale Achse scheint invertiert (also) richtig zu sein
+    4. Die qtg_data_structure muss geupdatet werden
+    5. Sobald die Kraefte wieder ausgelsen werden koennen muss ich mir unbedingt die  
+    6. Die plot funktion muss angepasst werden
+    7. Die Scenarios neu konfigurtieren: Brownout
+    8. Eine Sorge noch bei den automatic QTGs ist nur mehr die tests mit KIAS < 10
 """
 

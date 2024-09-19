@@ -66,7 +66,7 @@ def mps2kt(x): return x * 1.944
 def kt2mps(x): return x * (1 / 1.944)
 
 
-def map360(x): return round(x % 360, 2)
+def map360(x): return round(np.rad2deg(x),2)
 
 
 def pitch_brun2angle(x):
