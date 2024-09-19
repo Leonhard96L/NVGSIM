@@ -152,7 +152,7 @@ flightmodel_configuration_cg_x = DSim.Variable.Double(DSim.Node(dsim_entity,"fli
 flightmodel_configuration_cg_y = DSim.Variable.Double(DSim.Node(dsim_entity,"flightmodel/configuration/cg/y"))
 
 #written
-hardware_pilot_collective_position = DSim.Variable.Double(DSim.Node(dsim_entity,"hardware/pilot/collective/position_uncalibrated"))
+hardware_pilot_collective_position = DSim.Variable.Double(DSim.Node(dsim_entity,"hardware/pilot/collective/position"))
 hardware_pilot_collective_trim_position = DSim.Variable.Double(DSim.Node(dsim_entity,"hardware/pilot/collective/trim/position"))
 hardware_pilot_cyclic_lateral_position = DSim.Variable.Double(DSim.Node(dsim_entity,"hardware/pilot/cyclic/lateral/position"))
 hardware_pilot_cyclic_lateral_trim_position = DSim.Variable.Double(DSim.Node(dsim_entity,"hardware/pilot/cyclic/lateral/trim/position"))
@@ -404,7 +404,7 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
         if not issnapshot:
             hardware_pilot_collective_position.write(MQTG_input_matrix[i,INPUT.COLLECTIVE])
             hardware_pilot_cyclic_lateral_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LATERAL]+cyc_lat_input)
-            hardware_pilot_cyclic_longitudinal_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LONGITUDINAL]-cyc_long_input)
+            hardware_pilot_cyclic_longitudinal_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LONGITUDINAL]+cyc_long_input)
             hardware_pilot_pedals_position.write(MQTG_input_matrix[i,INPUT.PEDALS])
 
 
@@ -747,8 +747,8 @@ def set_init_cond_recurrent(init_cond_dict, cyc_long_input, cyc_lat_input):
     hardware_pilot_collective_position.write(float(init_cond_dict["Collective Pos."]))
     hardware_pilot_cyclic_lateral_position.write(float(init_cond_dict["Lateral Cyclic Pos."])+cyc_lat_input)
     hardware_pilot_cyclic_lateral_trim_position.write(float(init_cond_dict["Lateral Cyclic Pos."])+cyc_lat_input)
-    hardware_pilot_cyclic_longitudinal_position.write(float(init_cond_dict["Longitudinal Cyclic Pos."])-cyc_long_input)
-    hardware_pilot_cyclic_longitudinal_trim_position.write(float(init_cond_dict["Longitudinal Cyclic Pos."])-cyc_long_input)
+    hardware_pilot_cyclic_longitudinal_position.write(float(init_cond_dict["Longitudinal Cyclic Pos."])+cyc_long_input)
+    hardware_pilot_cyclic_longitudinal_trim_position.write(float(init_cond_dict["Longitudinal Cyclic Pos."])+cyc_long_input)
     hardware_pilot_pedals_position.write(float(init_cond_dict["Pedals Pos."]))
     
 
@@ -856,12 +856,12 @@ def create_plots(QTG_path, part):
             elif 'Angle Rate' in para_file_dict[plot_title]:
                 y=np.rad2deg(y)
                 y_Rec=np.rad2deg(y_Rec)
-            elif 'Control Position Pitch' in para_file_dict[plot_title]: #Pitch position Signal ist bei der Referenz invertiert
-                y=[map_control(-i) for i in y]
-                y_Rec=[map_control(-i) for i in y_Rec]
-            elif 'Control Position Collective' in para_file_dict[plot_title]:
+            elif 'Control Position Pitch' in para_file_dict[plot_title]: 
                 y=[map_control(i) for i in y]
                 y_Rec=[map_control(i) for i in y_Rec]
+            elif 'Control Position Collective' in para_file_dict[plot_title]:
+                y=[i*100 for i in y]
+                y_Rec=[i*100 for i in y_Rec]
             elif 'Control Position Roll' in para_file_dict[plot_title]:
                 y=[map_control(i) for i in y]
                 y_Rec=[map_control(i) for i in y_Rec]
@@ -1142,7 +1142,7 @@ def main(test_item, test_dir, gui_output, gui_input):
     simulation_mode.write(SIM_MODE.TRIM)
     time.sleep(2)
     simulation_mode.write(SIM_MODE.RUN) 
-    time.sleep(1.5)
+    time.sleep(3)
     
     #For snapshottests
     cyc_long_input, cyc_lat_input = 0,0

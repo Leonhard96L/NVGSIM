@@ -124,7 +124,7 @@ flightmodel_configuration_cg_x = DSim.Variable.Double(DSim.Node(dsim_entity,"fli
 flightmodel_configuration_cg_y = DSim.Variable.Double(DSim.Node(dsim_entity,"flightmodel/configuration/cg/y"))
 
 #written
-hardware_pilot_collective_position = DSim.Variable.Double(DSim.Node(dsim_entity,"hardware/pilot/collective/position_uncalibrated"))
+hardware_pilot_collective_position = DSim.Variable.Double(DSim.Node(dsim_entity,"hardware/pilot/collective/position"))
 hardware_pilot_collective_trim_position = DSim.Variable.Double(DSim.Node(dsim_entity,"hardware/pilot/collective/trim/position"))
 hardware_pilot_cyclic_lateral_position = DSim.Variable.Double(DSim.Node(dsim_entity,"hardware/pilot/cyclic/lateral/position"))
 hardware_pilot_cyclic_lateral_trim_position = DSim.Variable.Double(DSim.Node(dsim_entity,"hardware/pilot/cyclic/lateral/trim/position"))
@@ -1103,12 +1103,12 @@ def create_plots(QTG_path, part):
             elif 'Angle Rate' in para_file_dict[plot_title]:
                 y=np.rad2deg(y)
                 y_Rec=np.rad2deg(y_Rec)
-            elif 'Control Position Pitch' in para_file_dict[plot_title]: #Pitch position Signal ist bei der Referenz invertiert
-                y=[map_control(-i) for i in y]
-                y_Rec=[map_control(-i) for i in y_Rec]
-            elif 'Control Position Collective' in para_file_dict[plot_title]:
+            elif 'Control Position Pitch' in para_file_dict[plot_title]: 
                 y=[map_control(i) for i in y]
                 y_Rec=[map_control(i) for i in y_Rec]
+            elif 'Control Position Collective' in para_file_dict[plot_title]:
+                y=[i*100 for i in y]
+                y_Rec=[i*100 for i in y_Rec]
             elif 'Control Position Roll' in para_file_dict[plot_title]:
                 y=[map_control(i) for i in y]
                 y_Rec=[map_control(i) for i in y_Rec]
