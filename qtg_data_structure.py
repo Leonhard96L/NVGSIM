@@ -51,14 +51,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(,‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Trim controls to reach 90 KIAS and descent with 1000ft/min',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
-                                'When the test elapsed time is 3.4 seconds, apply a 30.0% Torque per engine increase in 4.0 seconds.'
+                                'Press "Enter" to start recording.',
+                                'When the test elapsed time is 3.4 seconds, pull collective to reach a vertival velocity of 800ft/min in 3.5 seconds.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -78,14 +83,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Trim controls to reach 60 KIAS and climb with 1500ft/min',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
-                                'When the test elapsed time is 3.6 seconds, apply a 40.0% Torque per engine decrease in 3.0 seconds.'
+                                'Press "Enter" to start recording.',
+                                'When the test elapsed time is 3.6 seconds, push collective to reach descent of 500ft/min in 4.5 seconds'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -145,15 +155,22 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Hover in 6ft AGL',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
-                                'After 4s start to take-off. '
-                                'Noch zu schreieben...'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Hover in 3ft AGL.',
+                                'Press "Enter" to start recording.',
+                                'After 2s start take-off run. ',
+                                'After 20s an IAS of 40kts and height of 50ft AGL should be reached.',
+                                'After 24s an IAS of 60kts and height of 100ft AGL should be reached.',
+                                'Maintain 60kts.',
+                                'After 35s a height of 280ft AGL should be reached.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -213,14 +230,21 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
-                                'Noch zu schreieben...'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Hover in 3ft AGL.',
+                                'Press "Enter" to start recording.',
+                                'After 5s start take-off run. ',
+                                'After 25s an IAS of 45kts and height of 100ft AGL should be reached.',
+                                'After 35s an IAS of 40kts and height of 320ft AGL should be reached.',
+                                'After 35s an IAS of 55kts and height of 400ft AGL should be reached.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -272,14 +296,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Pull Collective until hovering in 3ft AGL'
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -299,14 +327,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Pull Collective until hovering in 10ft AGL'
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -326,14 +358,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Pull Collective until hovering in 25ft AGL'
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -353,14 +389,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Pull Collective until hovering in 70ft AGL'
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -380,14 +420,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Pull Collective until hovering in 3ft AGL'
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -407,14 +451,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Pull Collective until hovering in 10ft AGL'
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -434,14 +482,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Pull Collective until hovering in 25ft AGL'
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -461,14 +513,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Pull Collective until hovering in 70ft AGL'
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -517,14 +573,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Pull collective until the FLI reaches TOP.',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -544,14 +604,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Pull collective until the FLI reaches MCP',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -604,15 +668,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Set controls to reach target values.',
-                                'Trim controls to reach and maintain 64 KIAS',
+                                'Trim controls to reach 64 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -632,15 +700,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Set controls to reach target values.',
-                                'Trim controls to reach and maintain 130 KIAS',
+                                'Trim controls to reach 130 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -660,15 +732,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Set controls to reach target values.',
-                                'Trim controls to reach and maintain 64 KIAS',
+                                'Trim controls to reach 64 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -688,15 +764,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Set controls to reach target values.',
-                                'Trim controls to reach and maintain 130 KIAS',
+                                'Trim controls to reach 130 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -751,15 +831,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Pull collective until the FLI reaches MCP.',
-                                'Trim controls to reach and maintain 63 KIAS',
+                                'Trim controls to reach 63 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -779,15 +863,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Pull collective until the FLI reaches TOP.',
-                                'Trim controls to reach and maintain 63 KIAS',
+                                'Trim controls to reach 63 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -807,15 +895,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Pull collective until the FLI reaches MCP.',
-                                'Trim controls to reach and maintain 64 KIAS',
+                                'Trim controls to reach 64 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -835,15 +927,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Pull collective until the FLI reaches 2 min.',
-                                'Trim controls to reach and maintain 38 KIAS',
+                                'Trim controls to reach 38 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -863,15 +959,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Pull collective until the FLI reaches 30s.',
-                                'Trim controls to reach and maintain 37 KIAS',
+                                'Trim controls to reach 37 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -891,15 +991,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Pull collective until the FLI reaches MCP.',
-                                'Trim controls to reach and maintain 62 KIAS',
+                                'Trim controls to reach 62 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -919,15 +1023,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Pull collective until the FLI reaches TOP.',
-                                'Trim controls to reach and maintain 62 KIAS',
+                                'Trim controls to reach 62 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -947,15 +1055,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Pull collective until the FLI reaches MCP.',
-                                'Trim controls to reach and maintain 65 KIAS',
+                                'Trim controls to reach 65 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -975,15 +1087,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Pull collective until the FLI reaches 2 min.',
-                                'Trim controls to reach and maintain 35 KIAS',
+                                'Trim controls to reach 35 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -1003,15 +1119,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Pull collective until the FLI reaches 30s.',
-                                'Trim controls to reach and maintain 42 KIAS',
+                                'Trim controls to reach 42 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -1067,15 +1187,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(,‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Push collective until reaching 1000 fpm of descent',
-                                'Trim controls to reach and maintain 90 KIAS',
+                                'Trim controls to reach 90 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -1095,15 +1219,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Push collective until reaching 1000 fpm of descent',
-                                'Trim controls to reach and maintain 90 KIAS',
+                                'Trim controls to reach 90 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -1164,15 +1292,20 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(,‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Start from position: '
                                 'Climb up to 316ft AGL.',
                                 'Trim controls to reach and maintain 70 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
+                                'Press "Enter" to start recording.',
                                 'When the test elapsed time is 1.0 seconds, decrease collective to achieve 450 ft/min of rate of descent in approximately 20.0 seconds and maintain it. In the meantime move controls to reduce airspeed by 20.0 KIAS and maintain it.',
                                 'When the test elapsed time is 36.0 seconds, increase collective to achieve level flight condition in approximately 13.0 seconds. In the meantime move controls to reach an hover condition in 23.0 seconds and maintain it.',
                                 'Continue the maneuver touching the ground when the test elapsed time is 59.0 seconds.'
@@ -1236,15 +1369,20 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(,‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Start from position: '
                                 'Climb up to 305ft AGL.',
                                 'Trim controls to reach and maintain 68 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
+                                'Press "Enter" to start recording.',
                                 'Maintain pitch attitude to 5.0 deg nose up to reach 40 KIAS in 42.0 seconds, while maintaining a 300 ft/min rate of descent.',
                                 'When the test elapsed time is 42.0 seconds, maintain 40 KIAS and continue the descent.',
                                 'When the test elapsed time is 48.0 seconds, decrease the airspeed to 20.0 KIAS in 11.0 seconds and continue the descent.',
@@ -1270,15 +1408,20 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(,‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Start from position: '
                                 'Climb up to 270ft AGL.',
                                 'Trim controls to reach and maintain 77 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
+                                'Press "Enter" to start recording.',
                                 'Increase pitch attitude to 6.0 deg nose up to reach 40 KIAS in 34.0 seconds, while maintaining a 300 ft/min rate of descent.',
                                 'When the test elapsed time is 34.0 seconds, maintain 40 KIAS and continue the descent.',
                                 'When the test elapsed time is 40.0 seconds, decrease the airspeed to 20.0 KIAS in 10.0 seconds and continue the descent.',
@@ -1330,14 +1473,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
-                            'manual_testing': [
-                                'Write the name of the test into the brackets of the function(,‘manu’).Click RUN or press F5.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
-                                'Move the Cyclic stick to perform a complete sweep on the longitudinal axis.'
-                            ],
+                           'manual_testing': [
+                               'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                               'Right click on the corresponding test in the right column to change in manual mode.',
+                               'Press "Start QTG" to start the test.',
+                               'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                               'Press "Enter" to start recording.',
+                               'Move the Cyclic stick to perform a complete sweep on the longitudinal axis.'
+                           ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
                                 'rationales_validation_data': ['No Rationales related to the Test are present'],
@@ -1356,12 +1503,16 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Press "Enter" to start recording.',
                                 'Move the Cyclic stick to perform a complete sweep on the longitudinal axis while pressing the FTR Release button.'
                             ],
                             'notes_rationales': {
@@ -1382,12 +1533,16 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Press "Enter" to start recording.',
                                 'Move the Cyclic stick to perform a complete sweep on the lateral axis.'
                             ],
                             'notes_rationales': {
@@ -1408,12 +1563,16 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Press "Enter" to start recording.',
                                 'Move the Cyclic stick to perform a complete sweep on the lateral axis while pressing the FTR Release button.'
                             ],
                             'notes_rationales': {
@@ -1451,12 +1610,16 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(,‘manu’).Click RUN or press F5.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Press "Enter" to start recording.',
                                 'Move the Collective lever to perform a complete sweep.'
                             ],
                             'notes_rationales': {
@@ -1477,12 +1640,16 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Press "Enter" to start recording.',
                                 'Move the Pedals to perform a complete sweep.'
                             ],
                             'notes_rationales': {
@@ -1518,12 +1685,16 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(,‘manu’).Click RUN or press F5.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Press "Enter" to start recording.',
                                 'Press the Beep-Trim to move the Cyclic stick in the full aft position on the longitudinal axis.'
                             ],
                             'notes_rationales': {
@@ -1544,12 +1715,16 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Press "Enter" to start recording.',
                                 'Press the Beep-Trim to move the Cyclic stick in the full right position on the lateral axis.'
                             ],
                             'notes_rationales': {
@@ -1598,14 +1773,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Trim controls to reach and maintain 119 KIAS',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Trim controls to reach 119 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Leave the collective fixed at its initial value and maintain the target IAS.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -1625,14 +1805,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Trim controls to reach and maintain 124 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Leave the collective fixed at its initial value and maintain the target IAS.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -1652,14 +1837,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Trim controls to reach and maintain 129 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Leave the collective fixed at its initial value and maintain the target IAS.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -1679,14 +1869,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Trim controls to reach and maintain 120 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Leave the collective fixed at its initial value and maintain the target IAS.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -1706,14 +1901,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Trim controls to reach and maintain 115 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Leave the collective fixed at its initial value and maintain the target IAS.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -1733,14 +1933,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Trim controls to reach and maintain 107 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Leave the collective fixed at its initial value and maintain the target IAS.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -1760,14 +1965,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Trim controls to reach and maintain 74 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Leave the collective fixed at its initial value and maintain the target IAS.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -1787,13 +1997,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Trim controls to reach and maintain 84 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Leave the collective fixed at its initial value and maintain the target IAS.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -1813,14 +2029,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Trim controls to reach and maintain 88 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Leave the collective fixed at its initial value and maintain the target IAS.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -1840,14 +2061,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Trim controls to reach and maintain 75 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Leave the collective fixed at its initial value and maintain the target IAS.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -1867,14 +2093,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Trim controls to reach and maintain 65 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Leave the collective fixed at its initial value and maintain the target IAS.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -1894,14 +2125,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Trim controls to reach and maintain 55 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Leave the collective fixed at its initial value and maintain the target IAS.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -1950,13 +2186,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Set controls to reach target values.',
+                                'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -1976,13 +2217,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Set controls to reach target values.',
+                                'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2002,13 +2248,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Set controls to reach target values.',
+                                'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2028,13 +2279,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Set controls to reach target values.',
+                                'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2054,13 +2310,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Set controls to reach target values.',
+                                'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2080,13 +2341,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Set controls to reach target values.',
+                                'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2106,13 +2372,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Set controls to reach target values.',
+                                'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2132,13 +2403,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Set controls to reach target values.',
+                                'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2158,13 +2434,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Set controls to reach target values.',
+                                'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2184,13 +2465,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Set controls to reach target values.',
+                                'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2210,13 +2496,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Set controls to reach target values.',
+                                'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2236,13 +2527,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Set controls to reach target values.',
+                                'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2293,13 +2589,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Set controls to reach target values.',
+                                'Stabilize and maintain current flight condition.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2319,13 +2620,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Set controls to reach target values.',
+                                'Stabilize and maintain current flight condition.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2345,13 +2651,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Set controls to reach target values.',
+                                'Stabilize and maintain current flight condition.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2371,13 +2682,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Set controls to reach target values.',
+                                'Stabilize and maintain current flight condition.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2397,13 +2713,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Set controls to reach target values.',
+                                'Stabilize and maintain current flight condition.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2423,13 +2744,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Set controls to reach target values.',
+                                'Stabilize and maintain current flight condition.',
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2501,13 +2827,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Trim controls to reach 66 KIAS',
+                                'Stabilize and maintain current flight condition.',
+                                'Press "Enter" to start recording.',
+                                'When the test elapsed time is 3.0 seconds, perform a pedal control doublet. Return pedal controls position to initial position, and then keep hands-off controls.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2527,13 +2859,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Trim controls to reach 67 KIAS',
+                                'Stabilize and maintain current flight condition.',
+                                'Press "Enter" to start recording.',
+                                'When the test elapsed time is 3.5 seconds, perform a pedal control doublet. Return pedal controls position to initial position, and then keep hands-off controls.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2553,13 +2891,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Trim controls to reach 90 KIAS',
+                                'Stabilize and maintain current flight condition.',
+                                'Press "Enter" to start recording.',
+                                'When the test elapsed time is 3.6 seconds, perform a pedal control doublet. Return pedal controls position to initial position, and then keep hands-off controls.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2579,13 +2923,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Trim controls to reach 90 KIAS',
+                                'Stabilize and maintain current flight condition.',
+                                'Press "Enter" to start recording.',
+                                'When the test elapsed time is 2.5 seconds, perform a pedal control doublet. Return pedal controls position to initial position, and then keep hands-off controls.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2636,13 +2986,20 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Trim controls to reach 64 KIAS',
+                                'Stabilize and maintain current flight condition.',
+                                'Press "Enter" to start recording.',
+                                'When the test elapsed time is 7.0 seconds, move lateral cyclic to reach 30.0 deg of positive bank angle in 18.0 seconds and maintain it, leaving collective control and pedals free.',
+                                'When the test elapsed time is 36.0 seconds, release lateral cyclic.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2662,13 +3019,17 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2688,13 +3049,20 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
-                                'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'Trim controls to reach 63 KIAS',
+                                'Stabilize and maintain current flight condition.',
+                                'Press "Enter" to start recording.',
+                                'When the test elapsed time is 12.0 seconds, move lateral cyclic to reach 20.0 deg of negative bank angle in 10.0 seconds and maintain it, leaving collective control and pedals free.',
+                                'When the test elapsed time is 44.0 seconds, release lateral cyclic.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -2714,13 +3082,17 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'Write the name of the test into the brackets of the function (, ‘auto’). Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Press "Start QTG" to start the test.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'Write the name of the test into the brackets of the function(, ‘manu’).Click RUN or press F5.',
+                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                                'Right click on the corresponding test in the right column to change in manual mode.',
+                                'Press "Start QTG" to start the test.',
+                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
                                 'Set controls to reach target values.'
-                                'On the IOS keyboard press ‘Enter’ to start recording.'
+                                'Press "Enter" to start recording.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],

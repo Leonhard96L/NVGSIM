@@ -1106,10 +1106,12 @@ Reiser:
 Einige neue probleme seit dem update:
     
     1. Ich die Kraefte nicht mehr auslesen
-    4. Die qtg_data_structure muss geupdatet werden
+    4. Die qtg_data_structure muss geupdatet werden. -> Jetzt nur noch press enter on IOS Kezboard
     5. Sobald die Kraefte wieder ausgelsen werden koennen muss ich mir unbedingt die  
     6. Die plot funktion muss angepasst werden
     7. Die Scenarios neu konfigurtieren: Brownout
     8. Eine Sorge noch bei den automatic QTGs ist nur mehr die tests mit KIAS < 10
+    9. Achtung es gibt Test mit Hands off controls -> da den Regler abschalten
+    
 """
 
