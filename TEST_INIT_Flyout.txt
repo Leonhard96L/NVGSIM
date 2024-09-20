@@ -1,0 +1,17 @@
+1. Achtung die Schwerpunktslage in x kann nicht verschoben werden
+2. Achtung vorzeichenfehler bei vertical speed
+3. Groundspeed pruefe variable
+4. Reports alle Einheiten preufen
+5. TOP Limit wandert auf 100% CLP (Collective level pos)
+6. Speichere fuer Landing die startpos.
+7. Heading stimmt nicht (siehe 1.j.1 A1 init cond)
+
+Wir kommen mit allen Tests locker an einem Tag durch.
+
+
+Punkte an Michi:
+-Tests wieder rausnehmen waehrend dem Flyout prozess
+-Ein gesamtreport unabhengig erstellen lassen
+
+
+Gedanken:
