@@ -133,9 +133,9 @@ img {
 
 @media print {
     .page-break {
-        page-break-before: always; /* Insert a page break before elements with this class */
+        page-break-before: avoid; /* Avoid breaking elements with this class */
         page-break-inside: avoid; /* Avoid breaking inside these elements */
-        page-break-after: avoid; /* Avoid breaking after these elements */
+        page-break-after: always; /* Insert a page break after these elements */
     }
 
     .no-page-break {

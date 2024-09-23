@@ -4,7 +4,7 @@ import os
 import tkinter as tk
 from tkinter import ttk, filedialog
 
-import execute_test
+# import execute_test
 from qtg_data_structure import data
 import generate_report
 
@@ -222,40 +222,105 @@ def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output,
     # directory_structure = os.path.join(output_dir, qtg_dir, "20240827_091010")    # this is for testing purposes only!
     test_results = {}
 
-    for test_item in tests:
-        gui_output(f"Test id: {test_item['id']}\tautomatic Test: {test_item['is_automatic']}")
+    try:
+        for test_item in tests:
+            gui_output(f"Test id: {test_item['id']}\tautomatic Test: {test_item['is_automatic']}")
 
-        ref_dir = os.path.join(reference_data, test_item['id'])
-        test_dir = os.path.join(directory_structure, test_item['id'])
+            ref_dir = os.path.join(reference_data, test_item['id'])
+            test_dir = os.path.join(directory_structure, test_item['id'])
 
-        copy_directory_contents(ref_dir, test_dir)
+            copy_directory_contents(ref_dir, test_dir)
 
-        # todo: check if ref_dir is existing and full with data
+            # todo: check if ref_dir is existing and full with data
 
-        gui_output(f"Save directory: {test_dir}")
+            gui_output(f"Save directory: {test_dir}")
 
-        if mqtg:
-            test_item['is_automatic'] = False
+            if mqtg:
+                test_item['is_automatic'] = False
 
-        while True:
-            # execute test
-            execute_test.execute_test(test_item, test_dir, mqtg, gui_output, gui_input)
+            while True:
+                # execute test
+                # execute_test.execute_test(test_item, test_dir, mqtg, gui_output, gui_input)
 
-            # generate report
-            gui_output("Creating Test Report. This may take a second...")
-            test_results[test_item['id']] = generate_report.generate_case_report(test_item, test_dir, date_time, mqtg)
-            gui_output("Done creating Report.\n")
+                # generate report
+                gui_output("Creating Test Report. This may take a second...")
+                test_results[test_item['id']] = generate_report.generate_case_report(test_item, test_dir, date_time, mqtg)
+                gui_output("Done creating Report.\n")
 
-            if gui_input("Do you want to continue with the next test (y) or repeat the current test (n) ? ").lower() == 'y':
-                break
+                if gui_input("Do you want to continue with the next test (y) or repeat the current test (n) ? ").lower() == 'y':
+                    break
+
+        gui_output("Creating Full Report. This may take a second...")
+        generate_report.create_test_report(test_results, directory_structure)
+        gui_output("Done creating Full Report.\n")
+        gui_output("COMPLETED!")
+
+    except Exception as e:
+        gui_output(f"Error: {e}")
 
 
-    gui_output("Creating Full Report. This may take a second...")
-    generate_report.create_test_report(test_results, directory_structure)
-    gui_output("Done creating Full Report.\n")
+# Function to select items in the tree by item_id
+def select_items_by_ids(tree, item_ids):
+    for item_id in item_ids:
+        # Iterate through all items in the tree
+        for item in tree.get_children(''):  # '' is the root of the tree
+            item_text = tree.item(item, 'text')
+            # Check if the item_id is part of the item text (formatted as "id - other text")
+            if item_text.startswith(item_id):
+                # Select the matching item
+                tree.selection_set(item)
+                on_item_click(None, tree_available, tree_selected)
 
-    gui_output("COMPLETED!")
-    # test = gui_input("Please enter something: ")
+
+def generate_report_only():
+    dir = directory_var.get()
+
+    gui_output(f"Generating Reports: {dir}")
+
+    try:
+        test_date = datetime.strptime(os.path.basename(dir), '%Y%m%d_%H%M%S')
+        print(test_date)
+    except ValueError:
+        gui_output("Folder name is wrong. should be yymmdd_HHMMSS. Cancelling.")
+        return
+
+    # Get all subfolders
+    subfolders = [f for f in os.listdir(dir) if os.path.isdir(os.path.join(dir, f))]
+    if len(subfolders) == 0:
+        gui_output("No tests found in the selected folder. Cancelling.")
+        return
+
+    parent_name = os.path.basename(os.path.dirname(dir))
+    print(parent_name)
+    if parent_name != "mqtg" and parent_name != "qtg":
+        gui_output("Parent dir is not mqtg/qtg. Cancelling.")
+        return
+
+    is_mqtg = False
+    if parent_name == "mqtg":
+        is_mqtg = True
+
+    on_remove_all_tests()
+    select_items_by_ids(tree_available, subfolders)
+
+    if len(tree_selected.get_children()) == 0:
+        gui_output("No tests found in the selected folder. Cancelling.")
+        return
+
+    gui_input("Check selected tests and adjust Test Type to automatic/manual. Type enter to proceed generating reports. ")
+    # now we have all existing tests selected and can start generating reports...
+    tests = create_test_list()
+    test_results = {}
+    try:
+        for test_item in tests:
+            gui_output(f"Creating Test Report for {test_item['id']}. This may take a second...")
+            test_results[test_item['id']] = generate_report.generate_case_report(test_item, os.path.join(dir, test_item['id']), test_date, is_mqtg)
+
+        gui_output("Creating Full Report. This may take a second...")
+        generate_report.create_test_report(test_results, dir)
+        gui_output("Done creating Full Report.\n")
+    except Exception as e:
+        gui_output(f"Error: {e}")
 
 
 # Initialize and configure the Tkinter window
@@ -314,6 +379,8 @@ if __name__ == "__main__":
     directory_entry.grid(row=0, column=0, padx=5, pady=5)
     directory_button = ttk.Button(frame_controls, text="Select Directory", command=select_directory)
     directory_button.grid(row=0, column=1, padx=5, pady=5)
+    generate_report_button = ttk.Button(frame_controls, text="Generate Reports Only", command=generate_report_only)
+    generate_report_button.grid(row=0, column=2, padx=5, pady=5, sticky="ew")
 
     # Create action buttons
     select_all_button = ttk.Button(frame_controls, text="Select All Tests", command=on_select_all_tests)

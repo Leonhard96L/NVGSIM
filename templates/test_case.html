@@ -168,6 +168,10 @@
     {% for plot in case.plots_base64 %}
         <img src="data:image/svg;base64,{{ plot }}" alt="Plot Image">
     {% endfor %}
+    {% if not case.plots_base64 %}
+    <p>No plots available.</p>
+    {% endif %}
+    {% include 'test_case_footer.html' %}
 </div>
 </body>
 </html>
