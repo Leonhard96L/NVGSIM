@@ -66,7 +66,7 @@ def mps2kt(x): return x * 1.944
 def kt2mps(x): return x * (1 / 1.944)
 
 
-def map360(x): return round(np.rad2deg(x),2)
+def map360(x): return round(np.rad2deg(x),2)%360
 
 
 def pitch_brun2angle(x):
@@ -163,7 +163,7 @@ def units_conversion(init_cond_dict, unit):
 
     if unit == 'SI':
         init_cond_dict_SI = init_cond_dict
-
+        init_cond_dict_SI['Gross Weight'] = round(float(init_cond_dict['Gross Weight']), 2)
         init_cond_dict_SI['CG Longitudinal'] = round(float(init_cond_dict['CG Longitudinal']) * mm2m, 2)
         init_cond_dict_SI['CG Lateral'] = round(float(init_cond_dict['CG Lateral']) * mm2m, 2)
         init_cond_dict_SI['Pressure Altitude'] = round(float(init_cond_dict['Pressure Altitude']) * ft2m, 2)
@@ -194,6 +194,7 @@ def units_conversion(init_cond_dict, unit):
 
     elif unit == 'Avi':
         init_cond_dict_Avi = init_cond_dict
+        init_cond_dict_Avi['Gross Weight'] = round(float(init_cond_dict['Gross Weight']), 2)
         init_cond_dict_Avi['CG Longitudinal'] = round(float(init_cond_dict['CG Longitudinal']) * m2mm, 2)
         init_cond_dict_Avi['CG Lateral'] = round(float(init_cond_dict['CG Lateral']) * m2mm, 1)
         init_cond_dict_Avi['Pressure Altitude'] = round(float(init_cond_dict['Pressure Altitude']) * m2ft, 2)
@@ -201,14 +202,14 @@ def units_conversion(init_cond_dict, unit):
         init_cond_dict_Avi['Wind Speed'] = round(float(init_cond_dict['Wind Speed']) * mps2kt, 2)
         init_cond_dict_Avi['Airspeed'] = round(float(init_cond_dict['Airspeed']) * mps2kt, 2)
         init_cond_dict_Avi['Ground Speed'] = round(float(init_cond_dict['Ground Speed']) * mps2kt, 2)
-        init_cond_dict_Avi['Vertical Velocity'] = round(float(init_cond_dict['Vertical Velocity']) * mps2fpm, 2)
+        init_cond_dict_Avi['Vertical Velocity'] = round(-float(init_cond_dict['Vertical Velocity']) * mps2fpm, 2)
         init_cond_dict_Avi['Radar Altitude'] = round(float(init_cond_dict['Radar Altitude']), 2)
         init_cond_dict_Avi['Rotor Speed'] = rpm2perc(float(init_cond_dict['Rotor Speed']))
         init_cond_dict_Avi['Engine 1 Torque'] = round(float(init_cond_dict['Engine 1 Torque']), 2)
         init_cond_dict_Avi['Engine 2 Torque'] = round(float(init_cond_dict['Engine 2 Torque']), 2)
         init_cond_dict_Avi['Pitch Angle'] = round(np.rad2deg(float(init_cond_dict['Pitch Angle'])), 2)
         init_cond_dict_Avi['Bank Angle'] = round(np.rad2deg(float(init_cond_dict['Bank Angle'])), 2)
-        init_cond_dict_Avi['Heading'] = map360(np.rad2deg(float(init_cond_dict['Heading'])))
+        init_cond_dict_Avi['Heading'] = map360(float(init_cond_dict['Heading']))
         init_cond_dict_Avi['Pitch Rate'] = round(np.rad2deg(float(init_cond_dict['Pitch Rate'])), 2)
         init_cond_dict_Avi['Roll Rate'] = round(np.rad2deg(float(init_cond_dict['Roll Rate'])), 2)
         init_cond_dict_Avi['Yaw Rate'] = round(np.rad2deg(float(init_cond_dict['Yaw Rate'])), 2)

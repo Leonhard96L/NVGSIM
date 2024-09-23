@@ -1021,7 +1021,7 @@ def create_plots(QTG_path, part):
             
 
             pdfname = f"{count_add}_{plot_title}.svg"
-            y_label = plot_title +' '+ param['unit']
+            y_label = plot_title +' '+ param_add['unit']
 
             plt.figure(figsize=(10, 6))
             plt.plot(x_Ref, y_Ref, label='Reference')

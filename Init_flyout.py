@@ -814,7 +814,7 @@ def create_plots(QTG_path, part):
             
 
             pdfname = f"{count_add}_{plot_title}.svg"
-            y_label = plot_title +' '+ param['unit']
+            y_label = plot_title +' '+ param_add['unit']
 
             plt.figure(figsize=(10, 6))
             plt.plot(x_Ref, y_Ref, label='Reference')
@@ -1106,7 +1106,6 @@ Reiser:
 Einige neue probleme seit dem update:
     
     1. Ich die Kraefte nicht mehr auslesen
-    4. Die qtg_data_structure muss geupdatet werden. -> Jetzt nur noch press enter on IOS Kezboard
     5. Sobald die Kraefte wieder ausgelsen werden koennen muss ich mir unbedingt die  
     6. Die plot funktion muss angepasst werden
     7. Die Scenarios neu konfigurtieren: Brownout
