@@ -159,7 +159,7 @@ def process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mq
     test_id, part_id, case_id = split_string(test_item['id'])
     test, part, case = get_test_test_part_test_case(qtg_structure['tests'], test_id, part_id, case_id)
 
-    formatted_date = date_time.strftime("%m.%d.%Y")
+    formatted_date = date_time.strftime("%d.%m.%Y")
     formatted_time = date_time.strftime("%H:%M:%S")
 
     get_initial_conditions(case, init_cond_ref, init_cond_mqtg, init_cond_rec, is_mqtg)
