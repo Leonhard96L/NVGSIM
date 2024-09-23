@@ -4,7 +4,7 @@ import os
 import tkinter as tk
 from tkinter import ttk, filedialog
 
-# import execute_test
+import execute_test
 from qtg_data_structure import data
 import generate_report
 
@@ -240,7 +240,7 @@ def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output,
 
             while True:
                 # execute test
-                # execute_test.execute_test(test_item, test_dir, mqtg, gui_output, gui_input)
+                execute_test.execute_test(test_item, test_dir, mqtg, gui_output, gui_input)
 
                 # generate report
                 gui_output("Creating Test Report. This may take a second...")
