@@ -7,17 +7,25 @@
 7. Heading stimmt nicht (siehe 1.j.1 A1 init cond)
 8. Endlich mal dieses GW runden
 
-2. vlt schon geloest
-4. vlt schon geloest
-7. vlt schon geloest
+1. ist geloest -> geprueft
+2. vlt schon geloest ->pruefen
+4. vlt schon geloest ->pruefen
+6. ist schon erledigt -> geprueft, Achtung muss noch aktiviert werden
+7. vlt schon geloest -> pruefen
+8. geloest -> geprueft 
 
 
-Wir kommen mit allen Tests locker an einem Tag durch.
-
-
-Punkte an Michi:
--Tests wieder rausnehmen waehrend dem Flyout prozess
--Ein gesamtreport unabhengig erstellen lassen
 
 
 Gedanken:
+
+
+Wirklich wichtig, vor init flyout:
+1. Long Cyclic anpassen
+2. Collective montieren
+3. Mache die Tests 1.c.1 on Ground
+
+
+Wichtig fuer recurrent:
+1. Achtung es gibt hands off tests
+2. 
