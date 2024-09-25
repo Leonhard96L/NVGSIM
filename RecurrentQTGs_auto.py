@@ -337,6 +337,7 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
         
     MQTG_pitch_path = os.path.join(QTG_path, 'Pitch Angle.XY.qtgplot.sim')
     MQTG_roll_path = os.path.join(QTG_path, 'Roll Angle.XY.qtgplot.sim')
+    MQTG_yaw_path = os.path.join(QTG_path, 'Yaw Angle Unwrapped.XY.qtgplot.sim')
 
     with open(MQTG_roll_path, 'r') as json_file:
         data = json.load(json_file)
@@ -346,9 +347,14 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
         data = json.load(json_file)
     MQTG_pitch = data["FTD1"]["y"]
     
+    with open(MQTG_yaw_path, 'r') as json_file:
+        data = json.load(json_file)
+    MQTG_yaw = data["FTD1"]["y"]
+    
     i = 0
     pitch_integral = 0
     roll_integral = 0
+    yaw_integral = 0
 
     simulation_mode.write(SIM_MODE.RUN) 
     
@@ -359,6 +365,7 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
         
         desired_roll = MQTG_roll[i]
         desired_pitch = MQTG_pitch[i]
+        desired_yaw = MQTG_yaw[i]
         
         
         output_matrix[i,OUTPUT.AIRSPEED] = reference_frame_body_freestream_airspeed.read()
@@ -379,14 +386,15 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
         
         current_pitch = output_matrix[i,OUTPUT.PITCH]
         current_roll = output_matrix[i,OUTPUT.BANK]
+        current_yaw = output_matrix[i,OUTPUT.HEADING]
         
         error_roll = desired_roll - current_roll
 
         
         roll_trafo = np.rad2deg(error_roll)*0.005
         #1deg = 0.005
-        P_roll = 1
-        I_roll = 1
+        P_roll = 10
+        I_roll = 2
         roll_integral = roll_integral + roll_trafo * dT
         cyc_lat_input = P_roll*roll_trafo + I_roll*roll_integral
         
@@ -396,16 +404,27 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
         
         pitch_trafo = np.rad2deg(error_pitch)*0.024
         #1deg = 0.024
-        P_pitch = 2
+        P_pitch = 5
         I_pitch = 2
         pitch_integral = pitch_integral + pitch_trafo * dT
         cyc_long_input = P_pitch*pitch_trafo + I_pitch*pitch_integral
+        
+        
+        error_yaw = desired_yaw - current_yaw
+        
+        yaw_trafo = np.rad2deg(error_yaw)
+        
+        P_yaw = 0.2
+        I_yaw = 0.2
+        yaw_integral = yaw_integral+yaw_trafo*dT
+        pedal_input = P_yaw*yaw_trafo+I_yaw*yaw_integral
+        
         
         if not issnapshot:
             hardware_pilot_collective_position.write(MQTG_input_matrix[i,INPUT.COLLECTIVE])
             hardware_pilot_cyclic_lateral_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LATERAL]+cyc_lat_input)
             hardware_pilot_cyclic_longitudinal_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LONGITUDINAL]+cyc_long_input)
-            hardware_pilot_pedals_position.write(MQTG_input_matrix[i,INPUT.PEDALS])
+            hardware_pilot_pedals_position.write(MQTG_input_matrix[i,INPUT.PEDALS]+pedal_input)
 
 
 
@@ -446,6 +465,7 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
 
     MQTG_pitch_path = os.path.join(QTG_path, 'Pitch Angle.XY.qtgplot.sim')
     MQTG_roll_path = os.path.join(QTG_path, 'Roll Angle.XY.qtgplot.sim')
+    MQTG_yaw_path = os.path.join(QTG_path, 'Yaw Angle Unwrapped.XY.qtgplot.sim')
 
     with open(MQTG_roll_path, 'r') as json_file:
         data = json.load(json_file)
@@ -455,26 +475,23 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
         data = json.load(json_file)
     MQTG_pitch = data["FTD1"]["y"]
     
+    with open(MQTG_yaw_path, 'r') as json_file:
+        data = json.load(json_file)
+    MQTG_yaw = data["FTD1"]["y"]  
+    
     
     
     desired_roll = np.mean(MQTG_roll[:-1]) #rad
     desired_pitch = np.mean(MQTG_pitch[:-1]) #rad
-    #desired_roll = float(init_cond_dict['Bank Angle']) #rad
-    #desired_pitch = float(init_cond_dict['Pitch Angle']) #rad
+    desired_yaw = np.mean(MQTG_yaw[:-1]) #rad
+    
+
     
     cyc_long_init_input = MQTG_input_matrix[0,INPUT.CYCLIC_LONGITUDINAL]
     cyc_lat_init_input = MQTG_input_matrix[0,INPUT.CYCLIC_LATERAL]
-    
-    cyclic_limit_min = cyc_long_init_input - 0.05 * abs(cyc_long_init_input)
-    cyclic_limit_max = cyc_long_init_input + 0.05 * abs(cyc_long_init_input)
-    if cyclic_limit_min == cyclic_limit_max == 0:
-        cyclic_limit_min = -0.05
-        cyclic_limit_max = 0.05
-    
-    #cyclic_limits = (cyclic_init_input-0.05,cyclic_init_input+0.05) #brunner
-    cyclic_limits = (cyclic_limit_min,cyclic_limit_max)
-    print(cyclic_limits)
-    
+    pedal_init_input = MQTG_input_matrix[0,INPUT.PEDALS]
+
+
     
     i = 0
     dT = 0.01
@@ -482,25 +499,27 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
     simulation_mode.write(SIM_MODE.RUN) 
     error_pitch_lis = []
     error_roll_lis = []
+    error_yaw_lis = []
     
     pitch_integral = 0
     roll_integral = 0
+    yaw_integral = 0
     P_roll = 8
-    I_roll = 3
+    I_roll = 6
     P_pitch = 8
     I_pitch = 3
+    P_yaw = 0.1
+    I_yaw = 0.05
     
-    LOWL = [48.23380,14.20719]
+
     
     while True:
         
-        print(desired_roll)
-        #reference_frame_inertial_position_latitude.write(LOWL[0])
-        #reference_frame_inertial_position_longitude.write(LOWL[1])
-        #reference_frame_inertial_attitude_psi.write(float(init_cond_dict['Heading']))
+
 
         current_pitch = reference_frame_inertial_attitude_theta.read()
         current_roll = reference_frame_inertial_attitude_phi.read()
+        current_yaw = reference_frame_inertial_attitude_psi.read()
         
         error_roll = desired_roll - current_roll
         error_roll_lis.append(np.rad2deg(error_roll))
@@ -521,11 +540,16 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
         pitch_integral = pitch_integral + pitch_trafo * dT
         cyc_long_input = P_pitch*pitch_trafo + I_pitch*pitch_integral
         
-
-        #cyc_long_input = max(cyclic_limit_min, min(cyc_long_input, cyclic_limit_max))
-
-        #(0.2032318115234375, 0.2246246337890625)
+        error_yaw = desired_yaw - current_yaw
+        error_yaw_lis.append(np.rad2deg(error_roll))
         
+        yaw_trafo = np.rad2deg(error_yaw)
+
+        yaw_integral = yaw_integral+yaw_trafo*dT
+        pedal_input = P_yaw*yaw_trafo+I_yaw*yaw_integral
+        
+        if yaw_trafo > 5:
+            reference_frame_inertial_attitude_psi.write(float(init_cond_dict['Heading']))
 
         e_pitch = error_pitch_lis[-1]
         e_roll = error_roll_lis[-1]
@@ -534,14 +558,15 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
 
         
         hardware_pilot_collective_position.write(MQTG_input_matrix[0,INPUT.COLLECTIVE])
-        hardware_pilot_pedals_position.write(MQTG_input_matrix[0,INPUT.PEDALS])
+
         
         hardware_pilot_cyclic_lateral_position.write(cyc_lat_init_input+cyc_lat_input)
         hardware_pilot_cyclic_longitudinal_position.write(cyc_long_init_input+cyc_long_input)
+        hardware_pilot_pedals_position.write(pedal_init_input+pedal_input)
 
 
         if len(error_pitch_lis) > 100:
-            if all(abs(i) < 0.01 for i in error_pitch_lis[-80:]) and all(abs(i) < 0.02 for i in error_roll_lis[-80:]):
+            if all(abs(i) < 0.02 for i in error_pitch_lis[-80:]) and all(abs(i) < 0.02 for i in error_roll_lis[-80:]):
                 break
         
         # sleep for dT amount of seconds
@@ -550,7 +575,7 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
         i += 1
 
     simulation_mode.write(SIM_MODE.PAUSE)
-    return cyc_long_input, cyc_lat_input
+    return cyc_long_input, cyc_lat_input, pedal_input
 
 
 
@@ -700,18 +725,14 @@ def set_standard_cond():
     hardware_pilot_pedals_position.write(0)
     
 
-def set_init_cond_recurrent(init_cond_dict, cyc_long_input, cyc_lat_input):
+def set_init_cond_recurrent(init_cond_dict, cyc_long_input, cyc_lat_input, pedal_input):
     ON = 5e-324 
     
     #init_cond_di_si = units_conversion(init_cond_dict,'SI')
 
-    #Positions
-    #coordiantes LOWL RW26:
-# =============================================================================
-#     LOWL = [48.23380,14.20719]
-#     reference_frame_inertial_position_latitude.write(LOWL[0])
-#     reference_frame_inertial_position_longitude.write(LOWL[1])
-# =============================================================================
+
+    #reference_frame_inertial_position_latitude.write(float(init_cond_dict['location_lat']))
+    #reference_frame_inertial_position_longitude.write(float(init_cond_dict['location_long']))
         
     
     configuration_loading_empty_mass.write(float(init_cond_dict['Gross Weight']))
@@ -746,10 +767,10 @@ def set_init_cond_recurrent(init_cond_dict, cyc_long_input, cyc_lat_input):
     
     hardware_pilot_collective_position.write(float(init_cond_dict["Collective Pos."]))
     hardware_pilot_cyclic_lateral_position.write(float(init_cond_dict["Lateral Cyclic Pos."])+cyc_lat_input)
-    hardware_pilot_cyclic_lateral_trim_position.write(float(init_cond_dict["Lateral Cyclic Pos."])+cyc_lat_input)
+    #hardware_pilot_cyclic_lateral_trim_position.write(float(init_cond_dict["Lateral Cyclic Pos."])+cyc_lat_input)
     hardware_pilot_cyclic_longitudinal_position.write(float(init_cond_dict["Longitudinal Cyclic Pos."])+cyc_long_input)
-    hardware_pilot_cyclic_longitudinal_trim_position.write(float(init_cond_dict["Longitudinal Cyclic Pos."])+cyc_long_input)
-    hardware_pilot_pedals_position.write(float(init_cond_dict["Pedals Pos."]))
+    #hardware_pilot_cyclic_longitudinal_trim_position.write(float(init_cond_dict["Longitudinal Cyclic Pos."])+cyc_long_input)
+    hardware_pilot_pedals_position.write(float(init_cond_dict["Pedals Pos."])+pedal_input)
     
 
     hardware_panel_center_hydraulics_xmsn_nr_p10.write(False) if init_cond_dict['HINR Button'] == 'NORMAL' else hardware_panel_center_hydraulics_xmsn_nr_p10.write(False)
@@ -1145,22 +1166,22 @@ def main(test_item, test_dir, gui_output, gui_input):
     time.sleep(3)
     
     #For snapshottests
-    cyc_long_input, cyc_lat_input = 0,0
+    cyc_long_input, cyc_lat_input, pedal_input = 0,0,0
     
     #Schreibe die Anfangsbedingungen des jeweiligen QTGs
-    set_init_cond_recurrent(init_cond_ref_dict, cyc_long_input, cyc_lat_input)
+    set_init_cond_recurrent(init_cond_ref_dict, cyc_long_input, cyc_lat_input, pedal_input)
     simulation_mode.write(SIM_MODE.PAUSE)
     time.sleep(0.2)
     simulation_mode.write(SIM_MODE.TRIM)
     time.sleep(2)
     
     if issnapshot:
-        cyc_long_input, cyc_lat_input = TRIM_pilot_2(QTG_path,T,init_cond_ref_dict) 
+        cyc_long_input, cyc_lat_input, pedal_input = TRIM_pilot_2(QTG_path,T,init_cond_ref_dict) 
 
 
     simulation_mode.write(SIM_MODE.RUN)
     time.sleep(0.2)
-    set_init_cond_recurrent(init_cond_ref_dict, cyc_long_input, cyc_lat_input)
+    set_init_cond_recurrent(init_cond_ref_dict, cyc_long_input, cyc_lat_input, pedal_input)
     time.sleep(0.2)
 
     

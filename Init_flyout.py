@@ -277,8 +277,11 @@ def logandsave_flyout_init_cond(QTG_path):
         'Engine 2 Main Switch': Eng2state,
         'AFCS State': AFCS,  # SCAS on =5e-324 SCAS off = 0.0
         'HINR Button': HINR,  # HINR on = 5e-324 HINR off = 0.0
-        'Training Mode': TM
+        'Training Mode': TM,
+        'location_lat' : reference_frame_inertial_position_latitude.read(),
+        'location_long' : reference_frame_inertial_position_longitude.read()
     }
+
 
     # Save the date
     date = datetime.now()
