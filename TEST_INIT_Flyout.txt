@@ -10,7 +10,7 @@
 1. ist geloest -> geprueft
 2. vlt schon geloest ->pruefen
 4. vlt schon geloest ->pruefen
-6. ist schon erledigt -> geprueft, Achtung muss noch aktiviert werden
+6. ist schon erledigt -> geprueft, Achtung muss noch aktiviert werden!!! in den Automatic
 7. vlt schon geloest -> pruefen
 8. geloest -> geprueft 
 
@@ -21,7 +21,7 @@ Gedanken:
 
 
 Wirklich wichtig, vor init flyout:
-1. Long Cyclic anpassen
+
 2. Collective montieren
 3. Mache die Tests 1.c.1 on Ground
 

@@ -1593,9 +1593,12 @@ data = {
                         {'parameter': 'Breakout', 'unit': '[daN]', 'tolerance': 'CT&M'},
                         {'parameter': 'Force', 'unit': '[daN]', 'tolerance': 'CT&M'}
                     ],
-        		    'tolerances_recurrent_criteria': [
+            		    'tolerances_recurrent_criteria': [
                         {'parameter': 'Breakout', 'unit': '[daN]', 'tolerance': '±0.224'},
                         {'parameter': 'Force', 'unit': '[daN]', 'tolerance': '±0.448'}
+                    ],
+                    'add_plots' : [
+                        {'parameter': 'Dummy'}
                     ],
                     'test_cases': [
                         {
@@ -1669,8 +1672,11 @@ data = {
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Trim Rate', 'unit': '[%]', 'tolerance': 'CT&M'}
                     ],
-		            'tolerances_recurrent_criteria': [
+    		          'tolerances_recurrent_criteria': [
                         {'parameter': 'Trim Rate', 'unit': '[%]', 'tolerance': '±10'}
+                    ],
+                    'add_plots' : [
+                        {'parameter': 'Dummy'}
                     ],
                     'test_cases': [
                         {

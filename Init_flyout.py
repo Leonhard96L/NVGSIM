@@ -165,6 +165,12 @@ hardware_pilot_pedals_position = DSim.Variable.Double(DSim.Node(dsim_entity, "ha
 hardware_pilot_pedals_trim_position = DSim.Variable.Double(
     DSim.Node(dsim_entity, "hardware/pilot/pedals/trim/position"))
 
+
+hardware_pilot_cyclic_longitudinal_force = DSim.Variable.Double(DSim.Node(dsim_entity, "hardware/pilot/cyclic/longitudinal/force"))
+hardware_pilot_cyclic_lateral_force = DSim.Variable.Double(DSim.Node(dsim_entity, "hardware/pilot/cyclic/lateral/force"))
+hardware_pilot_pedals_force = DSim.Variable.Double(DSim.Node(dsim_entity, "hardware/pilot/pedals/force"))
+
+
 configuration_failure_engine_1_failed = DSim.Variable.Bool(
     DSim.Node(dsim_entity, "configuration/failure/engine/1/failed"))  # run=false
 configuration_failure_engine_2_failed = DSim.Variable.Bool(
@@ -416,11 +422,11 @@ def log_flyout_input_output(T, gui_output):
 
         #length, status, node_yaw, force_yaw, node_coll, force_coll = struct.unpack('<HBHfHf', force_response_yaw_coll[0:15])
 
-        
 
-        force_matrix[i, INPUT.CYCLIC_LONGITUDINAL] = number_format.format(force_pitch)
-        force_matrix[i, INPUT.CYCLIC_LATERAL] = number_format.format(force_roll)
-        force_matrix[i, INPUT.PEDALS] = number_format.format(force_yaw)
+
+        force_matrix[i, INPUT.CYCLIC_LONGITUDINAL] = hardware_pilot_cyclic_longitudinal_force.read()
+        force_matrix[i, INPUT.CYCLIC_LATERAL] = hardware_pilot_cyclic_lateral_force.read()
+        force_matrix[i, INPUT.PEDALS] = hardware_pilot_pedals_force.read()
         force_matrix[i, INPUT.COLLECTIVE] = number_format.format(force_coll)
         # sleep for dT amount of seconds
         dT = T[i + 1] - T[i]
@@ -666,13 +672,13 @@ def create_plots(QTG_path, part):
             elif 'Angle Rate' in para_file_dict[plot_title]:
                 y=np.rad2deg(y)
             elif 'Control Position Pitch' in para_file_dict[plot_title]: 
-                y=[map_control(i) for i in y]
+                y=[map_control(i, 'pitch') for i in y]
             elif 'Control Position Collective' in para_file_dict[plot_title]:
-                y=[i*100 for i in y]
+                y=[map_control(i, 'collective') for i in y]
             elif 'Control Position Roll' in para_file_dict[plot_title]:
-                y=[map_control(i) for i in y]
+                y=[map_control(i, 'roll') for i in y]
             elif 'Control Position Yaw' in para_file_dict[plot_title]:
-                y=[map_control(i) for i in y]              
+                y=[map_control(i, 'pedal') for i in y]              
             elif 'Control QTG Force Pitch' in compare_name:
                 y = [pitch_brun2N(i) for i in y]
                 x = [pitch_brun2angle(i) for i in x] 

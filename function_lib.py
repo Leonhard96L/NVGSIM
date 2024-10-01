@@ -36,10 +36,44 @@ def get_test_test_part_test_case(tests_orig, test_id, part_id, case_id):
     return None, None, None
 
 
-def map_control(x): return round(50 * (x + 1), 2)  # Brunner2Moog
+#def map_control(x): return round(50 * (x + 1), 2)  
 
 
-def inv_map_control(x): return (x / 50) - 1  # Moog2Brunner
+
+def map_control(x,axis): # Brunner2Moog
+    if axis == 'pitch':
+        min_val = -0.95
+        max_val = 1
+    elif axis == 'roll':
+        min_val = -1
+        max_val = 1
+    elif axis == 'pedal':
+        min_val = -1
+        max_val = 1
+    elif axis == 'collective':
+        min_val = 0.02
+        max_val = 1
+
+    return round((x - min_val) / (max_val - min_val) * 100,2)
+    
+
+
+
+def inv_map_control(x, axis):  # Moog2Brunner
+    if axis == 'pitch':
+        min_val = -0.95
+        max_val = 1
+    elif axis == 'roll':
+        min_val = -1
+        max_val = 1
+    elif axis == 'pedal':
+        min_val = -1
+        max_val = 1
+    elif axis == 'collective':
+        min_val = 0.02
+        max_val = 1
+
+    return round(min_val + (x / 100) * (max_val - min_val),2) 
 
 
 def rpm2perc(x): return round((np.rad2deg(x) / 1590) * 100, 2)
@@ -107,7 +141,7 @@ def coll_brun2angle(x):
 
 def pitch_brun2N(x):
     # Cyclic: Abstand Griff zu Drehpunkt_Longitudinal
-    L_P = 0.7124
+    L_P = -0.7124
     x = x * 100 / L_P
     return x
 
@@ -186,10 +220,10 @@ def units_conversion(init_cond_dict, unit):
         init_cond_dict_SI['Roll Rate'] = round(np.deg2rad(float(init_cond_dict['Roll Rate'])), 2)
         init_cond_dict_SI['Yaw Rate'] = round(np.deg2rad(float(init_cond_dict['Yaw Rate'])), 2)
         init_cond_dict_SI['Longitudinal Cyclic Pos.'] = inv_map_control(
-            float(init_cond_dict['Longitudinal Cyclic Pos.']))
-        init_cond_dict_SI['Lateral Cyclic Pos.'] = inv_map_control(float(init_cond_dict['Lateral Cyclic Pos.']))
-        init_cond_dict_SI['Pedals Pos.'] = inv_map_control(float(init_cond_dict['Pedals Pos.']))
-        init_cond_dict_SI['Collective Pos.'] = inv_map_control(float(init_cond_dict['Collective Pos.']))
+            float(init_cond_dict['Longitudinal Cyclic Pos.']), 'pitch')
+        init_cond_dict_SI['Lateral Cyclic Pos.'] = inv_map_control(float(init_cond_dict['Lateral Cyclic Pos.']), 'roll')
+        init_cond_dict_SI['Pedals Pos.'] = inv_map_control(float(init_cond_dict['Pedals Pos.']), 'pedal')
+        init_cond_dict_SI['Collective Pos.'] = inv_map_control(float(init_cond_dict['Collective Pos.']), 'collective')
         return init_cond_dict_SI
 
     elif unit == 'Avi':
@@ -213,10 +247,10 @@ def units_conversion(init_cond_dict, unit):
         init_cond_dict_Avi['Pitch Rate'] = round(np.rad2deg(float(init_cond_dict['Pitch Rate'])), 2)
         init_cond_dict_Avi['Roll Rate'] = round(np.rad2deg(float(init_cond_dict['Roll Rate'])), 2)
         init_cond_dict_Avi['Yaw Rate'] = round(np.rad2deg(float(init_cond_dict['Yaw Rate'])), 2)
-        init_cond_dict_Avi['Longitudinal Cyclic Pos.'] = map_control(float(init_cond_dict['Longitudinal Cyclic Pos.']))
-        init_cond_dict_Avi['Lateral Cyclic Pos.'] = map_control(float(init_cond_dict['Lateral Cyclic Pos.']))
-        init_cond_dict_Avi['Pedals Pos.'] = map_control(float(init_cond_dict['Pedals Pos.']))
-        init_cond_dict_Avi['Collective Pos.'] = map_control(float(init_cond_dict['Collective Pos.']))
+        init_cond_dict_Avi['Longitudinal Cyclic Pos.'] = map_control(float(init_cond_dict['Longitudinal Cyclic Pos.']), 'pitch')
+        init_cond_dict_Avi['Lateral Cyclic Pos.'] = map_control(float(init_cond_dict['Lateral Cyclic Pos.']), 'roll')
+        init_cond_dict_Avi['Pedals Pos.'] = map_control(float(init_cond_dict['Pedals Pos.']), 'pedal')
+        init_cond_dict_Avi['Collective Pos.'] = map_control(float(init_cond_dict['Collective Pos.']), 'collective')
         return init_cond_dict_Avi
 
 
