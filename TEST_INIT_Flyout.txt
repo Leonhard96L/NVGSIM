@@ -17,15 +17,31 @@
 
 
 
-Gedanken:
+
+Notizen fuer Raimund fuer MQTG:
+1. Mache die Tests 1.c.1 on Ground (also starte on Ground)
+2. Achtung es gibt hands off tests
+3. Pruefe immer das HDG und die Hoehe (siehe)(Attitde, Position)
+4. achte auf engine fail schalten (siehe)(Failures)
+5. Achtung: Atrim Longitudinal ganz vorne beginnen; Atrim Lateral ganz links beginnen 
+
+Bedienung:
+1. Spyder oeffnen
+2. Die MQTGs findest unter D:\entity\rotorsky\ec135\resources\NVGSIM\data\mqtg
+3. Das script qtg_generator.py ausfuehren (Play button)
+4. In der GUI die entsprechenden Test asuwaehlen
+5. Start MQTG
+6. Hit Enter if pilot is ready -> in die Zeile ganz unten hineinklicken.
 
 
-Wirklich wichtig, vor init flyout:
 
-2. Collective montieren
-3. Mache die Tests 1.c.1 on Ground
+Unbedingt noch zu loesen:
+1. Collective Kraft kalibrieren
 
 
-Wichtig fuer recurrent:
-1. Achtung es gibt hands off tests
-2. 
+
+-pruefe ob heading passt.
+-preufe beim naechsten restart, ob longitudinal cyclic pos passt
+
+
+
