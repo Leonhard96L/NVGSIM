@@ -605,7 +605,7 @@ def create_plots(QTG_path, part):
                 y = [pitch_brun2angle(i) for i in y]
                 y,x = ATRIM_calc(x, y)
             elif 'Control QTG Position Roll Velocity' in compare_name:
-                y = [coll_brun2angle(i) for i in y]
+                y = [roll_brun2angle(i) for i in y]
                 y,x = ATRIM_calc(x, y)
             elif 'Groundspeed' in para_file_dict[plot_title]:
                 y=[mps2kt(i) for i in y]
