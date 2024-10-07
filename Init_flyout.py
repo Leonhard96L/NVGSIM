@@ -564,65 +564,113 @@ def create_plots(QTG_path, part):
         
             y[-1] = y[-2]
             x[-1] = x[-2]
-
+            
+            x_label = None
+            y_label = None
             
                             
             if 'Yaw Angle Unwrapped' in para_file_dict[plot_title]:
                 y = [map360(i) for i in y]
+                x_label = 'Time(s)'
+                y_label = 'Heading (deg)'
             elif 'Roll Angle' in para_file_dict[plot_title]:
                 y=np.rad2deg(y)
+                x_label = 'Time(s)'
+                y_label = 'Roll Angle (deg)'
             elif 'Pitch Angle' in para_file_dict[plot_title]:
                 y=np.rad2deg(y)
+                x_label = 'Time(s)'
+                y_label = 'Pitch Angle (deg)'
             elif 'Angle of Sideslip' in para_file_dict[plot_title]:
                 y=np.rad2deg(y)
+                x_label = 'Time(s)'
+                y_label = 'Sideslip Angle (deg)'
             elif 'Angle Rate' in para_file_dict[plot_title]:
                 y=np.rad2deg(y)
+                x_label = 'Time(s)'
+                y_label = 'Angle Rate (deg/s)'
             elif 'Control Position Pitch' in para_file_dict[plot_title]: 
                 y=[map_control(i, 'pitch') for i in y]
+                x_label = 'Time(s)'
+                y_label = 'Position (%)'
             elif 'Control Position Collective' in para_file_dict[plot_title]:
                 y=[map_control(i, 'collective') for i in y]
+                x_label = 'Time(s)'
+                y_label = 'Position (%)'
             elif 'Control Position Roll' in para_file_dict[plot_title]:
                 y=[map_control(i, 'roll') for i in y]
+                x_label = 'Time(s)'
+                y_label = 'Position (%)'
             elif 'Control Position Yaw' in para_file_dict[plot_title]:
-                y=[map_control(i, 'pedal') for i in y]              
+                y=[map_control(i, 'pedal') for i in y]   
+                x_label = 'Time(s)'
+                y_label = 'Position (%)'
             elif 'Control QTG Force Pitch' in compare_name:
                 y = [pitch_brun2N(i) for i in y]
                 x = [pitch_brun2angle(i) for i in x] 
                 sc_fac = 0.5
+                x_label = 'Position (deg)'
+                y_label = 'Force (N)'
             elif 'Control QTG Force Roll' in compare_name:
                 y = [roll_brun2N(i) for i in y]
                 x = [roll_brun2angle(i) for i in x]
                 sc_fac = 0.5
+                x_label = 'Position (deg)'
+                y_label = 'Force (N)'
             elif 'Control QTG Force Collective' in compare_name:
                 y = [coll_brun2N(i) for i in y]
                 x = [coll_brun2angle(i) for i in x]
                 sc_fac = 0.5
+                x_label = 'Position (deg)'
+                y_label = 'Force (N)'
             elif 'Control QTG Force Yaw' in compare_name:
                 x = [yaw_brun2angle(i) for i in x]
                 y = [i*-1000 for i in y]
                 sc_fac = 0.5
+                x_label = 'Position (deg)'
+                y_label = 'Force (N)'
             elif 'Control QTG Position Pitch Velocity' in compare_name:
                 y = [pitch_brun2angle(i) for i in y]
                 y,x = ATRIM_calc(x, y)
+                x_label = 'Time(s)'
+                y_label = 'Trim Rate (deg/s)'
             elif 'Control QTG Position Roll Velocity' in compare_name:
                 y = [roll_brun2angle(i) for i in y]
                 y,x = ATRIM_calc(x, y)
+                x_label = 'Time(s)'
+                y_label = 'Trim Rate (deg/s)'
             elif 'Groundspeed' in para_file_dict[plot_title]:
                 y=[mps2kt(i) for i in y]
+                x_label = 'Time(s)'
+                y_label = 'Groundspeed (kts)'
             elif 'Airspeed' in para_file_dict[plot_title]:
                 y=[mps2kt(i) for i in y]
                 sc_fac = 3
+                x_label = 'Time(s)'
+                y_label = 'Airspeed (kts)'
             elif 'Barometric Altitude' in para_file_dict[plot_title]:
                 y=[m2ft(i) for i in y]
+                x_label = 'Time(s)'
+                y_label = 'Pressure Altitude (ft)'
             elif 'Vertical' in para_file_dict[plot_title]:
                 y=[mps2fpm(-i) for i in y]
                 sc_fac = 3
+                x_label = 'Time(s)'
+                y_label = 'Vertical Velocity (ft/min)'
             elif 'Rotor' in para_file_dict[plot_title]:
                 y=[rpm2perc(i) for i in y]
+                x_label = 'Time(s)'
+                y_label = 'Rotor RPM (%)'
+            elif 'Engine' in para_file_dict[plot_title]:
+                x_label = 'Time(s)'
+                y_label = 'TRQ (%)'
+            elif 'RadarAltitude' in para_file_dict[plot_title]:
+                x_label = 'Time(s)'
+                y_label = 'Radar Altitude (ft)'
             else:
                 y_label = plot_title +' (??)'
                 pdfname = f"{plot_title}.svg"
-        return x,y,x_Ref,y_Ref, sc_fac
+        return x,y,x_Ref,y_Ref, sc_fac,x_label,y_label
     
     
     params = part['tolerances_evaluation_criteria']
@@ -673,13 +721,13 @@ def create_plots(QTG_path, part):
             data = json.load(json_file)
             
             sc_fac = 1.5
-            x,y,x_Ref,y_Ref, sc_fac=plot_cases(data,compare_name,sc_fac)
-            
             x_label = 'Time(s)'
-
-            
-            pdfname = f"{count}_{plot_title}.svg"
             y_label = plot_title +' '+ param['unit']
+            x,y,x_Ref,y_Ref, sc_fac,x_label,y_label=plot_cases(data,compare_name,sc_fac)
+            
+
+            pdfname = f"{count}_{plot_title}.svg"
+    
 
             plt.figure(figsize=(10, 6))
 
@@ -724,13 +772,15 @@ def create_plots(QTG_path, part):
         with open(file_path, 'r') as json_file:
             data = json.load(json_file)
             sc_fac = 1.5
-            x,y,x_Ref,y_Ref, sc_fac=plot_cases(data,compare_name,sc_fac)
-            
             x_label = 'Time(s)'
+            y_label = plot_title +' '+ param_add['unit']
+            x,y,x_Ref,y_Ref, sc_fac,x_label,y_label=plot_cases(data,compare_name,sc_fac)
+            
+            
             
 
             pdfname = f"{count_add}_{plot_title}.svg"
-            y_label = plot_title +' '+ param_add['unit']
+            
 
             plt.figure(figsize=(10, 6))
             plt.plot(x_Ref, y_Ref, label='Reference')

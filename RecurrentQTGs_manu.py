@@ -534,7 +534,8 @@ def create_plots(QTG_path, part):
             y[-1] = y[-2]
             x[-1] = x[-2]
 
-            
+            x_label = None
+            y_label = None
                             
             if 'Yaw Angle Unwrapped' in para_file_dict[plot_title]:
                 y = [map360(i) for i in y]
@@ -619,38 +620,51 @@ def create_plots(QTG_path, part):
                 y_Rec = [pitch_brun2angle(i) for i in y_Rec]
                 y_Rec,x_Rec = ATRIM_calc(x_Rec, y_Rec)
                 x_label = 'Time(s)'
+                y_label = 'Trim Rate (deg/s)'
             elif 'Control QTG Position Roll Velocity' in compare_name:
                 y = [roll_brun2angle(i) for i in y]
                 y,x = ATRIM_calc(x, y)
                 y_Rec = [roll_brun2angle(i) for i in y_Rec]
                 y_Rec,x_Rec = ATRIM_calc(x_Rec, y_Rec)
                 x_label = 'Time(s)'
+                y_label = 'Trim Rate (deg/s)'
             elif 'Groundspeed' in para_file_dict[plot_title]:
                 y=[mps2kt(i) for i in y]
                 y_Rec=[mps2kt(i) for i in y_Rec]
                 x_label = 'Time(s)'
+                y_label = 'Groundspeed (kts)'
             elif 'Airspeed' in para_file_dict[plot_title]:
                 y=[mps2kt(i) for i in y]
                 y_Rec=[mps2kt(i) for i in y_Rec]
                 sc_fac = 3
                 x_label = 'Time(s)'
+                y_label = 'Airspeed (kts)'
             elif 'Barometric Altitude' in para_file_dict[plot_title]:
                 y=[m2ft(i) for i in y]
                 y_Rec=[m2ft(i) for i in y_Rec]
                 x_label = 'Time(s)'
+                y_label = 'Pressure Altitude (ft)'
             elif 'Vertical' in para_file_dict[plot_title]:
                 y=[mps2fpm(-i) for i in y]
                 y_Rec=[mps2fpm(-i) for i in y_Rec]
                 sc_fac = 3
                 x_label = 'Time(s)'
+                y_label = 'Vertical Velocity (ft/min)'
             elif 'Rotor' in para_file_dict[plot_title]:
                 y=[rpm2perc(i) for i in y]
                 y_Rec=[rpm2perc(i) for i in y_Rec]
                 x_label = 'Time(s)'
+                y_label = 'Rotor RPM (%)'
+            elif 'Engine' in para_file_dict[plot_title]:
+                x_label = 'Time(s)'
+                y_label = 'TRQ (%)'
+            elif 'RadarAltitude' in para_file_dict[plot_title]:
+                x_label = 'Time(s)'
+                y_label = 'Radar Altitude (ft)'
             else:
                 y_label = plot_title +' (??)'
                 pdfname = f"{plot_title}.svg"
-        return x,y,x_Ref,y_Ref,x_Rec,y_Rec,sc_fac
+        return x,y,x_Ref,y_Ref,x_Rec,y_Rec,sc_fac,x_label,y_label
     
     
     params = part['tolerances_recurrent_criteria']
@@ -702,18 +716,22 @@ def create_plots(QTG_path, part):
             data = json.load(json_file)
             
             sc_fac = 1.5
-            x,y,x_Ref,y_Ref,x_Rec,y_Rec,sc_fac = plot_cases(data,compare_name,sc_fac)
-            
             x_label = 'Time(s)'
+            y_label = plot_title +' '+ param['unit']
+            x,y,x_Ref,y_Ref,x_Rec,y_Rec,sc_fac,x_label,y_label = plot_cases(data,compare_name,sc_fac)
+            
+            
 
             
             pdfname = f"{count}_{plot_title}.svg"
-            y_label = plot_title +' '+ param['unit']
+            
 
             y_uptol = [i+tol for i in y]
             y_lotol = [i-tol for i in y]
+            
 
-            plt.figure(figsize=(10, 6))
+            
+            plt.figure(figsize=(10, 6))            
             plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
             plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
             plt.plot(x_Ref, y_Ref, label='Reference')
@@ -757,13 +775,15 @@ def create_plots(QTG_path, part):
         with open(file_path, 'r') as json_file:
             data = json.load(json_file)
             sc_fac = 1.5
-            x,y,x_Ref,y_Ref,x_Rec,y_Rec,sc_fac = plot_cases(data,compare_name,sc_fac)
-            
             x_label = 'Time(s)'
+            y_label = plot_title +' '+ param_add['unit']
+            x,y,x_Ref,y_Ref,x_Rec,y_Rec,sc_fac,x_label,y_label = plot_cases(data,compare_name,sc_fac)
+            
+            
             
 
             pdfname = f"{count_add}_{plot_title}.svg"
-            y_label = plot_title +' '+ param_add['unit']
+            
 
             plt.figure(figsize=(10, 6))
             plt.plot(x_Ref, y_Ref, label='Reference')
@@ -1029,6 +1049,8 @@ def main(test_item, test_dir, gui_output, gui_input):
     reference_frame_inertial_position_altitude.write(295)
     reference_frame_body_freestream_airspeed.write(0)
     reference_frame_inertial_position_v_xy.write(0)
+    hardware_pilot_cyclic_lateral_trim_position.write(0)
+    hardware_pilot_cyclic_longitudinal_trim_position.write(0)
     simulation_mode.write(SIM_MODE.TRIM)
     time.sleep(2)
     simulation_mode.write(SIM_MODE.RUN) 

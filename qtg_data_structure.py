@@ -1455,7 +1455,7 @@ data = {
                     ],
                     'tolerances_recurrent_criteria': [
                         {'parameter': 'Breakout', 'unit': '[daN]', 'tolerance': '±0.112'},
-                        {'parameter': 'Force', 'unit': '[daN]', 'tolerance': '±0.224'}
+                        {'parameter': 'Force', 'unit': '[N]', 'tolerance': '±2.24'}
                     ],
                     'add_plots' : [
                         {'parameter': 'Dummy'}
@@ -1595,7 +1595,7 @@ data = {
                     ],
             		    'tolerances_recurrent_criteria': [
                         {'parameter': 'Breakout', 'unit': '[daN]', 'tolerance': '±0.224'},
-                        {'parameter': 'Force', 'unit': '[daN]', 'tolerance': '±0.448'}
+                        {'parameter': 'Force', 'unit': '[N]', 'tolerance': '±4.48'}
                     ],
                     'add_plots' : [
                         {'parameter': 'Dummy'}
