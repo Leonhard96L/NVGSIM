@@ -41,12 +41,8 @@ Unbedingt noch zu loesen:
 
 
 -pruefe ob heading passt.
--preufe beim naechsten restart, ob longitudinal cyclic pos passt
+-preufe beim naechsten restart, ob longitudinal cyclic pos passt -> nein wird nicht ubernommen
 
-Achtung: keine Toleranzen bei recurrent control tests
-Achtung: xlabel stimmt bei mqtg und recurrent control tests nicht
-
-Fuege die xlabel und ylabel fix in die plot cases hinzu -> Achtung bei manu schon angefangen
 
 
 
