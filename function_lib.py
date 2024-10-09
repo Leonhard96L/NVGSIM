@@ -70,7 +70,7 @@ def inv_map_control(x, axis):  # Moog2Brunner
         min_val = -1
         max_val = 1
     elif axis == 'collective':
-        min_val = 0.02
+        min_val = 0.018
         max_val = 1
 
     return round(min_val + (x / 100) * (max_val - min_val),2) 
@@ -155,7 +155,8 @@ def roll_brun2N(x):
 
 def coll_brun2N(x):
     # Collective: Abstand Griff zu Drehpunkt
-    LC = 0.61
+    #LC = 0.61 Old
+    LC = 0.5159
     x = x * 100 / LC
     return x
 

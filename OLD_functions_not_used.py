@@ -961,3 +961,188 @@ Created on Wed Oct  2 10:49:49 2024
 #             plt.savefig(save_path, format='svg')
 #             plt.close()
 # =============================================================================
+
+
+# =============================================================================
+# def create_plots(QTG_path, part):
+# 
+#     params = part['tolerances_recurrent_criteria']
+#     para_file_dict = {
+#         'Engine 1 Torque':'Engine1 TRQ Indicated',
+#         'Engine 2 Torque':'Engine2 TRQ Indicated',
+#         'Rotor Speed' : 'Rotor RPM',
+#         'Pitch Angle' : 'Pitch Angle',
+#         'Bank Angle' : 'Roll Angle',
+#         'Heading' : 'Yaw Angle Unwrapped',
+#         'Sideslip Angle' : 'Angle of Sideslip',
+#         'Airspeed' : 'Indicated Airspeed',
+#         'Radar Altitude' : 'RadarAltitude',
+#         'Vertical Velocity' : 'Vertical Speed',
+#         'Longitudinal Cyclic Pos.' : 'Control Position Pitch',
+#         'Lateral Cyclic Pos.' : 'Control Position Roll',
+#         'Pedals Pos.' : 'Control Position Yaw',
+#         'Collective Pos.' : 'Control Position Collective',
+#         'Pitch Rate' : 'Pitch Angle Rate',
+#         'Roll Rate' : 'Roll Angle Rate' ,
+#         'Yaw Rate' : 'Yaw Angle Rate',
+#         'Correct Trend on Bank' : 'Roll Angle',
+#         'Force' : 'Control QTG Force',
+#         'Breakout' : 'dummy'
+#          
+#     }
+#     
+#     
+#     for count,param in enumerate(params):
+#         count = count+1
+#         plot_title = param['parameter']
+#         tol = float(param['tolerance'][1:])
+#         for dirpath, dirnames, filenames in os.walk(QTG_path):     
+#             for file in filenames:
+#                 #if file.split('.')[0] == para_file_dict[plot_title] and file.endswith('.sim'):
+#                 if para_file_dict[plot_title] in file.split('.')[0]  and file.endswith('.sim'):
+#                     file_path = os.path.join(dirpath, file)
+#                     compare_name = file.split('.')[0]
+#                     break
+# 
+# 
+#         try:
+#             print(file_path)
+#             with open(file_path, 'r') as json_file:
+#                 data = json.load(json_file)
+#         except:
+#             continue
+#         
+#         if 'FTD1' in data.keys():
+#             x_Ref = data['Storage'][0]['x']
+#             y_Ref = data['Storage'][0]['y']
+#             x = data['FTD1']['x']
+#             y = data['FTD1']['y']
+#             x_Rec = data['FTD1_Recurrent']['x']
+#             y_Rec = data['FTD1_Recurrent']['y']       
+#         
+#             y[-1] = y[-2]
+#             x[-1] = x[-2]
+#             y_Rec[-1] = y_Rec[-2]
+#             x_Rec[-1] = x_Rec[-2]
+#         
+#             x_label = 'Time(s)'     
+#             
+#             if 'Yaw Angle Unwrapped' in para_file_dict[plot_title]:
+#                 y = [map360(i) for i in y]
+#                 y_Rec = [map360(i) for i in y_Rec]
+#             elif 'Roll Angle' in para_file_dict[plot_title]:
+#                 y=np.rad2deg(y)
+#                 y_Rec=np.rad2deg(y_Rec)
+#             elif 'Pitch Angle' in para_file_dict[plot_title]:
+#                 y=np.rad2deg(y)
+#                 y_Rec=np.rad2deg(y_Rec)
+#             elif 'Angle of Sideslip' in para_file_dict[plot_title]:
+#                 y=np.rad2deg(y)
+#                 y_Rec=np.rad2deg(y_Rec)
+#             elif 'Angle Rate' in para_file_dict[plot_title]:
+#                 y=np.rad2deg(y)
+#                 y_Rec=np.rad2deg(y_Rec)
+#             elif 'Control Position Pitch' in para_file_dict[plot_title]: 
+#                 y=[map_control(i, 'pitch') for i in y]
+#                 y_Rec=[map_control(i, 'pitch') for i in y_Rec]
+#             elif 'Control Position Collective' in para_file_dict[plot_title]:
+#                 y=[map_control(i, 'collective') for i in y]
+#                 y_Rec=[map_control(i, 'collective') for i in y_Rec]
+#             elif 'Control Position Roll' in para_file_dict[plot_title]:
+#                 y=[map_control(i, 'roll') for i in y]
+#                 y_Rec=[map_control(i, 'roll') for i in y_Rec]
+#             elif 'Control Position Yaw' in para_file_dict[plot_title]:
+#                 y=[map_control(i, 'pedal') for i in y]
+#                 y_Rec=[map_control(i, 'pedal') for i in y_Rec] 
+#             elif 'Control QTG Force Pitch' in compare_name:
+#                 y = [pitch_brun2N(i) for i in y]
+#                 x = [pitch_brun2angle(i) for i in x]
+#                 y_Rec = [pitch_brun2N(i) for i in y_Rec]
+#                 x_Rec = [pitch_brun2angle(i) for i in x_Rec]
+#                 x_label = 'Position (deg)'
+#             elif 'Control QTG Force Roll' in compare_name:
+#                 y = [roll_brun2N(i) for i in y]
+#                 x = [roll_brun2angle(i) for i in x]
+#                 y_Rec = [roll_brun2N(i) for i in y_Rec]
+#                 x_Rec = [roll_brun2angle(i) for i in x_Rec]
+#                 x_label = 'Position (deg)'
+#             elif 'Control QTG Force Collective' in compare_name:
+#                 y = [coll_brun2N(i) for i in y]
+#                 x = [coll_brun2angle(i) for i in x]
+#                 y_Rec = [coll_brun2N(i) for i in y_Rec]
+#                 x_Rec = [coll_brun2angle(i) for i in x_Rec]
+#                 x_label = 'Position (deg)'
+#             elif 'Control QTG Force Yaw' in compare_name:
+#                 x = [yaw_brun2angle(i) for i in x]
+#                 y = [i*-1000 for i in y]
+#                 x_Rec = [yaw_brun2angle(i) for i in x_Rec]
+#                 y_Rec = [i*-1000 for i in y_Rec]
+#                 x_label = 'Position (deg)'
+#             elif 'Control QTG Position Pitch Velocity' in para_file_dict[plot_title]:
+#                 y = [pitch_brun2angle(i) for i in y]
+#                 y,x = ATRIM_calc(x, y)
+#                 y_Rec = [pitch_brun2angle(i) for i in y_Rec]
+#                 y_Rec,x_Rec = ATRIM_calc(x_Rec, y_Rec)
+#             elif 'Control QTG Position Roll Velocity' in para_file_dict[plot_title]:
+#                 y = [coll_brun2angle(i) for i in y]
+#                 y,x = ATRIM_calc(x, y)
+#                 y_Rec = [coll_brun2angle(i) for i in y_Rec]
+#                 y_Rec,x_Rec = ATRIM_calc(x_Rec, y_Rec)
+#             elif 'Groundspeed' in para_file_dict[plot_title]:
+#                 y=[mps2kt(i) for i in y]
+#                 y_Rec=[mps2kt(i) for i in y_Rec]
+#             elif 'Airspeed' in para_file_dict[plot_title]:
+#                 y=[mps2kt(i) for i in y]
+#                 y_Rec=[mps2kt(i) for i in y_Rec]
+#             elif 'Barometric Altitude' in para_file_dict[plot_title]:
+#                 y=[m2ft(i) for i in y]
+#                 y_Rec=[m2ft(i) for i in y_Rec]
+#             elif 'Vertical' in para_file_dict[plot_title]:
+#                 y=[mps2fpm(-i) for i in y]
+#                 y_Rec=[mps2fpm(-i) for i in y_Rec]
+#             elif 'Rotor' in para_file_dict[plot_title]:
+#                 y=[rpm2perc(i) for i in y]
+#                 y_Rec=[rpm2perc(i) for i in y_Rec]
+#             else:
+#                 y_label = plot_title +' (??)'
+#                 pdfname = f"{plot_title}.svg"
+#             
+#             
+#             
+#             y_uptol = [i+tol for i in y]
+#             y_lotol = [i-tol for i in y]
+#             
+#             pdfname = f"{count}_{plot_title}.svg"
+#             y_label = plot_title +' '+ param['unit']
+#     
+#             plt.figure(figsize=(10, 6))
+#             plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
+#             plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
+#             
+#             
+#             plt.plot(x_Ref, y_Ref, label='Reference')
+#             plt.plot(x, y, label='FTD1_MQTG')
+#             plt.plot(x_Rec, y_Rec, label='Reccurent', color='green', linestyle='dashed')
+#     
+#             
+#             ##Section for scale
+#             sc_fac = 2.5
+#             plt.autoscale()
+#             y_min, y_max = plt.ylim()
+#             y_range = y_max - y_min
+#             plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
+#     
+#             plt.xlabel(x_label)
+#             plt.ylabel(y_label)
+#             plt.title(plot_title)
+#             plt.legend()
+#             plt.grid(True)
+#             #plt.show() 
+#             save_path = os.path.join(dirpath, pdfname)
+#             
+#             plt.savefig(save_path, format='svg')
+#             plt.close()
+# =============================================================================
+
+
+###RecurrentQTGs_auto.py

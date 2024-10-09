@@ -816,7 +816,8 @@ def create_plots(QTG_path, part):
 def main(test_item, test_dir, gui_output, gui_input):
     brunner_task = DSim.Variable.Enum(DSim.Node(dsim_host,"host/sim1-model/entity/ec135_1/task/io_brunner_cls/mode"))
     brunner_task.write(TASK_MODE.FORCE_RUN)
-
+    hardware_pilot_cyclic_lateral_trim_position.write(0)
+    hardware_pilot_cyclic_longitudinal_trim_position.write(0)
 
     QTG_path = test_dir
     
