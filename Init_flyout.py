@@ -807,12 +807,6 @@ def create_plots(QTG_path, part):
 
 
 
-
-
-
-
-
-
 def main(test_item, test_dir, gui_output, gui_input):
     brunner_task = DSim.Variable.Enum(DSim.Node(dsim_host,"host/sim1-model/entity/ec135_1/task/io_brunner_cls/mode"))
     brunner_task.write(TASK_MODE.FORCE_RUN)
@@ -825,9 +819,6 @@ def main(test_item, test_dir, gui_output, gui_input):
 
     test_id, part_id, case_id = split_string(QTG_name)
     test, part, case = get_test_test_part_test_case(qtg_data_structure.data['tests'], test_id, part_id, case_id)
-
-    
-
 
 
     # Zeitdauer des Tests
