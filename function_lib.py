@@ -42,16 +42,16 @@ def get_test_test_part_test_case(tests_orig, test_id, part_id, case_id):
 
 def map_control(x,axis): # Brunner2Moog
     if axis == 'pitch':
-        min_val = -0.95
+        min_val = -1
         max_val = 1
     elif axis == 'roll':
         min_val = -1
         max_val = 1
     elif axis == 'pedal':
         min_val = -1
-        max_val = 1
+        max_val = 0.85
     elif axis == 'collective':
-        min_val = 0.02
+        min_val = 0.015
         max_val = 1
 
     return round((x - min_val) / (max_val - min_val) * 100,2)
