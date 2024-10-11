@@ -61,16 +61,16 @@ def map_control(x,axis): # Brunner2Moog
 
 def inv_map_control(x, axis):  # Moog2Brunner
     if axis == 'pitch':
-        min_val = -0.95
+        min_val = -1
         max_val = 1
     elif axis == 'roll':
         min_val = -1
         max_val = 1
     elif axis == 'pedal':
         min_val = -1
-        max_val = 1
+        max_val = 0.85
     elif axis == 'collective':
-        min_val = 0.018
+        min_val = 0.015
         max_val = 1
 
     return round(min_val + (x / 100) * (max_val - min_val),2) 
