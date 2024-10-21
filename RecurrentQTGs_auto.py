@@ -189,30 +189,7 @@ def CLS(inp):
     elif inp == 'R':
         brunner_task.write(TASK_MODE.FORCE_RUN)
 
-def CLS_val_INIT():
-    return 0,0,0,0,0,0,0,0
-        
-def CLS_READER_INIT():
-    def build_get_pos_query(axisbitmask):
-        return struct.pack('<III', 0xD0, axisbitmask, 0x11)
 
-    def build_get_force_query(axisbitmask):
-        return struct.pack('<III', 0xD0, axisbitmask, 0x21)
-
-    timeout = 8
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 5)
-    sock.settimeout(timeout)
-    sock.bind(('', 0))
-
-    # set IP of computer running CLS2Sim
-    remoteEndpoint = ('10.12.1.11', 15090)
-    # define binary byte sequences for commands to send over network
-
-    # Command GetData(0xD0), For axes 0x1 and 0x2 (pitch,roll) (= 0x3) and read force as float (dataid 0x21)
-    query_readforce_pitch_roll = build_get_force_query(AxisBitmask.Elevator + AxisBitmask.Aileron)
-    query_readforce_yaw_coll = build_get_force_query(AxisBitmask.Rudder + AxisBitmask.Collective)
-    return sock, remoteEndpoint, query_readforce_pitch_roll, query_readforce_yaw_coll
 
 def logandsave_flyout_init_cond(QTG_path):
 
@@ -578,84 +555,6 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
     return cyc_long_input, cyc_lat_input, pedal_input
 
 
-
-def log_flyout_input_output(T):
-    # pre-define numpy data matrix containing flight data (see enum above for column definitions)
-    input_matrix = np.empty((len(T),INPUT.NUMBER_OF_INPUTS))
-    output_matrix = np.empty((len(T),OUTPUT.NUMBER_OF_OUTPUTS))
-    
-    sock, remoteEndpoint, query_readforce_pitch_roll, query_readforce_yaw_coll = CLS_READER_INIT()
-    force_pitch, force_roll, force_yaw, force_coll = 0,0,0,0
-    prev_force_pitch, prev_force_roll, prev_force_yaw, prev_force_coll = 0,0,0,0
-    def sendThenReceive(send_data, targetAddr, sock):
-        # after each send you HAVE to do a read, even if you don't do anything with the reponse
-        sock.sendto(send_data, targetAddr)
-        response, address = sock.recvfrom(8192)
-        return response
-
-    number_format = '{:+.5f}'
-    force_matrix = np.empty((len(T),INPUT.NUMBER_OF_INPUTS))
-
-
-    accumulated_time = 0
-    i = 0
-
-    while i < len(T)-1:
-        input_matrix[i,INPUT.COLLECTIVE] = hardware_pilot_collective_position.read()
-        input_matrix[i,INPUT.CYCLIC_LATERAL] = hardware_pilot_cyclic_lateral_position.read()
-        input_matrix[i,INPUT.CYCLIC_LONGITUDINAL] = hardware_pilot_cyclic_longitudinal_position.read()
-        input_matrix[i,INPUT.PEDALS] = hardware_pilot_pedals_position.read()
-        
-        output_matrix[i,OUTPUT.AIRSPEED] = reference_frame_body_freestream_airspeed.read()
-        output_matrix[i,OUTPUT.GROUNDSPEED] = reference_frame_inertial_position_v_xy.read()
-        output_matrix[i,OUTPUT.RADARALT] = radio_altimeter_altitude.read()
-        output_matrix[i,OUTPUT.E1TRQ] = engine_1_torque.read()
-        output_matrix[i,OUTPUT.E2TRQ] = engine_2_torque.read()
-        output_matrix[i,OUTPUT.ROTORSPEED] = transmisson_n_r.read()
-        output_matrix[i,OUTPUT.PITCH] = reference_frame_inertial_attitude_theta.read()
-        output_matrix[i,OUTPUT.BANK] = reference_frame_inertial_attitude_phi.read()
-        output_matrix[i,OUTPUT.HEADING] = reference_frame_inertial_attitude_psi.read()
-        output_matrix[i,OUTPUT.PITCHRATE] = reference_frame_body_attitude_q.read()
-        output_matrix[i,OUTPUT.ROLLRATE] = reference_frame_body_attitude_p.read()
-        output_matrix[i,OUTPUT.YAWRATE] = reference_frame_body_attitude_r.read()
-        output_matrix[i,OUTPUT.VERTICALSPEED] = reference_frame_inertial_position_v_z.read()
-        output_matrix[i,OUTPUT.SIDESLIP] = reference_frame_body_freestream_beta.read()
-        
-
-        #Read control forces
-        force_response_pitch_roll = sendThenReceive(query_readforce_pitch_roll, remoteEndpoint, sock)
-        force_response_yaw_coll = sendThenReceive(query_readforce_yaw_coll, remoteEndpoint, sock)
-        length, status, node_pitch, force_pitch, node_roll, force_roll = struct.unpack('<HBHfHf', force_response_pitch_roll)
-        length, status, node_yaw, force_yaw, node_coll, force_coll = struct.unpack('<HBHfHf', force_response_yaw_coll)
-        force_matrix[i,INPUT.CYCLIC_LONGITUDINAL] = number_format.format(force_pitch)
-        force_matrix[i,INPUT.CYCLIC_LATERAL] = number_format.format(force_roll)
-        force_matrix[i,INPUT.PEDALS] = number_format.format(force_yaw)    
-        force_matrix[i,INPUT.COLLECTIVE] = number_format.format(force_coll)  
-        # sleep for dT amount of seconds
-        dT = T[i+1]-T[i]
-        accumulated_time +=dT
-        time.sleep(dT)
-        
-        if int(accumulated_time) > int(accumulated_time - dT):
-            print(round(accumulated_time-dT))
-            
-        if prev_force_pitch != force_pitch \
-            or prev_force_roll != force_roll \
-            or prev_force_yaw != force_yaw \
-            or prev_force_coll != force_coll:
-            prev_force_pitch = force_pitch
-            prev_force_roll = force_roll
-            prev_force_yaw = force_yaw
-            prev_force_coll = force_coll
-
-        
-        # increment data row index
-        i += 1
-    sock.close()
-    simulation_mode.write(SIM_MODE.PAUSE)
-    return input_matrix, output_matrix, force_matrix
-
-
 def save_io_files(QTG_path, input_matrix, output_matrix, T):
     Input_paths = [
     os.path.join(QTG_path,'Control Position Collective.XY.qtgplot.sim'),
@@ -731,8 +630,8 @@ def set_init_cond_recurrent(init_cond_dict, cyc_long_input, cyc_lat_input, pedal
     #init_cond_di_si = units_conversion(init_cond_dict,'SI')
 
 
-    #reference_frame_inertial_position_latitude.write(float(init_cond_dict['location_lat']))
-    #reference_frame_inertial_position_longitude.write(float(init_cond_dict['location_long']))
+    reference_frame_inertial_position_latitude.write(float(init_cond_dict['location_lat']))
+    reference_frame_inertial_position_longitude.write(float(init_cond_dict['location_long']))
         
     
     configuration_loading_empty_mass.write(float(init_cond_dict['Gross Weight']))
@@ -807,24 +706,7 @@ def get_QTG_time(QTG_path):
         T = np.array(T) 
     return T
 
-def create_report(QTG_path, report_file):
-    output_path = os.path.join(QTG_path, report_file)
-    if os.path.exists(output_path):
-        os.remove(output_path)
-    
-    pdf_merger = PdfMerger()
-    # Gehe durch alle Dateien im Ordner
-    for root, dirs, files in os.walk(QTG_path):
-        for file in sorted(files):
-            if file.endswith('.pdf'):
-                # Voller Pfad der PDF-Datei
-                file_path = os.path.join(root, file)
-                pdf_merger.append(file_path)
 
-    # Speichere die zusammengeführte PDF
-    
-    pdf_merger.write(output_path)
-    pdf_merger.close()
     
 
 
@@ -842,12 +724,9 @@ def get_test_test_part_test_case(tests, test_id, part_id, case_id):
     return None, None, None
 
 
-
-
-
 def create_plots(QTG_path, part):
     
-    def plot_cases(data,sc_fac):
+    def plot_cases(data,compare_name,sc_fac):
         if 'FTD1' in data.keys():
             x_Ref = data['Storage'][0]['x']
             y_Ref = data['Storage'][0]['y']
@@ -856,98 +735,149 @@ def create_plots(QTG_path, part):
             x_Rec = data['FTD1_Recurrent']['x']
             y_Rec = data['FTD1_Recurrent']['y']       
         
-            y[-1] = y[-2]
-            x[-1] = x[-2]
+
             y_Rec[-1] = y_Rec[-2]
             x_Rec[-1] = x_Rec[-2]
-            
+            y[-1] = y[-2]
+            x[-1] = x[-2]
+
+            x_label = None
+            y_label = None
                             
             if 'Yaw Angle Unwrapped' in para_file_dict[plot_title]:
                 y = [map360(i) for i in y]
                 y_Rec = [map360(i) for i in y_Rec]
+                x_label = 'Time(s)'
+                y_label = 'Heading (deg)'
             elif 'Roll Angle' in para_file_dict[plot_title]:
                 y=np.rad2deg(y)
                 y_Rec=np.rad2deg(y_Rec)
+                x_label = 'Time(s)'
+                y_label = 'Roll Angle (deg)'
             elif 'Pitch Angle' in para_file_dict[plot_title]:
                 y=np.rad2deg(y)
                 y_Rec=np.rad2deg(y_Rec)
+                x_label = 'Time(s)'
+                y_label = 'Pitch Angle (deg)'
             elif 'Angle of Sideslip' in para_file_dict[plot_title]:
                 y=np.rad2deg(y)
                 y_Rec=np.rad2deg(y_Rec)
+                x_label = 'Time(s)'
+                y_label = 'Sideslip Angle (deg)'
             elif 'Angle Rate' in para_file_dict[plot_title]:
                 y=np.rad2deg(y)
                 y_Rec=np.rad2deg(y_Rec)
+                x_label = 'Time(s)'
+                y_label = 'Angle Rate (deg/s)'
             elif 'Control Position Pitch' in para_file_dict[plot_title]: 
-                y=[map_control(i) for i in y]
-                y_Rec=[map_control(i) for i in y_Rec]
+                y=[map_control(i, 'pitch') for i in y]
+                y_Rec=[map_control(i, 'pitch') for i in y_Rec]
+                x_label = 'Time(s)'
+                y_label = 'Position (%)'
             elif 'Control Position Collective' in para_file_dict[plot_title]:
-                y=[i*100 for i in y]
-                y_Rec=[i*100 for i in y_Rec]
+                y=[map_control(i, 'collective') for i in y]
+                y_Rec=[map_control(i, 'collective') for i in y_Rec]
+                x_label = 'Time(s)'
+                y_label = 'Position (%)'
             elif 'Control Position Roll' in para_file_dict[plot_title]:
-                y=[map_control(i) for i in y]
-                y_Rec=[map_control(i) for i in y_Rec]
+                y=[map_control(i, 'roll') for i in y]
+                y_Rec=[map_control(i, 'roll') for i in y_Rec]
+                x_label = 'Time(s)'
+                y_label = 'Position (%)'
             elif 'Control Position Yaw' in para_file_dict[plot_title]:
-                y=[map_control(i) for i in y]
-                y_Rec=[map_control(i) for i in y_Rec]               
-            elif 'Control QTG Force Pitch' in para_file_dict[plot_title]:
+                y=[map_control(i, 'pedal') for i in y]     
+                y_Rec=[map_control(i, 'pedal') for i in y_Rec]
+                x_label = 'Time(s)'
+                y_label = 'Position (%)'
+            elif 'Control QTG Force Pitch' in compare_name:
                 y = [pitch_brun2N(i) for i in y]
-                x = [pitch_brun2angle(i) for i in x]
+                x = [pitch_brun2angle(i) for i in x] 
                 y_Rec = [pitch_brun2N(i) for i in y_Rec]
-                x_Rec = [pitch_brun2angle(i) for i in x_Rec]
+                x_Rec = [pitch_brun2angle(i) for i in x_Rec] 
                 sc_fac = 0.5
-            elif 'Control QTG Force Roll' in para_file_dict[plot_title]:
+                x_label = 'Position (deg)'
+                y_label = 'Force (N)'
+            elif 'Control QTG Force Roll' in compare_name:
                 y = [roll_brun2N(i) for i in y]
                 x = [roll_brun2angle(i) for i in x]
                 y_Rec = [roll_brun2N(i) for i in y_Rec]
                 x_Rec = [roll_brun2angle(i) for i in x_Rec]
                 sc_fac = 0.5
-            elif 'Control QTG Force Collective' in para_file_dict[plot_title]:
+                x_label = 'Position (deg)'
+                y_label = 'Force (N)'
+            elif 'Control QTG Force Collective' in compare_name:
                 y = [coll_brun2N(i) for i in y]
                 x = [coll_brun2angle(i) for i in x]
                 y_Rec = [coll_brun2N(i) for i in y_Rec]
                 x_Rec = [coll_brun2angle(i) for i in x_Rec]
                 sc_fac = 0.5
-            elif 'Control QTG Force Yaw' in para_file_dict[plot_title]:
+                x_label = 'Position (deg)'
+                y_label = 'Force (N)'
+            elif 'Control QTG Force Yaw' in compare_name:
                 x = [yaw_brun2angle(i) for i in x]
                 y = [i*-1000 for i in y]
                 x_Rec = [yaw_brun2angle(i) for i in x_Rec]
                 y_Rec = [i*-1000 for i in y_Rec]
                 sc_fac = 0.5
-            elif 'Control QTG Position Pitch Velocity' in para_file_dict[plot_title]:
+                x_label = 'Position (deg)'
+                y_label = 'Force (N)'
+            elif 'Control QTG Position Pitch Velocity' in compare_name:
                 y = [pitch_brun2angle(i) for i in y]
                 y,x = ATRIM_calc(x, y)
                 y_Rec = [pitch_brun2angle(i) for i in y_Rec]
                 y_Rec,x_Rec = ATRIM_calc(x_Rec, y_Rec)
-            elif 'Control QTG Position Roll Velocity' in para_file_dict[plot_title]:
-                y = [coll_brun2angle(i) for i in y]
+                x_label = 'Time(s)'
+                y_label = 'Trim Rate (deg/s)'
+            elif 'Control QTG Position Roll Velocity' in compare_name:
+                y = [roll_brun2angle(i) for i in y]
                 y,x = ATRIM_calc(x, y)
-                y_Rec = [coll_brun2angle(i) for i in y_Rec]
+                y_Rec = [roll_brun2angle(i) for i in y_Rec]
                 y_Rec,x_Rec = ATRIM_calc(x_Rec, y_Rec)
+                x_label = 'Time(s)'
+                y_label = 'Trim Rate (deg/s)'
             elif 'Groundspeed' in para_file_dict[plot_title]:
                 y=[mps2kt(i) for i in y]
                 y_Rec=[mps2kt(i) for i in y_Rec]
+                x_label = 'Time(s)'
+                y_label = 'Groundspeed (kts)'
             elif 'Airspeed' in para_file_dict[plot_title]:
                 y=[mps2kt(i) for i in y]
                 y_Rec=[mps2kt(i) for i in y_Rec]
                 sc_fac = 3
+                x_label = 'Time(s)'
+                y_label = 'Airspeed (kts)'
             elif 'Barometric Altitude' in para_file_dict[plot_title]:
                 y=[m2ft(i) for i in y]
                 y_Rec=[m2ft(i) for i in y_Rec]
+                x_label = 'Time(s)'
+                y_label = 'Pressure Altitude (ft)'
             elif 'Vertical' in para_file_dict[plot_title]:
                 y=[mps2fpm(-i) for i in y]
                 y_Rec=[mps2fpm(-i) for i in y_Rec]
                 sc_fac = 3
+                x_label = 'Time(s)'
+                y_label = 'Vertical Velocity (ft/min)'
             elif 'Rotor' in para_file_dict[plot_title]:
                 y=[rpm2perc(i) for i in y]
                 y_Rec=[rpm2perc(i) for i in y_Rec]
+                x_label = 'Time(s)'
+                y_label = 'Rotor RPM (%)'
+            elif 'Engine' in para_file_dict[plot_title]:
+                x_label = 'Time(s)'
+                y_label = 'TRQ (%)'
+            elif 'RadarAltitude' in para_file_dict[plot_title]:
+                x_label = 'Time(s)'
+                y_label = 'Radar Altitude (ft)'
             else:
                 y_label = plot_title +' (??)'
                 pdfname = f"{plot_title}.svg"
-        return x,y,x_Rec,y_Rec,x_Ref,y_Ref, sc_fac
+        return x,y,x_Ref,y_Ref,x_Rec,y_Rec,sc_fac,x_label,y_label
     
     
     params = part['tolerances_recurrent_criteria']
-    params_add = part['add_plots']
+
+    
+
     para_file_dict = {
         'Engine 1 Torque':'Engine1 TRQ Indicated',
         'Engine 2 Torque':'Engine2 TRQ Indicated',
@@ -968,44 +898,54 @@ def create_plots(QTG_path, part):
         'Yaw Rate' : 'Yaw Angle Rate',
         'Pressure Altitude' : 'Barometric Altitude',
         'Groundspeed':'Groundspeed',
-        'Correct Trend on Bank' : 'Roll Angle'
-        
+        'Correct Trend on Bank' : 'Roll Angle',
+        'Trim Rate' : 'Velocity',
+        'Dummy' : None,
+        'Force' : 'Control QTG Force',
+        'Breakout' : None
     }
     
     
     for count,param in enumerate(params):
         count = count+1
-        plot_title = param['parameter']
         tol = float(param['tolerance'][1:])
+        plot_title = param['parameter']
+        if para_file_dict[plot_title] == None:
+            continue
         for dirpath, dirnames, filenames in os.walk(QTG_path):     
             for file in filenames:
-                if file.split('.')[0] == para_file_dict[plot_title] and file.endswith('.sim'):
+                if para_file_dict[plot_title] in file.split('.')[0]  and file.endswith('.sim'):
                     file_path = os.path.join(dirpath, file)
-        
+                    compare_name = file.split('.')[0]
+                    break
+                
         with open(file_path, 'r') as json_file:
             data = json.load(json_file)
             
             sc_fac = 1.5
-            x,y,x_Rec,y_Rec,x_Ref,y_Ref, sc_fac=plot_cases(data,sc_fac)
-            
             x_label = 'Time(s)'
+            y_label = plot_title +' '+ param['unit']
+            x,y,x_Ref,y_Ref,x_Rec,y_Rec,sc_fac,x_label,y_label = plot_cases(data,compare_name,sc_fac)
             
+            
+
+            
+            pdfname = f"{count}_{plot_title}.svg"
+            
+
             y_uptol = [i+tol for i in y]
             y_lotol = [i-tol for i in y]
             
-            pdfname = f"{count}_{plot_title}.svg"
-            y_label = plot_title +' '+ param['unit']
 
-            plt.figure(figsize=(10, 6))
+            
+            plt.figure(figsize=(10, 6))            
             plt.plot(x, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
             plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
-            
-            
             plt.plot(x_Ref, y_Ref, label='Reference')
             plt.plot(x, y, label='FTD1_MQTG')
             plt.plot(x_Rec, y_Rec, label='Reccurent', color='green', linestyle='dashed')
 
-            
+
             ##Section for scale
             
             plt.autoscale()
@@ -1023,35 +963,42 @@ def create_plots(QTG_path, part):
             
             plt.savefig(save_path, format='svg')
             plt.close()
+
+
+    params_add = part['add_plots']
 
     for count_add,param_add in enumerate(params_add):
         count_add = count_add+count+1
         plot_title = param_add['parameter']
+        if para_file_dict[plot_title] == None:
+            break
         for dirpath, dirnames, filenames in os.walk(QTG_path):     
             for file in filenames:
-                if file.split('.')[0] == para_file_dict[plot_title] and file.endswith('.sim'):
+                if para_file_dict[plot_title] in file.split('.')[0]  and file.endswith('.sim'):
                     file_path = os.path.join(dirpath, file)
+                    compare_name = file.split('.')[0]
+                    break
         
         with open(file_path, 'r') as json_file:
             data = json.load(json_file)
-
             sc_fac = 1.5
-            x,y,x_Rec,y_Rec,x_Ref,y_Ref, sc_fac=plot_cases(data,sc_fac)
-            
             x_label = 'Time(s)'
+            y_label = plot_title +' '+ param_add['unit']
+            x,y,x_Ref,y_Ref,x_Rec,y_Rec,sc_fac,x_label,y_label = plot_cases(data,compare_name,sc_fac)
+            
+            
             
 
             pdfname = f"{count_add}_{plot_title}.svg"
-            y_label = plot_title +' '+ param_add['unit']
+            
 
             plt.figure(figsize=(10, 6))
             plt.plot(x_Ref, y_Ref, label='Reference')
             plt.plot(x, y, label='FTD1_MQTG')
             plt.plot(x_Rec, y_Rec, label='Reccurent', color='green', linestyle='dashed')
-
             
             ##Section for scale
-            
+
             plt.autoscale()
             y_min, y_max = plt.ylim()
             y_range = y_max - y_min
@@ -1068,67 +1015,6 @@ def create_plots(QTG_path, part):
             plt.savefig(save_path, format='svg')
             plt.close()
 
-
-def create_comparison_table(QTG_path):
-
-    for dirpath, dirnames, filenames in os.walk(QTG_path): 
-        for file in filenames:
-            if 'init_conditions' in file:
-                file_path = os.path.join(dirpath, file)
-                with open(file_path, 'r') as json_file:
-                    data = json.load(json_file)
-                    
-                    
-
-    Init_cond = data["Init_condition_Reccurent"]
-    Ref_Init_cond = data["Init_condition_MQTG"]
-    
-    init_cond_di_avi = units_conversion(Init_cond,'Avi')
-    Ref_Init_cond = units_conversion(Ref_Init_cond,'Avi')
-
-    # Erstellen der Tabellendaten
-    table_data = [
-        ["Parameter [UoM]", "MQTG", "Recurrent"],
-        ["Mass Properties", "", ""]
-    ]
-    
-    # Werte aus dict1 und dict2 zusammenführen
-    for key in Ref_Init_cond:
-        table_data.append([key, Ref_Init_cond[key], init_cond_di_avi.get(key, "")])
-        if key == "Moment of Inertia ZZ":
-            table_data.append(["Environment Parameters", "", ""])
-        if key == "Wind Speed":
-            table_data.append(["Flight Parameters", "", ""])
-    
-    # DataFrame für die Tabelle erstellen
-    df = pd.DataFrame(table_data)
-    
-    # Erstellen der Tabelle mit matplotlib
-    fig, ax = plt.subplots(figsize=(10, 8))
-    ax.axis('tight')
-    ax.axis('off')
-    table = ax.table(cellText=df.values, colLabels=None, cellLoc='center', loc='center')
-    
-    # Zellen-Formatierung
-    for i, key in enumerate(table_data):
-        if key[0] in ["Parameter [UoM]", "Mass Properties", "Environment Parameters", "Flight Parameters"]:
-            for j in range(3):
-                cell = table[(i, j)]
-                cell.set_facecolor('lightgray')
-                cell.set_text_props(ha='center', weight='bold')
-    
-    
-    for key, cell in table.get_celld().items():
-        cell.set_height(0.05)            
-    
-    
-    # Tabelle in PDF speichern
-    table_path = os.path.join(QTG_path,"0_Init_cond_table.pdf")
-    with PdfPages(table_path) as pdf:
-        pdf.savefig(fig, bbox_inches='tight')
-    
-    print(f"Tabelle erfolgreich als {table_path} gespeichert.")
-    
 
 def main(test_item, test_dir, gui_output, gui_input):
     brunner_task = DSim.Variable.Enum(DSim.Node(dsim_host,"host/sim1-model/entity/ec135_1/task/io_brunner_cls/mode"))
@@ -1193,9 +1079,7 @@ def main(test_item, test_dir, gui_output, gui_input):
     input_matrix, output_matrix = math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot)
 
     save_io_files(QTG_path, input_matrix, output_matrix, T)
-    #create_comparison_table(QTG_path)
     create_plots(QTG_path,part)
-    #create_report(QTG_path, 'Report.pdf')
 
     
 
@@ -1204,29 +1088,10 @@ def main(test_item, test_dir, gui_output, gui_input):
     
     """
     Ideen:
-
-        
     
     -Im qtg_data_structure:
 
         -2. die skalierungen pro paramter pro test
-
-
-    
-    
-    Achtung: fuer take off und landing test, muss ich die position mitspeichern, da sonst das Radalt nicht stimmt, da ich sonst ueber anderes terrain fliege
-    
-
-
-
-    3. Startposition mitspeichern (Bzw. nur fuer die 2 noetigen tests mitspeichern)
-
-
-    
-    
-    
-    
-    
     
     """
     

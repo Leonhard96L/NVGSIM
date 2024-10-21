@@ -12,3 +12,29 @@ Bedienung:
 4. In der GUI die entsprechenden Test asuwaehlen
 5. Start MQTG
 6. Hit Enter if pilot is ready -> in die Zeile ganz unten hineinklicken.
+
+Neu:
+1. Headings fehlen bei Hover tests (1.d)  -> braucht es meiner Meinung nach nicht
+2. Engine 1 warning fuer engine 2 fail
+3. Rotor RPM und Battery discharge fehlermeldungen leuchten immer
+4. an Duschek: footnote bei plots auch bei jeder Seite einfuegen
+5. SW. V von ivan
+6. kein vortex
+7. FLI Limits funktionieren nicht (langsameres steigen als bei referenz-power setting, limit ist viel zu hoch und steigt stetig bei ziehen des Collectives mit)
+8. Collective % bei streckenflug gut, beim steigen braucht man mehr als bei der Referenz
+9. TAS statt IAS fuer Airspeed (Plot sagt nur Airspeed, gleich wie bei reiser)? Bei plots speed limit 1.F_A1 Wir glauben ein Umrechnungsfehler beim plotten! Logdaten stimmen.
+10. Gruener strich zum Leo auf der Map?
+11. 1.g_A3 falscher engine fail
+12. Altitude Plots fehlen bei 1.g, 1.e, 1.f  -> ist nicht so wichtig, da Altitude bereits bei init cond. dabei sind und es sich um snapshot tests handelt
+13. 1.g_B4 Steigrate kann nicht erreicht werden
+14. Sideslip bei hoher hoehe hoch
+15. initial HDG stimmt nicht 279 statt 328
+16. 2.c.4_C1 initial HDG stimmt nicht
+17. 2.d.3 Tests falsche plots -> erster plot roll rate statt bank angle
+
+
+Nicht ganz so saubere tests:
+1.h1_A1 (vertical velocity etwas zu tief)
+1.j.2_A2: Rotor RPM bei sekunde 60 kurz eingebrochen
+2.c.2: kein schoener trend bei longitudinal cyclic und RPM bei autoration
+2.d.2_B2: sideslip angle kann am Sim nicht erreicht werden. B3 schon gar nicht.
