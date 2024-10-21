@@ -168,6 +168,7 @@ hardware_pilot_pedals_trim_position = DSim.Variable.Double(
 
 hardware_pilot_cyclic_longitudinal_force = DSim.Variable.Double(DSim.Node(dsim_entity, "hardware/pilot/cyclic/longitudinal/force"))
 hardware_pilot_cyclic_lateral_force = DSim.Variable.Double(DSim.Node(dsim_entity, "hardware/pilot/cyclic/lateral/force"))
+hardware_pilot_collective_force = DSim.Variable.Double(DSim.Node(dsim_entity, "hardware/pilot/collective/force"))
 hardware_pilot_pedals_force = DSim.Variable.Double(DSim.Node(dsim_entity, "hardware/pilot/pedals/force"))
 
 
@@ -210,34 +211,6 @@ def CLS(inp):
         brunner_task.write(TASK_MODE.FORCE_STOP)
     elif inp == 'R':
         brunner_task.write(TASK_MODE.FORCE_RUN)
-
-
-def CLS_val_INIT():
-    return 0, 0, 0, 0, 0, 0, 0, 0
-
-
-def CLS_READER_INIT():
-    def build_get_pos_query(axisbitmask):
-        return struct.pack('<III', 0xD0, axisbitmask, 0x11)
-
-    def build_get_force_query(axisbitmask):
-        return struct.pack('<III', 0xD0, axisbitmask, 0x21)
-
-    timeout = 8
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 5)
-    sock.settimeout(timeout)
-    sock.bind(('', 0))
-
-    # set IP of computer running CLS2Sim
-    remoteEndpoint = ('10.12.1.11', 15090)
-    # define binary byte sequences for commands to send over network
-
-    # Command GetData(0xD0), For axes 0x1 and 0x2 (pitch,roll) (= 0x3) and read force as float (dataid 0x21)
-    query_readforce_pitch_roll = build_get_force_query(AxisBitmask.Elevator + AxisBitmask.Aileron)
-    query_readforce_yaw_coll = build_get_force_query(AxisBitmask.Rudder + AxisBitmask.Collective)
-    return sock, remoteEndpoint, query_readforce_pitch_roll, query_readforce_yaw_coll
-
 
 def logandsave_flyout_init_cond(QTG_path):
     Eng1state = 'FLIGHT' if configuration_failure_engine_1_failed.read() == False else 'OFF'
@@ -315,17 +288,6 @@ def log_flyout_input_output(T, gui_output):
     input_matrix = np.empty((len(T), INPUT.NUMBER_OF_INPUTS))
     output_matrix = np.empty((len(T), OUTPUT.NUMBER_OF_OUTPUTS))
 
-    #sock, remoteEndpoint, query_readforce_pitch_roll, query_readforce_yaw_coll = CLS_READER_INIT()
-    force_pitch, force_roll, force_yaw, force_coll = 0, 0, 0, 0
-    prev_force_pitch, prev_force_roll, prev_force_yaw, prev_force_coll = 0, 0, 0, 0
-
-    def sendThenReceive(send_data, targetAddr, sock):
-        # after each send you HAVE to do a read, even if you don't do anything with the reponse
-        sock.sendto(send_data, targetAddr)
-        response, address = sock.recvfrom(8192)
-        return response
-
-    number_format = '{:+.5f}'
     force_matrix = np.empty((len(T), INPUT.NUMBER_OF_INPUTS))
 
     accumulated_time = 0
@@ -357,7 +319,7 @@ def log_flyout_input_output(T, gui_output):
         force_matrix[i, INPUT.CYCLIC_LONGITUDINAL] = hardware_pilot_cyclic_longitudinal_force.read()
         force_matrix[i, INPUT.CYCLIC_LATERAL] = hardware_pilot_cyclic_lateral_force.read()
         force_matrix[i, INPUT.PEDALS] = hardware_pilot_pedals_force.read()
-        force_matrix[i, INPUT.COLLECTIVE] = number_format.format(force_coll)
+        force_matrix[i, INPUT.COLLECTIVE] = hardware_pilot_collective_force.read()
         # sleep for dT amount of seconds
         dT = T[i + 1] - T[i]
         accumulated_time += dT
@@ -861,10 +823,7 @@ def main(test_item, test_dir, gui_output, gui_input):
     
 
 
-"""
-1. Idee alle konstanten in einem file definieren
 
-"""
 """
 DSIM: 
     1. Longitudinal: Pulled -> +1 , Pushed -> -0.83249

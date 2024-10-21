@@ -156,7 +156,7 @@ def roll_brun2N(x):
 def coll_brun2N(x):
     # Collective: Abstand Griff zu Drehpunkt
     #LC = 0.61 Old
-    LC = 0.5159
+    LC = -0.5159
     x = x * 100 / LC
     return x
 
