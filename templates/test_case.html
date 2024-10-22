@@ -71,7 +71,7 @@
 </div>
 
 <div class="content">
-    <h2>Manual Procedure</h2>
+    <h3>Manual Procedure</h3>
 
     <ol>
         {% for man_test in case.manual_testing %}
@@ -165,13 +165,15 @@
     {% include 'test_case_footer.html' %}
 </div>
 <div class="content">
+    <h3 class="center-div">Results</h3>
+
     {% for plot in case.plots_base64 %}
         <img src="data:image/svg;base64,{{ plot }}" alt="Plot Image">
+        {% include 'test_case_footer.html' %}
     {% endfor %}
     {% if not case.plots_base64 %}
     <p>No plots available.</p>
     {% endif %}
-    {% include 'test_case_footer.html' %}
 </div>
 </body>
 </html>
