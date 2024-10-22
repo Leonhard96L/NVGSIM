@@ -13,7 +13,7 @@ data = {
             'test_parts': [
                 {
                     'id': 'a.3',
-                    'snapshot' : False,
+                    'snapshot': False,
                     'main_title': 'Engine Assessment',
                     'test_title': 'Engine & Rotor Speed Governing',
                     'objective': 'The objective of this test is to demonstrate that the FSTD engine and rotor speed governing is compliant with the reference data.',
@@ -67,7 +67,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -99,7 +99,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -174,7 +174,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -248,7 +249,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                ' 2. HI NR not available in simulation','3. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -311,7 +313,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -342,7 +344,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -588,7 +590,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -684,7 +686,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -716,7 +719,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -748,7 +751,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -780,7 +783,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -847,7 +850,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -911,7 +914,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -943,7 +946,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -975,7 +978,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1007,7 +1010,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1039,7 +1042,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1071,7 +1074,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1103,7 +1106,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. In order to simulate OEI, an engine fail was used','2. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1135,7 +1138,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. In order to simulate OEI, an engine fail was used','2. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -1203,7 +1206,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1235,7 +1239,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -1312,7 +1316,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                ' 2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -1392,7 +1397,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                ' 2. HI NR not available in simulation',' 3. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1431,7 +1437,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation',' 3. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -1487,7 +1494,8 @@ data = {
                            ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)',
+                                '2. Refer to the appendix A - Control Loading System (CLS)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1517,7 +1525,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)',
+                                '2. Refer to the appendix where the CLS is described'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1547,7 +1556,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)',
+                                '2. Refer to the appendix where the CLS is described'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1577,7 +1587,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)',
+                                '2. Refer to the appendix where the CLS is described'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -1627,7 +1638,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)',
+                                '2. Refer to the appendix where the CLS is described'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1657,7 +1669,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)',
+                                '2. Refer to the appendix where the CLS is described'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -1795,7 +1808,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1827,7 +1841,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1859,7 +1874,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1891,7 +1907,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1923,7 +1940,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1955,7 +1973,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1987,7 +2006,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation','3. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2019,7 +2039,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation','3. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2051,7 +2072,10 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': [
+                                    '1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                    '2. HI NR not available in simulation',
+                                    '3. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2083,7 +2107,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2115,7 +2140,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2147,7 +2173,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -2207,7 +2234,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2238,7 +2266,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2269,7 +2298,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2300,7 +2330,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2331,7 +2362,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2362,7 +2394,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2393,7 +2426,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2424,7 +2458,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2455,7 +2490,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2486,7 +2522,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2517,7 +2554,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2548,7 +2586,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -2610,7 +2649,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2641,7 +2680,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2672,7 +2711,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2703,7 +2742,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2734,7 +2774,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2765,7 +2806,8 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                '2. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -2849,7 +2891,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2881,7 +2923,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2913,7 +2955,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2945,7 +2987,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -3009,7 +3051,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -3039,7 +3081,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -3072,7 +3114,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -3102,7 +3144,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
