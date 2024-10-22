@@ -4,7 +4,18 @@ import os
 import tkinter as tk
 from tkinter import ttk, filedialog
 
-import execute_test
+# import execute_test
+import platform
+
+# Check if the OS is Windows
+if platform.system() == "Windows":
+    import execute_test
+
+    # Define a function to run the test if the module was imported
+    def run_test(test_item, test_dir, mqtg, gui_output, gui_input):
+        # Invoke the function from the imported module
+        execute_test.execute_test(test_item, test_dir, mqtg, gui_output, gui_input)
+
 from qtg_data_structure import data
 import generate_report
 
@@ -241,7 +252,9 @@ def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output,
 
             while True:
                 # execute test
-                execute_test.execute_test(test_item, test_dir, mqtg, gui_output, gui_input)
+                if platform.system() == "Windows":
+                    run_test(test_item, test_dir, mqtg, gui_output, gui_input)
+                # execute_test.execute_test(test_item, test_dir, mqtg, gui_output, gui_input)
 
                 # generate report
                 gui_output("Creating Test Report. This may take a second...")
