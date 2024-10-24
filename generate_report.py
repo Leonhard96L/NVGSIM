@@ -167,6 +167,7 @@ def process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mq
     case.update({
         "is_mqtg": is_mqtg,
         "is_automatic": test_item['is_automatic'],
+        "software_version": '1_FTD_1.0',
         "curr_date": formatted_date,
         "curr_time": formatted_time,
         "plots_base64": plot_base64

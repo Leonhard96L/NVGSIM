@@ -27,7 +27,7 @@ data = {
                         {'parameter': 'Engine 2 Torque', 'unit': '[%]', 'tolerance': '±5'},
                         {'parameter': 'Rotor Speed', 'unit': '[%]', 'tolerance': '±1.5'}
                     ],
-                    'add_plots' : [
+                    'add_plots': [
                         {'parameter': 'Airspeed', 'unit': '[kts]'},
                         {'parameter': 'Vertical Velocity', 'unit': '[ft/min]'},
                         {'parameter': 'Pitch Angle', 'unit': '[deg]'},

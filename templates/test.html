@@ -32,8 +32,8 @@
             {% for case in part.test_cases %}
                 <tr>
                     <td>{{ case.id }}</td>
-                    <td class="align-left">{{ case.name}}</td>
-                    <td><a href="#{{ case.id }}">{{ case.id }}</a></td>
+                    <td class="align-left">{{ case.name }}</td>
+                    <td><a href="#{{test.id}}.{{part.id}}.{{case.id}}">{{ case.id }}</a></td>
 <!--                    <th {% if loop.first %} class="align-left"{% endif %}>{{col}}</th>-->
                 </tr>
             {% endfor %}
@@ -125,7 +125,7 @@
 
 {% for case in part.test_cases %}
 <div class="content">
-    <h2 id="{{ case.id }}">{{test.id}}.{{part.id}} {{case.id}}&nbsp;&nbsp;&nbsp;&nbsp;{{ case.condition }}</h2>
+    <h2 id="{{test.id}}.{{part.id}}.{{case.id}}">{{test.id}}.{{part.id}} {{case.id}}&nbsp;&nbsp;&nbsp;&nbsp;{{ case.condition }}</h2>
 
     <h3 class="center-div">Test Procedure</h3>
     <p>
@@ -134,7 +134,7 @@
     </p>
 
     <b>Automatic testing:</b>
-    {% if case.automatic_testing_possible and not case.is_mqtg %}
+    {% if case.is_automatic %}
     {% for auto_test in case.automatic_testing %}{{ auto_test }}<br><br>{% endfor %}
     <br>
     <table class="no-outer-borders centered-table">
