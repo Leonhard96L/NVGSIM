@@ -38,3 +38,8 @@ Nicht ganz so saubere tests:
 1.j.2_A2: Rotor RPM bei sekunde 60 kurz eingebrochen
 2.c.2: kein schoener trend bei longitudinal cyclic und RPM bei autoration
 2.d.2_B2: sideslip angle kann am Sim nicht erreicht werden. B3 schon gar nicht.
+
+
+Automatik tests
+Leo:
+Bei den letzten 4 tests bei (A1, A1) happerts bei auto
