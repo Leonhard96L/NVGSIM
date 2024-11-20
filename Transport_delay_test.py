@@ -106,52 +106,55 @@ cyclic_long = cyclic_long_init
 print("Ready")
 
 
+#Transport delay  test fuer HMD
+#while True:
+    
 # =============================================================================
-# #Transport delay  test fuer HMD
-# while True:
-# 
-# # =============================================================================
-# #     if cyclic_lat > abs(cyclic_lat_init) + 0.005: 
-# #         reference_frame_inertial_attitude_phi.write(np.deg2rad(20))
-# #         time.sleep(0.3)
-# #         simulation_mode.write(SIM_MODE.PAUSE) 
-# #     cyclic_lat = hardware_pilot_cyclic_lateral_position.read()
-# # =============================================================================
-#     
-# # =============================================================================
-# #     if cyclic_long > abs(cyclic_long_init) + 0.005: 
-# #         reference_frame_inertial_attitude_theta.write(np.deg2rad(20))
-# #         time.sleep(0.3)
-# #         simulation_mode.write(SIM_MODE.PAUSE) 
-# #     cyclic_long = hardware_pilot_cyclic_longitudinal_position.read()
-# # =============================================================================
-#     
-# 
-# 
-#     if pedals > abs(pedals_init) + 0.0005: 
+#     #lateral nach rechts druecken
+#     if cyclic_lat > abs(cyclic_lat_init) + 0.005: 
+#         reference_frame_inertial_attitude_phi.write(np.deg2rad(20))
+#         #time.sleep(0.3)
+#         simulation_mode.write(SIM_MODE.PAUSE) 
+#     cyclic_lat = hardware_pilot_cyclic_lateral_position.read()
+# =============================================================================
+    
+# =============================================================================
+#     #longitudinal nach hinten druecken
+#     if cyclic_long > abs(cyclic_long_init) + 0.005: 
+#         reference_frame_inertial_attitude_theta.write(np.deg2rad(20))
+#         #time.sleep(0.3)
+#         simulation_mode.write(SIM_MODE.PAUSE) 
+#     cyclic_long = hardware_pilot_cyclic_longitudinal_position.read()
+# =============================================================================
+    
+
+# =============================================================================
+#     #ins rechte pedal treten
+#     #0.0005
+#     if pedals > abs(pedals_init) + 0.0001: 
 #         reference_frame_inertial_attitude_psi.write(np.deg2rad(RW_26+30))
 #         time.sleep(0.3)
 #         simulation_mode.write(SIM_MODE.PAUSE) 
 #     pedals = hardware_pilot_pedals_position.read()
-#     
 # =============================================================================
+    
 
 
 
 
 #Transport delay test fuer instrumenten display
 while True:
-
+    print(cyclic_lat_init)
     if cyclic_lat > abs(cyclic_lat_init) + 0.0005: 
-        reference_frame_inertial_attitude_phi.write(np.deg2rad(5))
+        reference_frame_inertial_attitude_phi.write(np.deg2rad(10))
         time.sleep(0.5)
-        simulation_mode.write(SIM_MODE.PAUSE) 
+        #simulation_mode.write(SIM_MODE.PAUSE) 
     cyclic_lat = hardware_pilot_cyclic_lateral_position.read()
-    
+
 # =============================================================================
 #     if cyclic_long > abs(cyclic_long_init) + 0.0005: 
 #         reference_frame_inertial_attitude_theta.write(np.deg2rad(5))
-#         time.sleep(0.5)
+#         time.sleep(0.7)
 #         simulation_mode.write(SIM_MODE.PAUSE) 
 #     cyclic_long = hardware_pilot_cyclic_longitudinal_position.read()
 # =============================================================================
