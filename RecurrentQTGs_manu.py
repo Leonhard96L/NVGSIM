@@ -694,9 +694,15 @@ def create_plots(QTG_path, part):
             
             pdfname = f"{count}_{plot_title}.svg"
             
-
+            
+            
+            
             y_uptol = [i+tol for i in y]
             y_lotol = [i-tol for i in y]
+            
+            if plot_title == 'Trim Rate':
+                y_uptol = [i+i*0.1 for i in y]
+                y_lotol = [i-i*0.1 for i in y]
             
 
             

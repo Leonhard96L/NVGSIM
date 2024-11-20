@@ -397,7 +397,9 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
         pedal_input = P_yaw*yaw_trafo+I_yaw*yaw_integral
         
         
+        
         if not issnapshot:
+            pedal_input = 0
             hardware_pilot_collective_position.write(MQTG_input_matrix[i,INPUT.COLLECTIVE])
             hardware_pilot_cyclic_lateral_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LATERAL]+cyc_lat_input)
             hardware_pilot_cyclic_longitudinal_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LONGITUDINAL]+cyc_long_input)
