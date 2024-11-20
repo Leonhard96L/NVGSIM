@@ -3,7 +3,6 @@
         <tr>
             <th class="align-left">Parameter [UoM]</th>
             <th>Reference*</th>
-            <th>FSTD</th>
             {% if not case.is_mqtg %}
                 <th>Recurrent</th>
             {% endif %}
@@ -21,7 +20,6 @@
             <tr>
                 <td class="align-left">{{ key }}</td>
                 <td>{{ values['ref'] }}</td>
-                <td>{{ values['mqtg'] }}</td>
                 {% if not case.is_mqtg %}
                     <td>{{ values['rec'] }}</td>
                 {% endif %}
@@ -40,7 +38,6 @@
             <tr>
                 <td class="align-left">{{ key }}</td>
                 <td>{{ values['ref'] }}</td>
-                <td>{{ values['mqtg'] }}</td>
                 {% if not case.is_mqtg %}
                     <td>{{ values['rec'] }}</td>
                 {% endif %}
@@ -59,7 +56,6 @@
             <tr>
                 <td class="align-left">{{ key }}</td>
                 <td>{{ values['ref'] }}</td>
-                <td>{{ values['mqtg'] }}</td>
                 {% if not case.is_mqtg %}
                     <td>{{ values['rec'] }}</td>
                 {% endif %}

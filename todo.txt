@@ -1,0 +1,5 @@
+1. Fuer das was ueber Init_flyout_V2.py generiert wird:
+	-dies wird soweit im Ordner mqtg gespeichert. Es handelt sich um die Referenzdaten
+	-bei *_refer.svg ignorieren, andere nehmen
+	-Neuen "Report" erstellen man kann diesen z.B. Report_refer.pdf nennen, dieser beinhaltet: Test Name, Indit cond., Plots und auch eine Tabelle, wenn
+	es sich um einen Snapshot test handelt. 

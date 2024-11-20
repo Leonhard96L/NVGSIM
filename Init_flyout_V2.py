@@ -689,7 +689,7 @@ def create_plots(QTG_path, part):
             
 
             pdfname = f"{count}_{plot_title}.svg"
-    
+            pdfname_refer = f"{count}_{plot_title}_refer.svg"
 
             plt.figure(figsize=(10, 6))
 
@@ -702,6 +702,8 @@ def create_plots(QTG_path, part):
             
             plt.autoscale()
             y_min, y_max = plt.ylim()
+            x_min, x_max = plt.xlim()
+            
             y_range = y_max - y_min
             plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
 
@@ -712,6 +714,29 @@ def create_plots(QTG_path, part):
             plt.grid(True)
             #plt.show() 
             save_path = os.path.join(dirpath, pdfname)
+            
+            plt.savefig(save_path, format='svg')
+            plt.close()
+            
+            issnapshot = part['snapshot']
+            ##Neuer Plot (dient als Referenz)
+            plt.figure(figsize=(10, 6))
+            if issnapshot:
+                plt.axhline(y = np.mean(y), xmin = 0, xmax = 1, label='Reference')
+                plt.xlim(x_min, x_max)
+            else:
+                plt.plot(x, y, label='Reference')
+
+            ##Section for scale
+            plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
+
+            plt.xlabel(x_label)
+            plt.ylabel(y_label)
+            plt.title(plot_title)
+            plt.legend()
+            plt.grid(True)
+            #plt.show() 
+            save_path = os.path.join(dirpath, pdfname_refer)
             
             plt.savefig(save_path, format='svg')
             plt.close()
@@ -742,6 +767,7 @@ def create_plots(QTG_path, part):
             
 
             pdfname = f"{count_add}_{plot_title}.svg"
+            pdfname_refer = f"{count_add}_{plot_title}_refer.svg"
             
 
             plt.figure(figsize=(10, 6))
@@ -753,6 +779,7 @@ def create_plots(QTG_path, part):
 
             plt.autoscale()
             y_min, y_max = plt.ylim()
+            x_min, x_max = plt.xlim()
             y_range = y_max - y_min
             plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
 
@@ -766,6 +793,31 @@ def create_plots(QTG_path, part):
             
             plt.savefig(save_path, format='svg')
             plt.close()
+            
+            ##Neuer Plot (dient als Referenz)
+            issnapshot = part['snapshot']
+            
+            ##Neuer Plot (dient als Referenz)
+            plt.figure(figsize=(10, 6))
+            if issnapshot:
+                plt.axhline(y = np.mean(y), xmin = 0, xmax = 1, label='Reference')
+                plt.xlim(x_min, x_max)
+            else:
+                plt.plot(x, y, label='Reference')
+
+            plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
+
+            plt.xlabel(x_label)
+            plt.ylabel(y_label)
+            plt.title(plot_title)
+            plt.legend()
+            plt.grid(True)
+            #plt.show() 
+            save_path = os.path.join(dirpath, pdfname_refer)
+            
+            plt.savefig(save_path, format='svg')
+            plt.close()
+            
 
 
 
