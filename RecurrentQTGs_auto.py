@@ -1067,11 +1067,12 @@ def main(test_item, test_dir, gui_output, gui_input):
         cyc_long_input, cyc_lat_input, pedal_input = TRIM_pilot_2(QTG_path,T,init_cond_ref_dict) 
 
 
+    pedal_input = 0
     simulation_mode.write(SIM_MODE.RUN)
     time.sleep(0.2)
     set_init_cond_recurrent(init_cond_ref_dict, cyc_long_input, cyc_lat_input, pedal_input)
-    time.sleep(0.2)
-
+    #time.sleep(0.2)
+    time.sleep(0.5)
     
 
     logandsave_flyout_init_cond(QTG_path)

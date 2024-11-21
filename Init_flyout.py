@@ -689,7 +689,7 @@ def create_plots(QTG_path, part):
             
 
             pdfname = f"{count}_{plot_title}.svg"
-    
+            pdfname_refer = f"{count}_{plot_title}_refer.svg"
 
             plt.figure(figsize=(10, 6))
 
@@ -702,6 +702,8 @@ def create_plots(QTG_path, part):
             
             plt.autoscale()
             y_min, y_max = plt.ylim()
+            x_min, x_max = plt.xlim()
+            
             y_range = y_max - y_min
             plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
 
@@ -712,6 +714,29 @@ def create_plots(QTG_path, part):
             plt.grid(True)
             #plt.show() 
             save_path = os.path.join(dirpath, pdfname)
+            
+            plt.savefig(save_path, format='svg')
+            plt.close()
+            
+            issnapshot = part['snapshot']
+            ##Neuer Plot (dient als Referenz)
+            plt.figure(figsize=(10, 6))
+            if issnapshot:
+                plt.axhline(y = np.mean(y), xmin = 0, xmax = 1, label='Reference')
+                plt.xlim(x_min, x_max)
+            else:
+                plt.plot(x, y, label='Reference')
+
+            ##Section for scale
+            plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
+
+            plt.xlabel(x_label)
+            plt.ylabel(y_label)
+            plt.title(plot_title)
+            plt.legend()
+            plt.grid(True)
+            #plt.show() 
+            save_path = os.path.join(dirpath, pdfname_refer)
             
             plt.savefig(save_path, format='svg')
             plt.close()
@@ -742,6 +767,7 @@ def create_plots(QTG_path, part):
             
 
             pdfname = f"{count_add}_{plot_title}.svg"
+            pdfname_refer = f"{count_add}_{plot_title}_refer.svg"
             
 
             plt.figure(figsize=(10, 6))
@@ -753,6 +779,7 @@ def create_plots(QTG_path, part):
 
             plt.autoscale()
             y_min, y_max = plt.ylim()
+            x_min, x_max = plt.xlim()
             y_range = y_max - y_min
             plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
 
@@ -766,6 +793,31 @@ def create_plots(QTG_path, part):
             
             plt.savefig(save_path, format='svg')
             plt.close()
+            
+            ##Neuer Plot (dient als Referenz)
+            issnapshot = part['snapshot']
+            
+            ##Neuer Plot (dient als Referenz)
+            plt.figure(figsize=(10, 6))
+            if issnapshot:
+                plt.axhline(y = np.mean(y), xmin = 0, xmax = 1, label='Reference')
+                plt.xlim(x_min, x_max)
+            else:
+                plt.plot(x, y, label='Reference')
+
+            plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
+
+            plt.xlabel(x_label)
+            plt.ylabel(y_label)
+            plt.title(plot_title)
+            plt.legend()
+            plt.grid(True)
+            #plt.show() 
+            save_path = os.path.join(dirpath, pdfname_refer)
+            
+            plt.savefig(save_path, format='svg')
+            plt.close()
+            
 
 
 
@@ -840,14 +892,32 @@ Reiser:
 
 
 """
-Einige neue probleme seit dem update:
+Revise MQTG:
+    1. Snapshot tests -> tabellen machen mit Zahlenwerte anstelle von plots
+    2. Beim init flyout kann man alte Referenz zum Vergleichen nehmen
+    3. Die ganzen Umrechnungsfunktionen fuer Gewicht und CG kommen weck. Es wird also nun Gewicht, CG, Traeqheiten uebergeben
+    4. Es wird das initflyout gemacht und beim plotten wird verglichen ob das ganze passt. 
+    5. Das init flyout ist dann die neue Referenz.
+    6. Ein Recurrent QTG ist dann das MQTG. Hier Gilt CTG&M
+    7. Fuer alle weitern QTGs gelten dann die Toleranzen
+    8. Mit neuen Flugmodell Flyout machen und die FTD3 Referenz beibehalten zur kontrolle.
+    9. Gleichzeitig auch snapshottest tabellen generieren lassen und die Plots mit nur einer Linie. Diese werden im Anhang als Referenz definiert.
+    10. Aus den erflogenen Daten wird dann das MQTG aus den automatic recurrent gebildet.
     
-    1. Ich die Kraefte nicht mehr auslesen
-    5. Sobald die Kraefte wieder ausgelsen werden koennen muss ich mir unbedingt die  
-    6. Die plot funktion muss angepasst werden
-    7. Die Scenarios neu konfigurtieren: Brownout
-    8. Eine Sorge noch bei den automatic QTGs ist nur mehr die tests mit KIAS < 10
-    9. Achtung es gibt Test mit Hands off controls -> da den Regler abschalten
+    Schritt fuer Schritt:
+    1. Entnehme init cond aus FTD3 Referenz und versuche die Referenz so gut als moeglich nachzufliegen.
+    2. Generiere die Neuen Plots und Tabelle(snapshot tests) mit init cond.
+    3. MQTG: mache Recurrent QTG auto um das MQTG zu bilden. 
+    
+    
+    
+    Fuer Michi:
+        1. Aus diesem Skript bauen wir die Reference Daten. Durch Manuelles 
+        2. Dafuer gibt es: Test Name, Init cond, Results (Plots und Tables) 
+            -Achtung die Table hat dann nur eine Spalte mit Werten
+        3. Am besten wir machen einen Neuen Ordner. Da gibt es dann 
+        
+        
     
 """
 

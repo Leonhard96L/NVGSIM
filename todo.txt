@@ -1,5 +1,36 @@
-1. Fuer das was ueber Init_flyout_V2.py generiert wird:
+1. Fuer das was ueber Init_flyout.py generiert wird:
 	-dies wird soweit im Ordner mqtg gespeichert. Es handelt sich um die Referenzdaten
-	-bei *_refer.svg ignorieren, andere nehmen
-	-Neuen "Report" erstellen man kann diesen z.B. Report_refer.pdf nennen, dieser beinhaltet: Test Name, Indit cond., Plots und auch eine Tabelle, wenn
+	-bei *_refer.svg ignorieren und den nomralen Report erstellen, wie wir es bereits gemacht haben
+	-aus *_refer.svg den  Neuen "Report" erstellen man kann diesen z.B. Report_refer.pdf nennen, dieser beinhaltet: Test Name, Indit cond., Plots und auch eine Tabelle, wenn
 	es sich um einen Snapshot test handelt. 
+	-Fuer Leo: Wenn wir dann das neue Flugmodell haben, kann ich die Gewichte, MB, CG 1 zu 1 uebernehmen. Es werden also keine Umrechnungen mehr gemacht wie in 
+	Vergangenheit.
+
+2. Die MQTG Trendline erstellen: 
+	-Verwende dazu das Programm RecurrentQTGs_auto.py
+	-Was urspruenglich ein recurrent ergebnis war ist nun die MQTG Linie.
+	-Zusaetzlich zur neuen MQTG Linie kommen die Grenzen hinzu
+	-Achtung feur snapshottests wird wieder der Mittelwert genommen
+
+
+
+
+Man kann grob sagen:
+1. Was vorher mqtg war ist jetzt reference Data
+2. Was vorher qtg war ist jetzt mqtg
+3. Und ein recurrent muss noch neu gebildet werden
+
+
+Untersuchung der Automatic Tests:
+1. Alle nicht snapshot Tests funktionieren mit dem auto QTG tool
+2. Alle Control Force Tests muessen sowiso manuall gemacht werden.
+
+Section 1.f.* funktioniert ohne Pedal Regler sehr gut
+
+
+
+Folgende Tests sollen aus dem Tool entfernt werden:
+-2.d.3.i_A2
+-2.d.3.i_B2
+-2.d.3.ii_A2
+-2.d.3.ii_B2
