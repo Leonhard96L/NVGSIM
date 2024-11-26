@@ -515,6 +515,8 @@ def get_test_test_part_test_case(tests, test_id, part_id, case_id):
 
 
 def create_plots(QTG_path, part):
+    issnapshot = part['snapshot']
+    output_table =  {}
     
     def plot_cases(data,compare_name,sc_fac):
         if 'FTD1' in data.keys():
@@ -718,12 +720,13 @@ def create_plots(QTG_path, part):
             plt.savefig(save_path, format='svg')
             plt.close()
             
-            issnapshot = part['snapshot']
             ##Neuer Plot (dient als Referenz)
             plt.figure(figsize=(10, 6))
             if issnapshot:
                 plt.axhline(y = np.mean(y), xmin = 0, xmax = 1, label='Reference')
                 plt.xlim(x_min, x_max)
+                #Table
+                output_table[plot_title +' '+ param['unit']] = [round(np.mean(y),2)]
             else:
                 plt.plot(x, y, label='Reference')
 
@@ -741,6 +744,7 @@ def create_plots(QTG_path, part):
             plt.savefig(save_path, format='svg')
             plt.close()
 
+            
 
     params_add = part['add_plots']
 
@@ -795,13 +799,12 @@ def create_plots(QTG_path, part):
             plt.close()
             
             ##Neuer Plot (dient als Referenz)
-            issnapshot = part['snapshot']
-            
-            ##Neuer Plot (dient als Referenz)
             plt.figure(figsize=(10, 6))
             if issnapshot:
                 plt.axhline(y = np.mean(y), xmin = 0, xmax = 1, label='Reference')
                 plt.xlim(x_min, x_max)
+                #Table
+                output_table[plot_title +' '+ param['unit']] = [round(np.mean(y),2)]
             else:
                 plt.plot(x, y, label='Reference')
 
@@ -817,7 +820,12 @@ def create_plots(QTG_path, part):
             
             plt.savefig(save_path, format='svg')
             plt.close()
-            
+                
+    if issnapshot:
+        filename = 'output_table_refer.json'
+        output_table_path = os.path.join(QTG_path, filename)
+        with open(output_table_path, 'w') as json_file:
+            json.dump(output_table, json_file, indent=4)
 
 
 
@@ -833,6 +841,8 @@ def main(test_item, test_dir, gui_output, gui_input):
 
     test_id, part_id, case_id = split_string(QTG_name)
     test, part, case = get_test_test_part_test_case(qtg_data_structure.data['tests'], test_id, part_id, case_id)
+    
+    
 
 
     # Zeitdauer des Tests
@@ -858,6 +868,8 @@ def main(test_item, test_dir, gui_output, gui_input):
     save_io_files(QTG_path, input_matrix, output_matrix, force_matrix, T)
 
     create_plots(QTG_path, part)
+
+    
 
 
     set_standard_cond()

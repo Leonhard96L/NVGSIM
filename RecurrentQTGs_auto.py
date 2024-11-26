@@ -527,8 +527,10 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
         yaw_integral = yaw_integral+yaw_trafo*dT
         pedal_input = P_yaw*yaw_trafo+I_yaw*yaw_integral
         
-        if yaw_trafo > 5:
-            reference_frame_inertial_attitude_psi.write(float(init_cond_dict['Heading']))
+# =============================================================================
+#         if yaw_trafo > 5:
+#             reference_frame_inertial_attitude_psi.write(float(init_cond_dict['Heading']))
+# =============================================================================
 
         e_pitch = error_pitch_lis[-1]
         e_roll = error_roll_lis[-1]
@@ -727,7 +729,8 @@ def get_test_test_part_test_case(tests, test_id, part_id, case_id):
 
 
 def create_plots(QTG_path, part):
-    
+    issnapshot = part['snapshot']
+    output_table =  {}
     def plot_cases(data,compare_name,sc_fac):
         if 'FTD1' in data.keys():
             x_Ref = data['Storage'][0]['x']
@@ -1062,9 +1065,12 @@ def main(test_item, test_dir, gui_output, gui_input):
     time.sleep(0.2)
     simulation_mode.write(SIM_MODE.TRIM)
     time.sleep(2)
+    print(QTG_name)
     
     if issnapshot:
         cyc_long_input, cyc_lat_input, pedal_input = TRIM_pilot_2(QTG_path,T,init_cond_ref_dict) 
+
+
 
 
     pedal_input = 0

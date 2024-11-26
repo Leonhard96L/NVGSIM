@@ -5,6 +5,7 @@
 	es sich um einen Snapshot test handelt. 
 	-Fuer Leo: Wenn wir dann das neue Flugmodell haben, kann ich die Gewichte, MB, CG 1 zu 1 uebernehmen. Es werden also keine Umrechnungen mehr gemacht wie in 
 	Vergangenheit.
+	-Achtung die
 
 2. Die MQTG Trendline erstellen: 
 	-Verwende dazu das Programm RecurrentQTGs_auto.py
@@ -20,12 +21,27 @@ Man kann grob sagen:
 2. Was vorher qtg war ist jetzt mqtg
 3. Und ein recurrent muss noch neu gebildet werden
 
+Fuer Leo:
+	Untersuchung der Automatic Tests:
+	1. Alle nicht snapshot Tests funktionieren mit dem auto QTG tool
+	2. Alle Control Force Tests muessen sowiso manual gemacht werden.
 
-Untersuchung der Automatic Tests:
-1. Alle nicht snapshot Tests funktionieren mit dem auto QTG tool
-2. Alle Control Force Tests muessen sowiso manuall gemacht werden.
+	1.d. funktioniert. Alle nur der Test 1.d_B3 nicht 
+	1.e* funktioniert. 
+	Section 1.f.* funktioniert ohne Pedal Regler sehr gut
+	1.g.A5 funktioniert nicht
+	1.g.* rest funktioniert. Es gibt immer einen Drift beim Heading
+	1.h.* funktioniert
+	2.c.2.* funktioniert sehr gut
 
-Section 1.f.* funktioniert ohne Pedal Regler sehr gut
+
+	2.d.2.* funktioniert
+
+	!!!!!2.c.4.* funktioniert nicht
+
+
+Bitte eine Abbruch/Wiederholfunktion fuer einen Autom. Test
+
 
 
 
@@ -34,3 +50,4 @@ Folgende Tests sollen aus dem Tool entfernt werden:
 -2.d.3.i_B2
 -2.d.3.ii_A2
 -2.d.3.ii_B2
+
