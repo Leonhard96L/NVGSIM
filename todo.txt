@@ -13,8 +13,6 @@
 	-Achtung feur snapshottests wird wieder der Mittelwert genommen
 
 
-
-
 Man kann grob sagen:
 1. Was vorher mqtg war ist jetzt reference Data
 2. Was vorher qtg war ist jetzt mqtg
@@ -28,9 +26,11 @@ Untersuchung der Automatic Tests:
 Section 1.f.* funktioniert ohne Pedal Regler sehr gut
 
 
+Bei Refernces steht EASA CS-FSTD(H). Bitte ersetzen mit EASA CS-FSTD(H) AMC1 FSTD(H).300 (b) <DONE>
 
 Folgende Tests sollen aus dem Tool entfernt werden:
 -2.d.3.i_A2
 -2.d.3.i_B2
 -2.d.3.ii_A2
 -2.d.3.ii_B2
+<DONE>

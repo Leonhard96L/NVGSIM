@@ -3,6 +3,20 @@
 <head>
     <link rel="stylesheet" href="./style.css">
     <title>Main QTG Report</title>
+    <style>
+        body {
+            counter-reset: test-part-counter;
+        }
+        .test-part {
+            counter-reset: test-part-counter; /* Reset the counter for each test case */
+        }
+        @page {
+            counter-increment: test-part-counter; /* Increment for each new page within test-case */
+        }
+        #page-count:after {
+            content: counter(test-part-counter);
+        }
+    </style>
 </head>
 <body>
 
@@ -12,6 +26,7 @@
 <h1>{{ test.id }} {{ test.name }}</h1>
 
 {% for part in test.test_parts %}
+    <div class="test-part" id="{{ test.id }}-{{ part.id }}">
     <h2>{{ test.id }}.{{ part.id }} {{ part.main_title }} {% if part.test_title != "" %} - {{ part.test_title }} {% endif %}</h2>
     <br/>
     <br/>
@@ -56,7 +71,11 @@
 
     <h3 class="center-div">References</h3>
 
-    <p>EASA CS-FSTD(H)</p>
+    <p>EASA CS-FSTD(H) AMC1 FSTD(H).300 (b)</p>
+
+    <div class="test-part-footer">
+        {{ test.id }}.{{ part.id }} - 1
+    </div>
 </div>
 
 <!-- ### Test case Summary not needed for now ### -->
@@ -124,154 +143,14 @@
 <!--</div>-->
 
 {% for case in part.test_cases %}
-<div class="content">
-    <h2 id="{{test.id}}.{{part.id}}.{{case.id}}">{{test.id}}.{{part.id}} {{case.id}}&nbsp;&nbsp;&nbsp;&nbsp;{{ case.condition }}</h2>
-
-    <h3 class="center-div">Test Procedure</h3>
-    <p>
-        On the IOS select ’Maintenance’ page then ’QTG-Test’.
-        The test can be run either in automatic or manual mode.
-    </p>
-
-    <b>Automatic testing:</b>
-    {% if case.is_automatic %}
-    {% for auto_test in case.automatic_testing %}{{ auto_test }}<br><br>{% endfor %}
-    <br>
-    <table class="no-outer-borders centered-table">
-        <thead>
-            <tr>
-                <th class="align-left">Flight Controls</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for control in case.generic_flight_controls %}
-            <tr>
-                <td class="align-left">{{ control.fc }}</td>
-                <td>{{ control.status }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <br>
-    {% else %}
-    N.A.
-    {% endif %}
-    <p><b>Manual testing:</b> follow the Manual Procedure steps indicated in the next page.</p>
-
-    {% include 'test_case_footer.html' %}
-</div>
-
-<div class="content">
-    <h3>Manual Procedure</h3>
-
-    <ol>
-        {% for man_test in case.manual_testing %}
-        <li><p>{{ man_test }}</p></li>
-        {% endfor %}
-    </ol>
-
-    <!--    PLEASE OUTSOURCE-->
-    {% include 'test_case_footer.html' %}
-</div>
-
-<div class="content">
-    <h3 class="center-div">Initial Conditions</h3>
-    {% include 'init_cond_table.html' %}
-    <p class="tiny-text">* Snapshot Tests: Reference initial conditions are computed as mean values over data time histories</p>
-    {% include 'test_case_footer.html' %}
-</div>
-
-<div class="content">
-<!--    <h3 class="center-div">Test Results</h3>-->
-<!--    <table class="no-outer-borders">-->
-<!--        <thead>-->
-<!--        <tr>-->
-<!--            <th class="align-left">Parameter <span class="light-text">[U oM]</span></th>-->
-<!--            <th>Reference</th>-->
-<!--            <th>Min**</th>-->
-<!--            <th>FSTD</th>-->
-<!--            <th>Max**</th>-->
-<!--        </tr>-->
-<!--        </thead>-->
-<!--        <tbody>-->
-<!--        <tr>-->
-<!--            <th class="subsection" colspan="5">Snapshot Data</th>-->
-<!--        </tr>-->
-<!--        <tr>-->
-<!--            <td class="align-left">Engine 1 Torque <span class="light-text">[%]</span></td>-->
-<!--            <td>1</td>-->
-<!--            <td>2</td>-->
-<!--            <td>3</td>-->
-<!--            <td>4</td>-->
-<!--        </tr>-->
-<!--        </tbody>-->
-<!--    </table>-->
-<!--    <br>-->
-<!--    <p class="center-div tiny-text">-->
-<!--        ** The Min value is computed as the Reference value minus the specific tolerance value.<br>-->
-<!--        The Max value is computed as the Reference value plus the specific tolerance value-->
-<!--    </p>-->
-
-    <h3 class="center-div">Notes and Rationales</h3>
-
-    <table class="no-outer-borders">
-        <tr>
-            <th colspan="2">Notes</th>
-        </tr>
-        {% for note in case.notes_rationales.notes %}
-        <tr>
-            <td colspan="2" class="align-left"><p>{{ note }}</p></td>
-        </tr>
-        {% endfor %}
-
-        <tr>
-            <th colspan="2">Rationales (Validation Data)</th>
-        </tr>
-<!--        <tr>-->
-<!--            <td class="align-left"><p>-->
-<!--                Rationale 1-->
-<!--                (All Subcases)-->
-<!--                </p>-->
-<!--            </td>-->
-<!--            <td class="align-left"><p>In the Hover flight maneuver Vertical Speed values are not reliable due to Rotor Downwash effects. In each current Test SubCases a stable Hover maneuver has been performed.</p></td>-->
-<!--        </tr>-->
-        {% for rat in case.notes_rationales.rationales_validation_data %}
-        <tr>
-            <td colspan="2" class="align-left"><p>{{ rat }}</p></td>
-        </tr>
-        {% endfor %}
-
-        <tr>
-            <th colspan="2">Rationales (Results)</th>
-        </tr>
-        {% for rat in case.notes_rationales.rationales_results %}
-        <tr>
-            <td colspan="2" class="align-left"><p>{{ rat }}</p></td>
-        </tr>
-        {% endfor %}
-<!--        <tr>-->
-<!--            <td colspan="2" class="align-left"><p>No Rationales related to current SubCase are present</p></td>-->
-<!--        </tr>-->
-    </table>
-    {% include 'test_case_footer.html' %}
-</div>
-
-<div class="content">
-    <h3 class="center-div">Results</h3>
-
-    {% for plot in case.plots_base64 %}
-        <img src="data:image/svg;base64,{{ plot }}" alt="Plot Image">
-        {% include 'test_case_footer.html' %}
-    {% endfor %}
-    {% if not case.plots_base64 %}
-    <p>No plots available.</p>
-    {% endif %}
-</div>
+<!--    <div class="test-case">-->
+        {% include 'test_case.html' %}
+<!--    </div>-->
 {% endfor %}
 
 <div class="page-break"></div>
 {% endfor %}
+</div>
 {% endfor %}
 </body>
 </html>

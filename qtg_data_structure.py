@@ -2895,38 +2895,38 @@ data = {
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
-                        {
-                            'id': 'A2',
-                            'name': 'Lateral-Directional Oscillations',
-                            'condition': 'Mid Speed - 66 KIAS, Left Pedal input',
-                            'automatic_testing_possible': True,
-                            'generic_flight_controls': [
-                                {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
-                                {'fc': 'Lateral', 'status': 'MATH PILOT'},
-                                {'fc': 'Collective', 'status': 'MATH PILOT'},
-                                {'fc': 'Pedals', 'status': 'MATH PILOT'}
-                            ],
-                            'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
-                                'The generic flight controls will be internally controlled according to the following table:'
-                            ],
-                            'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
-                                'Trim controls to reach 67 KIAS',
-                                'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.',
-                                'When the test elapsed time is 3.5 seconds, perform a pedal control doublet. Return pedal controls position to initial position, and then keep hands-off controls.'
-                            ],
-                            'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
-                                'rationales_results': ['No Rationales related to the Test are present']
-                            }
-                        },
+                        # {
+                        #     'id': 'A2',
+                        #     'name': 'Lateral-Directional Oscillations',
+                        #     'condition': 'Mid Speed - 66 KIAS, Left Pedal input',
+                        #     'automatic_testing_possible': True,
+                        #     'generic_flight_controls': [
+                        #         {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
+                        #         {'fc': 'Lateral', 'status': 'MATH PILOT'},
+                        #         {'fc': 'Collective', 'status': 'MATH PILOT'},
+                        #         {'fc': 'Pedals', 'status': 'MATH PILOT'}
+                        #     ],
+                        #     'automatic_testing': [
+                        #         'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                        #         'Press "Start QTG" to start the test.',
+                        #         'The generic flight controls will be internally controlled according to the following table:'
+                        #     ],
+                        #     'manual_testing': [
+                        #         'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                        #         'Right click on the corresponding test in the right column to change in manual mode.',
+                        #         'Press "Start QTG" to start the test.',
+                        #         'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                        #         'Trim controls to reach 67 KIAS',
+                        #         'Stabilize and maintain current flight condition.',
+                        #         'Press "Enter" to start recording.',
+                        #         'When the test elapsed time is 3.5 seconds, perform a pedal control doublet. Return pedal controls position to initial position, and then keep hands-off controls.'
+                        #     ],
+                        #     'notes_rationales': {
+                        #         'notes': ['No Notes related to the Test are present'],
+                        #         'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                        #         'rationales_results': ['No Rationales related to the Test are present']
+                        #     }
+                        # },
                         {
                             'id': 'B1',
                             'name': 'Lateral-Directional Oscillations',
@@ -2959,38 +2959,38 @@ data = {
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
-                        {
-                            'id': 'B2',
-                            'name': 'Lateral-Directional Oscillations',
-                            'condition': 'High Speed - 90 KIAS, Left Pedal input',
-                            'automatic_testing_possible': True,
-                            'generic_flight_controls': [
-                                {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
-                                {'fc': 'Lateral', 'status': 'MATH PILOT'},
-                                {'fc': 'Collective', 'status': 'MATH PILOT'},
-                                {'fc': 'Pedals', 'status': 'MATH PILOT'}
-                            ],
-                            'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
-                                'The generic flight controls will be internally controlled according to the following table:'
-                            ],
-                            'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
-                                'Trim controls to reach 90 KIAS',
-                                'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.',
-                                'When the test elapsed time is 2.5 seconds, perform a pedal control doublet. Return pedal controls position to initial position, and then keep hands-off controls.'
-                            ],
-                            'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
-                                'rationales_results': ['No Rationales related to the Test are present']
-                            }
-                        }
+                        # {
+                        #     'id': 'B2',
+                        #     'name': 'Lateral-Directional Oscillations',
+                        #     'condition': 'High Speed - 90 KIAS, Left Pedal input',
+                        #     'automatic_testing_possible': True,
+                        #     'generic_flight_controls': [
+                        #         {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
+                        #         {'fc': 'Lateral', 'status': 'MATH PILOT'},
+                        #         {'fc': 'Collective', 'status': 'MATH PILOT'},
+                        #         {'fc': 'Pedals', 'status': 'MATH PILOT'}
+                        #     ],
+                        #     'automatic_testing': [
+                        #         'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                        #         'Press "Start QTG" to start the test.',
+                        #         'The generic flight controls will be internally controlled according to the following table:'
+                        #     ],
+                        #     'manual_testing': [
+                        #         'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                        #         'Right click on the corresponding test in the right column to change in manual mode.',
+                        #         'Press "Start QTG" to start the test.',
+                        #         'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                        #         'Trim controls to reach 90 KIAS',
+                        #         'Stabilize and maintain current flight condition.',
+                        #         'Press "Enter" to start recording.',
+                        #         'When the test elapsed time is 2.5 seconds, perform a pedal control doublet. Return pedal controls position to initial position, and then keep hands-off controls.'
+                        #     ],
+                        #     'notes_rationales': {
+                        #         'notes': ['No Notes related to the Test are present'],
+                        #         'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                        #         'rationales_results': ['No Rationales related to the Test are present']
+                        #     }
+                        # }
                     ]
                 },
                 {
@@ -3055,36 +3055,36 @@ data = {
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
-                        {
-                            'id': 'A2',
-                            'name': 'Spiral Stability',
-                            'condition': 'Right Input - 64 KIAS',
-                            'automatic_testing_possible': True,
-                            'generic_flight_controls': [
-                                {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
-                                {'fc': 'Lateral', 'status': 'MATH PILOT'},
-                                {'fc': 'Collective', 'status': 'MATH PILOT'},
-                                {'fc': 'Pedals', 'status': 'MATH PILOT'}
-                            ],
-                            'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
-                                'The generic flight controls will be internally controlled according to the following table:'
-                            ],
-                            'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
-                                'Set controls to reach target values.'
-                                'Press "Enter" to start recording.'
-                            ],
-                            'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
-                                'rationales_results': ['No Rationales related to the Test are present']
-                            }
-                        },
+                        # {
+                        #     'id': 'A2',
+                        #     'name': 'Spiral Stability',
+                        #     'condition': 'Right Input - 64 KIAS',
+                        #     'automatic_testing_possible': True,
+                        #     'generic_flight_controls': [
+                        #         {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
+                        #         {'fc': 'Lateral', 'status': 'MATH PILOT'},
+                        #         {'fc': 'Collective', 'status': 'MATH PILOT'},
+                        #         {'fc': 'Pedals', 'status': 'MATH PILOT'}
+                        #     ],
+                        #     'automatic_testing': [
+                        #         'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                        #         'Press "Start QTG" to start the test.',
+                        #         'The generic flight controls will be internally controlled according to the following table:'
+                        #     ],
+                        #     'manual_testing': [
+                        #         'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                        #         'Right click on the corresponding test in the right column to change in manual mode.',
+                        #         'Press "Start QTG" to start the test.',
+                        #         'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                        #         'Set controls to reach target values.'
+                        #         'Press "Enter" to start recording.'
+                        #     ],
+                        #     'notes_rationales': {
+                        #         'notes': ['No Notes related to the Test are present'],
+                        #         'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                        #         'rationales_results': ['No Rationales related to the Test are present']
+                        #     }
+                        # },
                         {
                             'id': 'B1',
                             'name': 'Spiral Stability',
@@ -3118,36 +3118,36 @@ data = {
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
-                        {
-                            'id': 'B2',
-                            'name': 'Spiral Stability',
-                            'condition': 'Left Input - 64 KIAS',
-                            'automatic_testing_possible': True,
-                            'generic_flight_controls': [
-                                {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
-                                {'fc': 'Lateral', 'status': 'MATH PILOT'},
-                                {'fc': 'Collective', 'status': 'MATH PILOT'},
-                                {'fc': 'Pedals', 'status': 'MATH PILOT'}
-                            ],
-                            'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
-                                'The generic flight controls will be internally controlled according to the following table:'
-                            ],
-                            'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
-                                'Set controls to reach target values.'
-                                'Press "Enter" to start recording.'
-                            ],
-                            'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
-                                'rationales_results': ['No Rationales related to the Test are present']
-                            }
-                        }
+                        # {
+                        #     'id': 'B2',
+                        #     'name': 'Spiral Stability',
+                        #     'condition': 'Left Input - 64 KIAS',
+                        #     'automatic_testing_possible': True,
+                        #     'generic_flight_controls': [
+                        #         {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
+                        #         {'fc': 'Lateral', 'status': 'MATH PILOT'},
+                        #         {'fc': 'Collective', 'status': 'MATH PILOT'},
+                        #         {'fc': 'Pedals', 'status': 'MATH PILOT'}
+                        #     ],
+                        #     'automatic_testing': [
+                        #         'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                        #         'Press "Start QTG" to start the test.',
+                        #         'The generic flight controls will be internally controlled according to the following table:'
+                        #     ],
+                        #     'manual_testing': [
+                        #         'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                        #         'Right click on the corresponding test in the right column to change in manual mode.',
+                        #         'Press "Start QTG" to start the test.',
+                        #         'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                        #         'Set controls to reach target values.'
+                        #         'Press "Enter" to start recording.'
+                        #     ],
+                        #     'notes_rationales': {
+                        #         'notes': ['No Notes related to the Test are present'],
+                        #         'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                        #         'rationales_results': ['No Rationales related to the Test are present']
+                        #     }
+                        # }
                     ]
                 }
             ]

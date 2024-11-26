@@ -186,7 +186,7 @@ def process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mq
 def create_test_case_pdf(data, output_file):
     # Set up Jinja2 environment
     env = Environment(loader=FileSystemLoader('./templates'))
-    template = env.get_template('test_case.html')
+    template = env.get_template('test_case_wrapper.html')
 
     # Render the HTML template with data
     html_out = template.render(data)
