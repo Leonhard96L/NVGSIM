@@ -34,10 +34,7 @@
     <p><b>Manual testing:</b> follow the Manual Procedure steps indicated in the next page.</p>
 
     {% include 'test_case_footer.html' %}
-    <div class="test-part-footer">
-        {{ test.id }}.{{ part.id }} - {{counter.i}}
-        {% set counter.i = counter.i + 1 %}
-    </div>
+    {% include 'test_part_footer.html' %}
 </div>
 
 <div class="content">
@@ -51,10 +48,7 @@
 
     <!--    PLEASE OUTSOURCE-->
     {% include 'test_case_footer.html' %}
-    <div class="test-part-footer">
-        {{ test.id }}.{{ part.id }} - {{counter.i}}
-        {% set counter.i = counter.i + 1 %}
-    </div>
+    {% include 'test_part_footer.html' %}
 </div>
 
 <div class="content">
@@ -62,10 +56,7 @@
     {% include 'init_cond_table.html' %}
     <p class="tiny-text">* Snapshot Tests: Reference initial conditions are computed as mean values over data time histories</p>
     {% include 'test_case_footer.html' %}
-    <div class="test-part-footer">
-        {{ test.id }}.{{ part.id }} - {{counter.i}}
-        {% set counter.i = counter.i + 1 %}
-    </div>
+    {% include 'test_part_footer.html' %}
 </div>
 
 <div class="content">
@@ -141,10 +132,7 @@
 <!--        </tr>-->
     </table>
     {% include 'test_case_footer.html' %}
-    <div class="test-part-footer">
-        {{ test.id }}.{{ part.id }} - {{counter.i}}
-        {% set counter.i = counter.i + 1 %}
-    </div>
+    {% include 'test_part_footer.html' %}
 </div>
 <div class="content">
     <h3 class="center-div">Results</h3>
@@ -152,19 +140,12 @@
         <img class="plot-image" src="data:image/svg;base64,{{ plot }}" alt="Plot Image">
         {% if loop.index0 % 3 == 0 %}
             {% include 'test_case_footer.html' %}
-            <p>{{i}}</p>
-            <div class="test-part-footer">
-                {{ test.id }}.{{ part.id }} - {{counter.i}}
-                {% set counter.i = counter.i + 1 %}
-            </div>
+            {% include 'test_part_footer.html' %}
         {% endif %}
     {% endfor %}
 
     {% if not case.plots_base64 %}
     <p>No plots available.</p>
-    <div class="test-part-footer">
-        {{ test.id }}.{{ part.id }} - {{counter.i}}
-        {% set counter.i = counter.i + 1 %}
-    </div>
+    {% include 'test_part_footer.html' %}
     {% endif %}
 </div>

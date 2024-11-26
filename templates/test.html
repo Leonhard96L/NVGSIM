@@ -3,29 +3,30 @@
 <head>
     <link rel="stylesheet" href="./style.css">
     <title>Main QTG Report</title>
-    <style>
-        body {
-            counter-reset: test-part-counter;
-        }
-        .test-part {
-            counter-reset: test-part-counter; /* Reset the counter for each test case */
-        }
-        @page {
-            counter-increment: test-part-counter; /* Increment for each new page within test-case */
-        }
-        #page-count:after {
-            content: counter(test-part-counter);
-        }
-    </style>
+<!--    <style>-->
+<!--        body {-->
+<!--            counter-reset: test-part-counter;-->
+<!--        }-->
+<!--        .test-part {-->
+<!--            counter-reset: test-part-counter; /* Reset the counter for each test case */-->
+<!--        }-->
+<!--        @page {-->
+<!--            counter-increment: test-part-counter; /* Increment for each new page within test-case */-->
+<!--        }-->
+<!--        #page-count:after {-->
+<!--            content: counter(test-part-counter);-->
+<!--        }-->
+<!--    </style>-->
 </head>
 <body>
-
 {% for test in tests %}
 <div class="content">
 
 <h1>{{ test.id }} {{ test.name }}</h1>
 
 {% for part in test.test_parts %}
+    {% set counter = namespace(i=1) %}
+
     <div class="test-part" id="{{ test.id }}-{{ part.id }}">
     <h2>{{ test.id }}.{{ part.id }} {{ part.main_title }} {% if part.test_title != "" %} - {{ part.test_title }} {% endif %}</h2>
     <br/>
@@ -48,7 +49,7 @@
                 <tr>
                     <td>{{ case.id }}</td>
                     <td class="align-left">{{ case.name }}</td>
-                    <td><a href="#{{test.id}}.{{part.id}}.{{case.id}}">{{ case.id }}</a></td>
+                    <td><a href="#{{test.id}}.{{part.id}}.{{case.id}}">{{test.id}}.{{part.id}}.{{ case.id }}</a></td>
 <!--                    <th {% if loop.first %} class="align-left"{% endif %}>{{col}}</th>-->
                 </tr>
             {% endfor %}
@@ -73,9 +74,7 @@
 
     <p>EASA CS-FSTD(H) AMC1 FSTD(H).300 (b)</p>
 
-    <div class="test-part-footer">
-        {{ test.id }}.{{ part.id }} - 1
-    </div>
+    {% include 'test_part_footer.html' %}
 </div>
 
 <!-- ### Test case Summary not needed for now ### -->
@@ -141,7 +140,6 @@
 
 <!--&lt;!&ndash;    <div class="page-break"></div> &lt;!&ndash; Page break here &ndash;&gt;&ndash;&gt;-->
 <!--</div>-->
-{% set counter = namespace(i=2) %}
 {% for case in part.test_cases %}
     {% include 'test_case.html' %}
 {% endfor %}
