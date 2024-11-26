@@ -141,11 +141,9 @@
 
 <!--&lt;!&ndash;    <div class="page-break"></div> &lt;!&ndash; Page break here &ndash;&gt;&ndash;&gt;-->
 <!--</div>-->
-
+{% set counter = namespace(i=2) %}
 {% for case in part.test_cases %}
-<!--    <div class="test-case">-->
-        {% include 'test_case.html' %}
-<!--    </div>-->
+    {% include 'test_case.html' %}
 {% endfor %}
 
 <div class="page-break"></div>

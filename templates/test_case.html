@@ -35,7 +35,8 @@
 
     {% include 'test_case_footer.html' %}
     <div class="test-part-footer">
-        {{ test.id }}.{{ part.id }} - 2
+        {{ test.id }}.{{ part.id }} - {{counter.i}}
+        {% set counter.i = counter.i + 1 %}
     </div>
 </div>
 
@@ -51,7 +52,8 @@
     <!--    PLEASE OUTSOURCE-->
     {% include 'test_case_footer.html' %}
     <div class="test-part-footer">
-        {{ test.id }}.{{ part.id }} - 3
+        {{ test.id }}.{{ part.id }} - {{counter.i}}
+        {% set counter.i = counter.i + 1 %}
     </div>
 </div>
 
@@ -61,7 +63,8 @@
     <p class="tiny-text">* Snapshot Tests: Reference initial conditions are computed as mean values over data time histories</p>
     {% include 'test_case_footer.html' %}
     <div class="test-part-footer">
-        {{ test.id }}.{{ part.id }} - 4
+        {{ test.id }}.{{ part.id }} - {{counter.i}}
+        {% set counter.i = counter.i + 1 %}
     </div>
 </div>
 
@@ -139,7 +142,8 @@
     </table>
     {% include 'test_case_footer.html' %}
     <div class="test-part-footer">
-        {{ test.id }}.{{ part.id }} - 5
+        {{ test.id }}.{{ part.id }} - {{counter.i}}
+        {% set counter.i = counter.i + 1 %}
     </div>
 </div>
 <div class="content">
@@ -148,8 +152,10 @@
         <img class="plot-image" src="data:image/svg;base64,{{ plot }}" alt="Plot Image">
         {% if loop.index0 % 3 == 0 %}
             {% include 'test_case_footer.html' %}
+            <p>{{i}}</p>
             <div class="test-part-footer">
-                {{ test.id }}.{{ part.id }} - {{(6+loop.index0/3)|int}}
+                {{ test.id }}.{{ part.id }} - {{counter.i}}
+                {% set counter.i = counter.i + 1 %}
             </div>
         {% endif %}
     {% endfor %}
@@ -157,7 +163,8 @@
     {% if not case.plots_base64 %}
     <p>No plots available.</p>
     <div class="test-part-footer">
-        {{ test.id }}.{{ part.id }} - 6
+        {{ test.id }}.{{ part.id }} - {{counter.i}}
+        {% set counter.i = counter.i + 1 %}
     </div>
     {% endif %}
 </div>

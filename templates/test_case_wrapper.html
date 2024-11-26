@@ -38,8 +38,12 @@
     <h3 class="center-div">References</h3>
 
     <p>EASA CS-FSTD(H) AMC1 FSTD(H).300 (b)</p>
-</div>
 
+    <div class="test-part-footer">
+        {{ test.id }}.{{ part.id }} - 1
+    </div>
+</div>
+{% set counter = namespace(i=2) %}
 {% include 'test_case.html' %}
 </body>
 </html>
