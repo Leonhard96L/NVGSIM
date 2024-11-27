@@ -63,7 +63,7 @@ data = {
                                 'Trim controls to reach 90 KIAS and descent with 1000ft/min',
                                 'Stabilize and maintain current flight condition.',
                                 'Press "Enter" to start recording.',
-                                'When the test elapsed time is 3.4 seconds, pull collective to reach a vertical velocity of 800ft/min in 3.5 seconds.'
+                                'When the test elapsed time is 3.4 seconds, pull collective to reach a vertival velocity of 800ft/min in 3.5 seconds.'
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
@@ -243,7 +243,6 @@ data = {
                                 'Hover in 3ft AGL.',
                                 'Press "Enter" to start recording.',
                                 'After 5s start take-off run. ',
-                                'After 17s press Engine 2 fail.',
                                 'After 25s an IAS of 45kts and height of 100ft AGL should be reached.',
                                 'After 35s an IAS of 40kts and height of 320ft AGL should be reached.',
                                 'After 35s an IAS of 55kts and height of 400ft AGL should be reached.'
@@ -3119,33 +3118,36 @@ data = {
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
-# =============================================================================
-#                         {
-#                             'id': 'B2',
-#                             'name': 'Spiral Stability',
-#                             'condition': 'Left Input - 64 KIAS',
-#                             'automatic_testing_possible': False,
-#                             'generic_flight_controls': [
-#                                 {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
-#                                 {'fc': 'Lateral', 'status': 'MATH PILOT'},
-#                                 {'fc': 'Collective', 'status': 'MATH PILOT'},
-#                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
-#                             ],
-#                             'automatic_testing': [
-#                                 'On the left column double click on the corresponding test. The test will displayed in the right column.',
-#                                 'Press "Start QTG" to start the test.',
-#                                 'The generic flight controls will be internally controlled according to the following table:'
-#                             ],
-#                             'manual_testing': [
-#                                 'N.A.'
-#                             ],
-#                             'notes_rationales': {
-#                                 'notes': ['No Notes related to the Test are present'],
-#                                 'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
-#                                 'rationales_results': ['No Rationales related to the Test are present']
-#                             }
-#                         }
-# =============================================================================
+                        # {
+                        #     'id': 'B2',
+                        #     'name': 'Spiral Stability',
+                        #     'condition': 'Left Input - 64 KIAS',
+                        #     'automatic_testing_possible': True,
+                        #     'generic_flight_controls': [
+                        #         {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
+                        #         {'fc': 'Lateral', 'status': 'MATH PILOT'},
+                        #         {'fc': 'Collective', 'status': 'MATH PILOT'},
+                        #         {'fc': 'Pedals', 'status': 'MATH PILOT'}
+                        #     ],
+                        #     'automatic_testing': [
+                        #         'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                        #         'Press "Start QTG" to start the test.',
+                        #         'The generic flight controls will be internally controlled according to the following table:'
+                        #     ],
+                        #     'manual_testing': [
+                        #         'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                        #         'Right click on the corresponding test in the right column to change in manual mode.',
+                        #         'Press "Start QTG" to start the test.',
+                        #         'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                        #         'Set controls to reach target values.'
+                        #         'Press "Enter" to start recording.'
+                        #     ],
+                        #     'notes_rationales': {
+                        #         'notes': ['No Notes related to the Test are present'],
+                        #         'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                        #         'rationales_results': ['No Rationales related to the Test are present']
+                        #     }
+                        # }
                     ]
                 }
             ]

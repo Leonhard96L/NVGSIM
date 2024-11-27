@@ -16,30 +16,33 @@
 
 
 
+Wichtig fuer Michi:
+	Man kann grob sagen:
+		1. Was vorher mqtg war ist jetzt reference Data
+		2. Was vorher qtg war ist jetzt mqtg
+		3. Und ein recurrent muss noch neu gebildet werden
 
-Man kann grob sagen:
-1. Was vorher mqtg war ist jetzt reference Data
-2. Was vorher qtg war ist jetzt mqtg
-3. Und ein recurrent muss noch neu gebildet werden
+	Scripts:
+		Init_flyout.py -> Init_flyout_reference.py 
 
-Scripts:
-	Init_flyout.py -> Init_flyout_reference.py 
+		RecurrentQTGs_auto.py -> MQTG_auto.py
+		RecurrentQTGs_manu.py -> MQTG_manu.py
 
-	RecurrentQTGs_auto.py -> MQTG_auto.py
-	RecurrentQTGs_manu.py -> MQTG_manu.py
+		Real_RecurrentQTGs_auto.py -> RecurrentQTGs_auto.py
+		Real_RecurrentQTGs_manu.py -> RecurrentQTGs_manu.py
 
-	Real_RecurrentQTGs_auto.py -> RecurrentQTGs_auto.py
-	Real_RecurrentQTGs_manu.py -> RecurrentQTGs_manu.py
+	Ordner:
+		mqtg -> reference
+		qtg -> mqtg
+		Neuer Ordner: qtg
 
-Ordner:
-	mqtg -> reference
-	qtg -> mqtg
-	Neuer Ordner: qtg
+	Buttons im Tool:
+		Start MQTG -> Start Reference
+		Start QTG -> Start MQTG
+		Neu: Start QTG 
 
-Buttons im Tool:
-	Start MQTG -> Start Reference
-	Start QTG -> Start MQTG
-	Neu: Start QTG 
+
+	Bitte eine Abbruch/Wiederholfunktion fuer einen Autom. Test
 
 
 
@@ -62,16 +65,44 @@ Fuer Leo:
 
 	!!!!!2.c.4.* funktioniert nicht
 
+	Noch einen Automatic engine fail einspielen lassen
 
-Bitte eine Abbruch/Wiederholfunktion fuer einen Autom. Test
 
 
 
 ####Achtung doch nicht entfernen######
-	-Ich muss mir das noch genauer ueberlegen!
-Folgende Tests sollen aus dem Tool entfernt werden:
+	-Diese werden als N.A. angegeben, sollen aber doch im QTG tool vorkommen.
+
+-1.a.1.i_A1
+-1.a.1.i_B1
+-1.a.1.ii_A1
+-1.a.1.ii_B1
+-1.a.2_A1
+-1.a.2_A2
+
+-2.a.2_A2
+-2.a.2_B2
+-2.a.3_A1
+-2.a.3_A2
+-2.a.4_C1
+-2.a.4_D1
+-2.c.5_A1
+
 -2.d.3.i_A2
 -2.d.3.i_B2
 -2.d.3.ii_A2
 -2.d.3.ii_B2
+
+Folgende Aenderungen beim qtg_Data_structure:
+1. bei allen tests: manual_testing -> die ersten 4 Punkte loeschen.
+2. Die obigen Tests hinzufuegen welche N.A. sind. 
+3. Dabei wird einfach alles geloescht ausser der Name und die Tabelle Notes und rationales.
+4. Ein Problem hier ist, dass wenn man einen dieser Test im QTG tool auswaehlt und startet, ein Fehler
+kommt dass dieser nicht vorhanden ist. Das muss man umgehen. Vlt mit einem flag?
+
+
+
+
+
+
 
