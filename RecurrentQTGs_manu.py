@@ -487,7 +487,8 @@ def get_test_test_part_test_case(tests, test_id, part_id, case_id):
 
 
 def create_plots(QTG_path, part):
-    
+    issnapshot = part['snapshot']
+    output_table_mqtg =  {}
     def plot_cases(data,compare_name,sc_fac):
         if 'FTD1' in data.keys():
             x_Ref = data['Storage'][0]['x']
@@ -693,6 +694,7 @@ def create_plots(QTG_path, part):
 
             
             pdfname = f"{count}_{plot_title}.svg"
+            pdfname_mqtg = f"{count}_{plot_title}_mqtg.svg"
             
             
             
@@ -718,6 +720,7 @@ def create_plots(QTG_path, part):
             
             plt.autoscale()
             y_min, y_max = plt.ylim()
+            x_min, x_max = plt.xlim()
             y_range = y_max - y_min
             plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
 
@@ -731,6 +734,44 @@ def create_plots(QTG_path, part):
             
             plt.savefig(save_path, format='svg')
             plt.close()
+            
+            ##Neuer Plot (dient als MQTG)
+            y_mqtg = y_Rec
+            x_mqtg = x_Rec
+            
+            y_uptol = [i+tol for i in y_mqtg]
+            y_lotol = [i-tol for i in y_mqtg]
+            
+            x_max_snapshot = 1/x_max*x_mqtg[-1]
+            x_min_snapshot = 1/(x_max-x_min)*-x_min
+
+            
+            plt.figure(figsize=(10, 6))
+            if issnapshot:
+                plt.axhline(y = np.mean(y_mqtg), xmin = x_min_snapshot, xmax = x_max_snapshot, label='MQTG', color='orange')
+                plt.axhline(y = np.mean(y_uptol), xmin = x_min_snapshot, xmax = x_max_snapshot, linewidth=0.5, color='orange', linestyle='dashed')
+                plt.axhline(y = np.mean(y_lotol), xmin = x_min_snapshot, xmax = x_max_snapshot, linewidth=0.5, color='orange', linestyle='dashed')
+                plt.xlim(x_min, x_max)
+                #Table
+                output_table_mqtg[plot_title +' '+ param['unit']] = [round(np.mean(y_mqtg),2), round(np.mean(y_lotol),2), ' ', round(np.mean(y_uptol),2)]
+            else:
+                plt.plot(x_mqtg, y_mqtg, label='MQTG')
+                plt.plot(x_mqtg, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
+                plt.plot(x_mqtg, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
+                
+            ##Section for scale
+            plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
+
+            plt.xlabel(x_label)
+            plt.ylabel(y_label)
+            plt.title(plot_title)
+            plt.legend()
+            plt.grid(True)
+            #plt.show() 
+            save_path = os.path.join(dirpath, pdfname_mqtg)
+            
+            plt.savefig(save_path, format='svg')
+            plt.close() 
 
 
     params_add = part['add_plots']
@@ -758,6 +799,7 @@ def create_plots(QTG_path, part):
             
 
             pdfname = f"{count_add}_{plot_title}.svg"
+            pdfname_mqtg = f"{count_add}_{plot_title}_mqtg.svg"
             
 
             plt.figure(figsize=(10, 6))
@@ -769,6 +811,7 @@ def create_plots(QTG_path, part):
 
             plt.autoscale()
             y_min, y_max = plt.ylim()
+            x_min, x_max = plt.xlim()
             y_range = y_max - y_min
             plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
 
@@ -782,6 +825,34 @@ def create_plots(QTG_path, part):
             
             plt.savefig(save_path, format='svg')
             plt.close()
+            
+            ##Neuer Plot (dient als MQTG)
+            y_mqtg = y_Rec
+            x_mqtg = x_Rec
+                        
+            plt.figure(figsize=(10, 6))
+            if issnapshot:
+                plt.axhline(y = np.mean(y_mqtg), xmin = x_min_snapshot, xmax = x_max_snapshot, label='MQTG', color='orange')
+                plt.xlim(x_min, x_max)
+                #Table
+                output_table_mqtg[plot_title +' '+ param['unit']] = [round(np.mean(y_mqtg),2), ' - ', ' ', ' - ']
+            else:
+                plt.plot(x_mqtg, y_mqtg, label='MQTG')
+
+                
+            ##Section for scale
+            plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
+
+            plt.xlabel(x_label)
+            plt.ylabel(y_label)
+            plt.title(plot_title)
+            plt.legend()
+            plt.grid(True)
+            #plt.show() 
+            save_path = os.path.join(dirpath, pdfname_mqtg)
+            
+            plt.savefig(save_path, format='svg')
+            plt.close()  
 
 
 def main(test_item, test_dir, gui_output, gui_input):
@@ -801,13 +872,6 @@ def main(test_item, test_dir, gui_output, gui_input):
     #QTG_path = get_QTG_path(QTG_name, save_data_path)
     #Zeitdauer des Tests
     T = get_QTG_time(QTG_path)
-    dT = np.mean(np.diff(T))
-    
-    #Definiere selbst wie lange der Test dauern soll
-    desired_time = int(gui_input("Enter desired time in seconds "))
-    
-    
-    T = np.arange(0,desired_time,dT)
     
     
     #Hole die Anfangsbedingungen des jeweiligen QTGs

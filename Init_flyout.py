@@ -516,7 +516,7 @@ def get_test_test_part_test_case(tests, test_id, part_id, case_id):
 
 def create_plots(QTG_path, part):
     issnapshot = part['snapshot']
-    output_table =  {}
+    output_table_refer =  {}
     
     def plot_cases(data,compare_name,sc_fac):
         if 'FTD1' in data.keys():
@@ -721,12 +721,15 @@ def create_plots(QTG_path, part):
             plt.close()
             
             ##Neuer Plot (dient als Referenz)
+            x_max_snapshot = 1/x_max*x[-1]
+            x_min_snapshot = 1/(x_max-x_min)*-x_min
+            
             plt.figure(figsize=(10, 6))
             if issnapshot:
-                plt.axhline(y = np.mean(y), xmin = 0, xmax = 1, label='Reference')
+                plt.axhline(y = np.mean(y), xmin = x_min_snapshot, xmax = x_max_snapshot, label='Reference')
                 plt.xlim(x_min, x_max)
                 #Table
-                output_table[plot_title +' '+ param['unit']] = [round(np.mean(y),2)]
+                output_table_refer[plot_title +' '+ param['unit']] = [round(np.mean(y),2)]
             else:
                 plt.plot(x, y, label='Reference')
 
@@ -801,10 +804,10 @@ def create_plots(QTG_path, part):
             ##Neuer Plot (dient als Referenz)
             plt.figure(figsize=(10, 6))
             if issnapshot:
-                plt.axhline(y = np.mean(y), xmin = 0, xmax = 1, label='Reference')
+                plt.axhline(y = np.mean(y), xmin = x_min_snapshot, xmax = x_max_snapshot, label='Reference')
                 plt.xlim(x_min, x_max)
                 #Table
-                output_table[plot_title +' '+ param['unit']] = [round(np.mean(y),2)]
+                output_table_refer[plot_title +' '+ param['unit']] = [round(np.mean(y),2)]
             else:
                 plt.plot(x, y, label='Reference')
 
@@ -825,7 +828,7 @@ def create_plots(QTG_path, part):
         filename = 'output_table_refer.json'
         output_table_path = os.path.join(QTG_path, filename)
         with open(output_table_path, 'w') as json_file:
-            json.dump(output_table, json_file, indent=4)
+            json.dump(output_table_refer, json_file, indent=4)
 
 
 
