@@ -178,12 +178,22 @@ def GW_map(x):
     return 4500 + (4100 / 1280) * (float(x) - 1700)
 
 
+# =============================================================================
+# # CG_Long
+# # Linear interpolation of CG_x:
+# # EC135T2+ max.AFT = 4541mm max.FWD=4121mm
+# # AS532 max.AFT = -4.97m max.FWD=-4.47m
+# def CG_x_map(x):
+#     return -4.97 + (0.5 / -0.42) * (x - 4.541)
+# =============================================================================
+
 # CG_Long
-# Linear interpolation of CG_x:
 # EC135T2+ max.AFT = 4541mm max.FWD=4121mm
-# AS532 max.AFT = -4.97m max.FWD=-4.47m
+#Calculation from multisim to EC135
+#Coordinate System on the nose of the HC
 def CG_x_map(x):
-    return -4.97 + (0.5 / -0.42) * (x - 4.541)
+     return -(x - 1.15)
+
 
 
 def units_conversion(init_cond_dict, unit):

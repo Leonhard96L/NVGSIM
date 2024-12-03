@@ -1,0 +1,57 @@
+1. Test FLI:
+-OEI -> 
+
+2. RPM indicator:
+-Rotor RPM indication doesn't work
+
+3. Wrong cyclic control reflection: 
+-When breakout to right -> 3D Model breaks forward
+-When breakout to left -> 3D Model breaks aft
+-When breakout to forward-> 3D Model doesn't move
+-When breakout to aft -> 3D Model doesn't move
+
+4. Test slope landing 
+
+5. Add mast moment warning sound 
+
+6. Remove cautions from panel
+
+7. Skids sinking in the ground
+	-The pilots feel that they sitting to low.
+	-Slope landing very hard
+
+8. Engine fail sounds
+
+9. Yaw string not correct
+
+10. To much left pedal
+
+11. FLI 
+	- overtrq gong
+	-always OEI indication
+
+12. Engi Oilpressure 0
+
+13. To high trq changes when moving pedals
+
+14. Left pedal to weak
+
+
+
+Test mit Roland:
+	cg x -> -3.17 ; y -> -0.07
+	fmc: attitude_hold -> on
+
+	scas -> gains:
+		1. attitude: x = 0.01745, y = 0.01745, z = 0
+		2. rate: x = 0.00524, y = 0.00873, z = 0.01047
+
+Tets mit Bernd:
+	cg x -> -3.17 ; y -> -0.07
+	fmc: attitude_hold -> on
+
+	scas -> gains:
+		1. attitude: x = 0.01745, y = 0.01745, z = 0
+		2. rate: x = 0.00524, y = 0.00873, z = 0.01047
+
+Test mit Martin

@@ -67,7 +67,7 @@ Fuer Leo:
 
 	Noch einen Automatic engine fail einspielen lassen
 
-
+	Achtung: man muss ueberall die Funktion set_standard_cond() anpassen
 
 
 ####Achtung doch nicht entfernen######

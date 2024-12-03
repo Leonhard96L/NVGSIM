@@ -280,7 +280,76 @@ def logandsave_flyout_init_cond(QTG_path):
     print(filename_date + ' wurde unter ' + QTG_path + ' gespeichert!')
 
 
+def math_pilot(QTG_path, T):
+    ref_input_matrix = np.empty((len(T), INPUT.NUMBER_OF_INPUTS))
+    output_matrix = np.empty((len(T), OUTPUT.NUMBER_OF_OUTPUTS))
+    input_matrix = np.empty((len(T), INPUT.NUMBER_OF_INPUTS))
+    force_matrix = np.empty((len(T), INPUT.NUMBER_OF_INPUTS))
 
+    # Get Reference control arrays
+    Input_paths = [
+        os.path.join(QTG_path, 'Control Position Collective.XY.qtgplot.sim'),
+        os.path.join(QTG_path, 'Control Position Roll.XY.qtgplot.sim'),
+        os.path.join(QTG_path, 'Control Position Pitch.XY.qtgplot.sim'),
+        os.path.join(QTG_path, 'Control Position Yaw.XY.qtgplot.sim')]
+
+    for path, i in zip(Input_paths, range(INPUT.NUMBER_OF_INPUTS)):
+        with open(path, 'r') as json_file:
+            data = json.load(json_file)
+        ref_input_matrix[:, i] = data['Storage'][0]['y']
+
+
+
+    # Moog2Brunner - Value mapping
+    
+
+    vec_fun = np.vectorize(inv_map_control)
+
+    
+    ref_input_matrix[:,INPUT.CYCLIC_LONGITUDINAL] = vec_fun(ref_input_matrix[:,INPUT.CYCLIC_LONGITUDINAL],'pitch')
+    ref_input_matrix[:,INPUT.CYCLIC_LATERAL] = vec_fun(ref_input_matrix[:,INPUT.CYCLIC_LATERAL],'roll')
+    ref_input_matrix[:,INPUT.PEDALS] = vec_fun(ref_input_matrix[:,INPUT.PEDALS], 'pedal')
+    ref_input_matrix[:,INPUT.COLLECTIVE] = vec_fun(ref_input_matrix[:,INPUT.COLLECTIVE], 'collective')
+
+
+    i = 0
+    simulation_mode.write(SIM_MODE.RUN)
+
+    while i < len(T) - 1:
+        hardware_pilot_collective_position.write(ref_input_matrix[i, INPUT.COLLECTIVE])
+        hardware_pilot_cyclic_lateral_position.write(ref_input_matrix[i, INPUT.CYCLIC_LATERAL])
+        hardware_pilot_cyclic_longitudinal_position.write(-ref_input_matrix[i, INPUT.CYCLIC_LONGITUDINAL])
+        hardware_pilot_pedals_position.write(-ref_input_matrix[i, INPUT.PEDALS])
+
+        input_matrix[i, INPUT.COLLECTIVE] = hardware_pilot_collective_position.read()
+        input_matrix[i, INPUT.CYCLIC_LATERAL] = hardware_pilot_cyclic_lateral_position.read()
+        input_matrix[i, INPUT.CYCLIC_LONGITUDINAL] = hardware_pilot_cyclic_longitudinal_position.read()
+        input_matrix[i, INPUT.PEDALS] = hardware_pilot_pedals_position.read()
+
+        output_matrix[i, OUTPUT.AIRSPEED] = reference_frame_body_freestream_airspeed.read()
+        output_matrix[i, OUTPUT.GROUNDSPEED] = reference_frame_inertial_position_v_xy.read()
+        output_matrix[i, OUTPUT.RADARALT] = radio_altimeter_altitude.read()
+        output_matrix[i, OUTPUT.E1TRQ] = engine_1_torque.read()
+        output_matrix[i, OUTPUT.E2TRQ] = engine_2_torque.read()
+        output_matrix[i, OUTPUT.ROTORSPEED] = transmisson_n_r.read()
+        output_matrix[i, OUTPUT.PITCH] = reference_frame_inertial_attitude_theta.read()
+        output_matrix[i, OUTPUT.BANK] = reference_frame_inertial_attitude_phi.read()
+        output_matrix[i, OUTPUT.HEADING] = reference_frame_inertial_attitude_psi.read()
+        output_matrix[i, OUTPUT.PITCHRATE] = reference_frame_body_attitude_q.read()
+        output_matrix[i, OUTPUT.ROLLRATE] = reference_frame_body_attitude_p.read()
+        output_matrix[i, OUTPUT.YAWRATE] = reference_frame_body_attitude_r.read()
+        output_matrix[i, OUTPUT.VERTICALSPEED] = reference_frame_inertial_position_v_z.read()
+        output_matrix[i, OUTPUT.SIDESLIP] = reference_frame_body_freestream_beta.read()
+        
+
+        # sleep for dT amount of seconds
+        dT = T[i + 1] - T[i]
+        time.sleep(dT)
+        # increment data row index
+        i += 1
+
+    simulation_mode.write(SIM_MODE.PAUSE)
+    return input_matrix, output_matrix, force_matrix
 
 
 def log_flyout_input_output(T, gui_output):
@@ -423,8 +492,13 @@ def save_io_files(QTG_path, input_matrix, output_matrix, force_matrix, T):
 
 
 def set_standard_cond():
-    configuration_loading_empty_mass.write(7500)
-    flightmodel_configuration_cg_x.write(-4.7)
+    configuration_loading_empty_mass.write(2672)
+    flightmodel_configuration_cg_x.write(-3.17)
+    flightmodel_configuration_cg_y.write(-0.07)
+    flightmodel_configuration_inertia_i_xx.write(2711)
+    flightmodel_configuration_inertia_i_xz.write(927)
+    flightmodel_configuration_inertia_i_yy.write(10448)
+    flightmodel_configuration_inertia_i_zz.write(12180)
     configuration_failure_engine_1_failed.write(False)
     configuration_failure_engine_2_failed.write(False)
 
@@ -440,8 +514,17 @@ def set_init_cond_flyout(init_cond_dict):
     reference_frame_inertial_position_latitude.write(LOWL[0])
     reference_frame_inertial_position_longitude.write(LOWL[1])
 
-    configuration_loading_empty_mass.write(GW_map(init_cond_dict['Gross Weight']))
+    #configuration_loading_empty_mass.write(GW_map(init_cond_dict['Gross Weight']))
+    configuration_loading_empty_mass.write(init_cond_dict['Gross Weight'])
     flightmodel_configuration_cg_x.write(CG_x_map(init_cond_di_si['CG Longitudinal']))
+    flightmodel_configuration_cg_y.write(init_cond_di_si['CG Lateral'])
+    
+    
+    
+    flightmodel_configuration_inertia_i_xx.write(float(init_cond_dict['Moment of Inertia XX']))
+    flightmodel_configuration_inertia_i_xz.write(-float(init_cond_dict['Moment of Inertia XZ']))
+    flightmodel_configuration_inertia_i_yy.write(float(init_cond_dict['Moment of Inertia YY']))
+    flightmodel_configuration_inertia_i_zz.write(float(init_cond_dict['Moment of Inertia ZZ']))
 
     # x -> Pitch achse CG
     # y -> Rollachsen CG
@@ -861,11 +944,13 @@ def main(test_item, test_dir, gui_output, gui_input):
     simulation_mode.write(SIM_MODE.TRIM)
     time.sleep(1.5)
     simulation_mode.write(SIM_MODE.RUN)
+
     
     gui_input("Hit Enter if Pilot is ready ")
 
     
     logandsave_flyout_init_cond(QTG_path)
+    #input_matrix, output_matrix, force_matrix = math_pilot(QTG_path, T)
     input_matrix, output_matrix, force_matrix = log_flyout_input_output(T, gui_output)
 
     save_io_files(QTG_path, input_matrix, output_matrix, force_matrix, T)
