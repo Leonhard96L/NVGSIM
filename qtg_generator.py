@@ -7,14 +7,16 @@ from tkinter import ttk, filedialog
 # import execute_test
 import platform
 
+from test_mode import TestMode
+
 # Check if the OS is Windows
 if platform.system() == "Windows":
     import execute_test
 
     # Define a function to run the test if the module was imported
-    def run_test(test_item, test_dir, mqtg, gui_output, gui_input):
+    def run_test(test_item, test_dir, mode, gui_output, gui_input):
         # Invoke the function from the imported module
-        execute_test.execute_test(test_item, test_dir, mqtg, gui_output, gui_input)
+        execute_test.execute_test(test_item, test_dir, mode, gui_output, gui_input)
 
 from qtg_data_structure import data
 import generate_report
@@ -117,14 +119,19 @@ def on_remove_all_tests():
         on_item_click(None, tree_selected, tree_available)
 
 
+def on_start_reference():
+    gui_output("Starting Reference...")
+    start_testing(create_test_list(), output_dir=directory_var.get(), mode=TestMode.MQTG)
+
+
 def on_start_mqtg():
     gui_output("Starting MQTG...")
-    start_testing(create_test_list(), output_dir=directory_var.get(), mqtg=True)
+    start_testing(create_test_list(), output_dir=directory_var.get(), mode=TestMode.MQTG)
 
 
 def on_start_qtg():
     gui_output("Starting QTG...")
-    start_testing(create_test_list(), output_dir=directory_var.get(), mqtg=False)
+    start_testing(create_test_list(), output_dir=directory_var.get(), mode=TestMode.QTG)
 
 
 def create_test_list():
@@ -191,6 +198,8 @@ def copy_directory_contents(src_dir, dest_dir):
     :param dest_dir: Destination directory path
     """
     # Check if source directory exists
+
+    # TODO: kein error schmeißen wenn file nicht vorhanden sondern einfach test überspringen
     if not os.path.exists(src_dir):
         raise FileNotFoundError(f"The source directory '{src_dir}' does not exist.")
 
@@ -219,16 +228,20 @@ def copy_directory_contents(src_dir, dest_dir):
 
 
 # this is basically the main method that controls all other programs
-def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output, gui_input=gui_input):
+def start_testing(tests: [], output_dir='./', mode=TestMode.QTG, gui_output=gui_output, gui_input=gui_input):
     date_time = datetime.now()  # use this datetime for folder structure and reports
-    
-    qtg_dir = "qtg"
-    if mqtg:
-        qtg_dir = "mqtg"
+
+    qtg_dir = ""
+    if mode == TestMode.REFERENCE:
+        qtg_dir = "reference"
         reference_data = get_newest_folder(os.path.join(output_dir, "reference_data"))
-    else:
+    elif mode == TestMode.MQTG:
+        qtg_dir = "mqtg"
+        reference_data = get_newest_folder(os.path.join(output_dir, "reference"))
+    elif mode == TestMode.QTG:
+        qtg_dir = "qtg"
         reference_data = get_newest_folder(os.path.join(output_dir, "mqtg"))
-    
+
     # Get the current date and format it as yyyymmdd
     directory_structure = os.path.join(output_dir, qtg_dir, date_time.strftime('%Y%m%d_%H%M%S'))
     # directory_structure = os.path.join(output_dir, qtg_dir, "20240827_091010")    # this is for testing purposes only!
@@ -247,18 +260,18 @@ def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output,
 
             gui_output(f"Save directory: {test_dir}")
 
-            if mqtg:
+            if mode == TestMode.REFERENCE:
                 test_item['is_automatic'] = False
 
             while True:
                 # execute test
                 if platform.system() == "Windows":
-                    run_test(test_item, test_dir, mqtg, gui_output, gui_input)
+                    run_test(test_item, test_dir, mode, gui_output, gui_input)
                 # execute_test.execute_test(test_item, test_dir, mqtg, gui_output, gui_input)
 
                 # generate report
                 gui_output("Creating Test Report. This may take a second...")
-                test_results[test_item['id']] = generate_report.generate_case_report(test_item, test_dir, date_time, mqtg)
+                test_results[test_item['id']] = generate_report.generate_case_report(test_item, test_dir, date_time, mode)  # TODO: NA tests trotzdem einfügen!
                 gui_output("Done creating Report.\n")
 
                 if gui_input("Do you want to continue with the next test (y) or repeat the current test (n) ? ").lower() == 'y':
@@ -401,10 +414,13 @@ if __name__ == "__main__":
     select_all_button.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
     remove_all_button = ttk.Button(frame_controls, text="Remove All Tests", command=on_remove_all_tests)
     remove_all_button.grid(row=1, column=1, padx=5, pady=5, sticky="ew")
+
+    start_reference_button = ttk.Button(frame_controls, text="Start Reference", command=on_start_reference)
+    start_reference_button.grid(row=2, column=0, padx=5, pady=5, sticky="ew")
     start_mqtg_button = ttk.Button(frame_controls, text="Start MQTG", command=on_start_mqtg)
-    start_mqtg_button.grid(row=2, column=0, padx=5, pady=5, sticky="ew")
+    start_mqtg_button.grid(row=2, column=1, padx=5, pady=5, sticky="ew")
     start_qtg_button = ttk.Button(frame_controls, text="Start QTG", command=on_start_qtg)
-    start_qtg_button.grid(row=2, column=1, padx=5, pady=5, sticky="ew")
+    start_qtg_button.grid(row=2, column=2, padx=5, pady=5, sticky="ew")
 
     # Create progress text box
     progress_text = tk.Text(frame_progress, height=15, wrap='word')

@@ -1,5 +1,5 @@
 1. Fuer das was ueber Init_flyout.py generiert wird:
-	-dies wird soweit im Ordner mqtg gespeichert. Es handelt sich um die Referenzdaten
+	-dies wird soweit im Ordner reference gespeichert. Es handelt sich um die Referenzdaten
 	-bei *_refer.svg ignorieren und den nomralen Report erstellen, wie wir es bereits gemacht haben
 	-aus *_refer.svg den  Neuen "Report" erstellen man kann diesen z.B. Report_refer.pdf nennen, dieser beinhaltet: Test Name, Indit cond., Plots und auch eine Tabelle, wenn
 	es sich um einen Snapshot test handelt. 
@@ -14,16 +14,34 @@
 	-Zusaetzlich zur neuen MQTG Linie kommen die Grenzen hinzu
 	-Achtung feur snapshottests wird wieder der Mittelwert genommen
 
+ref:
+2. geheimen report generieren mit FTD3 daten
++ einen neuen offiziellen
+name
+(keine schönen texte)
+initial conditions (nur 1 spalte)
+plots (1 linie)
+table (wie definiert)
 
+mqtg:
+wie gehabt
+neu: 1 linie!
+table (mehrere spalten) wa
+
+qtg:
+wirklich wie gehabt
+2 linien
++ 1 weiterer table (mit mehreren spalten) wa
 
 Wichtig fuer Michi:
 	Man kann grob sagen:
-		1. Was vorher mqtg war ist jetzt reference Data
+		1. Was vorher mqtg war ist jetzt reference Data (reference)
 		2. Was vorher qtg war ist jetzt mqtg
 		3. Und ein recurrent muss noch neu gebildet werden
 
+<DONE>
 	Scripts:
-		Init_flyout.py -> Init_flyout_reference.py 
+		Init_flyout.py -> Init_flyout_reference.py
 
 		RecurrentQTGs_auto.py -> MQTG_auto.py
 		RecurrentQTGs_manu.py -> MQTG_manu.py
@@ -94,15 +112,12 @@ Fuer Leo:
 -2.d.3.ii_B2
 
 Folgende Aenderungen beim qtg_Data_structure:
-1. bei allen tests: manual_testing -> die ersten 4 Punkte loeschen.
-2. Die obigen Tests hinzufuegen welche N.A. sind. 
-3. Dabei wird einfach alles geloescht ausser der Name und die Tabelle Notes und rationales.
+1. bei allen tests: manual_testing -> die ersten 4 Punkte loeschen. (LEO)
+2. Die obigen Tests hinzufuegen welche N.A. sind.
+    - wenn tests nicht im ordner, trotzdem kein error schmeißen (DUSCHEK)
+    - custom meldung in qtg_structure anpassen  (LEO)
+    - egal bei welcher testart: diese meldung anzeigen. (DUSCHEK)
+
+3. Dabei wird einfach alles geloescht ausser der Name und die Tabelle Notes und rationales. (DUSCHEK)
 4. Ein Problem hier ist, dass wenn man einen dieser Test im QTG tool auswaehlt und startet, ein Fehler
-kommt dass dieser nicht vorhanden ist. Das muss man umgehen. Vlt mit einem flag?
-
-
-
-
-
-
-
+kommt dass dieser nicht vorhanden ist. Das muss man umgehen. Vlt mit einem flag? gelöst

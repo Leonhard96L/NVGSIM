@@ -9,6 +9,7 @@ from weasyprint import HTML, CSS
 
 from qtg_data_structure import data as qtg_structure
 from function_lib import split_string, get_test_test_part_test_case, units_conversion
+from test_mode import TestMode
 
 
 def load_json_data(qtg_path, is_mqtg):
@@ -226,13 +227,13 @@ def create_test_report(test_results, output_dir):
     HTML(string=html_out).write_pdf(os.path.join(output_dir, "Report.pdf"), stylesheets=[CSS(css_path)])
 
 
-def generate_case_report(test_item, test_dir, date_time, is_mqtg=False):
+def generate_case_report(test_item, test_dir, date_time, mode: TestMode):
     # make pdf for each test, merge them into one document. check
-    init_cond_rec, init_cond_ref, init_cond_mqtg = load_json_data(test_dir, is_mqtg)
+    init_cond_rec, init_cond_ref, init_cond_mqtg = load_json_data(test_dir, mode)   #TODO: mode
 
     # load existing images
     plots_base64 = load_plots(test_dir)
-    data = process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mqtg, plots_base64, date_time, is_mqtg)
+    data = process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mqtg, plots_base64, date_time, mode) #TODO: mode
 
     create_test_case_pdf(data, os.path.join(test_dir, "Report.pdf"))
 

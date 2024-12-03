@@ -6,15 +6,25 @@ Created on Tue Sep 10 12:10:07 2024
 """
 
 import Init_flyout
-import RecurrentQTGs_auto
-import RecurrentQTGs_manu
+import RecurrentQTG_auto
+import RecurrentQTG_manu
+import MQTG_auto
+import MQTG_manu
+from test_mode import TestMode
 
 
-def execute_test(test_item, test_dir, ismqtg, gui_output, gui_input):
-    if ismqtg:
+def execute_test(test_item, test_dir, mode, gui_output, gui_input):
+    if mode == TestMode.REFERENCE:
         Init_flyout.main(test_item, test_dir, gui_output, gui_input)
-    else:
+
+    elif mode == TestMode.MQTG:
         if test_item['is_automatic']:
-            RecurrentQTGs_auto.main(test_item, test_dir, gui_output, gui_input)
+            MQTG_auto.main(test_item, test_dir, gui_output, gui_input)
         else:
-            RecurrentQTGs_manu.main(test_item, test_dir, gui_output, gui_input)
+            MQTG_manu.main(test_item, test_dir, gui_output, gui_input)
+
+    elif mode == TestMode.QTG:
+        if test_item['is_automatic']:
+            RecurrentQTG_auto.main(test_item, test_dir, gui_output, gui_input)
+        else:
+            RecurrentQTG_manu.main(test_item, test_dir, gui_output, gui_input)
