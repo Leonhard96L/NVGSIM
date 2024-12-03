@@ -32,7 +32,9 @@ def populate_tree(tree, data):
             for case in part['test_cases']:
                 item_id = f"{test['id']}.{part['id']}_{case['id']}"
                 item_text = f"{item_id} - {part['main_title']}: {case['condition']}"
-                tree.insert('', 'end', text=item_text)
+                is_applicable = True if case.get('not_applicable') is None else False
+                auto_possible = case.get('automatic_testing_possible')
+                tree.insert('', 'end', text=item_text, values=("", is_applicable, auto_possible))
 
 
 # Function to sort Treeview items alphabetically
@@ -45,7 +47,8 @@ def sort_treeview(tree):
 
 # Function to toggle test type
 def toggle_test_type(tt):
-    return 'Manual' if tt == 'Automatic' else 'Automatic'
+    tt[0] = 'Automatic' if (tt[0] == 'Manual' and eval(tt[2])) else 'Manual'
+    return tt
 
 
 # Function to handle item transfer between Treeviews
@@ -54,13 +57,17 @@ def on_item_click(event, source_tree, target_tree):
     if selected_items:
         for selected_item in selected_items:
             item_text = source_tree.item(selected_item, 'text')
+            item_values = list(source_tree.item(selected_item, 'value'))
             if source_tree == tree_available:
                 # Move item from left to right
-                test_type = 'Automatic'
-                target_tree.insert('', 'end', text=item_text, values=(test_type,))
+                item_values[0] = 'Manual'
+                # item_value[1] means automatic_possible!
+                if eval(item_values[2]):
+                    item_values[0] = 'Automatic'
+                target_tree.insert('', 'end', text=item_text, values=item_values)
             elif source_tree == tree_selected:
                 # Move item from right to left
-                tree_available.insert('', 'end', text=item_text)
+                tree_available.insert('', 'end', text=item_text, values=item_values)
             source_tree.delete(selected_item)
         sort_treeview(source_tree)  # Sort the source treeview
         sort_treeview(target_tree)  # Sort the target treeview
@@ -81,11 +88,10 @@ def on_item_single_click(event, source_tree, target_tree):
     if selected_items:
         for selected_item in selected_items:
             if source_tree == tree_selected:
-                item_values = source_tree.item(selected_item, 'values')
-                test_type = toggle_test_type(item_values[0])  # Toggle the flag
-
                 # Update the item's text and values
-                source_tree.item(selected_item, values=(test_type))
+                item_values = list(source_tree.item(selected_item, 'values'))
+                item_values = toggle_test_type(item_values)
+                source_tree.item(selected_item, values=item_values)
 
 
 # Function to handle double-click
@@ -146,11 +152,13 @@ def create_test_list():
 
         # Create a boolean based on the test_type value
         is_automatic = (item_values[0] == "Automatic")
+        is_applicable = eval(item_values[1])
 
         # Append the processed data to the list
         test_item = {
             'id': test_id,
             'is_automatic': is_automatic,
+            'is_applicable': is_applicable,
             'full_name': item_text,
         }
         items_data.append(test_item)
@@ -180,6 +188,7 @@ def gui_input(prompt):
     inp = input_text.get()
     return inp
 
+
 # todo: error handling if null
 def get_newest_folder(directory_path):
     # Get all folder names that match the format yyyymmdd:HHMMSS
@@ -199,7 +208,6 @@ def copy_directory_contents(src_dir, dest_dir):
     """
     # Check if source directory exists
 
-    # TODO: kein error schmeißen wenn file nicht vorhanden sondern einfach test überspringen
     if not os.path.exists(src_dir):
         raise FileNotFoundError(f"The source directory '{src_dir}' does not exist.")
 
@@ -254,28 +262,29 @@ def start_testing(tests: [], output_dir='./', mode=TestMode.QTG, gui_output=gui_
             ref_dir = os.path.join(reference_data, test_item['id'])
             test_dir = os.path.join(directory_structure, test_item['id'])
 
-            copy_directory_contents(ref_dir, test_dir)
-
-            # todo: check if ref_dir is existing and full with data
-
-            gui_output(f"Save directory: {test_dir}")
-
             if mode == TestMode.REFERENCE:
                 test_item['is_automatic'] = False
 
-            while True:
-                # execute test
-                if platform.system() == "Windows":
-                    run_test(test_item, test_dir, mode, gui_output, gui_input)
-                # execute_test.execute_test(test_item, test_dir, mqtg, gui_output, gui_input)
+            if test_item['is_applicable']:
+                copy_directory_contents(ref_dir, test_dir)
+                gui_output(f"Save directory: {test_dir}")
 
-                # generate report
-                gui_output("Creating Test Report. This may take a second...")
-                test_results[test_item['id']] = generate_report.generate_case_report(test_item, test_dir, date_time, mode)  # TODO: NA tests trotzdem einfügen!
-                gui_output("Done creating Report.\n")
+                while True:
+                    # execute test
+                    if platform.system() == "Windows":
+                        run_test(test_item, test_dir, mode, gui_output, gui_input)
+                    # execute_test.execute_test(test_item, test_dir, mqtg, gui_output, gui_input)
 
-                if gui_input("Do you want to continue with the next test (y) or repeat the current test (n) ? ").lower() == 'y':
-                    break
+                    # generate report
+                    gui_output("Creating Test Report. This may take a second...")
+                    test_results[test_item['id']] = generate_report.generate_case_report(test_item, test_dir, date_time, mode)
+                    gui_output("Done creating Report.\n")
+
+                    if gui_input("Do you want to continue with the next test (y) or repeat the current test (n) ? ").lower() == 'y':
+                        break
+            else:
+                gui_output(f"Test not applicable - skipping. It will be inserted to the main report")
+                test_results[test_item['id']] = generate_report.generate_case_report(test_item, test_dir, date_time, mode)
 
         gui_output("Creating Full Report. This may take a second...")
         generate_report.create_test_report(test_results, directory_structure)
@@ -319,13 +328,17 @@ def generate_report_only():
 
     parent_name = os.path.basename(os.path.dirname(dir))
     print(parent_name)
-    if parent_name != "mqtg" and parent_name != "qtg":
-        gui_output("Parent dir is not mqtg/qtg. Cancelling.")
+    if parent_name != "reference" and parent_name != "mqtg" and parent_name != "qtg":
+        gui_output("Parent dir is not reference/mqtg/qtg. Cancelling.")
         return
 
-    is_mqtg = False
-    if parent_name == "mqtg":
-        is_mqtg = True
+    mode = TestMode.QTG
+    if parent_name == "reference":
+        mode = TestMode.REFERENCE
+    elif parent_name == "mqtg":
+        mode = TestMode.MQTG
+    elif parent_name == "qtg":
+        mode = TestMode.QTG
 
     on_remove_all_tests()
     select_items_by_ids(tree_available, subfolders)
@@ -341,7 +354,7 @@ def generate_report_only():
     try:
         for test_item in tests:
             gui_output(f"Creating Test Report for {test_item['id']}. This may take a second...")
-            test_results[test_item['id']] = generate_report.generate_case_report(test_item, os.path.join(dir, test_item['id']), test_date, is_mqtg)
+            test_results[test_item['id']] = generate_report.generate_case_report(test_item, os.path.join(dir, test_item['id']), test_date, mode)
 
         gui_output("Creating Full Report. This may take a second...")
         generate_report.create_test_report(test_results, dir)
@@ -353,7 +366,7 @@ def generate_report_only():
 # Initialize and configure the Tkinter window
 if __name__ == "__main__":
     root = tk.Tk()
-    root.title("QTG Generator v0.1")
+    root.title("QTG Generator v1.1")
     root.geometry('1920x1080')
 
     # Initialize flag to indicate a double-click
@@ -380,12 +393,16 @@ if __name__ == "__main__":
     tree_available = ttk.Treeview(frame_left, columns=(), show='tree', height=18)
     tree_available.grid(row=0, column=0, sticky="nsew")
 
-    tree_selected = ttk.Treeview(frame_right, columns=('test_type'), show='tree headings', height=18)
+    tree_selected = ttk.Treeview(frame_right, columns=('test_type', 'is_applicable', 'auto_possible'), show='tree headings', height=18)
     tree_selected.grid(row=0, column=0, sticky="nsew")
     tree_selected.heading('test_type', text='Test Type')
+    tree_selected.heading('is_applicable', text='Test Applicable')
+    tree_selected.heading('auto_possible', text="Automatic testing possible")
 
     # Set column weights and widths
     tree_selected.column('test_type', width=70, stretch=tk.NO)
+    tree_selected.column('is_applicable', width=70, stretch=tk.NO)
+    tree_selected.column('auto_possible', width=70, stretch=tk.NO)
 
     # Add scrollbars
     scrollbar = ttk.Scrollbar(frame_left, orient=tk.VERTICAL, command=tree_available.yview)

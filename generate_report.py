@@ -183,6 +183,26 @@ def process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mq
     return data
 
 
+def process_test_case_na(test_item, date_time, mode):
+    test_id, part_id, case_id = split_string(test_item['id'])
+    test, part, case = get_test_test_part_test_case(qtg_structure['tests'], test_id, part_id, case_id)
+
+    formatted_date = date_time.strftime("%d.%m.%Y")
+    formatted_time = date_time.strftime("%H:%M:%S")
+
+    case.update({
+        "curr_date": formatted_date,
+        "curr_time": formatted_time,
+    })
+
+    data = {
+        "test": test,
+        "part": part,
+        "case": case,
+    }
+    return data
+
+
 # creates a test_case report for one test case with headers.
 def create_test_case_pdf(data, output_file):
     # Set up Jinja2 environment
@@ -228,12 +248,15 @@ def create_test_report(test_results, output_dir):
 
 
 def generate_case_report(test_item, test_dir, date_time, mode: TestMode):
+    if not test_item['is_applicable']:
+        return process_test_case_na(test_item, date_time, mode)
+
     # make pdf for each test, merge them into one document. check
-    init_cond_rec, init_cond_ref, init_cond_mqtg = load_json_data(test_dir, mode)   #TODO: mode
+    init_cond_rec, init_cond_ref, init_cond_mqtg = load_json_data(test_dir, mode) # TODO: mode
 
     # load existing images
     plots_base64 = load_plots(test_dir)
-    data = process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mqtg, plots_base64, date_time, mode) #TODO: mode
+    data = process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mqtg, plots_base64, date_time, mode) # TODO: mode
 
     create_test_case_pdf(data, os.path.join(test_dir, "Report.pdf"))
 

@@ -2900,7 +2900,7 @@ data = {
                             'id': 'A2',
                             'name': 'Lateral-Directional Oscillations',
                             'condition': 'Mid Speed - 66 KIAS, Left Pedal input',
-                            'na': 'meldung',    # NUR in NA tests einbauen!
+                            'not_applicable': 'meldung',    # NUR in NA tests einbauen!
                             'automatic_testing_possible': True,
                             'generic_flight_controls': [
                                 {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
