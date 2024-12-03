@@ -121,7 +121,7 @@ def on_remove_all_tests():
 
 def on_start_reference():
     gui_output("Starting Reference...")
-    start_testing(create_test_list(), output_dir=directory_var.get(), mode=TestMode.MQTG)
+    start_testing(create_test_list(), output_dir=directory_var.get(), mode=TestMode.REFERENCE)
 
 
 def on_start_mqtg():
