@@ -1,8 +1,8 @@
 1. Test FLI:
--OEI -> 
+-OEI is not permanent
 
 2. RPM indicator:
--Rotor RPM indication doesn't work
+-Rotor RPM indication doesn't work correctly
 
 3. Wrong cyclic control reflection: 
 -When breakout to right -> 3D Model breaks forward
@@ -55,3 +55,5 @@ Tets mit Bernd:
 		2. rate: x = 0.00524, y = 0.00873, z = 0.01047
 
 Test mit Martin
+
+

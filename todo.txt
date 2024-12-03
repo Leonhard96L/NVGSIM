@@ -87,6 +87,11 @@ Fuer Leo:
 
 	Achtung: man muss ueberall die Funktion set_standard_cond() anpassen
 
+	rotorspeed umrechnung 
+	lateral cg vorzeichen
+	airspeed ias
+
+
 
 ####Achtung doch nicht entfernen######
 	-Diese werden als N.A. angegeben, sollen aber doch im QTG tool vorkommen.
