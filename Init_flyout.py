@@ -494,7 +494,7 @@ def save_io_files(QTG_path, input_matrix, output_matrix, force_matrix, T):
 def set_standard_cond():
     configuration_loading_empty_mass.write(2672)
     flightmodel_configuration_cg_x.write(-3.17)
-    flightmodel_configuration_cg_y.write(-0.07)
+    flightmodel_configuration_cg_y.write(0)
     flightmodel_configuration_inertia_i_xx.write(2711)
     flightmodel_configuration_inertia_i_xz.write(927)
     flightmodel_configuration_inertia_i_yy.write(10448)

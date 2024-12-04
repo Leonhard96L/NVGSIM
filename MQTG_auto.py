@@ -618,8 +618,13 @@ def save_io_files(QTG_path, input_matrix, output_matrix, T):
 
     
 def set_standard_cond():
-    configuration_loading_empty_mass.write(7500)
-    flightmodel_configuration_cg_x.write(-4.7)
+    configuration_loading_empty_mass.write(2672)
+    flightmodel_configuration_cg_x.write(-3.17)
+    flightmodel_configuration_cg_y.write(0)
+    flightmodel_configuration_inertia_i_xx.write(2711)
+    flightmodel_configuration_inertia_i_xz.write(927)
+    flightmodel_configuration_inertia_i_yy.write(10448)
+    flightmodel_configuration_inertia_i_zz.write(12180)
     configuration_failure_engine_1_failed.write(False)
     configuration_failure_engine_2_failed.write(False)
     hardware_pilot_collective_position.write(-1)
@@ -640,6 +645,12 @@ def set_init_cond_recurrent(init_cond_dict, cyc_long_input, cyc_lat_input, pedal
     
     configuration_loading_empty_mass.write(float(init_cond_dict['Gross Weight']))
     flightmodel_configuration_cg_x.write(float(init_cond_dict['CG Longitudinal']))
+    flightmodel_configuration_cg_y.write(float(init_cond_dict['CG Lateral']))
+    
+    flightmodel_configuration_inertia_i_xx.write(float(init_cond_dict['Moment of Inertia XX']))
+    flightmodel_configuration_inertia_i_xz.write(-float(init_cond_dict['Moment of Inertia XZ']))
+    flightmodel_configuration_inertia_i_yy.write(float(init_cond_dict['Moment of Inertia YY']))
+    flightmodel_configuration_inertia_i_zz.write(float(init_cond_dict['Moment of Inertia ZZ']))
     
     #x -> Pitch achse CG
     #y -> Rollachsen CG
@@ -992,7 +1003,7 @@ def create_plots(QTG_path, part):
                 #Table
                 output_table_mqtg[plot_title +' '+ param['unit']] = [round(np.mean(y_mqtg),2), round(np.mean(y_lotol),2), ' ', round(np.mean(y_uptol),2)]
             else:
-                plt.plot(x_mqtg, y_mqtg, label='MQTG')
+                plt.plot(x_mqtg, y_mqtg, label='MQTG', color='orange')
                 plt.plot(x_mqtg, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
                 plt.plot(x_mqtg, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
                 
@@ -1075,7 +1086,7 @@ def create_plots(QTG_path, part):
                 #Table
                 output_table_mqtg[plot_title +' '+ param['unit']] = [round(np.mean(y_mqtg),2), ' - ', ' ', ' - ']
             else:
-                plt.plot(x_mqtg, y_mqtg, label='MQTG')
+                plt.plot(x_mqtg, y_mqtg, label='MQTG', color='orange')
 
                 
             ##Section for scale

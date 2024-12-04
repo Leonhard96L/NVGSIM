@@ -76,10 +76,10 @@ def inv_map_control(x, axis):  # Moog2Brunner
     return round(min_val + (x / 100) * (max_val - min_val),2) 
 
 
-def rpm2perc(x): return round((np.rad2deg(x) / 1590) * 100, 2)
+def rpm2perc(x): return round((np.rad2deg(x) / 2370) * 100, 2)
 
 
-def perc2rpm(x): return round(((np.deg2rad(x) / 100) * 1590), 2)
+def perc2rpm(x): return round(((np.deg2rad(x) / 100) * 2370), 2)
 
 
 def m2ft(x): return x * 3.281

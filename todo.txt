@@ -87,10 +87,12 @@ Fuer Leo:
 
 	Achtung: man muss ueberall die Funktion set_standard_cond() anpassen
 
-	rotorspeed umrechnung 
-	lateral cg vorzeichen
+	rotorspeed umrechnung -> done
+	lateral cg vorzeichen -> done
 	airspeed ias
-
+	Achte auf die Namen, wie die Daten gespeichert werden:
+		-init_flyout: line 276 string
+		-MQTG_auto/MQTG_manu: FTD1_Recurrent -> FTD1_MQTG
 
 
 ####Achtung doch nicht entfernen######
