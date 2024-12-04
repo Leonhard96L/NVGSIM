@@ -252,7 +252,7 @@ def logandsave_flyout_init_cond(QTG_path):
     with open(init_cond_FTD_path, 'r') as json_file:
         data = json.load(json_file)
     
-    data["Init_condition_Reccurent"] = init_cond_log_dict
+    data["Init_condition_MQTG"] = init_cond_log_dict
     with open(init_cond_FTD_path, 'w') as json_file:
          json.dump(data, json_file, indent=4)
     
@@ -590,7 +590,7 @@ def save_io_files(QTG_path, input_matrix, output_matrix, T):
         with open(path, 'r') as json_file:
             data = json.load(json_file)
 
-        data["FTD1_Recurrent"] = {
+        data["FTD1_MQTG"] = {
         "x":T.tolist(),"y":input_matrix[:,i].tolist()
         }
         with open(path, 'w') as json_file:
@@ -604,7 +604,7 @@ def save_io_files(QTG_path, input_matrix, output_matrix, T):
         except:
             continue
             
-        data["FTD1_Recurrent"] = {
+        data["FTD1_MQTG"] = {
         "x":T.tolist(),"y":output_matrix[:,i].tolist()
         }
         with open(path, 'w') as json_file:
@@ -704,7 +704,7 @@ def get_QTG_init_cond_ref(QTG_path):
     init_cond_ref_path = os.path.join(QTG_path, 'init_conditions.json')
     with open(init_cond_ref_path, 'r') as json_file:
         init_cond_ref_dict = json.load(json_file)
-    return init_cond_ref_dict["Init_condition_MQTG"]
+    return init_cond_ref_dict["Init_condition_Refer"]
 
 
 
@@ -748,8 +748,8 @@ def create_plots(QTG_path, part):
             y_Ref = data['Storage'][0]['y']
             x = data['FTD1']['x']
             y = data['FTD1']['y']
-            x_Rec = data['FTD1_Recurrent']['x']
-            y_Rec = data['FTD1_Recurrent']['y']       
+            x_Rec = data['FTD1_MQTG']['x']
+            y_Rec = data['FTD1_MQTG']['y']       
         
 
             y_Rec[-1] = y_Rec[-2]

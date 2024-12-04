@@ -57,3 +57,12 @@ Tets mit Bernd:
 Test mit Martin
 
 
+Tets mit Franz
+	cg x -> -3.17 ; y -> 0.0
+	fmc: attitude_hold -> on
+
+	scas -> gains:
+		1. attitude: x = 0.03000, y = 0.03000, z = 0
+		2. rate: x = 0.02500, y = 0.02500, z = 0.01047
+	echte Maschine ist viel direkter
+	Left turn im Hover, viel zu langsam. Auch bei voll gedruecktem Pedal

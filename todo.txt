@@ -94,6 +94,10 @@ Fuer Leo:
 		-init_flyout: line 276 string
 		-MQTG_auto/MQTG_manu: FTD1_Recurrent -> FTD1_MQTG
 
+	Achtung die meistens Test haben ein automatic testing
+	
+	Idee bei der Regelung nimm die letzten 50 daten aus den bewegungen und nimm davon den Mittelwert
+
 
 ####Achtung doch nicht entfernen######
 	-Diese werden als N.A. angegeben, sollen aber doch im QTG tool vorkommen.

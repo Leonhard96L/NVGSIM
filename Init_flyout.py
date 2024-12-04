@@ -273,7 +273,7 @@ def logandsave_flyout_init_cond(QTG_path):
     with open(init_cond_FTD_path, 'r') as json_file:
         data = json.load(json_file)
 
-    data["Init_condition_MQTG"] = init_cond_log_dict
+    data["Init_condition_Refer"] = init_cond_log_dict
     with open(init_cond_FTD_path, 'w') as json_file:
         json.dump(data, json_file, indent=4)
 

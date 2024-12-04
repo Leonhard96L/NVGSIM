@@ -19,7 +19,7 @@ def load_json_data(qtg_path, is_mqtg):
 
         (init_cond_rec,) = data.get("Init_condition_Reccurent"),
         (init_cond_ref,) = data.get("Init_condition_Reference"),
-        (init_cond_mqtg,) = data.get("Init_condition_MQTG"),
+        (init_cond_mqtg,) = data.get("Init_condition_Refer"),
 
         units_conversion(init_cond_mqtg, 'Avi')
         if not is_mqtg:
@@ -252,11 +252,11 @@ def generate_case_report(test_item, test_dir, date_time, mode: TestMode):
         return process_test_case_na(test_item, date_time, mode)
 
     # make pdf for each test, merge them into one document. check
-    init_cond_rec, init_cond_ref, init_cond_mqtg = load_json_data(test_dir, mode) # TODO: mode
+    init_cond_rec, init_cond_ref, init_cond_mqtg = load_json_data(test_dir, True) # TODO: mode
 
     # load existing images
     plots_base64 = load_plots(test_dir)
-    data = process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mqtg, plots_base64, date_time, mode) # TODO: mode
+    data = process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mqtg, plots_base64, date_time, True) # TODO: mode
 
     create_test_case_pdf(data, os.path.join(test_dir, "Report.pdf"))
 
