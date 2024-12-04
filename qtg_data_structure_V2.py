@@ -12,63 +12,6 @@ data = {
             'name': 'Performance',
             'test_parts': [
                 {
-                    'id': 'a.1.i',
-                    'snapshot': False,
-                    'main_title': 'Engine Assessment',
-                    'test_title': 'Start Operations',
-                    'objective': 'The objective of this test is to demonstrate that the FSTD engine and rotor speed governing is compliant with the reference data.',
-                    'test_cases': [
-                        {
-                            'id': 'A1',
-                            'name': 'RFM Engine Start - Rotor brake OFF during engine start',
-                            # 'condition': '',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
-                        },
-                    ]
-                },
-                {
-                    'id': 'a.1.ii',
-                    'snapshot': False,
-                    'main_title': 'Engine Assessment',
-                    'test_title': 'Steady State Idle and Operating RPM Conditions',
-                    'objective': 'The objective of this test is to demonstrate that the FSTD steady state idle and operating RPM parameters are compliant with the helicopter reference data.',
-                    'test_cases': [
-                        {
-                            'id': 'A1',
-                            'name': 'Steady State Idle - Both Engines at IDLE',
-                            # 'condition': '',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
-                        },
-                        {
-                            'id': 'B1',
-                            'name': 'Operating RPM - Both Engines at FLIGHT',
-                            # 'condition': '',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
-                        },
-                    ]
-                },
-                {
-                    'id': 'a.2',
-                    'snapshot': False,
-                    'main_title': 'Engine Assessment',
-                    'test_title': 'Power Turbine Speed Trim',
-                    'objective': 'The objective of this test is to demonstrate that the FSTD power turbine speed trim is complinat with the helicopter reference data',
-                    'test_cases': [
-                        {
-                            'id': 'A1',
-                            'name': 'HI NR - OFF to ON',
-                            # 'condition': '',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
-                        },
-                        {
-                            'id': 'A2',
-                            'name': 'HI NR - ON to OFF',
-                            # 'condition': '',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
-                        },
-                    ]
-                },
-                {
                     'id': 'a.3',
                     'snapshot': False,
                     'main_title': 'Engine Assessment',
@@ -1702,12 +1645,6 @@ data = {
                             }
                         },
                         {
-                            'id': 'A2',
-                            'name': 'Collective - Trim OFF',
-                            # 'condition': '',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
-                        },
-                        {
                             'id': 'B1',
                             'name': 'Collective/Pedals Force vs Position',
                             'condition': 'Pedals - Trim ON',
@@ -1738,25 +1675,6 @@ data = {
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
-                    ]
-                },
-                {
-                    'id': 'a.3',
-                    'snapshot': False,
-                    'main_title': 'Brake Pedal Force vs. Position',
-                    'test_cases': [
-                        {
-                            'id': 'A1',
-                            'name': 'Right Toe Brake',
-                            'condition': 'Right Toe Brake',
-                            'not_applicable': 'Test not applicable since helicopter is equipped with skids.',
-                        },
-                        {
-                            'id': 'A2',
-                            'name': 'Left Toe Brake',
-                            'condition': 'Left Toe Brake',
-                            'not_applicable': 'Test not applicable since helicopter is equipped with skids.',
-                        },
                     ]
                 },
                 {
@@ -1834,19 +1752,7 @@ data = {
                                 'rationales_validation_data': ['No Rationales related to the Test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
-                        },
-                        {
-                            'id': 'C1',
-                            'name': 'Pedals - ATRIM',
-                            # 'condition': '',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
-                        },
-                        {
-                            'id': 'D1',
-                            'name': 'Collective - ATRIM',
-                            # 'condition': '',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
-                        },
+                        }
                     ]
                 },
                 {
@@ -2689,21 +2595,8 @@ data = {
                     ]
                 },
                 {
-                    'id': 'c.5',
-                    'snapshot': False,
-                    'main_title': 'Landing Gear Operating Time',
-                    'test_cases': [
-                        {
-                            'id': 'A1',
-                            'name': 'Landing gear operating time',
-                            'condition': 'Landing gear operating time',
-                            'not_applicable': 'Test not applicable since helicopter is equipped with skids.',
-                        }
-                    ]
-                },
-                {
                     'id': 'd.2',
-                    'snapshot': True,
+                    'snapshot' : True,
                     'main_title': 'Lateral & Directional Handling Qualities',
                     'test_title': 'Directional Static Stability',
                     'objective': 'The objective of this test is to demonstrate that the FSTD directional static stability is compliant with the reference data.',
@@ -2923,7 +2816,7 @@ data = {
                 },
                 {
                     'id': 'd.3.i',
-                    'snapshot': False,
+                    'snapshot' : False,
                     'main_title': 'Dynamic Lateral and Directional Stability',
                     'test_title': 'Lateral-Directional Oscillations',
                     'objective': 'The objective of this test is to demonstrate that the FSTD dynamic lateral-directional stability (oscillations) is compliant with the reference data.',
@@ -2957,7 +2850,7 @@ data = {
                         {'parameter': 'Roll Rate', 'unit': '[deg/s]', 'tolerance': '±5'},
                         {'parameter': 'Yaw Rate', 'unit': '[deg/s]', 'tolerance': '±4'}
                     ],
-                    'add_plots': [
+                    'add_plots' : [
                         {'parameter': 'Pitch Angle', 'unit': '[deg]'},
                         {'parameter': 'Bank Angle', 'unit': '[deg]'},
                         {'parameter': 'Heading', 'unit': '[deg]'},
@@ -3005,9 +2898,9 @@ data = {
                         },
                         {
                             'id': 'A2',
-                            'name': 'Mid Speed - Vy, AFCS OFF, Left Pedal input',
+                            'name': 'Lateral-Directional Oscillations',
                             'condition': 'Mid Speed - 66 KIAS, Left Pedal input',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',    # NUR in NA tests einbauen!
+                            'not_applicable': 'meldung',    # NUR in NA tests einbauen!
                             'automatic_testing_possible': True,
                             'generic_flight_controls': [
                                 {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
@@ -3068,39 +2961,38 @@ data = {
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
-                        {
-                            'id': 'B2',
-                            'name': 'Lateral-Directional Oscillations',
-                            'condition': 'High Speed - 90 KIAS, Left Pedal input',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
-                            'automatic_testing_possible': True,
-                            'generic_flight_controls': [
-                                {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
-                                {'fc': 'Lateral', 'status': 'MATH PILOT'},
-                                {'fc': 'Collective', 'status': 'MATH PILOT'},
-                                {'fc': 'Pedals', 'status': 'MATH PILOT'}
-                            ],
-                            'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
-                                'The generic flight controls will be internally controlled according to the following table:'
-                            ],
-                            'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
-                                'Trim controls to reach 90 KIAS',
-                                'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.',
-                                'When the test elapsed time is 2.5 seconds, perform a pedal control doublet. Return pedal controls position to initial position, and then keep hands-off controls.'
-                            ],
-                            'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
-                                'rationales_results': ['No Rationales related to the Test are present']
-                            }
-                        }
+                        # {
+                        #     'id': 'B2',
+                        #     'name': 'Lateral-Directional Oscillations',
+                        #     'condition': 'High Speed - 90 KIAS, Left Pedal input',
+                        #     'automatic_testing_possible': True,
+                        #     'generic_flight_controls': [
+                        #         {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
+                        #         {'fc': 'Lateral', 'status': 'MATH PILOT'},
+                        #         {'fc': 'Collective', 'status': 'MATH PILOT'},
+                        #         {'fc': 'Pedals', 'status': 'MATH PILOT'}
+                        #     ],
+                        #     'automatic_testing': [
+                        #         'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                        #         'Press "Start QTG" to start the test.',
+                        #         'The generic flight controls will be internally controlled according to the following table:'
+                        #     ],
+                        #     'manual_testing': [
+                        #         'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                        #         'Right click on the corresponding test in the right column to change in manual mode.',
+                        #         'Press "Start QTG" to start the test.',
+                        #         'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                        #         'Trim controls to reach 90 KIAS',
+                        #         'Stabilize and maintain current flight condition.',
+                        #         'Press "Enter" to start recording.',
+                        #         'When the test elapsed time is 2.5 seconds, perform a pedal control doublet. Return pedal controls position to initial position, and then keep hands-off controls.'
+                        #     ],
+                        #     'notes_rationales': {
+                        #         'notes': ['No Notes related to the Test are present'],
+                        #         'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                        #         'rationales_results': ['No Rationales related to the Test are present']
+                        #     }
+                        # }
                     ]
                 },
                 {
@@ -3165,37 +3057,36 @@ data = {
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
-                        {
-                            'id': 'A2',
-                            'name': 'Spiral Stability',
-                            'condition': 'Right Input - 64 KIAS',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
-                            'automatic_testing_possible': True,
-                            'generic_flight_controls': [
-                                {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
-                                {'fc': 'Lateral', 'status': 'MATH PILOT'},
-                                {'fc': 'Collective', 'status': 'MATH PILOT'},
-                                {'fc': 'Pedals', 'status': 'MATH PILOT'}
-                            ],
-                            'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
-                                'The generic flight controls will be internally controlled according to the following table:'
-                            ],
-                            'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
-                                'Set controls to reach target values.'
-                                'Press "Enter" to start recording.'
-                            ],
-                            'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
-                                'rationales_results': ['No Rationales related to the Test are present']
-                            }
-                        },
+                        # {
+                        #     'id': 'A2',
+                        #     'name': 'Spiral Stability',
+                        #     'condition': 'Right Input - 64 KIAS',
+                        #     'automatic_testing_possible': True,
+                        #     'generic_flight_controls': [
+                        #         {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
+                        #         {'fc': 'Lateral', 'status': 'MATH PILOT'},
+                        #         {'fc': 'Collective', 'status': 'MATH PILOT'},
+                        #         {'fc': 'Pedals', 'status': 'MATH PILOT'}
+                        #     ],
+                        #     'automatic_testing': [
+                        #         'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                        #         'Press "Start QTG" to start the test.',
+                        #         'The generic flight controls will be internally controlled according to the following table:'
+                        #     ],
+                        #     'manual_testing': [
+                        #         'On the left column double click on the corresponding test. The test will displayed in the right column.',
+                        #         'Right click on the corresponding test in the right column to change in manual mode.',
+                        #         'Press "Start QTG" to start the test.',
+                        #         'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                        #         'Set controls to reach target values.'
+                        #         'Press "Enter" to start recording.'
+                        #     ],
+                        #     'notes_rationales': {
+                        #         'notes': ['No Notes related to the Test are present'],
+                        #         'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                        #         'rationales_results': ['No Rationales related to the Test are present']
+                        #     }
+                        # },
                         {
                             'id': 'B1',
                             'name': 'Spiral Stability',
@@ -3229,33 +3120,33 @@ data = {
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
-                        {
-                            'id': 'B2',
-                            'name': 'Spiral Stability',
-                            'condition': 'Left Input - 64 KIAS',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
-                            'automatic_testing_possible': False,
-                            'generic_flight_controls': [
-                                {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
-                                {'fc': 'Lateral', 'status': 'MATH PILOT'},
-                                {'fc': 'Collective', 'status': 'MATH PILOT'},
-                                {'fc': 'Pedals', 'status': 'MATH PILOT'}
-                            ],
-                            'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
-                                'The generic flight controls will be internally controlled according to the following table:'
-                            ],
-                            'manual_testing': [
-                                'N.A.'
-                            ],
-                            'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
-                                'rationales_results': ['No Rationales related to the Test are present']
-                            }
-                        }
-
+# =============================================================================
+#                         {
+#                             'id': 'B2',
+#                             'name': 'Spiral Stability',
+#                             'condition': 'Left Input - 64 KIAS',
+#                             'automatic_testing_possible': False,
+#                             'generic_flight_controls': [
+#                                 {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
+#                                 {'fc': 'Lateral', 'status': 'MATH PILOT'},
+#                                 {'fc': 'Collective', 'status': 'MATH PILOT'},
+#                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
+#                             ],
+#                             'automatic_testing': [
+#                                 'On the left column double click on the corresponding test. The test will displayed in the right column.',
+#                                 'Press "Start QTG" to start the test.',
+#                                 'The generic flight controls will be internally controlled according to the following table:'
+#                             ],
+#                             'manual_testing': [
+#                                 'N.A.'
+#                             ],
+#                             'notes_rationales': {
+#                                 'notes': ['No Notes related to the Test are present'],
+#                                 'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+#                                 'rationales_results': ['No Rationales related to the Test are present']
+#                             }
+#                         }
+# =============================================================================
                     ]
                 }
             ]

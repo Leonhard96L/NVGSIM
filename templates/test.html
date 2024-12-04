@@ -48,7 +48,7 @@
             {% for case in part.test_cases %}
                 <tr>
                     <td>{{ case.id }}</td>
-                    <td class="align-left">{{ case.name }}</td>
+                    <td class="align-left">{{ case.condition }}</td>
                     <td><a href="#{{test.id}}.{{part.id}}.{{case.id}}">{{test.id}}.{{part.id}}</a></td>
 <!--                    <th {% if loop.first %} class="align-left"{% endif %}>{{col}}</th>-->
                 </tr>

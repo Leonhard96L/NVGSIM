@@ -26,7 +26,11 @@ th {
 }
 
 th.subsection {
-    background-color: #e4e4e4;;
+    background-color: #e4e4e4;
+}
+
+.grey {
+    background-color: #e4e4e4;
 }
 
 .no-padding {
@@ -75,6 +79,10 @@ table.no-outer-borders td:last-child {
     border-top: none;
 }
 
+.border-table-bottom tbody tr:last-child td {
+    border-bottom: 1px solid #000; /* Add the desired border */
+}
+
 a {
     color: black; /* Change text color to black */
     text-decoration: none; /* Remove underline */
@@ -95,6 +103,10 @@ a {
 
 .align-left {
     text-align: left;
+}
+
+.align-right {
+    text-align: right;
 }
 
 .center-div {

@@ -29,12 +29,15 @@ root_dir = './data'
 def populate_tree(tree, data):
     for test in data['tests']:
         for part in test['test_parts']:
-            for case in part['test_cases']:
-                item_id = f"{test['id']}.{part['id']}_{case['id']}"
-                item_text = f"{item_id} - {part['main_title']}: {case['condition']}"
-                is_applicable = True if case.get('not_applicable') is None else False
-                auto_possible = case.get('automatic_testing_possible')
-                tree.insert('', 'end', text=item_text, values=("", is_applicable, auto_possible))
+            if part.get('test_cases'):
+                for case in part['test_cases']:
+                    item_id = f"{test['id']}.{part['id']}_{case['id']}"
+                    cond = case.get('name') if case.get('condition') is None else case.get('condition')
+                    item_text = f"{item_id} - {part['main_title']}: {cond}"
+
+                    is_applicable = True if case.get('not_applicable') is None else False
+                    auto_possible = case.get('automatic_testing_possible')
+                    tree.insert('', 'end', text=item_text, values=("", is_applicable, auto_possible))
 
 
 # Function to sort Treeview items alphabetically
@@ -242,7 +245,7 @@ def start_testing(tests: [], output_dir='./', mode=TestMode.QTG, gui_output=gui_
     qtg_dir = ""
     if mode == TestMode.REFERENCE:
         qtg_dir = "reference"
-        reference_data = get_newest_folder(os.path.join(output_dir, "reference_data"))
+        reference_data = get_newest_folder(os.path.join(output_dir, "reference"))   # initial_conditions oder lassen???
     elif mode == TestMode.MQTG:
         qtg_dir = "mqtg"
         reference_data = get_newest_folder(os.path.join(output_dir, "reference"))
@@ -396,13 +399,13 @@ if __name__ == "__main__":
     tree_selected = ttk.Treeview(frame_right, columns=('test_type', 'is_applicable', 'auto_possible'), show='tree headings', height=18)
     tree_selected.grid(row=0, column=0, sticky="nsew")
     tree_selected.heading('test_type', text='Test Type')
-    tree_selected.heading('is_applicable', text='Test Applicable')
-    tree_selected.heading('auto_possible', text="Automatic testing possible")
+    tree_selected.heading('is_applicable', text='Applicable')
+    tree_selected.heading('auto_possible', text="Auto possible")
 
     # Set column weights and widths
-    tree_selected.column('test_type', width=70, stretch=tk.NO)
-    tree_selected.column('is_applicable', width=70, stretch=tk.NO)
-    tree_selected.column('auto_possible', width=70, stretch=tk.NO)
+    tree_selected.column('test_type', width=80, stretch=tk.NO)
+    tree_selected.column('is_applicable', width=80, stretch=tk.NO)
+    tree_selected.column('auto_possible', width=80, stretch=tk.NO)
 
     # Add scrollbars
     scrollbar = ttk.Scrollbar(frame_left, orient=tk.VERTICAL, command=tree_available.yview)
