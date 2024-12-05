@@ -1,5 +1,4 @@
 import base64
-import copy
 import json
 import os
 import re
@@ -12,27 +11,62 @@ from function_lib import split_string, get_test_test_part_test_case, units_conve
 from test_mode import TestMode
 
 
-def load_json_data(qtg_path, is_mqtg):
+def load_json_data(qtg_path, mode):
     file_path = os.path.join(qtg_path, 'init_conditions.json')
     with open(file_path, 'r') as json_file:
         data = json.load(json_file)
 
-        (init_cond_rec,) = data.get("Init_condition_Reccurent"),
-        (init_cond_ref,) = data.get("Init_condition_Reference"),
-        (init_cond_mqtg,) = data.get("Init_condition_Refer"),
+        # TODO: init cond für FTD3, FTD1...
+        (init_cond_qtg,) = data.get("Init_condition_QTG"),
+        (init_cond_mqtg,) = data.get("Init_condition_MQTG"),
+        (init_cond_ref,) = data.get("Init_condition_Refer"),
 
-        units_conversion(init_cond_mqtg, 'Avi')
-        if not is_mqtg:
-            units_conversion(init_cond_rec, 'Avi')
+        if mode == TestMode.REFERENCE:
+            units_conversion(init_cond_ref, 'Avi')
+        if mode == TestMode.MQTG:
+            units_conversion(init_cond_mqtg, 'Avi')
+        if mode == TestMode.QTG:
+            units_conversion(init_cond_mqtg, 'Avi')
+            units_conversion(init_cond_qtg, 'Avi')
 
-        print(init_cond_rec)
         print(init_cond_ref)
         print(init_cond_mqtg)
-        return init_cond_rec, init_cond_ref, init_cond_mqtg
+        print(init_cond_qtg)
+
+        return init_cond_ref, init_cond_mqtg, init_cond_qtg
+
+
+def load_json_snapshots(test_item, qtg_path, mode):
+    test_id, part_id, case_id = split_string(test_item['id'])
+    test, part, case = get_test_test_part_test_case(qtg_structure['tests'], test_id, part_id, case_id)
+
+    if not part['snapshot']:
+        print("Not a snapshot test -> not reading json.")
+        return {}
+
+    file_path = ""
+    if mode == TestMode.REFERENCE:
+        file_path = os.path.join(qtg_path, 'output_table_refer.json')
+    elif mode == TestMode.MQTG:
+        file_path = os.path.join(qtg_path, 'output_table_mqtg.json')
+    elif mode == TestMode.QTG:
+        file_path = os.path.join(qtg_path, 'output_table_qtg.json')
+
+    with open(file_path, 'r') as json_file:
+        data = json.load(json_file)
+
+    # Dynamically generate structured data with cleaned values
+    structured_data = {}
+    for key, values in data.items():
+        # Filter out invalid data (e.g., " ")
+        structured_data[key] = [value for value in values if value != " "]
+
+    print(json.dumps(structured_data, indent=4))
+    return structured_data
 
 
 # load plots instead of creating them.
-def load_plots(qtg_path):
+def load_plots(qtg_path, mode, only_refer=True):
     plot_paths = []
 
     # Get a sorted list of all .svg files in the directory
@@ -43,7 +77,17 @@ def load_plots(qtg_path):
         return int(match.group(1)) if match else 0  # Use the number if found, else 0
 
     # Get the sorted list of .svg files in numerical order
-    image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('.svg')], key=numerical_sort)
+    if mode == TestMode.REFERENCE:
+        if only_refer:
+            image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('refer.svg')], key=numerical_sort)
+        else:
+            image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('.svg')], key=numerical_sort)
+
+    if mode == TestMode.MQTG:
+        image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('mqtg.svg')], key=numerical_sort)
+
+    if mode == TestMode.MQTG:
+        image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('qtg.svg')], key=numerical_sort)
 
     # Loop through all files in the directory
     for file_name in image_files:
@@ -61,7 +105,7 @@ def load_plots(qtg_path):
     return plot_paths
 
 
-def get_initial_conditions(case, init_cond_ref, init_cond_mqtg, init_cond_rec, is_mqtg):
+def get_initial_conditions(case, init_cond_ref, init_cond_mqtg, init_cond_qtg, mode):
     # Unit mappings
     units_map = {
         "Gross Weight": "kg",
@@ -149,24 +193,27 @@ def get_initial_conditions(case, init_cond_ref, init_cond_mqtg, init_cond_rec, i
                     ptr_dict[category][key_with_unit][sub_category] = value
 
     # Process each condition and populate the corresponding sub-categories
-    process_condition(case["init_conds"], init_cond_ref, keys_map, "ref")
-    process_condition(case["init_conds"], init_cond_mqtg, keys_map, "mqtg")
-    if not is_mqtg:
-        process_condition(case["init_conds"], init_cond_rec, keys_map, "rec")
-
+    if mode == TestMode.REFERENCE:
+        process_condition(case["init_conds"], init_cond_ref, keys_map, "ref")
+    elif mode == TestMode.MQTG:
+        process_condition(case["init_conds"], init_cond_mqtg, keys_map, "mqtg")
+    elif mode == TestMode.QTG:
+        process_condition(case["init_conds"], init_cond_mqtg, keys_map, "mqtg")
+        process_condition(case["init_conds"], init_cond_qtg, keys_map, "qtg")
 
 # returns structure data and plots for one test.
-def process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mqtg, plot_base64, date_time, is_mqtg):
+def process_test_case_data(test_item, init_cond_ref, init_cond_mqtg, init_cond_qtg, plot_base64, date_time, mode):
     test_id, part_id, case_id = split_string(test_item['id'])
     test, part, case = get_test_test_part_test_case(qtg_structure['tests'], test_id, part_id, case_id)
 
     formatted_date = date_time.strftime("%d.%m.%Y")
     formatted_time = date_time.strftime("%H:%M:%S")
 
-    get_initial_conditions(case, init_cond_ref, init_cond_mqtg, init_cond_rec, is_mqtg)
+    get_initial_conditions(case, init_cond_ref, init_cond_mqtg, init_cond_qtg, mode)
 
     case.update({
-        "is_mqtg": is_mqtg,
+        "is_snapshot": part['snapshot'],
+        "is_mqtg": False,   # todo -> mode
         "is_automatic": test_item['is_automatic'],
         "software_version": '1_FTD_1.0',
         "curr_date": formatted_date,
@@ -252,13 +299,17 @@ def generate_case_report(test_item, test_dir, date_time, mode: TestMode):
         return process_test_case_na(test_item, date_time, mode)
 
     # make pdf for each test, merge them into one document. check
-    init_cond_rec, init_cond_ref, init_cond_mqtg = load_json_data(test_dir, True) # TODO: mode
+    init_cond_ref, init_cond_mqtg, init_cond_qtg, = load_json_data(test_dir, mode)
 
+    # snapshot_data = load_json_snapshots(test_item, test_dir, mode)
     # load existing images
-    plots_base64 = load_plots(test_dir)
-    data = process_test_case_data(test_item, init_cond_ref, init_cond_rec, init_cond_mqtg, plots_base64, date_time, True) # TODO: mode
-
+    plots_base64 = load_plots(test_dir, mode)
+    data = process_test_case_data(test_item, init_cond_ref, init_cond_mqtg, init_cond_qtg, plots_base64, date_time, mode) # TODO: mode
     create_test_case_pdf(data, os.path.join(test_dir, "Report.pdf"))
+
+    plots_base64 = load_plots(test_dir, mode, only_refer=False)
+    data2 = process_test_case_data(test_item, init_cond_ref, init_cond_mqtg, init_cond_qtg, plots_base64, date_time, mode) # TODO: mode
+    create_test_case_pdf(data2, os.path.join(test_dir, "Hidden_Report.pdf"))
 
     return data
 
