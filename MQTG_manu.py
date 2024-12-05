@@ -214,8 +214,10 @@ def logandsave_flyout_init_cond(QTG_path):
        'Engine 2 Main Switch' : Eng2state,
        'AFCS State' : AFCS,                                                                 #SCAS on =5e-324 SCAS off = 0.0
        'HINR Button' : HINR,                                                                 #HINR on = 5e-324 HINR off = 0.0
-       'Training Mode' : TM
-        }
+       'Training Mode' : TM,
+       'location_lat' : reference_frame_inertial_position_latitude.read(),
+       'location_long' : reference_frame_inertial_position_longitude.read()
+       }
     
     #Save the date
     date = datetime.now()
@@ -415,7 +417,7 @@ def set_init_cond_flyout(init_cond_dict):
     flightmodel_configuration_cg_y.write(float(init_cond_dict['CG Lateral']))
     
     flightmodel_configuration_inertia_i_xx.write(float(init_cond_dict['Moment of Inertia XX']))
-    flightmodel_configuration_inertia_i_xz.write(-float(init_cond_dict['Moment of Inertia XZ']))
+    flightmodel_configuration_inertia_i_xz.write(float(init_cond_dict['Moment of Inertia XZ']))
     flightmodel_configuration_inertia_i_yy.write(float(init_cond_dict['Moment of Inertia YY']))
     flightmodel_configuration_inertia_i_zz.write(float(init_cond_dict['Moment of Inertia ZZ']))
     
@@ -864,6 +866,12 @@ def create_plots(QTG_path, part):
             
             plt.savefig(save_path, format='svg')
             plt.close()  
+            
+    if issnapshot:
+        filename = 'output_table_mqtg.json'
+        output_table_path = os.path.join(QTG_path, filename)
+        with open(output_table_path, 'w') as json_file:
+            json.dump(output_table_mqtg, json_file, indent=4)
 
 
 def main(test_item, test_dir, gui_output, gui_input):

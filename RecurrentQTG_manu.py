@@ -229,7 +229,7 @@ def logandsave_flyout_init_cond(QTG_path):
     with open(init_cond_FTD_path, 'r') as json_file:
         data = json.load(json_file)
     
-    data["Init_condition_Reccurent"] = init_cond_log_dict
+    data["Init_condition_Recurrent"] = init_cond_log_dict
     with open(init_cond_FTD_path, 'w') as json_file:
          json.dump(data, json_file, indent=4)
     
@@ -381,8 +381,13 @@ def save_io_files(QTG_path, input_matrix, output_matrix, force_matrix, T):
 
     
 def set_standard_cond():
-    configuration_loading_empty_mass.write(7500)
-    flightmodel_configuration_cg_x.write(-4.7)
+    configuration_loading_empty_mass.write(2672)
+    flightmodel_configuration_cg_x.write(-3.17)
+    flightmodel_configuration_cg_y.write(0)
+    flightmodel_configuration_inertia_i_xx.write(2711)
+    flightmodel_configuration_inertia_i_xz.write(927)
+    flightmodel_configuration_inertia_i_yy.write(10448)
+    flightmodel_configuration_inertia_i_zz.write(12180)
     configuration_failure_engine_1_failed.write(False)
     configuration_failure_engine_2_failed.write(False)
     hardware_pilot_collective_position.write(-1)
@@ -407,6 +412,12 @@ def set_init_cond_flyout(init_cond_dict):
     
     configuration_loading_empty_mass.write(float(init_cond_dict['Gross Weight']))
     flightmodel_configuration_cg_x.write(float(init_cond_dict['CG Longitudinal']))
+    flightmodel_configuration_cg_y.write(float(init_cond_dict['CG Lateral']))
+    
+    flightmodel_configuration_inertia_i_xx.write(float(init_cond_dict['Moment of Inertia XX']))
+    flightmodel_configuration_inertia_i_xz.write(float(init_cond_dict['Moment of Inertia XZ']))
+    flightmodel_configuration_inertia_i_yy.write(float(init_cond_dict['Moment of Inertia YY']))
+    flightmodel_configuration_inertia_i_zz.write(float(init_cond_dict['Moment of Inertia ZZ']))
     
     #x -> Pitch achse CG
     #y -> Rollachsen CG
@@ -488,19 +499,27 @@ def get_test_test_part_test_case(tests, test_id, part_id, case_id):
 
 def create_plots(QTG_path, part):
     issnapshot = part['snapshot']
-    output_table_mqtg =  {}
+    output_table_recurrent =  {}
     def plot_cases(data,compare_name,sc_fac):
         if 'FTD1' in data.keys():
-            x_Ref = data['Storage'][0]['x']
-            y_Ref = data['Storage'][0]['y']
-            x = data['FTD1']['x']
-            y = data['FTD1']['y']
+# =============================================================================
+#             x_Ref = data['Storage'][0]['x']
+#             y_Ref = data['Storage'][0]['y']
+#             x = data['FTD1']['x']
+#             y = data['FTD1']['y']
+# =============================================================================
+            x_Ref = data['FTD1']['x']
+            y_Ref = data['FTD1']['y']
+            x = data['FTD1_MQTG']['x']
+            y = data['FTD1_MQTG']['y']
             x_Rec = data['FTD1_Recurrent']['x']
-            y_Rec = data['FTD1_Recurrent']['y']       
+            y_Rec = data['FTD1_Recurrent']['y']      
         
 
             y_Rec[-1] = y_Rec[-2]
             x_Rec[-1] = x_Rec[-2]
+            y_Ref[-1] = y_Ref[-2]
+            x_Ref[-1] = x_Ref[-2]   
             y[-1] = y[-2]
             x[-1] = x[-2]
 
@@ -694,7 +713,7 @@ def create_plots(QTG_path, part):
 
             
             pdfname = f"{count}_{plot_title}.svg"
-            pdfname_mqtg = f"{count}_{plot_title}_mqtg.svg"
+            pdfname_recurrent = f"{count}_{plot_title}_recurrent.svg"
             
             
             
@@ -713,7 +732,7 @@ def create_plots(QTG_path, part):
             plt.plot(x, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
             plt.plot(x_Ref, y_Ref, label='Reference')
             plt.plot(x, y, label='FTD1_MQTG')
-            plt.plot(x_Rec, y_Rec, label='Reccurent', color='green', linestyle='dashed')
+            plt.plot(x_Rec, y_Rec, label='Recurrent', color='green', linestyle='dashed')
 
 
             ##Section for scale
@@ -735,9 +754,9 @@ def create_plots(QTG_path, part):
             plt.savefig(save_path, format='svg')
             plt.close()
             
-            ##Neuer Plot (dient als MQTG)
-            y_mqtg = y_Rec
-            x_mqtg = x_Rec
+            ##Neuer Plot (dient als Recurrent)
+            y_mqtg = y
+            x_mqtg = x
             
             y_uptol = [i+tol for i in y_mqtg]
             y_lotol = [i-tol for i in y_mqtg]
@@ -751,13 +770,15 @@ def create_plots(QTG_path, part):
                 plt.axhline(y = np.mean(y_mqtg), xmin = x_min_snapshot, xmax = x_max_snapshot, label='MQTG', color='orange')
                 plt.axhline(y = np.mean(y_uptol), xmin = x_min_snapshot, xmax = x_max_snapshot, linewidth=0.5, color='orange', linestyle='dashed')
                 plt.axhline(y = np.mean(y_lotol), xmin = x_min_snapshot, xmax = x_max_snapshot, linewidth=0.5, color='orange', linestyle='dashed')
+                plt.axhline(y = np.mean(y_Rec), xmin = x_min_snapshot, xmax = x_max_snapshot, label='Recurrent', color='green', linestyle='dashed')
                 plt.xlim(x_min, x_max)
                 #Table
-                output_table_mqtg[plot_title +' '+ param['unit']] = [round(np.mean(y_mqtg),2), round(np.mean(y_lotol),2), ' ', round(np.mean(y_uptol),2)]
+                output_table_recurrent[plot_title +' '+ param['unit']] = [round(np.mean(y_mqtg),2), round(np.mean(y_lotol),2), round(np.mean(y_Rec),2), round(np.mean(y_uptol),2)]
             else:
                 plt.plot(x_mqtg, y_mqtg, label='MQTG')
                 plt.plot(x_mqtg, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
                 plt.plot(x_mqtg, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
+                plt.plot(x_Rec, y_Rec, label='Recurrent', color='green', linestyle='dashed')
                 
             ##Section for scale
             plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
@@ -768,7 +789,7 @@ def create_plots(QTG_path, part):
             plt.legend()
             plt.grid(True)
             #plt.show() 
-            save_path = os.path.join(dirpath, pdfname_mqtg)
+            save_path = os.path.join(dirpath, pdfname_recurrent)
             
             plt.savefig(save_path, format='svg')
             plt.close() 
@@ -799,13 +820,13 @@ def create_plots(QTG_path, part):
             
 
             pdfname = f"{count_add}_{plot_title}.svg"
-            pdfname_mqtg = f"{count_add}_{plot_title}_mqtg.svg"
+            pdfname_recurrent = f"{count_add}_{plot_title}_recurrent.svg"
             
 
             plt.figure(figsize=(10, 6))
             plt.plot(x_Ref, y_Ref, label='Reference')
             plt.plot(x, y, label='FTD1_MQTG')
-            plt.plot(x_Rec, y_Rec, label='Reccurent', color='green', linestyle='dashed')
+            plt.plot(x_Rec, y_Rec, label='Recurrent', color='green', linestyle='dashed')
             
             ##Section for scale
 
@@ -826,18 +847,20 @@ def create_plots(QTG_path, part):
             plt.savefig(save_path, format='svg')
             plt.close()
             
-            ##Neuer Plot (dient als MQTG)
-            y_mqtg = y_Rec
-            x_mqtg = x_Rec
+            ##Neuer Plot (dient als Recurrent)
+            y_mqtg = y
+            x_mqtg = x
                         
             plt.figure(figsize=(10, 6))
             if issnapshot:
                 plt.axhline(y = np.mean(y_mqtg), xmin = x_min_snapshot, xmax = x_max_snapshot, label='MQTG', color='orange')
+                plt.axhline(y = np.mean(y_Rec), xmin = x_min_snapshot, xmax = x_max_snapshot, label='Recurrent', color='green', linestyle='dashed')
                 plt.xlim(x_min, x_max)
                 #Table
-                output_table_mqtg[plot_title +' '+ param['unit']] = [round(np.mean(y_mqtg),2), ' - ', ' ', ' - ']
+                output_table_recurrent[plot_title +' '+ param['unit']] = [round(np.mean(y_mqtg),2), ' - ', round(np.mean(y_Rec),2), ' - ']
             else:
                 plt.plot(x_mqtg, y_mqtg, label='MQTG')
+                plt.plot(x_Rec, y_Rec, label='Recurrent', color='green', linestyle='dashed')
 
                 
             ##Section for scale
@@ -849,10 +872,16 @@ def create_plots(QTG_path, part):
             plt.legend()
             plt.grid(True)
             #plt.show() 
-            save_path = os.path.join(dirpath, pdfname_mqtg)
+            save_path = os.path.join(dirpath, pdfname_recurrent)
             
             plt.savefig(save_path, format='svg')
             plt.close()  
+
+    if issnapshot:
+        filename = 'output_table_recurrent.json'
+        output_table_path = os.path.join(QTG_path, filename)
+        with open(output_table_path, 'w') as json_file:
+            json.dump(output_table_recurrent, json_file, indent=4)
 
 
 def main(test_item, test_dir, gui_output, gui_input):

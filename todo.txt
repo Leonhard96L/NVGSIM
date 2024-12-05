@@ -94,9 +94,21 @@ Fuer Leo:
 		-init_flyout: line 276 string
 		-MQTG_auto/MQTG_manu: FTD1_Recurrent -> FTD1_MQTG
 
-	Achtung die meistens Test haben ein automatic testing
+	Achtung die meistens Test haben ein automatic testing -> aendern im QTG data structure
 	
 	Idee bei der Regelung nimm die letzten 50 daten aus den bewegungen und nimm davon den Mittelwert
+	
+	Achtung:
+		-setze mal fixe Werte fuer das SAS
+		
+
+	MQTG Tool:
+		-Achtung Vorzeichen fehler bei drehmoment
+	Recurrent QTG tool:
+		-Farben des MQTG plots anpassen
+		-Die alten plots koennen weck
+		
+		
 
 
 ####Achtung doch nicht entfernen######
