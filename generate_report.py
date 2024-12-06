@@ -17,7 +17,7 @@ def load_json_data(qtg_path, mode):
         data = json.load(json_file)
 
         # TODO: init cond für FTD3, FTD1...
-        (init_cond_qtg,) = data.get("Init_condition_QTG"),
+        (init_cond_qtg,) = data.get("Init_condition_Recurrent"),
         (init_cond_mqtg,) = data.get("Init_condition_MQTG"),
         (init_cond_ref,) = data.get("Init_condition_Refer"),
 
@@ -50,7 +50,7 @@ def load_json_snapshots(test_item, qtg_path, mode):
     elif mode == TestMode.MQTG:
         file_path = os.path.join(qtg_path, 'output_table_mqtg.json')
     elif mode == TestMode.QTG:
-        file_path = os.path.join(qtg_path, 'output_table_qtg.json')
+        file_path = os.path.join(qtg_path, 'output_table_recurrent.json')
 
     with open(file_path, 'r') as json_file:
         data = json.load(json_file)
@@ -86,8 +86,8 @@ def load_plots(qtg_path, mode, only_refer=True):
     if mode == TestMode.MQTG:
         image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('mqtg.svg')], key=numerical_sort)
 
-    if mode == TestMode.MQTG:
-        image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('qtg.svg')], key=numerical_sort)
+    if mode == TestMode.QTG:
+        image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('recurrent.svg')], key=numerical_sort)
 
     # Loop through all files in the directory
     for file_name in image_files:
