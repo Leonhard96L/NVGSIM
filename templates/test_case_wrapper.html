@@ -2,15 +2,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!--    <style>-->
-<!--        @page {-->
-<!--            margin: 1in;-->
-<!--            @bottom-right-corner {-->
-<!--                content: "{{test.id}}.{{part.id}} - " counter(test-part-counter);-->
-<!--            }-->
-<!--            counter-increment: test-part-counter;-->
-<!--        }-->
-<!--    </style>-->
     <link rel="stylesheet" href="./style.css">
     <title>{{test.id}}.{{part.id}}.{{case.id}} {{ case.name }}</title>
 </head>
@@ -18,7 +9,7 @@
 {% set counter = namespace(i=1) %}
 <div class="content">
     <h1>{{ part.main_title }}</h1>
-    <h2>{{ test.id }}.{{ part.id }} {{ part.test_title }}</h2>
+    <h2>{{ test.id }}.{{ part.id }} {{ part.main_title }} {% if part.test_title != "" %} - {{ part.test_title }} {% endif %}</h2>
     <br/>
     <br/>
     <h3 class="center-div">Test Objective</h3>
@@ -27,22 +18,16 @@
 <!--    <br/>-->
 
     <h3 class="center-div">Demonstration Procedure</h3>
-<!--        TODO: part.demonstration_procedure-->
+    <p>{{ part.demonstration_procedure }}</p>
 <!--    <br/>-->
 
     <h3 class="center-div">References</h3>
     <p>EASA CS-FSTD(H) AMC1 FSTD(H).300 (b)</p>
 
-    {% if case.mode != testMode.REFERENCE %}
-        <h3 class="center-div">Tolerances and Evaluation Criteria</h3>
-        <h3>FTD Level 1:</h3>
-        {% include 'tolerances_table.html' %}
-        <p>Evaluation Criteria to be applied to Overplots figures.</p>
-    {% endif %}
-    {% include 'test_part_footer.html' %}
+    <h3 class="center-div">Applicability</h3>
+    <p>Test applicable to FTD Level 1.</p>
 
-    <!--    <h3 class="center-div">Applicability</h3>-->
-<!--    <p>Test applicable to FTD Level 1.</p>-->
+    {% include 'test_part_footer.html' %}
 </div>
 {% include 'test_case.html' %}
 </body>

@@ -1,13 +1,20 @@
 <div class="content">
     <h2 id="{{test.id}}.{{part.id}}.{{case.id}}">{{test.id}}.{{part.id}} {{case.id}}&nbsp;&nbsp;&nbsp;&nbsp;{{ case.condition }}</h2>
+    <h3 class="center-div">Initial Conditions</h3>
+    {% include 'init_cond_table.html' %}
+    <p class="tiny-text">* Snapshot Tests: Reference initial conditions are computed as mean values over data time histories</p>
+    {% include 'test_case_footer.html' %}
+    {% include 'test_part_footer.html' %}
+</div>
+<div class="content">
+    <h3 class="center-div">Manual Test Procedure</h3>
+    <ol>
+        {% for man_test in case.manual_testing %}
+        <li><p>{{ man_test }}</p></li>
+        {% endfor %}
+    </ol>
 
-    <h3 class="center-div">Test Procedure</h3>
-    <p>
-        On the IOS select ’Maintenance’ page then ’QTG-Test’.
-        The test can be run either in automatic or manual mode.
-    </p>
-
-    <b>Automatic testing:</b>
+    <h3 class="center-div">Automatic Test Procedure</h3>
     {% if case.is_automatic %}
     {% for auto_test in case.automatic_testing %}{{ auto_test }}<br><br>{% endfor %}
     <br>
@@ -31,48 +38,36 @@
     {% else %}
     No automatic procedure
     {% endif %}
-    <p><b>Manual testing:</b> follow the Manual Procedure steps indicated in the next page.</p>
 
     {% include 'test_case_footer.html' %}
     {% include 'test_part_footer.html' %}
 </div>
 
 <div class="content">
-    <h3 class="center-div">Initial Conditions</h3>
-    {% include 'init_cond_table.html' %}
-    <p class="tiny-text">* Snapshot Tests: Reference initial conditions are computed as mean values over data time histories</p>
-    {% include 'test_case_footer.html' %}
-    {% include 'test_part_footer.html' %}
-</div>
+    {% if case.mode != testMode.REFERENCE %}
+        <h3 class="center-div">Tolerances and Evaluation Criteria</h3>
+        <h3>FTD Level 1:</h3>
+        {% include 'tolerances_table.html' %}
+        <p>Evaluation Criteria to be applied to Overplots figures.</p>
+    {% endif %}
 
-<div class="content">
-    <h3>Manual Procedure</h3>
-
-    <ol>
-        {% for man_test in case.manual_testing %}
-        <li><p>{{ man_test }}</p></li>
-        {% endfor %}
-    </ol>
-
-    <!--    PLEASE OUTSOURCE-->
-    {% include 'test_case_footer.html' %}
-    {% include 'test_part_footer.html' %}
-</div>
-
-<div class="content">
     <h3 class="center-div">Expected Results</h3>
     <p>Refer to annex (Validation Data Roadmap)</p>
+    {% include 'test_case_footer.html' %}
     {% include 'test_part_footer.html' %}
 </div>
+
+{% if case.is_snapshot %}
+    <div class="content">
+        <h3 class="center-div">Test Results</h3>
+        {% include 'snapshot_table.html' %}
+        {% include 'test_case_footer.html' %}
+        {% include 'test_part_footer.html' %}
+    </div>
+{% endif %}
+
 <div class="content">
-    <h3 class="center-div">Test Results</h3>
-    {% if case.is_snapshot %}
-        <div class="content">
-            {% include 'snapshot_table.html' %}
-            {% include 'test_case_footer.html' %}
-            {% include 'test_part_footer.html' %}
-        </div>
-    {% endif %}
+    {% if not case.is_snapshot %}<h3 class="center-div">Test Results</h3>{% endif %}
     {% for plot in case.plots_base64 %}
         <img class="plot-image" src="data:image/svg;base64,{{ plot }}" alt="Plot Image">
         {% if loop.index0 % 3 == 0 %}

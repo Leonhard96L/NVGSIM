@@ -3,20 +3,6 @@
 <head>
     <link rel="stylesheet" href="./style.css">
     <title>Main QTG Report</title>
-<!--    <style>-->
-<!--        body {-->
-<!--            counter-reset: test-part-counter;-->
-<!--        }-->
-<!--        .test-part {-->
-<!--            counter-reset: test-part-counter; /* Reset the counter for each test case */-->
-<!--        }-->
-<!--        @page {-->
-<!--            counter-increment: test-part-counter; /* Increment for each new page within test-case */-->
-<!--        }-->
-<!--        #page-count:after {-->
-<!--            content: counter(test-part-counter);-->
-<!--        }-->
-<!--    </style>-->
 </head>
 <body>
 {% for test in tests %}
@@ -36,7 +22,7 @@
 
 <!--    <br/>-->
     <h3 class="center-div">Demonstration Procedure</h3>
-<!--        TODO: part.demonstration_procedure-->
+        <p>{{ part.demonstration_procedure }}</p>
 <!--    <br/>-->
 
     <table class="no-outer-borders">
@@ -62,17 +48,8 @@
     <h3 class="center-div">References</h3>
     <p>EASA CS-FSTD(H) AMC1 FSTD(H).300 (b)</p>
 
-    {% with case = part.test_cases[0] %}
-    {% if case.mode != testMode.REFERENCE %}
-            <h3 class="center-div">Tolerances and Evaluation Criteria</h3>
-            <h3>FTD Level 1:</h3>
-            {% include 'tolerances_table.html' %}
-            <p>Evaluation Criteria to be applied to Overplots figures.</p>
-        {% endif %}
-    {% endwith %}
-
-<!--    <h3 class="center-div">Applicability</h3>-->
-<!--    <p>Test applicable to FTD Level 1.</p>-->
+    <h3 class="center-div">Applicability</h3>
+    <p>Test applicable to FTD Level 1.</p>
 
     {% include 'test_part_footer.html' %}
 </div>

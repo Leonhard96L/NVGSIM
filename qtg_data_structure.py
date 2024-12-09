@@ -17,6 +17,7 @@ data = {
                     'main_title': 'Engine Assessment',
                     'test_title': 'Start Operations',
                     'objective': 'The objective of this test is to demonstrate that the FSTD engine and rotor speed governing is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'test_cases': [
                         {
                             'id': 'A1',
@@ -32,6 +33,7 @@ data = {
                     'main_title': 'Engine Assessment',
                     'test_title': 'Steady State Idle and Operating RPM Conditions',
                     'objective': 'The objective of this test is to demonstrate that the FSTD steady state idle and operating RPM parameters are compliant with the helicopter reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'test_cases': [
                         {
                             'id': 'A1',
@@ -53,6 +55,7 @@ data = {
                     'main_title': 'Engine Assessment',
                     'test_title': 'Power Turbine Speed Trim',
                     'objective': 'The objective of this test is to demonstrate that the FSTD power turbine speed trim is complinat with the helicopter reference data',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'test_cases': [
                         {
                             'id': 'A1',
@@ -74,6 +77,7 @@ data = {
                     'main_title': 'Engine Assessment',
                     'test_title': 'Engine & Rotor Speed Governing',
                     'objective': 'The objective of this test is to demonstrate that the FSTD engine and rotor speed governing is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Engine 1 Torque', 'unit': '[%]', 'tolerance': 'CT&M'},
                         {'parameter': 'Engine 2 Torque', 'unit': '[%]', 'tolerance': 'CT&M'},
@@ -124,7 +128,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'rationales_validation_data': ['No Rationales related to the test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -164,10 +168,11 @@ data = {
                 },
                 {
                     'id': 'c.1',
-                    'snapshot' : False,
+                    'snapshot': False,
                     'main_title': 'Take-Off',
                     'test_title': 'Take-off All engines',
                     'objective': 'The objective of this test is to demonstrate that the FSTD all engines take-off is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Airspeed', 'unit': '[kts]', 'tolerance': 'CT&M'},
                         {'parameter': 'Radar Altitude', 'unit': '[ft]', 'tolerance': 'CT&M'},
@@ -231,7 +236,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -240,10 +245,11 @@ data = {
                 },
                 {
                     'id': 'c.2',
-                    'snapshot' : False,
+                    'snapshot': False,
                     'main_title': 'Take-Off',
                     'test_title': 'OEI continued take-off',
                     'objective': 'The objective of this test is to demonstrate that the FSTD one engine inoperative continued take-off is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Airspeed', 'unit': '[kts]', 'tolerance': 'CT&M'},
                         {'parameter': 'Radar Altitude', 'unit': '[ft]', 'tolerance': 'CT&M'},
@@ -307,7 +313,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 ' 2. HI NR not available in simulation','3. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -316,10 +322,11 @@ data = {
                 },
                 {
                     'id': 'd',
-                    'snapshot' : True,
+                    'snapshot': True,
                     'main_title': 'Hover Performance',
                     'test_title': '',
                     'objective': 'The objective of this test is to demonstrate that the FSTD hover performance is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Engine 1 Torque', 'unit': '[%]', 'tolerance': 'CT&M'},
                         {'parameter': 'Engine 2 Torque', 'unit': '[%]', 'tolerance': 'CT&M'},
@@ -596,10 +603,11 @@ data = {
                 },
                 {
                     'id': 'e',
-                    'snapshot' : True,
+                    'snapshot': True,
                     'main_title': 'Vertical Climb Performance',
-                    'test_title': 'Vertical Climb Performance',
+                    'test_title': '',
                     'objective': 'The objective of this test is to demonstrate that the FSTD vertical climb performance is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Vertical Velocity', 'unit': '[ft/min]', 'tolerance': 'CT&M'},
                         {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': 'CT&M'},
@@ -687,10 +695,11 @@ data = {
                 },
                 {
                     'id': 'f',
-                    'snapshot' : True,
+                    'snapshot': True,
                     'main_title': 'Level Flight Performance and Trimmed Flight Control Position',
-                    'test_title': 'Level Flight Performance and Trimmed Flight Control Position',
+                    'test_title': '',
                     'objective': 'The objective of this test is to demonstrate that the FSTD level flight performance is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Engine 1 Torque', 'unit': '[%]', 'tolerance': 'CT&M'},
                         {'parameter': 'Engine 2 Torque', 'unit': '[%]', 'tolerance': 'CT&M'},
@@ -744,7 +753,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -849,10 +858,11 @@ data = {
                 },
                 {
                     'id': 'g',
-                    'snapshot' : True,
+                    'snapshot': True,
                     'main_title': 'Climb Performance and Trimmed Flight Control Position',
-                    'test_title': 'Climb Performance and Trimmed Flight Control Position',
+                    'test_title': '',
                     'objective': 'The objective of this test is to demonstrate that the FSTD climb performance is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Vertical Velocity', 'unit': '[ft/min]', 'tolerance': 'CT&M'},
                         {'parameter': 'Pitch Angle', 'unit': '[deg]', 'tolerance': 'CT&M'},
@@ -908,7 +918,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'rationales_validation_data': ['No Rationales related to the test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1204,10 +1214,11 @@ data = {
                 },
                 {
                     'id': 'h.1',
-                    'snapshot' : True,
+                    'snapshot': True,
                     'main_title': 'Descent',
                     'test_title': 'Descent Performance and Trimmed Flight Control Position',
                     'objective': 'The objective of this test is to demonstrate that the FSTD descent performance is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Engine 1 Torque', 'unit': '[%]', 'tolerance': 'CT&M'},
                         {'parameter': 'Engine 2 Torque', 'unit': '[%]', 'tolerance': 'CT&M'},
@@ -1264,7 +1275,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1305,10 +1316,11 @@ data = {
                 },
                 {
                     'id': 'j.1',
-                    'snapshot' : False,
+                    'snapshot': False,
                     'main_title': 'Landing',
-                    'test_title': 'Landing - All Engines',
+                    'test_title': 'All Engines',
                     'objective': 'The objective of this test is to demonstrate that the FSTD landing performance with all engines operative is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Airspeed', 'unit': '[kts]', 'tolerance': 'CT&M'},
                         {'parameter': 'Radar Altitude', 'unit': '[ft]', 'tolerance': 'CT&M'},
@@ -1374,7 +1386,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 ' 2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1383,10 +1395,11 @@ data = {
                 },
                 {
                     'id': 'j.2',
-                    'snapshot' : False,
+                    'snapshot': False,
                     'main_title': 'Landing',
-                    'test_title': 'Landing - One Engine Inoperative',
+                    'test_title': 'One Engine Inoperative',
                     'objective': 'The objective of this test is to demonstrate that the FSTD one engine inoperative landing is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Airspeed', 'unit': '[kts]', 'tolerance': 'CT&M'},
                         {'parameter': 'Radar Altitude', 'unit': '[ft]', 'tolerance': 'CT&M'},
@@ -1455,7 +1468,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 ' 2. HI NR not available in simulation',' 3. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1495,7 +1508,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation',' 3. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1510,10 +1523,11 @@ data = {
             'test_parts': [
                 {
                     'id': 'a.1',
-                    'snapshot' : False,
+                    'snapshot': False,
                     'main_title': 'Control System Mechanical Characteristics',
                     'test_title': 'Cyclic Force vs Position',
                     'objective': 'The objective of this test is to demonstrate that the FSTD Cyclic Control System Mechanical Characteristics are compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Breakout', 'unit': '[daN]', 'tolerance': 'CT&M'},
                         {'parameter': 'Force', 'unit': '[daN]', 'tolerance': 'CT&M'}
@@ -1654,10 +1668,11 @@ data = {
                 },
                 {
                     'id': 'a.2',
-                    'snapshot' : False,
+                    'snapshot': False,
                     'main_title': 'Control System Mechanical Characteristics',
                     'test_title': 'Collective/Pedals Force vs Position',
                     'objective': 'The objective of this test is to demonstrate that the FSTD Collective/Pedals Control System Mechanical Characteristics are compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Breakout', 'unit': '[daN]', 'tolerance': 'CT&M'},
                         {'parameter': 'Force', 'unit': '[daN]', 'tolerance': 'CT&M'}
@@ -1761,10 +1776,11 @@ data = {
                 },
                 {
                     'id': 'a.4',
-                    'snapshot' : False,
+                    'snapshot': False,
                     'main_title': 'Control System Mechanical Characteristics',
                     'test_title': 'Trim System Rate',
                     'objective': 'The objective of this test is to demonstrate that the FSTD Trim System Rate Characteristics are compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Trim Rate', 'unit': '[%]', 'tolerance': 'CT&M'}
                     ],
@@ -1851,10 +1867,11 @@ data = {
                 },
                 {
                     'id': 'c.2',
-                    'snapshot' : True,
+                    'snapshot': True,
                     'main_title': 'Longitudinal Handling Qualities',
                     'test_title': 'Longitudinal Static Stability',
                     'objective': 'The objective of this test is to demonstrate that the FSTD longitudinal static stability is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]', 'tolerance': 'CT&M'}
                     ],
@@ -1903,7 +1920,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1936,7 +1953,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1969,7 +1986,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2002,7 +2019,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2035,7 +2052,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2068,7 +2085,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2101,7 +2118,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation','3. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2134,7 +2151,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation','3. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2168,7 +2185,7 @@ data = {
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
                                 'rationales_validation_data': [
-                                    '1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                    'No Rationales related to the test are present',
                                     '2. HI NR not available in simulation',
                                     '3. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
@@ -2202,7 +2219,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2235,7 +2252,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2268,7 +2285,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2277,10 +2294,11 @@ data = {
                 },
                 {
                     'id': 'c.4',
-                    'snapshot' : True,
+                    'snapshot': True,
                     'main_title': 'Longitudinal Handling Qualities',
                     'test_title': 'Manoeuvring Stability',
                     'objective': 'The objective of this test is to demonstrate that the FSTD longitudinal manoeuvring stability is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]', 'tolerance': 'CT&M'}
                     ],
@@ -2329,7 +2347,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2361,7 +2379,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2393,7 +2411,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2425,7 +2443,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2457,7 +2475,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2489,7 +2507,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2521,7 +2539,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2553,7 +2571,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2585,7 +2603,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2617,7 +2635,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2649,7 +2667,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2681,7 +2699,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. HI NR not available in simulation'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2707,6 +2725,7 @@ data = {
                     'main_title': 'Lateral & Directional Handling Qualities',
                     'test_title': 'Directional Static Stability',
                     'objective': 'The objective of this test is to demonstrate that the FSTD directional static stability is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Bank Angle', 'unit': '[deg]', 'tolerance': 'CT&M'},
                         {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]', 'tolerance': 'CT&M'},
@@ -2757,7 +2776,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'rationales_validation_data': ['No Rationales related to the test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2788,7 +2807,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'rationales_validation_data': ['No Rationales related to the test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2819,7 +2838,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'rationales_validation_data': ['No Rationales related to the test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2850,7 +2869,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2882,7 +2901,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2914,7 +2933,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
+                                'rationales_validation_data': ['No Rationales related to the test are present',
                                 '2. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2927,6 +2946,7 @@ data = {
                     'main_title': 'Dynamic Lateral and Directional Stability',
                     'test_title': 'Lateral-Directional Oscillations',
                     'objective': 'The objective of this test is to demonstrate that the FSTD dynamic lateral-directional stability (oscillations) is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
 # =============================================================================
 #                     'tolerances_evaluation_criteria': [
 #                         {'parameter': 'Calculated period', 'unit': '[%]', 'tolerance': 'CT&M'},
@@ -2999,7 +3019,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'rationales_validation_data': ['No Rationales related to the test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -3032,7 +3052,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'rationales_validation_data': ['No Rationales related to the test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -3064,7 +3084,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'rationales_validation_data': ['No Rationales related to the test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -3097,7 +3117,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'rationales_validation_data': ['No Rationales related to the test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -3105,10 +3125,11 @@ data = {
                 },
                 {
                     'id': 'd.3.ii',
-                    'snapshot' : False,
+                    'snapshot': False,
                     'main_title': 'Dynamic Lateral and Directional Stability',
                     'test_title': 'Spiral Stability',
                     'objective': 'The objective of this test is to demonstrate that the FSTD spiral stability is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Correct Trend on Bank', 'unit': '[deg]', 'tolerance': 'CT&M'}
                     ],
@@ -3161,7 +3182,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'rationales_validation_data': ['No Rationales related to the test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -3192,7 +3213,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'rationales_validation_data': ['No Rationales related to the test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -3225,7 +3246,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'rationales_validation_data': ['No Rationales related to the test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -3251,7 +3272,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'rationales_validation_data': ['No Rationales related to the test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
