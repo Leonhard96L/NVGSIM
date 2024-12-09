@@ -1,18 +1,22 @@
 <table class="no-outer-borders">
-      <thead>
-          <tr>
-              <th class="align-left">Parameter <span class="light-text">[U oM]</span></th>
-              <th>Tolerance</th>
-          </tr>
-      </thead>
-      <tbody>
-      {% with criteria_list = part.tolerances_evaluation_criteria if case.is_mqtg else part.tolerances_recurrent_criteria %}
-          {% for criterion in criteria_list %}
-          <tr>
-              <td class="align-left">{{ criterion.parameter }} <span class="light-text">{{ criterion.unit }}</span></td>
-              <td>{{ criterion.tolerance }}</td>
-          </tr>
-          {% endfor %}
-      {% endwith %}
-    </tbody>
+    <tr>
+        <th class="align-left">Parameter <span class="light-text">[U oM]</span></th>
+        <th colspan="2">Tolerance</th>
+    </tr>
+    <tr class="subheading">
+        <th></th>
+        <th>Initial</th>
+        <th>Recurrent</th>
+    </tr>
+
+    {% for i in range(part.tolerances_evaluation_criteria|length) %}
+        <tr>
+            <td class="align-left">
+                {{ part.tolerances_evaluation_criteria[i].parameter }}
+                <span class="light-text">{{ part.tolerances_evaluation_criteria[i].unit }}</span>
+            </td>
+            <td style="width: 15%">{{ part.tolerances_evaluation_criteria[i].tolerance }}</td>
+            <td style="width: 15%">{{ part.tolerances_recurrent_criteria[i].tolerance }}</td>
+        </tr>
+    {% endfor %}
 </table>

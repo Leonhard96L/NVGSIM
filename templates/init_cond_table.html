@@ -2,8 +2,12 @@
     <thead>
         <tr>
             <th class="align-left">Parameter [UoM]</th>
-            <th>Reference*</th>
-            {% if not case.is_mqtg %}
+            {% if case.mode == testMode.REFERENCE %}
+                <th>Reference</th>
+            {% elif case.mode == testMode.MQTG %}
+                <th>MQTG</th>
+            {% elif case.mode == testMode.QTG %}
+                <th>MQTG</th>
                 <th>Recurrent</th>
             {% endif %}
         </tr>
@@ -12,15 +16,19 @@
     <!-- Mass Properties -->
     <thead>
         <tr>
-            <th colspan="{% if not case.is_mqtg %}4{% else %}3{% endif %}" class="subsection">Mass Properties</th>
+            <th colspan="{% if case.mode == testMode.QTG %}3{% else %}2{% endif %}" class="subsection">Mass Properties</th>
         </tr>
     </thead>
     <tbody>
         {% for key, values in case["init_conds"]["mass_properties"].items() %}
             <tr>
                 <td class="align-left">{{ key }}</td>
-                <td>{{ values['ref'] }}</td>
-                {% if not case.is_mqtg %}
+                {% if case.mode == testMode.REFERENCE %}
+                    <td>{{ values['ref'] }}</td>
+                {% elif case.mode == testMode.MQTG %}
+                    <td>{{ values['mqtg'] }}</td>
+                {% elif case.mode == testMode.QTG %}
+                    <td>{{ values['mqtg'] }}</td>
                     <td>{{ values['rec'] }}</td>
                 {% endif %}
             </tr>
@@ -30,15 +38,19 @@
     <!-- Environment Parameters -->
     <thead>
         <tr>
-            <th colspan="{% if not case.is_mqtg %}4{% else %}3{% endif %}" class="subsection">Environment Parameters</th>
+            <th colspan="{% if case.mode == testMode.QTG %}3{% else %}2{% endif %}" class="subsection">Environment Parameters</th>
         </tr>
     </thead>
     <tbody>
         {% for key, values in case["init_conds"]["environment_parameters"].items() %}
             <tr>
                 <td class="align-left">{{ key }}</td>
-                <td>{{ values['ref'] }}</td>
-                {% if not case.is_mqtg %}
+                {% if case.mode == testMode.REFERENCE %}
+                    <td>{{ values['ref'] }}</td>
+                {% elif case.mode == testMode.MQTG %}
+                    <td>{{ values['mqtg'] }}</td>
+                {% elif case.mode == testMode.QTG %}
+                    <td>{{ values['mqtg'] }}</td>
                     <td>{{ values['rec'] }}</td>
                 {% endif %}
             </tr>
@@ -48,15 +60,19 @@
     <!-- Flight Parameters -->
     <thead>
         <tr>
-            <th colspan="{% if not case.is_mqtg %}4{% else %}3{% endif %}" class="subsection">Flight Parameters</th>
+            <th colspan="{% if case.mode == testMode.QTG %}3{% else %}2{% endif %}" class="subsection">Flight Parameters</th>
         </tr>
     </thead>
     <tbody>
         {% for key, values in case["init_conds"]["flight_parameters"].items() %}
             <tr>
                 <td class="align-left">{{ key }}</td>
-                <td>{{ values['ref'] }}</td>
-                {% if not case.is_mqtg %}
+                {% if case.mode == testMode.REFERENCE %}
+                    <td>{{ values['ref'] }}</td>
+                {% elif case.mode == testMode.MQTG %}
+                    <td>{{ values['mqtg'] }}</td>
+                {% elif case.mode == testMode.QTG %}
+                    <td>{{ values['mqtg'] }}</td>
                     <td>{{ values['rec'] }}</td>
                 {% endif %}
             </tr>

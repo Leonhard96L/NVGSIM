@@ -290,7 +290,7 @@ def start_testing(tests: [], output_dir='./', mode=TestMode.QTG, gui_output=gui_
                 test_results[test_item['id']] = generate_report.generate_case_report(test_item, test_dir, date_time, mode)
 
         gui_output("Creating Full Report. This may take a second...")
-        generate_report.create_test_report(test_results, directory_structure)
+        generate_report.create_test_report(test_results, directory_structure, mode)
         gui_output("Done creating Full Report.\n")
         gui_output("COMPLETED!")
 
@@ -360,7 +360,7 @@ def generate_report_only():
             test_results[test_item['id']] = generate_report.generate_case_report(test_item, os.path.join(dir, test_item['id']), test_date, mode)
 
         gui_output("Creating Full Report. This may take a second...")
-        generate_report.create_test_report(test_results, dir)
+        generate_report.create_test_report(test_results, dir, mode)
         gui_output("Done creating Full Report.\n")
     except Exception as e:
         gui_output(f"Error: {e}")

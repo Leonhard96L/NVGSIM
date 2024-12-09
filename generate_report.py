@@ -59,7 +59,7 @@ def load_json_snapshots(test_item, qtg_path, mode):
     structured_data = {}
     for key, values in data.items():
         # Filter out invalid data (e.g., " ")
-        structured_data[key] = [value for value in values if value != " "]
+        structured_data[key] = [value for value in values]
 
     print(json.dumps(structured_data, indent=4))
     return structured_data
@@ -199,10 +199,10 @@ def get_initial_conditions(case, init_cond_ref, init_cond_mqtg, init_cond_qtg, m
         process_condition(case["init_conds"], init_cond_mqtg, keys_map, "mqtg")
     elif mode == TestMode.QTG:
         process_condition(case["init_conds"], init_cond_mqtg, keys_map, "mqtg")
-        process_condition(case["init_conds"], init_cond_qtg, keys_map, "qtg")
+        process_condition(case["init_conds"], init_cond_qtg, keys_map, "rec")
 
 # returns structure data and plots for one test.
-def process_test_case_data(test_item, init_cond_ref, init_cond_mqtg, init_cond_qtg, plot_base64, date_time, mode):
+def process_test_case_data(test_item, snapshot_data, init_cond_ref, init_cond_mqtg, init_cond_qtg, plot_base64, date_time, mode):
     test_id, part_id, case_id = split_string(test_item['id'])
     test, part, case = get_test_test_part_test_case(qtg_structure['tests'], test_id, part_id, case_id)
 
@@ -213,7 +213,8 @@ def process_test_case_data(test_item, init_cond_ref, init_cond_mqtg, init_cond_q
 
     case.update({
         "is_snapshot": part['snapshot'],
-        "is_mqtg": False,   # todo -> mode
+        "snapshot_data": snapshot_data,
+        "mode": mode,
         "is_automatic": test_item['is_automatic'],
         "software_version": '1_FTD_1.0',
         "curr_date": formatted_date,
@@ -225,6 +226,7 @@ def process_test_case_data(test_item, init_cond_ref, init_cond_mqtg, init_cond_q
         "test": test,
         "part": part,
         "case": case,
+        "testMode": TestMode,
     }
 
     return data
@@ -240,12 +242,14 @@ def process_test_case_na(test_item, date_time, mode):
     case.update({
         "curr_date": formatted_date,
         "curr_time": formatted_time,
+        "mode": mode,
     })
 
     data = {
         "test": test,
         "part": part,
         "case": case,
+        "testMode": TestMode,
     }
     return data
 
@@ -266,7 +270,7 @@ def create_test_case_pdf(data, output_file):
 # PUBLIC FUNCTIONS
 
 # create master test pdf in root directory for all executed tests.
-def create_test_report(test_results, output_dir):
+def create_test_report(test_results, output_dir, mode: TestMode):
     def find_or_create(object, key, item):
         # Search for the test with the matching id
         for new_item in object[key]:
@@ -276,11 +280,11 @@ def create_test_report(test_results, output_dir):
         object[key].append(item)
         return item
 
-    grouped_data = {"tests": []}
+    data = {"tests": [], "testMode": mode}
 
     # Step 2: Populate the structure
     for key, item in test_results.items():
-        test = find_or_create(grouped_data, "tests", item["test"])
+        test = find_or_create(data, "tests", item["test"])
         part = find_or_create(test, "test_parts", item["part"])
         find_or_create(part, "test_cases", item["case"])
 
@@ -288,7 +292,7 @@ def create_test_report(test_results, output_dir):
     template = env.get_template('test.html')
 
     # Render the HTML template with data
-    html_out = template.render(grouped_data)
+    html_out = template.render(data)
     css_path = './templates/style.css'
     # Convert the rendered HTML to PDF
     HTML(string=html_out).write_pdf(os.path.join(output_dir, "Report.pdf"), stylesheets=[CSS(css_path)])
@@ -301,14 +305,14 @@ def generate_case_report(test_item, test_dir, date_time, mode: TestMode):
     # make pdf for each test, merge them into one document. check
     init_cond_ref, init_cond_mqtg, init_cond_qtg, = load_json_data(test_dir, mode)
 
-    # snapshot_data = load_json_snapshots(test_item, test_dir, mode)
+    snapshot_data = load_json_snapshots(test_item, test_dir, mode)
     # load existing images
     plots_base64 = load_plots(test_dir, mode)
-    data = process_test_case_data(test_item, init_cond_ref, init_cond_mqtg, init_cond_qtg, plots_base64, date_time, mode) # TODO: mode
+    data = process_test_case_data(test_item, snapshot_data, init_cond_ref, init_cond_mqtg, init_cond_qtg, plots_base64, date_time, mode)
     create_test_case_pdf(data, os.path.join(test_dir, "Report.pdf"))
 
     plots_base64 = load_plots(test_dir, mode, only_refer=False)
-    data2 = process_test_case_data(test_item, init_cond_ref, init_cond_mqtg, init_cond_qtg, plots_base64, date_time, mode) # TODO: mode
+    data2 = process_test_case_data(test_item, snapshot_data, init_cond_ref, init_cond_mqtg, init_cond_qtg, plots_base64, date_time, mode)
     create_test_case_pdf(data2, os.path.join(test_dir, "Hidden_Report.pdf"))
 
     return data

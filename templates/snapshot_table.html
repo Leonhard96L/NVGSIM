@@ -1,43 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="./style.css">
-</head>
-
-<body>
-<table class="no-outer-borders no-horizontal-borders border-table-bottom" style="width:50%">
+<table class="no-outer-borders no-horizontal-borders border-table-bottom">
     <tr>
         <th class="align-left">Parameter <span class="light-text">[U oM]</span></th>
-<!--        <th>Reference</th>-->
-        <th style="width: 10%">MQTG</th>
-        <th style="width: 10%">Min**</th>
-        <th style="width: 10%">Recurrent</th>
-        <th style="width: 10%">Max**</th>
+        {% if case.mode == testMode.REFERENCE %}
+            <th>Reference</th>
+        {% else %}
+            <th style="width: 10%">MQTG</th>
+            <th style="width: 10%">Min**</th>
+            <th style="width: 10%">Recurrent</th>
+            <th style="width: 10%">Max**</th>
+        {% endif %}
     </tr>
     <tr>
-        <th class="subsection" colspan="5">Snapshot Data</th>
+        <th class="subsection" colspan="{% if case.mode == testMode.REFERENCE %}2{% else %}5{% endif %}">Snapshot Data</th>
     </tr>
+    {% for key, values in case.snapshot_data.items() %}
     <tr>
-        <td class="align-left">Engine 1 Torque <span class="light-text">[%]</span></td>
-        <td>45.5</td>
-        <td>45.5</td>
-        <td class="grey">45.5</td>
-        <td>45.5</td>
+        <td class="align-left">{{ key }}</td> <!--<span class="light-text">[%]</span>-->
+        <td>{{ values[0] }}</td>
+        {% if case.mode != testMode.REFERENCE %}
+            <td>{{ values[1] }}</td>
+            <td class="grey">{{ values[2] }}</td>
+            <td>{{ values[3] }}</td>
+        {% endif %}
     </tr>
-    <tr>
-        <td class="align-left">Engine 1 Torque <span class="light-text">[%]</span></td>
-        <td>45.5</td>
-        <td>45.5</td>
-        <td class="grey">45.5</td>
-        <td>45.5</td>
-    </tr>
-    <tr>
-        <td class="align-left">Engine 1 Torque <span class="light-text">[%]</span></td>
-        <td>45.5</td>
-        <td>45.5</td>
-        <td class="grey">45.5</td>
-        <td>45.5</td>
-    </tr>
+    {% endfor %}
 </table>
-</body>
-</html>
+<br>
+<p class="center-div tiny-text">
+    ** The Min value is computed as the Reference value minus the specific tolerance value.<br>
+    The Max value is computed as the Reference value plus the specific tolerance value
+</p>
