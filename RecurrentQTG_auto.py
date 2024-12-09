@@ -480,6 +480,10 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
     error_roll_lis = []
     error_yaw_lis = []
     
+    cyc_lat_input_lis = []
+    cyc_long_input_lis = []
+    
+    
     pitch_integral = 0
     roll_integral = 0
     yaw_integral = 0
@@ -545,15 +549,22 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
         hardware_pilot_cyclic_longitudinal_position.write(cyc_long_init_input+cyc_long_input)
         hardware_pilot_pedals_position.write(pedal_init_input+pedal_input)
 
+        cyc_lat_input_lis.append(cyc_lat_input)
+        cyc_long_input_lis.append(cyc_long_input)
 
         if len(error_pitch_lis) > 100:
             if all(abs(i) < 0.02 for i in error_pitch_lis[-80:]) and all(abs(i) < 0.02 for i in error_roll_lis[-80:]):
+                cyc_lat_input = sum(cyc_lat_input_lis[-30:])/30
+                cyc_long_input = sum(cyc_long_input_lis[-30:])/30
                 break
+            
         
         # sleep for dT amount of seconds
         time.sleep(dT)
         # increment data row index
         i += 1
+        
+
 
     simulation_mode.write(SIM_MODE.PAUSE)
     return cyc_long_input, cyc_lat_input, pedal_input
