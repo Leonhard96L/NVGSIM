@@ -2,7 +2,13 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="./style.css">
-    <title>Main QTG Report</title>
+    {% if mode == testMode.REFERENCE %}
+        <title>Reference QTG Report</title>
+    {% elif mode == testMode.MQTG %}
+        <title>Main QTG Report</title>
+    {% elif mode == testMode.QTG %}
+        <title>QTG Report</title>
+    {% endif %}
 </head>
 <body>
 {% for test in tests %}
@@ -37,8 +43,8 @@
             {% for case in part.test_cases %}
                 <tr>
                     <td>{{ case.id }}</td>
-                    <td class="align-left">{{ case.condition }}</td>
-                    <td><a href="#{{test.id}}.{{part.id}}.{{case.id}}">{{test.id}}.{{part.id}}</a></td>
+                    <td class="align-left">{% if case.condition %} {{ case.condition }} {% else %} {{ case.name }} {% endif %}</td>
+                    <td><a href="#{{test.id}}.{{part.id}}.{{case.id}}">{{test.id}}.{{part.id}}-{{case.calculated_page_number*(loop.index0)+2}}</a></td>
 <!--                    <th {% if loop.first %} class="align-left"{% endif %}>{{col}}</th>-->
                 </tr>
             {% endfor %}
@@ -118,7 +124,11 @@
 <!--&lt;!&ndash;    <div class="page-break"></div> &lt;!&ndash; Page break here &ndash;&gt;&ndash;&gt;-->
 <!--</div>-->
 {% for case in part.test_cases %}
-    {% include 'test_case.html' %}
+    {% if case.not_applicable %}
+        {% include 'test_case_na.html' %}
+    {% else %}
+        {% include 'test_case.html' %}
+    {% endif %}
 {% endfor %}
 
 <div class="page-break"></div>

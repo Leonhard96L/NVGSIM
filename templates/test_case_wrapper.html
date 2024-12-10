@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <link rel="stylesheet" href="./style.css">
-    <title>{{test.id}}.{{part.id}}.{{case.id}} {{ case.name }}</title>
+    <title>Report {{ test.id }}.{{ part.id }}.{{ case.id }} {{ case.name }}</title>
 </head>
 <body>
 {% set counter = namespace(i=1) %}
@@ -29,6 +28,10 @@
 
     {% include 'test_part_footer.html' %}
 </div>
-{% include 'test_case.html' %}
+{% if case.not_applicable %}
+    {% include 'test_case_na.html' %}
+{% else %}
+    {% include 'test_case.html' %}
+{% endif %}
 </body>
 </html>
