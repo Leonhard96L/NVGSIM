@@ -112,9 +112,11 @@ Fuer Leo:
 		-Farben des MQTG plots anpassen 
 		-Die alten plots koennen weck
 
+
+
 	Achtung Pedal wege eventuell anpassen
 		
-		
+	CG Longitudinal [mm] Achtung in der Table nicht ganz Richtig		
 
 
 ####Achtung doch nicht entfernen######

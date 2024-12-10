@@ -488,19 +488,44 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
     pitch_integral = 0
     roll_integral = 0
     yaw_integral = 0
-    P_roll = 8
-    I_roll = 6
-    P_pitch = 8
-    I_pitch = 3
-    P_yaw = 0.1
+    
+    
+# =============================================================================
+#     P_roll = 2.29
+#     I_roll = 1.72
+#     D_roll = 0.2
+#     
+#     P_pitch = 11
+#     I_pitch = 4.12
+#     D_pitch = 0.5
+# =============================================================================
+    
+    P_roll = 12
+    I_roll = 8
+    D_roll = 0.2
+    
+    P_pitch = 11
+    I_pitch = 7
+    D_pitch = 0.5
+    
+    P_yaw = 5.729
     I_yaw = 0.05
     
+# =============================================================================
+#     P_roll = 8
+#     I_roll = 6
+#     P_pitch = 8
+#     I_pitch = 3
+#     P_yaw = 0.1
+#     I_yaw = 0.05
+#     roll_trafo = np.rad2deg(error_roll)*0.005
+#     pitch_trafo = np.rad2deg(error_pitch)*0.024
+# =============================================================================
+    error_roll_old = 0
+    error_pitch_old = 0
 
-    
     while True:
         
-
-
         current_pitch = reference_frame_inertial_attitude_theta.read()
         current_roll = reference_frame_inertial_attitude_phi.read()
         current_yaw = reference_frame_inertial_attitude_psi.read()
@@ -508,29 +533,25 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
         error_roll = desired_roll - current_roll
         error_roll_lis.append(np.rad2deg(error_roll))
         
-        roll_trafo = np.rad2deg(error_roll)*0.005
-        #1deg = 0.005
 
-        roll_integral = roll_integral + roll_trafo * dT
-        cyc_lat_input = P_roll*roll_trafo + I_roll*roll_integral
-        
+        roll_integral = (roll_integral + error_roll) * dT
+        cyc_lat_input = P_roll*error_roll + I_roll*roll_integral + D_roll*(error_roll - error_roll_old)/dT
+        error_roll_old = error_roll
         
         error_pitch = desired_pitch - current_pitch
         error_pitch_lis.append(np.rad2deg(error_pitch))
+         
+        pitch_integral = (pitch_integral + error_pitch) * dT
+        cyc_long_input = P_pitch*error_pitch + I_pitch*pitch_integral + D_pitch*(error_pitch - error_pitch_old)/dT
+        error_pitch_old = error_pitch
         
-        pitch_trafo = np.rad2deg(error_pitch)*0.024
-        #1deg = 0.024
-
-        pitch_integral = pitch_integral + pitch_trafo * dT
-        cyc_long_input = P_pitch*pitch_trafo + I_pitch*pitch_integral
         
         error_yaw = desired_yaw - current_yaw
         error_yaw_lis.append(np.rad2deg(error_roll))
         
-        yaw_trafo = np.rad2deg(error_yaw)
-
-        yaw_integral = yaw_integral+yaw_trafo*dT
-        pedal_input = P_yaw*yaw_trafo+I_yaw*yaw_integral
+    
+        yaw_integral = yaw_integral+error_yaw*dT
+        pedal_input = P_yaw*error_yaw+I_yaw*yaw_integral
         
 # =============================================================================
 #         if yaw_trafo > 5:
