@@ -184,7 +184,7 @@ def on_input_submit():
         input_text.set(inp)
         gui_output(f"$: {inp}")
         input_var.set("")
-
+        
 
 def gui_input(prompt):
     gui_output(prompt, nl=False)

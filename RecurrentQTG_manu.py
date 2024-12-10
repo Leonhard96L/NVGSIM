@@ -94,6 +94,10 @@ class AxisBitmask(enum.IntEnum):
 
 ###All needed NVGSIM Variables
 
+#Button to confirm start
+hardware_pilot_cyclic_radio_ptt = DSim.Variable.Bool(
+    DSim.Node(dsim_entity, "hardware/pilot/cyclic/radio/ptt"))
+
 #read
 reference_frame_inertial_position_latitude = DSim.Variable.Double(DSim.Node(dsim_entity,"reference_frame/inertial/position/latitude"))
 reference_frame_inertial_position_longitude = DSim.Variable.Double(DSim.Node(dsim_entity,"reference_frame/inertial/position/longitude"))
@@ -918,7 +922,13 @@ def main(test_item, test_dir, gui_output, gui_input):
     simulation_mode.write(SIM_MODE.PAUSE)
     time.sleep(2)
     simulation_mode.write(SIM_MODE.RUN) 
-    gui_input("Hit Enter if Pilot is ready ")
+    
+    gui_output("Press ptt button when Pilot is ready")    
+    
+    while hardware_pilot_cyclic_radio_ptt.read() == False:
+        time.sleep(0.01)
+    
+    #gui_input("Hit Enter if Pilot is ready ")
     
     
     logandsave_flyout_init_cond(QTG_path)

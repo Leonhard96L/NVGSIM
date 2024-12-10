@@ -99,7 +99,11 @@ Fuer Leo:
 	Idee bei der Regelung nimm die letzten 50 daten aus den bewegungen und nimm davon den Mittelwert -> Achtung nur beim Recurrent auto gemacht
 	
 	Achtung:
-		-setze mal fixe Werte fuer das SAS
+		-setze fixe Werte fuer das SAS	
+		-alte Werte: attitude: x=0.01745, y=0.01745, z=0 ; x=0.00524, y=0.00873, z=0.01047
+		-neue Werte: attitude: x=0.025, y=0.025, z=0 ; x=0.01, y=0.01, z=0.01047
+		-setze fixe Werte fuer das CG x
+			-alter Wert x=-3.06. neu x=-3.17
 		
 
 	MQTG Tool:
@@ -107,6 +111,8 @@ Fuer Leo:
 	Recurrent QTG tool: <done>
 		-Farben des MQTG plots anpassen 
 		-Die alten plots koennen weck
+
+	Achtung Pedal wege eventuell anpassen
 		
 		
 

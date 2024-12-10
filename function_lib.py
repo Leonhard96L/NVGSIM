@@ -192,7 +192,7 @@ def GW_map(x):
 #Calculation from multisim to EC135
 #Coordinate System on the nose of the HC
 def CG_x_map(x):
-     return -(x - 1.15)
+     return -(x - 1.2)
 
 
 
@@ -254,7 +254,7 @@ def units_conversion(init_cond_dict, unit):
         init_cond_dict_Avi['Engine 2 Torque'] = round(float(init_cond_dict['Engine 2 Torque']), 2)
         init_cond_dict_Avi['Pitch Angle'] = round(np.rad2deg(float(init_cond_dict['Pitch Angle'])), 2)
         init_cond_dict_Avi['Bank Angle'] = round(np.rad2deg(float(init_cond_dict['Bank Angle'])), 2)
-        init_cond_dict_Avi['Heading'] = map360(float(init_cond_dict['Heading']))
+        init_cond_dict_Avi['Heading'] = round(map360(float(init_cond_dict['Heading'])),2)
         init_cond_dict_Avi['Pitch Rate'] = round(np.rad2deg(float(init_cond_dict['Pitch Rate'])), 2)
         init_cond_dict_Avi['Roll Rate'] = round(np.rad2deg(float(init_cond_dict['Roll Rate'])), 2)
         init_cond_dict_Avi['Yaw Rate'] = round(np.rad2deg(float(init_cond_dict['Yaw Rate'])), 2)
