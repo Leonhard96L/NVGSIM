@@ -1,4 +1,5 @@
 import shutil
+import traceback
 from datetime import datetime
 import os
 import tkinter as tk
@@ -243,9 +244,10 @@ def start_testing(tests: [], output_dir='./', mode=TestMode.QTG, gui_output=gui_
     date_time = datetime.now()  # use this datetime for folder structure and reports
 
     qtg_dir = ""
+    reference_data = ""
     if mode == TestMode.REFERENCE:
         qtg_dir = "reference"
-        reference_data = get_newest_folder(os.path.join(output_dir, "reference"))   # initial_conditions oder lassen???
+        reference_data = get_newest_folder(os.path.join(output_dir, "reference_data"))
     elif mode == TestMode.MQTG:
         qtg_dir = "mqtg"
         reference_data = get_newest_folder(os.path.join(output_dir, "reference"))
@@ -364,6 +366,8 @@ def generate_report_only():
         gui_output("Done creating Full Report.\n")
     except Exception as e:
         gui_output(f"Error: {e}")
+        print("Error:", e)  # Print the error message to the console
+        traceback.print_exc()  # Print the stack trace to the console
 
 
 # Initialize and configure the Tkinter window
