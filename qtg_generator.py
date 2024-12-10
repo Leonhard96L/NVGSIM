@@ -24,6 +24,7 @@ import generate_report
 
 
 root_dir = './data'
+software_version = '1_FTD_2.0'
 
 
 # Function to populate the Treeview with test cases

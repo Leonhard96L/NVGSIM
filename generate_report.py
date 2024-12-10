@@ -1,5 +1,6 @@
 import base64
 import json
+import math
 import os
 import re
 
@@ -8,6 +9,7 @@ from weasyprint import HTML, CSS
 
 from qtg_data_structure import data as qtg_structure
 from function_lib import split_string, get_test_test_part_test_case, units_conversion
+from qtg_generator import software_version
 from test_mode import TestMode
 
 
@@ -76,18 +78,17 @@ def load_plots(qtg_path, mode, only_refer=True):
         match = re.match(r'^(\d+)', value)
         return int(match.group(1)) if match else 0  # Use the number if found, else 0
 
+    image_files = []
     # Get the sorted list of .svg files in numerical order
-    if mode == TestMode.REFERENCE:
-        if only_refer:
+    if only_refer:
+        if mode == TestMode.REFERENCE:
             image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('refer.svg')], key=numerical_sort)
-        else:
-            image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('.svg')], key=numerical_sort)
-
-    if mode == TestMode.MQTG:
-        image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('mqtg.svg')], key=numerical_sort)
-
-    if mode == TestMode.QTG:
-        image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('recurrent.svg')], key=numerical_sort)
+        elif mode == TestMode.MQTG:
+            image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('mqtg.svg')], key=numerical_sort)
+        elif mode == TestMode.QTG:
+            image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('recurrent.svg')], key=numerical_sort)
+    else:
+        image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('.svg')], key=numerical_sort)
 
     # Loop through all files in the directory
     for file_name in image_files:
@@ -201,6 +202,7 @@ def get_initial_conditions(case, init_cond_ref, init_cond_mqtg, init_cond_qtg, m
         process_condition(case["init_conds"], init_cond_mqtg, keys_map, "mqtg")
         process_condition(case["init_conds"], init_cond_qtg, keys_map, "rec")
 
+
 # returns structure data and plots for one test.
 def process_test_case_data(test_item, snapshot_data, init_cond_ref, init_cond_mqtg, init_cond_qtg, plot_base64, date_time, mode):
     test_id, part_id, case_id = split_string(test_item['id'])
@@ -210,22 +212,28 @@ def process_test_case_data(test_item, snapshot_data, init_cond_ref, init_cond_mq
     formatted_time = date_time.strftime("%H:%M:%S")
 
     get_initial_conditions(case, init_cond_ref, init_cond_mqtg, init_cond_qtg, mode)
+    is_automatic = False if mode == mode.REFERENCE else test_item['is_automatic']   # references cannot be automatic tests
+
+    # use 1 page for part, 5 for static case, +1 for snapshot data, ceil(n/3) for plots
+    count = 6 if part['snapshot'] else 5
+    count += int(math.ceil(len(plot_base64)/3))
 
     case.update({
         "is_snapshot": part['snapshot'],
         "snapshot_data": snapshot_data,
-        "mode": mode,
-        "is_automatic": test_item['is_automatic'],
-        "software_version": '1_FTD_1.0',
+        "is_automatic": is_automatic,
+        "plots_base64": plot_base64,
+        "calculated_page_number": count,
+        "software_version": software_version,
         "curr_date": formatted_date,
         "curr_time": formatted_time,
-        "plots_base64": plot_base64
     })
 
     data = {
         "test": test,
         "part": part,
         "case": case,
+        "mode": mode,
         "testMode": TestMode,
     }
 
@@ -240,15 +248,17 @@ def process_test_case_na(test_item, date_time, mode):
     formatted_time = date_time.strftime("%H:%M:%S")
 
     case.update({
+        "calculated_page_number": 1,
+        "software_version": software_version,
         "curr_date": formatted_date,
         "curr_time": formatted_time,
-        "mode": mode,
     })
 
     data = {
         "test": test,
         "part": part,
         "case": case,
+        "mode": mode,
         "testMode": TestMode,
     }
     return data
@@ -259,6 +269,18 @@ def create_test_case_pdf(data, output_file):
     # Set up Jinja2 environment
     env = Environment(loader=FileSystemLoader('./templates'))
     template = env.get_template('test_case_wrapper.html')
+
+    # Render the HTML template with data
+    html_out = template.render(data)
+    css_path = './templates/style.css'
+    # Convert the rendered HTML to PDF
+    HTML(string=html_out).write_pdf(output_file, stylesheets=[CSS(css_path)])
+
+
+def create_graphs_pdf(data, output_file):
+    # Set up Jinja2 environment
+    env = Environment(loader=FileSystemLoader('./templates'))
+    template = env.get_template('graphs.html')
 
     # Render the HTML template with data
     html_out = template.render(data)
@@ -280,7 +302,7 @@ def create_test_report(test_results, output_dir, mode: TestMode):
         object[key].append(item)
         return item
 
-    data = {"tests": [], "testMode": mode}
+    data = {"tests": [], "mode": mode, "testMode": TestMode}
 
     # Step 2: Populate the structure
     for key, item in test_results.items():
@@ -295,6 +317,7 @@ def create_test_report(test_results, output_dir, mode: TestMode):
     html_out = template.render(data)
     css_path = './templates/style.css'
     # Convert the rendered HTML to PDF
+    os.makedirs(output_dir, exist_ok=True)  # Creates the directory structure if it doesn't exist
     HTML(string=html_out).write_pdf(os.path.join(output_dir, "Report.pdf"), stylesheets=[CSS(css_path)])
 
 
@@ -313,7 +336,7 @@ def generate_case_report(test_item, test_dir, date_time, mode: TestMode):
 
     plots_base64 = load_plots(test_dir, mode, only_refer=False)
     data2 = process_test_case_data(test_item, snapshot_data, init_cond_ref, init_cond_mqtg, init_cond_qtg, plots_base64, date_time, mode)
-    create_test_case_pdf(data2, os.path.join(test_dir, "Hidden_Report.pdf"))
+    create_graphs_pdf(data2, os.path.join(test_dir, "Graphs.pdf"))
 
     return data
 

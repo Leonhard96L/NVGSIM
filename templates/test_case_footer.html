@@ -16,7 +16,7 @@
         </tr>
         <tr>
             <td><b>Title</b></td>
-            <td colspan="3" class="align-left">{{ case.name }} - {{ case.condition }}</td>
+            <td colspan="3" class="align-left">{{ case.name }} {% if case.condition %} - {{ case.condition }} {% endif %}</td>
             <td><b>Date</b></td>
             <td>{{ case.curr_date }}</td>
             <td><b>Time</b></td>

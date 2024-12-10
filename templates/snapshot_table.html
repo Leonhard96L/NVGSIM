@@ -1,7 +1,7 @@
 <table class="no-outer-borders no-horizontal-borders border-table-bottom">
     <tr>
         <th class="align-left">Parameter <span class="light-text">[U oM]</span></th>
-        {% if case.mode == testMode.REFERENCE %}
+        {% if mode == testMode.REFERENCE %}
             <th>Reference</th>
         {% else %}
             <th style="width: 10%">MQTG</th>
@@ -11,13 +11,13 @@
         {% endif %}
     </tr>
     <tr>
-        <th class="subsection" colspan="{% if case.mode == testMode.REFERENCE %}2{% else %}5{% endif %}">Snapshot Data</th>
+        <th class="subsection" colspan="{% if mode == testMode.REFERENCE %}2{% else %}5{% endif %}">Snapshot Data</th>
     </tr>
     {% for key, values in case.snapshot_data.items() %}
     <tr>
         <td class="align-left">{{ key }}</td> <!--<span class="light-text">[%]</span>-->
         <td>{{ values[0] }}</td>
-        {% if case.mode != testMode.REFERENCE %}
+        {% if mode != testMode.REFERENCE %}
             <td>{{ values[1] }}</td>
             <td class="grey">{{ values[2] }}</td>
             <td>{{ values[3] }}</td>
