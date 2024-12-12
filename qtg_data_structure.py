@@ -160,7 +160,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. HI NR not available in simulation'],
+                                'rationales_validation_data': ['No Rationales related to the Test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -236,7 +236,7 @@ data = {
                             ],
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['HI NR not available in simulation'],
+                                'rationales_validation_data': ['No Rationales related to the Test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -313,8 +313,7 @@ data = {
                             'notes_rationales': {
                                 'notes': ['No Notes related to the Test are present'],
                                 'rationales_validation_data': [
-                                    '1. HI NR not available in simulation',
-                                    '2. In order to simulate OEI, an engine fail was used'],
+                                    '1. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }

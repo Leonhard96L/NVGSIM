@@ -551,7 +551,8 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
         
     
         yaw_integral = yaw_integral+error_yaw*dT
-        pedal_input = P_yaw*error_yaw+I_yaw*yaw_integral
+        #pedal_input = P_yaw*error_yaw+I_yaw*yaw_integral
+        pedal_input = 0
         
 # =============================================================================
 #         if yaw_trafo > 5:
@@ -573,9 +574,10 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
         
         cyc_lat_input_lis.append(cyc_lat_input)
         cyc_long_input_lis.append(cyc_long_input)
-
+        
+        #old: 0.02 and 0.02
         if len(error_pitch_lis) > 100:
-            if all(abs(i) < 0.02 for i in error_pitch_lis[-80:]) and all(abs(i) < 0.02 for i in error_roll_lis[-80:]):
+            if all(abs(i) < 0.5 for i in error_pitch_lis[-80:]) and all(abs(i) < 0.5 for i in error_roll_lis[-80:]):
                 cyc_lat_input = sum(cyc_lat_input_lis[-30:])/30
                 cyc_long_input = sum(cyc_long_input_lis[-30:])/30
                 break
