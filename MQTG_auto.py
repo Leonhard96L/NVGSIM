@@ -36,7 +36,7 @@ import re
 import time
 from datetime import datetime
 
-from function_lib import units_conversion, GW_map, CG_x_map, ft2m, map360, map_control, pitch_brun2N, pitch_brun2angle, \
+from function_lib import units_conversion, CG_x_map, ft2m, map360, map_control, pitch_brun2N, pitch_brun2angle, \
     roll_brun2N, roll_brun2angle, coll_brun2N, coll_brun2angle, yaw_brun2angle, ATRIM_calc, mps2kt, m2ft, mps2fpm, \
     rpm2perc, inv_map_control
 
@@ -337,6 +337,8 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
 
     simulation_mode.write(SIM_MODE.RUN) 
     
+    error_roll_old = 0
+    error_pitch_old = 0
     
     while i < len(T)-1:
         
@@ -369,24 +371,38 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
         
         error_roll = desired_roll - current_roll
 
+# =============================================================================
+#         #Old
+#         roll_trafo = np.rad2deg(error_roll)*0.005
+#         P_roll = 10
+#         I_roll = 2
+# =============================================================================
         
-        roll_trafo = np.rad2deg(error_roll)*0.005
-        #1deg = 0.005
         P_roll = 10
         I_roll = 2
-        roll_integral = roll_integral + roll_trafo * dT
-        cyc_lat_input = P_roll*roll_trafo + I_roll*roll_integral
+        D_roll = 0.05
+        
+        roll_integral = (roll_integral + error_roll) * dT
+        cyc_lat_input = P_roll*error_roll + I_roll*roll_integral + D_roll*(error_roll - error_roll_old)/dT
+        error_roll_old = error_roll
         
         
         error_pitch = desired_pitch - current_pitch
 
         
-        pitch_trafo = np.rad2deg(error_pitch)*0.024
-        #1deg = 0.024
-        P_pitch = 5
+# =============================================================================
+#         pitch_trafo = np.rad2deg(error_pitch)*0.024
+#         P_pitch = 5
+#         I_pitch = 2
+# =============================================================================
+        
+        P_pitch = 8
         I_pitch = 2
-        pitch_integral = pitch_integral + pitch_trafo * dT
-        cyc_long_input = P_pitch*pitch_trafo + I_pitch*pitch_integral
+        D_pitch = 0.05
+        
+        pitch_integral = (pitch_integral + error_pitch) * dT
+        cyc_long_input = P_pitch*error_pitch + I_pitch*pitch_integral + D_pitch*(error_pitch - error_pitch_old)/dT
+        error_pitch_old = error_pitch
         
         
         error_yaw = desired_yaw - current_yaw
@@ -396,8 +412,8 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
         P_yaw = 0.2
         I_yaw = 0.2
         yaw_integral = yaw_integral+yaw_trafo*dT
-        pedal_input = P_yaw*yaw_trafo+I_yaw*yaw_integral
-        
+        #pedal_input = P_yaw*yaw_trafo+I_yaw*yaw_integral
+        pedal_input = 0
         
         
         if not issnapshot:
@@ -415,7 +431,6 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
         input_matrix[i,INPUT.CYCLIC_LONGITUDINAL] = hardware_pilot_cyclic_longitudinal_position.read()
         input_matrix[i,INPUT.PEDALS] = hardware_pilot_pedals_position.read()
         
-        print(hardware_pilot_cyclic_longitudinal_position.read())
         # sleep for dT amount of seconds
         
         time.sleep(dT)
@@ -551,13 +566,9 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
         
     
         yaw_integral = yaw_integral+error_yaw*dT
-        pedal_input = P_yaw*error_yaw+I_yaw*yaw_integral
+        #pedal_input = P_yaw*error_yaw+I_yaw*yaw_integral
+        pedal_input = 0
         
-# =============================================================================
-#         if yaw_trafo > 5:
-#             reference_frame_inertial_attitude_psi.write(float(init_cond_dict['Heading']))
-# =============================================================================
-
         e_pitch = error_pitch_lis[-1]
         e_roll = error_roll_lis[-1]
         print(f"Cyclic Long Input: {cyc_long_init_input-cyc_long_input:.5f}, e: {e_pitch:.3f}")
@@ -573,9 +584,10 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
         
         cyc_lat_input_lis.append(cyc_lat_input)
         cyc_long_input_lis.append(cyc_long_input)
-
+        
+        #old: 0.02 and 0.02
         if len(error_pitch_lis) > 100:
-            if all(abs(i) < 0.02 for i in error_pitch_lis[-80:]) and all(abs(i) < 0.02 for i in error_roll_lis[-80:]):
+            if all(abs(i) < 0.2 for i in error_pitch_lis[-80:]) and all(abs(i) < 0.2 for i in error_roll_lis[-80:]):
                 cyc_lat_input = sum(cyc_lat_input_lis[-30:])/30
                 cyc_long_input = sum(cyc_long_input_lis[-30:])/30
                 break

@@ -38,7 +38,7 @@ import numpy as np
 import time
 from datetime import datetime
 
-from function_lib import units_conversion, GW_map, CG_x_map, ft2m, map360, map_control, pitch_brun2N, pitch_brun2angle, \
+from function_lib import units_conversion, CG_x_map, ft2m, map360, map_control, pitch_brun2N, pitch_brun2angle, \
     roll_brun2N, roll_brun2angle, coll_brun2N, coll_brun2angle, yaw_brun2angle, ATRIM_calc, mps2kt, m2ft, mps2fpm, \
     rpm2perc, inv_map_control, split_string
 
@@ -518,7 +518,7 @@ def set_init_cond_flyout(init_cond_dict):
     reference_frame_inertial_position_latitude.write(LOWL[0])
     reference_frame_inertial_position_longitude.write(LOWL[1])
 
-    #configuration_loading_empty_mass.write(GW_map(init_cond_dict['Gross Weight']))
+
     configuration_loading_empty_mass.write(init_cond_dict['Gross Weight'])
     flightmodel_configuration_cg_x.write(CG_x_map(init_cond_di_si['CG Longitudinal']))
     flightmodel_configuration_cg_y.write(init_cond_di_si['CG Lateral'])

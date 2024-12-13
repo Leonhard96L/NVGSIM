@@ -36,7 +36,7 @@ import re
 import time
 from datetime import datetime
 
-from function_lib import units_conversion, GW_map, CG_x_map, ft2m, map360, map_control, pitch_brun2N, pitch_brun2angle, \
+from function_lib import units_conversion, CG_x_map, ft2m, map360, map_control, pitch_brun2N, pitch_brun2angle, \
     roll_brun2N, roll_brun2angle, coll_brun2N, coll_brun2angle, yaw_brun2angle, ATRIM_calc, mps2kt, m2ft, mps2fpm, \
     rpm2perc, inv_map_control
 
@@ -335,6 +335,8 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
 
     simulation_mode.write(SIM_MODE.RUN) 
     
+    error_roll_old = 0
+    error_pitch_old = 0
     
     while i < len(T)-1:
         
@@ -368,25 +370,26 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
         error_roll = desired_roll - current_roll
 
         
-        roll_trafo = np.rad2deg(error_roll)*0.005
-        #1deg = 0.005
         P_roll = 10
         I_roll = 2
-        roll_integral = roll_integral + roll_trafo * dT
-        cyc_lat_input = P_roll*roll_trafo + I_roll*roll_integral
+        D_roll = 0.05
+        
+        roll_integral = (roll_integral + error_roll) * dT
+        cyc_lat_input = P_roll*error_roll + I_roll*roll_integral + D_roll*(error_roll - error_roll_old)/dT
+        error_roll_old = error_roll
         
         
         error_pitch = desired_pitch - current_pitch
 
-        
-        pitch_trafo = np.rad2deg(error_pitch)*0.024
-        #1deg = 0.024
-        P_pitch = 5
+        P_pitch = 8
         I_pitch = 2
-        pitch_integral = pitch_integral + pitch_trafo * dT
-        cyc_long_input = P_pitch*pitch_trafo + I_pitch*pitch_integral
+        D_pitch = 0.05
         
-        
+        pitch_integral = (pitch_integral + error_pitch) * dT
+        cyc_long_input = P_pitch*error_pitch + I_pitch*pitch_integral + D_pitch*(error_pitch - error_pitch_old)/dT
+        error_pitch_old = error_pitch
+
+
         error_yaw = desired_yaw - current_yaw
         
         yaw_trafo = np.rad2deg(error_yaw)
@@ -394,8 +397,8 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
         P_yaw = 0.2
         I_yaw = 0.2
         yaw_integral = yaw_integral+yaw_trafo*dT
-        pedal_input = P_yaw*yaw_trafo+I_yaw*yaw_integral
-        
+        #pedal_input = P_yaw*yaw_trafo+I_yaw*yaw_integral
+        pedal_input = 0
         
         
         if not issnapshot:
@@ -488,13 +491,28 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
     roll_integral = 0
     yaw_integral = 0
     
-    P_roll = 2.29
-    I_roll = 1.72
+# =============================================================================
+#     P_roll = 2.29
+#     I_roll = 1.72
+#     P_pitch = 11
+#     I_pitch = 4.12
+#     P_yaw = 5.729
+#     I_yaw = 0.05
+# =============================================================================
+    
+
+    P_roll = 12
+    I_roll = 8
+    D_roll = 0.2
+    
     P_pitch = 11
-    I_pitch = 4.12
+    I_pitch = 7
+    D_pitch = 0.5
+    
     P_yaw = 5.729
     I_yaw = 0.05
-    
+
+
 # =============================================================================
 #     P_roll = 8
 #     I_roll = 6
@@ -506,6 +524,8 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
 #     pitch_trafo = np.rad2deg(error_pitch)*0.024
 # =============================================================================
 
+    error_roll_old = 0
+    error_pitch_old = 0
     
     while True:
         
@@ -518,15 +538,17 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
         error_roll = desired_roll - current_roll
         error_roll_lis.append(np.rad2deg(error_roll))
 
-        roll_integral = roll_integral + error_roll * dT
-        cyc_lat_input = P_roll*error_roll + I_roll*roll_integral
+        roll_integral = (roll_integral + error_roll) * dT
+        cyc_lat_input = P_roll*error_roll + I_roll*roll_integral + D_roll*(error_roll - error_roll_old)/dT
+        error_roll_old = error_roll
         
         
         error_pitch = desired_pitch - current_pitch
         error_pitch_lis.append(np.rad2deg(error_pitch))
 
-        pitch_integral = pitch_integral + error_pitch * dT
-        cyc_long_input = P_pitch*error_pitch + I_pitch*pitch_integral
+        pitch_integral = (pitch_integral + error_pitch) * dT
+        cyc_long_input = P_pitch*error_pitch + I_pitch*pitch_integral + D_pitch*(error_pitch - error_pitch_old)/dT
+        error_pitch_old = error_pitch
         
         error_yaw = desired_yaw - current_yaw
         error_yaw_lis.append(np.rad2deg(error_roll))
@@ -534,12 +556,9 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
         yaw_trafo = np.rad2deg(error_yaw)
 
         yaw_integral = yaw_integral+yaw_trafo*dT
-        pedal_input = P_yaw*yaw_trafo+I_yaw*yaw_integral
+        #pedal_input = P_yaw*error_yaw+I_yaw*yaw_integral
+        pedal_input = 0
         
-# =============================================================================
-#         if yaw_trafo > 5:
-#             reference_frame_inertial_attitude_psi.write(float(init_cond_dict['Heading']))
-# =============================================================================
 
         e_pitch = error_pitch_lis[-1]
         e_roll = error_roll_lis[-1]
@@ -558,7 +577,7 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
         cyc_long_input_lis.append(cyc_long_input)
 
         if len(error_pitch_lis) > 100:
-            if all(abs(i) < 0.02 for i in error_pitch_lis[-80:]) and all(abs(i) < 0.02 for i in error_roll_lis[-80:]):
+            if all(abs(i) < 0.5 for i in error_pitch_lis[-80:]) and all(abs(i) < 0.5 for i in error_roll_lis[-80:]):
                 cyc_lat_input = sum(cyc_lat_input_lis[-30:])/30
                 cyc_long_input = sum(cyc_long_input_lis[-30:])/30
                 break
@@ -1030,7 +1049,7 @@ def create_plots(QTG_path, part):
                 #Table
                 output_table_recurrent[plot_title +' '+ param['unit']] = [round(np.mean(y_mqtg),2), round(np.mean(y_lotol),2), round(np.mean(y_Rec),2), round(np.mean(y_uptol),2)]
             else:
-                plt.plot(x_mqtg, y_mqtg, label='MQTG')
+                plt.plot(x_mqtg, y_mqtg, label='MQTG', color='orange')
                 plt.plot(x_mqtg, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
                 plt.plot(x_mqtg, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
                 plt.plot(x_Rec, y_Rec, label='Recurrent', color='green', linestyle='dashed')
