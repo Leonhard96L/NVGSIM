@@ -587,7 +587,7 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
         
         #old: 0.02 and 0.02
         if len(error_pitch_lis) > 100:
-            if all(abs(i) < 0.2 for i in error_pitch_lis[-80:]) and all(abs(i) < 0.2 for i in error_roll_lis[-80:]):
+            if all(abs(i) < 0.5 for i in error_pitch_lis[-80:]) and all(abs(i) < 0.5 for i in error_roll_lis[-80:]):
                 cyc_lat_input = sum(cyc_lat_input_lis[-30:])/30
                 cyc_long_input = sum(cyc_long_input_lis[-30:])/30
                 break

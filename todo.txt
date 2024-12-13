@@ -94,12 +94,12 @@ Fuer Leo:
 		-init_flyout: line 276 string
 		-MQTG_auto/MQTG_manu: FTD1_Recurrent -> FTD1_MQTG
 
-	Achtung die meistens Test haben ein automatic testing -> aendern im QTG data structure
+	Achtung die meistens Test haben ein automatic testing -> aendern im QTG data structure <done>
 	
-	Idee bei der Regelung nimm die letzten 50 daten aus den bewegungen und nimm davon den Mittelwert -> Achtung nur beim Recurrent auto gemacht
+	Idee bei der Regelung nimm die letzten 50 daten aus den bewegungen und nimm davon den Mittelwert -> Achtung nur beim Recurrent auto gemacht <done>
 	
 	Achtung:
-		-setze fixe Werte fuer das SAS	
+		-setze fixe Werte fuer das SAS	<done>
 		-alte Werte: attitude: x=0.01745, y=0.01745, z=0 ; x=0.00524, y=0.00873, z=0.01047
 		-neue Werte: attitude: x=0.025, y=0.025, z=0 ; x=0.01, y=0.01, z=0.01047
 		-setze fixe Werte fuer das CG x
@@ -109,14 +109,18 @@ Fuer Leo:
 	MQTG Tool:
 		-Achtung Vorzeichen fehler bei drehmoment <done>
 	Recurrent QTG tool: <done>
-		-Farben des MQTG plots anpassen 
+		-Farben des MQTG plots anpassen <done>
 		-Die alten plots koennen weck
 
 
 
 	Achtung Pedal wege eventuell anpassen
 		
-	CG Longitudinal [mm] Achtung in der Table nicht ganz Richtig		
+	CG Longitudinal [mm] Achtung in der Table nicht ganz Richtig	 <done>	
+
+	Achtung:
+		Die Abbruchbedingung fuer die Regelung der Snapshottests muss noch gefunden werden
+
 
 
 ####Achtung doch nicht entfernen######
