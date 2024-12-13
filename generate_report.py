@@ -215,7 +215,9 @@ def process_test_case_data(test_item, snapshot_data, init_cond_ref, init_cond_mq
     is_automatic = False if mode == mode.REFERENCE else test_item['is_automatic']   # references cannot be automatic tests
 
     # use 1 page for part, 5 for static case, +1 for snapshot data, ceil(n/3) for plots
-    count = 6 if part['snapshot'] else 5
+    count = 3 if mode != mode.REFERENCE else 2
+    if part['snapshot']:
+        count += 1
     count += int(math.ceil(len(plot_base64)/3))
 
     case.update({
