@@ -6,6 +6,7 @@
     {% include 'test_case_footer.html' %}
     {% include 'test_part_footer.html' %}
 </div>
+{% if mode != testMode.REFERENCE %}
 <div class="content">
     <h3 class="center-div">Manual Test Procedure</h3>
     <ol>
@@ -42,7 +43,9 @@
     {% include 'test_case_footer.html' %}
     {% include 'test_part_footer.html' %}
 </div>
+{% endif %}
 
+{% if mode != testMode.REFERENCE or case.is_snapshot %}
 <div class="content">
     {% if mode != testMode.REFERENCE %}
         <h3 class="center-div">Tolerances and Evaluation Criteria</h3>
@@ -50,24 +53,28 @@
         {% include 'tolerances_table.html' %}
         <p>Evaluation Criteria to be applied to Overplots figures.</p>
     {% endif %}
-
-    <h3 class="center-div">Expected Results</h3>
-    <p>Refer to annex (Validation Data Roadmap)</p>
-    {% include 'test_case_footer.html' %}
-    {% include 'test_part_footer.html' %}
-</div>
-
-{% if case.is_snapshot %}
-    <div class="content">
-        <h3 class="center-div">Test Results</h3>
+<!--    <h3 class="center-div">Expected Results</h3>-->
+<!--    <p>It is expected that the test data is within the tolerances of the reference.</p>-->
+    {% if case.is_snapshot %}
+        <h3 class="center-div">
+            {% if mode == testMode.REFERENCE %} Test Results
+            {% else %} Expected Results, Test Results and Comparison of Results {% endif %}
+        </h3>
         {% include 'snapshot_table.html' %}
+    {% endif %}
         {% include 'test_case_footer.html' %}
         {% include 'test_part_footer.html' %}
-    </div>
+</div>
 {% endif %}
 
 <div class="content">
-    {% if not case.is_snapshot %}<h3 class="center-div">Test Results</h3>{% endif %}
+    {% if not case.is_snapshot %}
+    <h3 class="center-div">
+        {% if mode == testMode.REFERENCE %} Test Results
+        {% else %} Expected Results, Test Results and Comparison of Results {% endif %}
+    </h3>
+    {% endif %}
+
     {% for plot in case.plots_base64 %}
         <img class="plot-image" src="data:image/svg;base64,{{ plot }}" alt="Plot Image">
         {% if loop.index0 % 3 == 0 %}
@@ -81,14 +88,12 @@
     {% include 'test_part_footer.html' %}
     {% endif %}
 </div>
-<div class="content">
-    <h3 class="center-div">Source Data</h3>
-    <p>Refer to annex (Validation Data Roadmap)</p>
 
-    <h3 class="center-div">Comparison of Results</h3>
-    <p>Passed</p>
-    {% include 'test_part_footer.html' %}
-</div>
+<!--<div class="content">-->
+<!--    <h3 class="center-div">Comparison of Results</h3>-->
+<!--    <p>Passed</p>-->
+<!--    {% include 'test_part_footer.html' %}-->
+<!--</div>-->
 
 <div class="content">
     <h3 class="center-div">Notes and Rationales</h3>
