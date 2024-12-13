@@ -174,8 +174,10 @@ def ATRIM_calc(x, y):
 # Linear interpolation of GW:
 # EC135T2+ min. GW = 1700kg max.GW = 2980kg
 # AS532 min. GW = 4500kg max.GW = 8600kg
-def GW_map(x):
-    return 4500 + (4100 / 1280) * (float(x) - 1700)
+# =============================================================================
+# def GW_map(x):
+#     return 4500 + (4100 / 1280) * (float(x) - 1700)
+# =============================================================================
 
 
 # =============================================================================
@@ -240,7 +242,7 @@ def units_conversion(init_cond_dict, unit):
     elif unit == 'Avi':
         init_cond_dict_Avi = init_cond_dict
         init_cond_dict_Avi['Gross Weight'] = round(float(init_cond_dict['Gross Weight']), 2)
-        init_cond_dict_Avi['CG Longitudinal'] = round(float(init_cond_dict['CG Longitudinal']) * m2mm, 2)
+        init_cond_dict_Avi['CG Longitudinal'] = round(float(CG_x_map(init_cond_dict['CG Longitudinal'])) * m2mm, 2)
         init_cond_dict_Avi['CG Lateral'] = round(float(init_cond_dict['CG Lateral']) * m2mm, 1)
         init_cond_dict_Avi['Pressure Altitude'] = round(float(init_cond_dict['Pressure Altitude']) * m2ft, 2)
         init_cond_dict_Avi['Wind Direction'] = round(np.rad2deg(float(init_cond_dict['Wind Direction'])), 2)
