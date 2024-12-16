@@ -515,9 +515,9 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
 #     D_pitch = 0.5
 # =============================================================================
     
-    P_roll = 12
-    I_roll = 8
-    D_roll = 0.2
+    P_roll = 30
+    I_roll = 20
+    D_roll = 1.5
     
     P_pitch = 11
     I_pitch = 7
@@ -587,11 +587,15 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
         
         #old: 0.02 and 0.02
         if len(error_pitch_lis) > 100:
-            if all(abs(i) < 0.5 for i in error_pitch_lis[-80:]) and all(abs(i) < 0.5 for i in error_roll_lis[-80:]):
+            if all(abs(i) < 0.1 for i in error_pitch_lis[-80:]) and all(abs(i) < 0.1 for i in error_roll_lis[-80:]):
                 cyc_lat_input = sum(cyc_lat_input_lis[-30:])/30
                 cyc_long_input = sum(cyc_long_input_lis[-30:])/30
                 break
-        
+        if len(error_pitch_lis) > 1000:
+            cyc_lat_input = sum(cyc_lat_input_lis[-30:])/30
+            cyc_long_input = sum(cyc_long_input_lis[-30:])/30
+            break
+
         # sleep for dT amount of seconds
         time.sleep(dT)
         # increment data row index

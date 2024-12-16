@@ -779,7 +779,7 @@ def create_plots(QTG_path, part):
                 #Table
                 output_table_recurrent[plot_title +' '+ param['unit']] = [round(np.mean(y_mqtg),2), round(np.mean(y_lotol),2), round(np.mean(y_Rec),2), round(np.mean(y_uptol),2)]
             else:
-                plt.plot(x_mqtg, y_mqtg, label='MQTG')
+                plt.plot(x_mqtg, y_mqtg, label='MQTG',color='orange')
                 plt.plot(x_mqtg, y_uptol, linewidth=0.5, color='orange', linestyle='dashed')
                 plt.plot(x_mqtg, y_lotol, linewidth=0.5, color='orange', linestyle='dashed')
                 plt.plot(x_Rec, y_Rec, label='Recurrent', color='green', linestyle='dashed')
@@ -863,7 +863,7 @@ def create_plots(QTG_path, part):
                 #Table
                 output_table_recurrent[plot_title +' '+ param['unit']] = [round(np.mean(y_mqtg),2), ' - ', round(np.mean(y_Rec),2), ' - ']
             else:
-                plt.plot(x_mqtg, y_mqtg, label='MQTG')
+                plt.plot(x_mqtg, y_mqtg, label='MQTG',color='orange')
                 plt.plot(x_Rec, y_Rec, label='Recurrent', color='green', linestyle='dashed')
 
                 
