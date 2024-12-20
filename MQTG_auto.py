@@ -370,17 +370,16 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
         current_yaw = output_matrix[i,OUTPUT.HEADING]
         
         error_roll = desired_roll - current_roll
-
+        
 # =============================================================================
-#         #Old
-#         roll_trafo = np.rad2deg(error_roll)*0.005
 #         P_roll = 10
 #         I_roll = 2
+#         D_roll = 0.05
 # =============================================================================
-        
-        P_roll = 10
+        P_roll = 3
         I_roll = 2
-        D_roll = 0.05
+        D_roll = 0.15
+
         
         roll_integral = (roll_integral + error_roll) * dT
         cyc_lat_input = P_roll*error_roll + I_roll*roll_integral + D_roll*(error_roll - error_roll_old)/dT
@@ -388,17 +387,10 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
         
         
         error_pitch = desired_pitch - current_pitch
-
         
-# =============================================================================
-#         pitch_trafo = np.rad2deg(error_pitch)*0.024
-#         P_pitch = 5
-#         I_pitch = 2
-# =============================================================================
-        
-        P_pitch = 8
+        P_pitch = 3
         I_pitch = 2
-        D_pitch = 0.05
+        D_pitch = 0.15
         
         pitch_integral = (pitch_integral + error_pitch) * dT
         cyc_long_input = P_pitch*error_pitch + I_pitch*pitch_integral + D_pitch*(error_pitch - error_pitch_old)/dT
@@ -811,7 +803,25 @@ def create_plots(QTG_path, part):
                 y_Rec = [map360(i) for i in y_Rec]
                 x_label = 'Time(s)'
                 y_label = 'Heading (deg)'
+            elif 'Pitch Angle Rate' in compare_name:
+                y=np.rad2deg(y)
+                y_Rec=np.rad2deg(y_Rec)
+                x_label = 'Time(s)'
+                y_label = 'Angle Rate (deg/s)'
+            elif 'Roll Angle Rate' in compare_name:
+                print("!1!")
+                y=np.rad2deg(y)
+                y_Rec=np.rad2deg(y_Rec)
+                x_label = 'Time(s)'
+                y_label = 'Angle Rate (deg/s)'
+            elif 'Yaw Angle Rate' in para_file_dict[plot_title]:
+                print("!2!")
+                y=np.rad2deg(y)
+                y_Rec=np.rad2deg(y_Rec)
+                x_label = 'Time(s)'
+                y_label = 'Angle Rate (deg/s)'
             elif 'Roll Angle' in para_file_dict[plot_title]:
+                print("!3!")
                 y=np.rad2deg(y)
                 y_Rec=np.rad2deg(y_Rec)
                 x_label = 'Time(s)'
@@ -826,11 +836,6 @@ def create_plots(QTG_path, part):
                 y_Rec=np.rad2deg(y_Rec)
                 x_label = 'Time(s)'
                 y_label = 'Sideslip Angle (deg)'
-            elif 'Angle Rate' in para_file_dict[plot_title]:
-                y=np.rad2deg(y)
-                y_Rec=np.rad2deg(y_Rec)
-                x_label = 'Time(s)'
-                y_label = 'Angle Rate (deg/s)'
             elif 'Control Position Pitch' in para_file_dict[plot_title]: 
                 y=[map_control(i, 'pitch') for i in y]
                 y_Rec=[map_control(i, 'pitch') for i in y_Rec]
@@ -955,8 +960,8 @@ def create_plots(QTG_path, part):
         'Lateral Cyclic Pos.' : 'Control Position Roll',
         'Pedals Pos.' : 'Control Position Yaw',
         'Collective Pos.' : 'Control Position Collective',
-        'Pitch Rate' : 'Pitch Angle Rate',
-        'Roll Rate' : 'Roll Angle Rate' ,
+        'Pitch Rate' : 'Pitch RS Angle Rate',
+        'Roll Rate' : 'Roll RS Angle Rate' ,
         'Yaw Rate' : 'Yaw Angle Rate',
         'Pressure Altitude' : 'Barometric Altitude',
         'Groundspeed':'Groundspeed',
@@ -977,10 +982,12 @@ def create_plots(QTG_path, part):
         for dirpath, dirnames, filenames in os.walk(QTG_path):     
             for file in filenames:
                 if para_file_dict[plot_title] in file.split('.')[0]  and file.endswith('.sim'):
+                    print(para_file_dict[plot_title])
                     file_path = os.path.join(dirpath, file)
+                    print(file_path)
                     compare_name = file.split('.')[0]
                     break
-                
+            
         with open(file_path, 'r') as json_file:
             data = json.load(json_file)
             
@@ -1081,6 +1088,7 @@ def create_plots(QTG_path, part):
                 if para_file_dict[plot_title] in file.split('.')[0]  and file.endswith('.sim'):
                     file_path = os.path.join(dirpath, file)
                     compare_name = file.split('.')[0]
+                    print(file_path)
                     break
         
         with open(file_path, 'r') as json_file:

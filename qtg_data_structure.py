@@ -23,7 +23,7 @@ data = {
                             'id': 'A1',
                             'name': 'RFM Engine Start - Rotor brake OFF during engine start',
                             # 'condition': '',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
                         },
                     ]
                 },
@@ -39,13 +39,13 @@ data = {
                             'id': 'A1',
                             'name': 'Steady State Idle - Both Engines at IDLE',
                             # 'condition': '',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
                         },
                         {
                             'id': 'B1',
                             'name': 'Operating RPM - Both Engines at FLIGHT',
                             # 'condition': '',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
                         },
                     ]
                 },
@@ -61,13 +61,13 @@ data = {
                             'id': 'A1',
                             'name': 'HI NR - OFF to ON',
                             # 'condition': '',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
                         },
                         {
                             'id': 'A2',
                             'name': 'HI NR - ON to OFF',
                             # 'condition': '',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
                         },
                     ]
                 },
@@ -123,7 +123,7 @@ data = {
                                 'When the test elapsed time is 3.4 seconds, pull collective to reach a vertical velocity of 800ft/min in 3.5 seconds.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['No Rationales related to the test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -151,7 +151,7 @@ data = {
                                 'When the test elapsed time is 3.6 seconds, push collective to reach descent of 500ft/min in 4.5 seconds'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['No Rationales related to the Test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -223,7 +223,7 @@ data = {
                                 'After 35s a height of 280ft AGL should be reached.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['No Rationales related to the Test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -295,7 +295,7 @@ data = {
                                 'After 35s an IAS of 55kts and height of 400ft AGL should be reached.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': [
                                     '1. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
@@ -356,7 +356,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -383,7 +383,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -410,7 +410,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -437,7 +437,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -464,7 +464,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -491,7 +491,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -518,7 +518,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -545,7 +545,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -602,7 +602,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -629,7 +629,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -691,7 +691,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -719,7 +719,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -747,7 +747,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -775,7 +775,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -839,7 +839,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -867,7 +867,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -895,7 +895,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -923,7 +923,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -951,7 +951,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -979,7 +979,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1007,7 +1007,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1035,7 +1035,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1063,7 +1063,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': [
                                     '1. In order to simulate OEI, an engine fail was used',
                                     '2. Note that it is not possible to turn off SAS (stability augmentation system)'],
@@ -1093,7 +1093,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': [
                                     '1. In order to simulate OEI, an engine fail was used',
                                     '2. Note that it is not possible to turn off SAS (stability augmentation system)'],
@@ -1160,7 +1160,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1188,7 +1188,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1262,7 +1262,7 @@ data = {
                                 'Continue the maneuver touching the ground when the test elapsed time is 59.0 seconds.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['No Rationales related to the Test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1339,7 +1339,7 @@ data = {
                                 'Start to pull the collective to cushion the landing and touch the ground when the test elapsed time is 72.0 seconds.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': [
                                     '1. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
@@ -1375,7 +1375,7 @@ data = {
                                 'Start to pull the collective to cushion the landing and touch the ground when the test elapsed time is 74.0 seconds.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': [
                                     '1. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
@@ -1429,7 +1429,7 @@ data = {
                                'Move the Cyclic stick to perform a complete sweep on the longitudinal axis.'
                            ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': [
                                     '1. Note that it is not possible to turn off SAS (stability augmentation system)',
                                     '2. Refer to the appendix A - Control Loading System (CLS)'],
@@ -1457,7 +1457,7 @@ data = {
                                 'Move the Cyclic stick to perform a complete sweep on the longitudinal axis while pressing the FTR Release button.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': [
                                     '1. Note that it is not possible to turn off SAS (stability augmentation system)',
                                     '2. Refer to the appendix where the CLS is described'],
@@ -1485,7 +1485,7 @@ data = {
                                 'Move the Cyclic stick to perform a complete sweep on the lateral axis.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': [
                                     '1. Note that it is not possible to turn off SAS (stability augmentation system)',
                                     '2. Refer to the appendix where the CLS is described'],
@@ -1513,7 +1513,7 @@ data = {
                                 'Move the Cyclic stick to perform a complete sweep on the lateral axis while pressing the FTR Release button.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': [
                                     '1. Note that it is not possible to turn off SAS (stability augmentation system)',
                                     '2. Refer to the appendix where the CLS is described'],
@@ -1562,7 +1562,7 @@ data = {
                                 'Move the Collective lever to perform a complete sweep.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': [
                                     '1. Note that it is not possible to turn off SAS (stability augmentation system)',
                                     '2. Refer to the appendix where the CLS is described'],
@@ -1573,7 +1573,7 @@ data = {
                             'id': 'A2',
                             'name': 'Collective - Trim OFF',
                             # 'condition': '',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
                         },
                         {
                             'id': 'B1',
@@ -1596,7 +1596,7 @@ data = {
                                 'Move the Pedals to perform a complete sweep.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': [
                                     '1. Note that it is not possible to turn off SAS (stability augmentation system)',
                                     '2. Refer to the appendix where the CLS is described'],
@@ -1662,7 +1662,7 @@ data = {
                                 'Press the Beep-Trim to move the Cyclic stick in the full aft position on the longitudinal axis.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['No Rationales related to the Test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1688,7 +1688,7 @@ data = {
                                 'Press the Beep-Trim to move the Cyclic stick in the full right position on the lateral axis.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['No Rationales related to the Test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1697,13 +1697,13 @@ data = {
                             'id': 'C1',
                             'name': 'Pedals - ATRIM',
                             # 'condition': '',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
                         },
                         {
                             'id': 'D1',
                             'name': 'Collective - ATRIM',
                             # 'condition': '',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
                         },
                     ]
                 },
@@ -1757,7 +1757,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1785,7 +1785,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.2 A1'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1813,7 +1813,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.2 A1'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1841,7 +1841,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1869,7 +1869,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.2 B1'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1897,7 +1897,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.2 B1'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1925,7 +1925,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': [
                                     '1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
@@ -1954,7 +1954,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.2 C1'],
                                 'rationales_validation_data': [
                                     '1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
@@ -1983,7 +1983,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.2 C1'],
                                 'rationales_validation_data': [
                                     '1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
@@ -2012,7 +2012,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2040,7 +2040,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.2 D1'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2068,7 +2068,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.2 D1'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2125,7 +2125,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2152,7 +2152,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.4 A1'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2179,7 +2179,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.4 A1'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2206,7 +2206,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2233,7 +2233,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.4 B1'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2260,7 +2260,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.4 B1'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2287,7 +2287,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2314,7 +2314,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.4 C1'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2341,7 +2341,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.4 C1'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2368,7 +2368,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2395,7 +2395,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.4 D1'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2422,7 +2422,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.4 D1'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2494,7 +2494,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2521,7 +2521,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.d.2 A1'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2548,7 +2548,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.d.2 A1'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2575,7 +2575,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2602,7 +2602,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.d.2 B1'],
                                 'rationales_validation_data': ['Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2629,7 +2629,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.d.2 B1'],
                                 'rationales_validation_data': ['Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2710,7 +2710,7 @@ data = {
                                 'When the test elapsed time is 3.0 seconds, perform a pedal control doublet. Return pedal controls position to initial position, and then keep hands-off controls.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2719,7 +2719,7 @@ data = {
                             'id': 'A2',
                             'name': 'Mid Speed - Vy, AFCS OFF, Left Pedal input',
                             'condition': 'Mid Speed - 66 KIAS, Left Pedal input',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',    # NUR in NA tests einbauen!
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',    # NUR in NA tests einbauen!
                             'automatic_testing_possible': True,
                             'generic_flight_controls': [
                                 {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
@@ -2739,7 +2739,7 @@ data = {
                                 'When the test elapsed time is 3.5 seconds, perform a pedal control doublet. Return pedal controls position to initial position, and then keep hands-off controls.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2767,7 +2767,7 @@ data = {
                                 'When the test elapsed time is 3.6 seconds, perform a pedal control doublet. Return pedal controls position to initial position, and then keep hands-off controls.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2776,7 +2776,7 @@ data = {
                             'id': 'B2',
                             'name': 'Lateral-Directional Oscillations',
                             'condition': 'High Speed - 90 KIAS, Left Pedal input',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
                             'automatic_testing_possible': True,
                             'generic_flight_controls': [
                                 {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
@@ -2796,7 +2796,7 @@ data = {
                                 'When the test elapsed time is 2.5 seconds, perform a pedal control doublet. Return pedal controls position to initial position, and then keep hands-off controls.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2857,7 +2857,7 @@ data = {
                                 'When the test elapsed time is 36.0 seconds, release lateral cyclic.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2866,7 +2866,7 @@ data = {
                             'id': 'A2',
                             'name': 'Spiral Stability',
                             'condition': 'Right Input - 64 KIAS',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
                             'automatic_testing_possible': True,
                             'generic_flight_controls': [
                                 {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
@@ -2884,7 +2884,7 @@ data = {
                                 'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2913,7 +2913,7 @@ data = {
                                 'When the test elapsed time is 44.0 seconds, release lateral cyclic.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -2922,7 +2922,7 @@ data = {
                             'id': 'B2',
                             'name': 'Spiral Stability',
                             'condition': 'Left Input - 64 KIAS',
-                            'not_applicable': 'Test not applicable. Refer to Ref. 7.',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
                             'automatic_testing_possible': False,
                             'generic_flight_controls': [
                                 {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
@@ -2938,7 +2938,7 @@ data = {
                                 'N.A.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }

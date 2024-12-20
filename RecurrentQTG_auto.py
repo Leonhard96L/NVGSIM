@@ -370,9 +370,9 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
         error_roll = desired_roll - current_roll
 
         
-        P_roll = 10
+        P_roll = 3
         I_roll = 2
-        D_roll = 0.05
+        D_roll = 0.15
         
         roll_integral = (roll_integral + error_roll) * dT
         cyc_lat_input = P_roll*error_roll + I_roll*roll_integral + D_roll*(error_roll - error_roll_old)/dT
@@ -381,9 +381,9 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
         
         error_pitch = desired_pitch - current_pitch
 
-        P_pitch = 8
+        P_pitch = 3
         I_pitch = 2
-        D_pitch = 0.05
+        D_pitch = 0.15
         
         pitch_integral = (pitch_integral + error_pitch) * dT
         cyc_long_input = P_pitch*error_pitch + I_pitch*pitch_integral + D_pitch*(error_pitch - error_pitch_old)/dT
