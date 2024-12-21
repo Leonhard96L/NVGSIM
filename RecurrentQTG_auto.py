@@ -310,7 +310,7 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
     for path, i in zip(Input_paths,range(INPUT.NUMBER_OF_INPUTS)):
         with open(path, 'r') as json_file:
             data = json.load(json_file)
-        MQTG_input_matrix[:,i] = data["FTD1_MQTG"]["y"]
+        MQTG_input_matrix[:,i] = data["FTD1"]["y"]
         
     MQTG_pitch_path = os.path.join(QTG_path, 'Pitch Angle.XY.qtgplot.sim')
     MQTG_roll_path = os.path.join(QTG_path, 'Roll Angle.XY.qtgplot.sim')
@@ -318,15 +318,15 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
 
     with open(MQTG_roll_path, 'r') as json_file:
         data = json.load(json_file)
-    MQTG_roll = data["FTD1_MQTG"]["y"]
+    MQTG_roll = data["FTD1"]["y"]
     
     with open(MQTG_pitch_path, 'r') as json_file:
         data = json.load(json_file)
-    MQTG_pitch = data["FTD1_MQTG"]["y"]
+    MQTG_pitch = data["FTD1"]["y"]
     
     with open(MQTG_yaw_path, 'r') as json_file:
         data = json.load(json_file)
-    MQTG_yaw = data["FTD1_MQTG"]["y"]
+    MQTG_yaw = data["FTD1"]["y"]
     
     i = 0
     pitch_integral = 0
@@ -443,7 +443,7 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
     for path, i in zip(Input_paths,range(INPUT.NUMBER_OF_INPUTS)):
         with open(path, 'r') as json_file:
             data = json.load(json_file)
-        MQTG_input_matrix[:,i] = data["FTD1_MQTG"]["y"]
+        MQTG_input_matrix[:,i] = data["FTD1"]["y"]
 
     MQTG_pitch_path = os.path.join(QTG_path, 'Pitch Angle.XY.qtgplot.sim')
     MQTG_roll_path = os.path.join(QTG_path, 'Roll Angle.XY.qtgplot.sim')
@@ -451,15 +451,15 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
 
     with open(MQTG_roll_path, 'r') as json_file:
         data = json.load(json_file)
-    MQTG_roll = data["FTD1_MQTG"]["y"]
+    MQTG_roll = data["FTD1"]["y"]
     
     with open(MQTG_pitch_path, 'r') as json_file:
         data = json.load(json_file)
-    MQTG_pitch = data["FTD1_MQTG"]["y"]
+    MQTG_pitch = data["FTD1"]["y"]
     
     with open(MQTG_yaw_path, 'r') as json_file:
         data = json.load(json_file)
-    MQTG_yaw = data["FTD1_MQTG"]["y"]  
+    MQTG_yaw = data["FTD1"]["y"]  
     
     
     
@@ -743,7 +743,7 @@ def get_QTG_init_cond_ref(QTG_path):
     init_cond_ref_path = os.path.join(QTG_path, 'init_conditions.json')
     with open(init_cond_ref_path, 'r') as json_file:
         init_cond_ref_dict = json.load(json_file)
-    return init_cond_ref_dict["Init_condition_MQTG"]
+    return init_cond_ref_dict["Init_condition_Refer"]
 
 
 
