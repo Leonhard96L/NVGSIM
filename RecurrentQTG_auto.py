@@ -615,8 +615,8 @@ def save_io_files(QTG_path, input_matrix, output_matrix, T):
     os.path.join(QTG_path,'Pitch Angle.XY.qtgplot.sim'),
     os.path.join(QTG_path,'Roll Angle.XY.qtgplot.sim'),
     os.path.join(QTG_path,'Yaw Angle Unwrapped.XY.qtgplot.sim'),
-    os.path.join(QTG_path,'Pitch Angle Rate.XY.qtgplot.sim'),
-    os.path.join(QTG_path,'Roll Angle Rate.XY.qtgplot.sim'),
+    os.path.join(QTG_path,'Pitch Rate.XY.qtgplot.sim'),
+    os.path.join(QTG_path,'Roll Rate.XY.qtgplot.sim'),
     os.path.join(QTG_path,'Yaw Angle Rate.XY.qtgplot.sim'),
     os.path.join(QTG_path,'Vertical Speed.XY.qtgplot.sim'),
     os.path.join(QTG_path,'Angle of Sideslip.XY.qtgplot.sim')
@@ -814,6 +814,21 @@ def create_plots(QTG_path, part):
                 y_Rec = [map360(i) for i in y_Rec]
                 x_label = 'Time(s)'
                 y_label = 'Heading (deg)'
+            elif 'Pitch Rate' in compare_name:
+                y=np.rad2deg(y)
+                y_Rec=np.rad2deg(y_Rec)
+                x_label = 'Time(s)'
+                y_label = 'Angle Rate (deg/s)'
+            elif 'Roll Rate' in compare_name:
+                y=np.rad2deg(y)
+                y_Rec=np.rad2deg(y_Rec)
+                x_label = 'Time(s)'
+                y_label = 'Angle Rate (deg/s)'
+            elif 'Yaw Angle Rate' in para_file_dict[plot_title]:
+                y=np.rad2deg(y)
+                y_Rec=np.rad2deg(y_Rec)
+                x_label = 'Time(s)'
+                y_label = 'Angle Rate (deg/s)'
             elif 'Roll Angle' in para_file_dict[plot_title]:
                 y=np.rad2deg(y)
                 y_Rec=np.rad2deg(y_Rec)
@@ -829,11 +844,6 @@ def create_plots(QTG_path, part):
                 y_Rec=np.rad2deg(y_Rec)
                 x_label = 'Time(s)'
                 y_label = 'Sideslip Angle (deg)'
-            elif 'Angle Rate' in para_file_dict[plot_title]:
-                y=np.rad2deg(y)
-                y_Rec=np.rad2deg(y_Rec)
-                x_label = 'Time(s)'
-                y_label = 'Angle Rate (deg/s)'
             elif 'Control Position Pitch' in para_file_dict[plot_title]: 
                 y=[map_control(i, 'pitch') for i in y]
                 y_Rec=[map_control(i, 'pitch') for i in y_Rec]
@@ -958,8 +968,8 @@ def create_plots(QTG_path, part):
         'Lateral Cyclic Pos.' : 'Control Position Roll',
         'Pedals Pos.' : 'Control Position Yaw',
         'Collective Pos.' : 'Control Position Collective',
-        'Pitch Rate' : 'Pitch Angle Rate',
-        'Roll Rate' : 'Roll Angle Rate' ,
+        'Pitch Rate' : 'Pitch Rate',
+        'Roll Rate' : 'Roll Rate' ,
         'Yaw Rate' : 'Yaw Angle Rate',
         'Pressure Altitude' : 'Barometric Altitude',
         'Groundspeed':'Groundspeed',
