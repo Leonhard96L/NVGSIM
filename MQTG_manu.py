@@ -862,7 +862,7 @@ def create_plots(QTG_path, part):
                 plt.axhline(y = np.mean(y_mqtg), xmin = x_min_snapshot, xmax = x_max_snapshot, label='MQTG', color='orange')
                 plt.xlim(x_min, x_max)
                 #Table
-                output_table_mqtg[plot_title +' '+ param['unit']] = [round(np.mean(y_mqtg),2), ' - ', ' ', ' - ']
+                output_table_mqtg[plot_title +' '+ param_add['unit']] = [round(np.mean(y_mqtg),2), ' - ', ' ', ' - ']
             else:
                 plt.plot(x_mqtg, y_mqtg, label='MQTG', color='orange')
 
@@ -940,7 +940,7 @@ def main(test_item, test_dir, gui_output, gui_input):
     LOWL = [48.23380,14.20719]
     reference_frame_inertial_position_latitude.write(LOWL[0])
     reference_frame_inertial_position_longitude.write(LOWL[1])
-    reference_frame_inertial_position_altitude.write(295)
+    reference_frame_inertial_position_altitude.write(296)
     reference_frame_body_freestream_airspeed.write(0)
     reference_frame_inertial_position_v_xy.write(0)
     hardware_pilot_cyclic_lateral_trim_position.write(0)

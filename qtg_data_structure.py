@@ -1131,7 +1131,6 @@ data = {
                     ],
                     'add_plots' : [
                         {'parameter': 'Airspeed', 'unit': '[kts]'},
-                        {'parameter': 'Pitch Angle', 'unit': '[deg]'},
                         {'parameter': 'Bank Angle', 'unit': '[deg]'},
                         {'parameter': 'Heading', 'unit': '[deg]'},
                         {'parameter': 'Vertical Velocity', 'unit': '[ft/min]'}
@@ -1727,7 +1726,6 @@ data = {
                         {'parameter': 'Heading', 'unit': '[deg]'},
                         {'parameter': 'Engine 1 Torque', 'unit': '[%]'},
                         {'parameter': 'Engine 2 Torque', 'unit': '[%]'},
-                        {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]'},
                         {'parameter': 'Lateral Cyclic Pos.', 'unit': '[%]'},
                         {'parameter': 'Pedals Pos.', 'unit': '[%]'},
                         {'parameter': 'Collective Pos.', 'unit': '[%]'},
@@ -2468,7 +2466,6 @@ data = {
                         {'parameter': 'Engine 1 Torque', 'unit': '[%]'},
                         {'parameter': 'Engine 2 Torque', 'unit': '[%]'},
                         {'parameter': 'Sideslip Angle', 'unit': '[deg]'},
-                        {'parameter': 'Pedals Pos.', 'unit': '[%]'},
                         {'parameter': 'Collective Pos.', 'unit': '[%]'}
                     ],
                     'test_cases': [

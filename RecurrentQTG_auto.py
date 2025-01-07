@@ -577,7 +577,7 @@ def TRIM_pilot_2(QTG_path,T,init_cond_dict):
         cyc_long_input_lis.append(cyc_long_input)
 
         if len(error_pitch_lis) > 100:
-            if all(abs(i) < 0.1 for i in error_pitch_lis[-80:]) and all(abs(i) < 0.1 for i in error_roll_lis[-80:]):
+            if all(abs(i) < 0.01 for i in error_pitch_lis[-80:]) and all(abs(i) < 0.01 for i in error_roll_lis[-80:]):
                 cyc_lat_input = sum(cyc_lat_input_lis[-30:])/30
                 cyc_long_input = sum(cyc_long_input_lis[-30:])/30
                 break
@@ -1146,7 +1146,7 @@ def create_plots(QTG_path, part):
                 plt.axhline(y = np.mean(y_Rec), xmin = x_min_snapshot, xmax = x_max_snapshot, label='Recurrent', color='green', linestyle='dashed')
                 plt.xlim(x_min, x_max)
                 #Table
-                output_table_recurrent[plot_title +' '+ param['unit']] = [round(np.mean(y_mqtg),2), ' - ', round(np.mean(y_Rec),2), ' - ']
+                output_table_recurrent[plot_title +' '+ param_add['unit']] = [round(np.mean(y_mqtg),2), ' - ', round(np.mean(y_Rec),2), ' - ']
             else:
                 plt.plot(x_mqtg, y_mqtg, label='MQTG', color='orange')
                 plt.plot(x_Rec, y_Rec, label='Recurrent', color='green', linestyle='dashed')
@@ -1201,7 +1201,7 @@ def main(test_item, test_dir, gui_output, gui_input):
     LOWL = [48.23380,14.20719]
     reference_frame_inertial_position_latitude.write(LOWL[0])
     reference_frame_inertial_position_longitude.write(LOWL[1])
-    reference_frame_inertial_position_altitude.write(295)
+    reference_frame_inertial_position_altitude.write(296)
     reference_frame_body_freestream_airspeed.write(0)
     reference_frame_inertial_position_v_xy.write(0)
     simulation_mode.write(SIM_MODE.TRIM)
