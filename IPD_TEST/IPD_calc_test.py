@@ -40,7 +40,7 @@ def closest_points_between_lines(O1, D1, O2, D2, IDP):
     return closest_point_on_line1, closest_point_on_line2, distance, mean_intersection_point, distance_object
 
 
-file_path = r'D:\entity\rotorsky\ec135\resources\NVGSIM\IPD_TEST\varjo_gaze_output_2024-10-25_11-58-25-415_3m.csv'  # Pfad zur CSV-Datei
+file_path = r'D:\entity\rotorsky\ec135\resources\NVGSIM\IPD_TEST\Recurrent\varjo_gaze_output_2025-01-13_10-21-35-535.csv'  # Pfad zur CSV-Datei
 data = pd.read_csv(file_path)
 distance_object_lis = [] 
 for index, row in data.iterrows():
@@ -61,7 +61,7 @@ for index, row in data.iterrows():
     distance_object_lis.append(distance_object)
     
 print("Mittelwert des Abstands:")
-print(np.mean(distance_object_lis)*3)
+print(np.mean(distance_object_lis)*10)
     
 #3m: 3.003226688946665
 #10m: 10.035241473991693

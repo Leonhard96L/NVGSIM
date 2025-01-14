@@ -70,7 +70,7 @@ hardware_pilot_cyclic_longitudinal_trim_position = DSim.Variable.Double(DSim.Nod
 hardware_pilot_pedals_position = DSim.Variable.Double(DSim.Node(dsim_entity,"hardware/pilot/pedals/position"))
 hardware_pilot_pedals_trim_position = DSim.Variable.Double(DSim.Node(dsim_entity,"hardware/pilot/pedals/trim/position"))
 
-
+#Stop Dnamic Flightmodel
 
 LOWL = [48.23386,14.20719]
 RW_26 = np.deg2rad(260)
@@ -109,32 +109,32 @@ print("Ready")
 #Transport delay  test fuer HMD
 #while True:
     
+    #lateral nach rechts druecken
 # =============================================================================
-#     #lateral nach rechts druecken
 #     if cyclic_lat > abs(cyclic_lat_init) + 0.005: 
 #         reference_frame_inertial_attitude_phi.write(np.deg2rad(20))
 #         #time.sleep(0.3)
-#         simulation_mode.write(SIM_MODE.PAUSE) 
+#         #simulation_mode.write(SIM_MODE.PAUSE) 
 #     cyclic_lat = hardware_pilot_cyclic_lateral_position.read()
 # =============================================================================
     
+    #longitudinal nach hinten druecken
 # =============================================================================
-#     #longitudinal nach hinten druecken
 #     if cyclic_long > abs(cyclic_long_init) + 0.005: 
 #         reference_frame_inertial_attitude_theta.write(np.deg2rad(20))
 #         #time.sleep(0.3)
-#         simulation_mode.write(SIM_MODE.PAUSE) 
+#         #simulation_mode.write(SIM_MODE.PAUSE) 
 #     cyclic_long = hardware_pilot_cyclic_longitudinal_position.read()
 # =============================================================================
     
 
+    #ins rechte pedal treten
+    #0.0005
 # =============================================================================
-#     #ins rechte pedal treten
-#     #0.0005
 #     if pedals > abs(pedals_init) + 0.0001: 
 #         reference_frame_inertial_attitude_psi.write(np.deg2rad(RW_26+30))
-#         time.sleep(0.3)
-#         simulation_mode.write(SIM_MODE.PAUSE) 
+#         #time.sleep(0.3)
+#         #simulation_mode.write(SIM_MODE.PAUSE) 
 #     pedals = hardware_pilot_pedals_position.read()
 # =============================================================================
     
@@ -144,36 +144,48 @@ print("Ready")
 
 #Transport delay test fuer instrumenten display
 while True:
-    print(cyclic_lat_init)
-    if cyclic_lat > abs(cyclic_lat_init) + 0.0005: 
-        reference_frame_inertial_attitude_phi.write(np.deg2rad(10))
-        time.sleep(0.5)
-        #simulation_mode.write(SIM_MODE.PAUSE) 
-    cyclic_lat = hardware_pilot_cyclic_lateral_position.read()
+# =============================================================================
+#     print(cyclic_lat_init)
+#     if cyclic_lat > abs(cyclic_lat_init) + 0.005: 
+#         reference_frame_inertial_attitude_phi.write(np.deg2rad(10))
+#         #time.sleep(0.5)
+#         #simulation_mode.write(SIM_MODE.PAUSE) 
+#     cyclic_lat = hardware_pilot_cyclic_lateral_position.read()
+# =============================================================================
 
 # =============================================================================
 #     if cyclic_long > abs(cyclic_long_init) + 0.0005: 
 #         reference_frame_inertial_attitude_theta.write(np.deg2rad(5))
-#         time.sleep(0.7)
-#         simulation_mode.write(SIM_MODE.PAUSE) 
+#         #time.sleep(0.7)
+#         #simulation_mode.write(SIM_MODE.PAUSE) 
 #     cyclic_long = hardware_pilot_cyclic_longitudinal_position.read()
 # =============================================================================
     
 
 
-# =============================================================================
-#     if pedals > abs(pedals_init) + 0.0005: 
-#         reference_frame_inertial_attitude_psi.write(np.deg2rad(RW_26+5))
-#         time.sleep(0.5)
-#         simulation_mode.write(SIM_MODE.PAUSE) 
-#         
-#     pedals = hardware_pilot_pedals_position.read()
-# =============================================================================
-    
+    if pedals > abs(pedals_init) + 0.0005: 
+        reference_frame_inertial_attitude_psi.write(np.deg2rad(RW_26+5))
+        #time.sleep(0.5)
+        #simulation_mode.write(SIM_MODE.PAUSE) 
+        
+    pedals = hardware_pilot_pedals_position.read()
     
     
 
-
+#Recurrent am 13.01.2025:
+# Gopro with 60fps
+# =============================================================================
+# HMD response:
+# -lat: 7 frames
+# -long: 8 frames
+# -pedal: 4 frames
+# 
+# Instrument response:
+# -lat:  10frames
+# -long:  12frames
+# -pedal:  8frames
+# 
+# =============================================================================
 
     
     

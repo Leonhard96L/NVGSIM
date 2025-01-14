@@ -292,7 +292,7 @@ def TRIM_pilot(QTG_path,T, cyc_long_input, cyc_lat_input):
     simulation_mode.write(SIM_MODE.PAUSE)
 
     
-def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
+def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot, QTG_name):
     MQTG_input_matrix = np.empty((len(T),INPUT.NUMBER_OF_INPUTS))
     output_matrix = np.empty((len(T),OUTPUT.NUMBER_OF_OUTPUTS))
     input_matrix = np.empty((len(T),INPUT.NUMBER_OF_INPUTS))
@@ -310,7 +310,7 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
     for path, i in zip(Input_paths,range(INPUT.NUMBER_OF_INPUTS)):
         with open(path, 'r') as json_file:
             data = json.load(json_file)
-        MQTG_input_matrix[:,i] = data["FTD1"]["y"]
+        MQTG_input_matrix[:,i] = data["FTD1_MQTG"]["y"]
         
     MQTG_pitch_path = os.path.join(QTG_path, 'Pitch Angle.XY.qtgplot.sim')
     MQTG_roll_path = os.path.join(QTG_path, 'Roll Angle.XY.qtgplot.sim')
@@ -318,15 +318,15 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
 
     with open(MQTG_roll_path, 'r') as json_file:
         data = json.load(json_file)
-    MQTG_roll = data["FTD1"]["y"]
+    MQTG_roll = data["FTD1_MQTG"]["y"]
     
     with open(MQTG_pitch_path, 'r') as json_file:
         data = json.load(json_file)
-    MQTG_pitch = data["FTD1"]["y"]
+    MQTG_pitch = data["FTD1_MQTG"]["y"]
     
     with open(MQTG_yaw_path, 'r') as json_file:
         data = json.load(json_file)
-    MQTG_yaw = data["FTD1"]["y"]
+    MQTG_yaw = data["FTD1_MQTG"]["y"]
     
     i = 0
     pitch_integral = 0
@@ -337,6 +337,51 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
     
     error_roll_old = 0
     error_pitch_old = 0
+    error_yaw_old = 0
+    
+# =============================================================================
+#     if QTG_name == "1.c.1_A1" or QTG_name == "1.c.2_A1" or QTG_name == "1.j.1_A1" or QTG_name == "1.j.2_A1" or QTG_name == "1.j.2_A2":
+#         P_roll = 7
+#         I_roll = 5
+#         D_roll = 0.15
+#         
+#         P_yaw = 0
+#         I_yaw = 0
+#         D_yaw = 0
+#         
+#         P_pitch = 7
+#         I_pitch = 5
+#         D_pitch = 0.15
+#         
+#     
+#         
+#     else:
+#         P_roll = 3
+#         I_roll = 2
+#         D_roll = 0.15
+#         
+#         P_yaw = 0
+#         I_yaw = 0
+#         D_yaw = 0
+#         
+#         P_pitch = 3
+#         I_pitch = 2
+#         D_pitch = 0.15
+# =============================================================================
+    
+    P_roll = 7
+    I_roll = 5
+    D_roll = 0.15
+    
+    P_yaw = 0
+    I_yaw = 0
+    D_yaw = 0
+    
+    P_pitch = 7
+    I_pitch = 5
+    D_pitch = 0.15
+    
+    
     
     while i < len(T)-1:
         
@@ -370,9 +415,7 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
         error_roll = desired_roll - current_roll
 
         
-        P_roll = 3
-        I_roll = 2
-        D_roll = 0.15
+
         
         roll_integral = (roll_integral + error_roll) * dT
         cyc_lat_input = P_roll*error_roll + I_roll*roll_integral + D_roll*(error_roll - error_roll_old)/dT
@@ -381,9 +424,7 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
         
         error_pitch = desired_pitch - current_pitch
 
-        P_pitch = 3
-        I_pitch = 2
-        D_pitch = 0.15
+
         
         pitch_integral = (pitch_integral + error_pitch) * dT
         cyc_long_input = P_pitch*error_pitch + I_pitch*pitch_integral + D_pitch*(error_pitch - error_pitch_old)/dT
@@ -392,17 +433,15 @@ def math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot):
 
         error_yaw = desired_yaw - current_yaw
         
-        yaw_trafo = np.rad2deg(error_yaw)
         
-        P_yaw = 0.2
-        I_yaw = 0.2
-        yaw_integral = yaw_integral+yaw_trafo*dT
-        #pedal_input = P_yaw*yaw_trafo+I_yaw*yaw_integral
-        pedal_input = 0
+        yaw_integral = (yaw_integral+error_yaw)*dT
+        pedal_input = P_yaw*error_yaw+I_yaw*yaw_integral + D_yaw*(error_yaw-error_yaw_old)/dT
+        error_yaw_old = error_yaw
+        
         
         
         if not issnapshot:
-            pedal_input = 0
+            
             hardware_pilot_collective_position.write(MQTG_input_matrix[i,INPUT.COLLECTIVE])
             hardware_pilot_cyclic_lateral_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LATERAL]+cyc_lat_input)
             hardware_pilot_cyclic_longitudinal_position.write(MQTG_input_matrix[i,INPUT.CYCLIC_LONGITUDINAL]+cyc_long_input)
@@ -680,6 +719,7 @@ def set_init_cond_recurrent(init_cond_dict, cyc_long_input, cyc_lat_input, pedal
 
     reference_frame_inertial_position_latitude.write(float(init_cond_dict['location_lat']))
     reference_frame_inertial_position_longitude.write(float(init_cond_dict['location_long']))
+    
         
     
     configuration_loading_empty_mass.write(float(init_cond_dict['Gross Weight']))
@@ -1238,7 +1278,7 @@ def main(test_item, test_dir, gui_output, gui_input):
     
     
     
-    input_matrix, output_matrix = math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot)
+    input_matrix, output_matrix = math_pilot(QTG_path,T, cyc_long_input, cyc_lat_input, issnapshot, QTG_name)
 
     save_io_files(QTG_path, input_matrix, output_matrix, T)
     create_plots(QTG_path,part)
