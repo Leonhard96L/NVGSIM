@@ -106,8 +106,9 @@ cyclic_long = cyclic_long_init
 print("Ready")
 
 
-#Transport delay  test fuer HMD
-#while True:
+# Transport delay  test fuer HMD
+# !! vor Skript ausfuehrung stoppe EC135 1  -> all task -> Dnamics Flightmodel
+# while True:
     
     #lateral nach rechts druecken
 # =============================================================================
@@ -134,7 +135,7 @@ print("Ready")
 #     if pedals > abs(pedals_init) + 0.0001: 
 #         reference_frame_inertial_attitude_psi.write(np.deg2rad(RW_26+30))
 #         #time.sleep(0.3)
-#         #simulation_mode.write(SIM_MODE.PAUSE) 
+#         #simulation_mode.write(SIM_MODE.PAUSE)
 #     pedals = hardware_pilot_pedals_position.read()
 # =============================================================================
     
@@ -144,8 +145,8 @@ print("Ready")
 
 #Transport delay test fuer instrumenten display
 while True:
+    # print(cyclic_lat_init)
 # =============================================================================
-#     print(cyclic_lat_init)
 #     if cyclic_lat > abs(cyclic_lat_init) + 0.005: 
 #         reference_frame_inertial_attitude_phi.write(np.deg2rad(10))
 #         #time.sleep(0.5)
