@@ -3,6 +3,7 @@ import json
 import math
 import os
 import re
+import win32com.client as win32
 
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML, CSS
@@ -265,8 +266,9 @@ def process_test_case_na(test_item, date_time, mode):
     }
     return data
 
-
+# TODO GAR: cleanup
 # creates a test_case report for one test case with headers.
+""""
 def create_test_case_pdf(data, output_file):
     # Set up Jinja2 environment
     env = Environment(loader=FileSystemLoader('./templates'))
@@ -277,7 +279,21 @@ def create_test_case_pdf(data, output_file):
     css_path = './templates/style.css'
     # Convert the rendered HTML to PDF
     HTML(string=html_out).write_pdf(output_file, stylesheets=[CSS(css_path)])
+"""
 
+def create_test_case_pdf(data, output_dir):
+    env = Environment(loader=FileSystemLoader('./templates'))
+    template = env.get_template('test_case_wrapper.html')
+    html_out = template.render(data)
+    with open("temp/temp.html", "w", encoding="utf-8") as f:
+        f.write(html_out)
+    html_file = os.path.abspath("temp/temp.html")
+    word = win32.gencache.EnsureDispatch("Word.Application")
+    word.Visible = False  # Set to True if you want to see Word opening
+    doc = word.Documents.Open(html_file)
+    doc.SaveAs(os.path.join(output_dir, "Report.docx"), FileFormat=16)  # 16 = wdFormatDocumentDefault (.docx)
+    doc.Close()
+    word.Quit()
 
 def create_graphs_pdf(data, output_file):
     # Set up Jinja2 environment
@@ -293,6 +309,8 @@ def create_graphs_pdf(data, output_file):
 
 # PUBLIC FUNCTIONS
 
+#TODO GAR: cleanup
+""""
 # create master test pdf in root directory for all executed tests.
 def create_test_report(test_results, output_dir, mode: TestMode):
     def find_or_create(object, key, item):
@@ -321,6 +339,40 @@ def create_test_report(test_results, output_dir, mode: TestMode):
     # Convert the rendered HTML to PDF
     os.makedirs(output_dir, exist_ok=True)  # Creates the directory structure if it doesn't exist
     HTML(string=html_out).write_pdf(os.path.join(output_dir, "Report.pdf"), stylesheets=[CSS(css_path)])
+"""
+
+def create_test_report(test_results, output_dir, mode: TestMode):
+    def find_or_create(object, key, item):
+        # Search for the test with the matching id
+        for new_item in object[key]:
+            if new_item["id"] == item["id"]:
+                return new_item  # Return the existing test if found
+
+        object[key].append(item)
+        return item
+
+    data = {"tests": [], "mode": mode, "testMode": TestMode}
+
+    # Step 2: Populate the structure
+    for key, item in test_results.items():
+        test = find_or_create(data, "tests", item["test"])
+        part = find_or_create(test, "test_parts", item["part"])
+        find_or_create(part, "test_cases", item["case"])
+
+    env = Environment(loader=FileSystemLoader('./templates'))
+    template = env.get_template('test.html')
+
+    # Render the HTML template with data
+    html_out = template.render(data)
+    with open("temp/temp.html", "w", encoding="utf-8") as f:
+        f.write(html_out)
+    html_file = os.path.abspath("temp/temp.html")
+    word = win32.gencache.EnsureDispatch("Word.Application")
+    word.Visible = False  # Set to True if you want to see Word opening
+    doc = word.Documents.Open(html_file)
+    doc.SaveAs(os.path.join(output_dir, "Report.docx"), FileFormat=16)  # 16 = wdFormatDocumentDefault (.docx)
+    doc.Close()
+    word.Quit()
 
 
 def generate_case_report(test_item, test_dir, date_time, mode: TestMode):
@@ -334,7 +386,7 @@ def generate_case_report(test_item, test_dir, date_time, mode: TestMode):
     # load existing images
     plots_base64 = load_plots(test_dir, mode)
     data = process_test_case_data(test_item, snapshot_data, init_cond_ref, init_cond_mqtg, init_cond_qtg, plots_base64, date_time, mode)
-    create_test_case_pdf(data, os.path.join(test_dir, "Report.pdf"))
+    create_test_case_pdf(data, test_dir)
 
     plots_base64 = load_plots(test_dir, mode, only_refer=False)
     data2 = process_test_case_data(test_item, snapshot_data, init_cond_ref, init_cond_mqtg, init_cond_qtg, plots_base64, date_time, mode)
