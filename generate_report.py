@@ -3,7 +3,9 @@ import json
 import math
 import os
 import re
+import tempfile
 import win32com.client as win32
+from premailer import transform
 
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML, CSS
@@ -285,15 +287,24 @@ def create_test_case_pdf(data, output_dir):
     env = Environment(loader=FileSystemLoader('./templates'))
     template = env.get_template('test_case_wrapper.html')
     html_out = template.render(data)
-    with open("temp/temp.html", "w", encoding="utf-8") as f:
-        f.write(html_out)
-    html_file = os.path.abspath("temp/temp.html")
+
+    with open("./templates/style.css", "r", encoding="utf-8") as f:
+        css = f.read()
+    html_content = f"<style>{css}</style>\n" + html_out
+    html_styled = transform(html_content)  # inline all CSS
+
+    with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False, encoding="utf-8") as tmp_file:
+        tmp_file.write(html_styled)
+        tmp_file_path = tmp_file.name
+
     word = win32.gencache.EnsureDispatch("Word.Application")
     word.Visible = False  # Set to True if you want to see Word opening
-    doc = word.Documents.Open(html_file)
+    doc = word.Documents.Open(tmp_file_path)
     doc.SaveAs(os.path.join(output_dir, "Report.docx"), FileFormat=16)  # 16 = wdFormatDocumentDefault (.docx)
     doc.Close()
     word.Quit()
+
+    os.remove(tmp_file_path)
 
 def create_graphs_pdf(data, output_file):
     # Set up Jinja2 environment
@@ -361,19 +372,25 @@ def create_test_report(test_results, output_dir, mode: TestMode):
 
     env = Environment(loader=FileSystemLoader('./templates'))
     template = env.get_template('test.html')
-
-    # Render the HTML template with data
     html_out = template.render(data)
-    with open("temp/temp.html", "w", encoding="utf-8") as f:
-        f.write(html_out)
-    html_file = os.path.abspath("temp/temp.html")
+
+    with open("./templates/style.css", "r", encoding="utf-8") as f:
+        css = f.read()
+    html_content = f"<style>{css}</style>\n" + html_out
+    html_styled = transform(html_content)  # inline all CSS
+
+    with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False, encoding="utf-8") as tmp_file:
+        tmp_file.write(html_styled)
+        tmp_file_path = tmp_file.name
+
     word = win32.gencache.EnsureDispatch("Word.Application")
     word.Visible = False  # Set to True if you want to see Word opening
-    doc = word.Documents.Open(html_file)
+    doc = word.Documents.Open(tmp_file_path)
     doc.SaveAs(os.path.join(output_dir, "Report.docx"), FileFormat=16)  # 16 = wdFormatDocumentDefault (.docx)
     doc.Close()
     word.Quit()
 
+    os.remove(tmp_file_path)
 
 def generate_case_report(test_item, test_dir, date_time, mode: TestMode):
     if not test_item['is_applicable']:

@@ -123,7 +123,7 @@ img {
 }
 
 .content {
-    page-break-before: always; /* Ensure content starts on a new page */
+    /* page-break-before: always; /* Ensure content starts on a new page */
     /*position: relative; !* Required for positioning footer within content *!*/
     padding-bottom: 60px; /* Ensure space at the bottom for the footer */
 }
