@@ -1,0 +1,5 @@
+TEMPLATE_PATH = "./templates"
+CASE_WRAPPER_TEMPLATE_NAME = "test_case_wrapper.html"
+TEST_TEMPLATE_NAME = "test.html"
+TEMPLATE_STYLE_PATH = "./templates/style.css"
+REPORT_FILE_NAME = "Report.docx"

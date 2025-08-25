@@ -10,6 +10,8 @@ from premailer import transform
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML, CSS
 
+from constants import CASE_WRAPPER_TEMPLATE_NAME, REPORT_FILE_NAME, TEMPLATE_PATH, TEMPLATE_STYLE_PATH, \
+    TEST_TEMPLATE_NAME
 from qtg_data_structure import data as qtg_structure
 from function_lib import split_string, get_test_test_part_test_case, units_conversion
 from qtg_generator import software_version
@@ -268,43 +270,23 @@ def process_test_case_na(test_item, date_time, mode):
     }
     return data
 
-# TODO GAR: cleanup
-# creates a test_case report for one test case with headers.
-""""
-def create_test_case_pdf(data, output_file):
-    # Set up Jinja2 environment
-    env = Environment(loader=FileSystemLoader('./templates'))
-    template = env.get_template('test_case_wrapper.html')
-
-    # Render the HTML template with data
-    html_out = template.render(data)
-    css_path = './templates/style.css'
-    # Convert the rendered HTML to PDF
-    HTML(string=html_out).write_pdf(output_file, stylesheets=[CSS(css_path)])
-"""
-
-def create_test_case_pdf(data, output_dir):
-    env = Environment(loader=FileSystemLoader('./templates'))
-    template = env.get_template('test_case_wrapper.html')
-    html_out = template.render(data)
-
-    with open("./templates/style.css", "r", encoding="utf-8") as f:
-        css = f.read()
-    html_content = f"<style>{css}</style>\n" + html_out
-    html_styled = transform(html_content)  # inline all CSS
-
-    with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False, encoding="utf-8") as tmp_file:
-        tmp_file.write(html_styled)
-        tmp_file_path = tmp_file.name
-
-    word = win32.gencache.EnsureDispatch("Word.Application")
-    word.Visible = False  # Set to True if you want to see Word opening
-    doc = word.Documents.Open(tmp_file_path)
-    doc.SaveAs(os.path.join(output_dir, "Report.docx"), FileFormat=16)  # 16 = wdFormatDocumentDefault (.docx)
-    doc.Close()
-    word.Quit()
-
-    os.remove(tmp_file_path)
+# Generate the PDF
+# if __name__ == "__main__":
+#     # 1. einen, mehrerer oder alle tests
+#     # 2. einen oder mehrere test cases
+#     print("MQTG PDF Creator")
+#     create_init_cond = input("Create Initial QTG? (y/n): ").strip().lower() == 'y'
+#     test_name = input("Enter Test (leave empty to create all): ")
+#     test_case_name = ""
+#     if len(test_name) != 0:
+#         test_case_name = input("Enter Test Case (leave empty to create all test cases of a test): ")
+#
+#     print(f"Create Initial QTG: {create_init_cond}")
+#     print(f"Test: {test_name}")
+#     print(f"Test Case: {test_case_name}")
+#     input()
+#
+#     generate_case_report("./data")
 
 def create_graphs_pdf(data, output_file):
     # Set up Jinja2 environment
@@ -317,79 +299,73 @@ def create_graphs_pdf(data, output_file):
     # Convert the rendered HTML to PDF
     HTML(string=html_out).write_pdf(output_file, stylesheets=[CSS(css_path)])
 
+# creates a test_case report for one test case with headers.
+def create_test_case_pdf(data, output_dir):
+    html_out = populate_template(CASE_WRAPPER_TEMPLATE_NAME, data)
+    tmp_file_path = create_temp_file(html_out)
 
-# PUBLIC FUNCTIONS
+    word = setup_word()
 
-#TODO GAR: cleanup
-""""
-# create master test pdf in root directory for all executed tests.
-def create_test_report(test_results, output_dir, mode: TestMode):
-    def find_or_create(object, key, item):
-        # Search for the test with the matching id
-        for new_item in object[key]:
-            if new_item["id"] == item["id"]:
-                return new_item  # Return the existing test if found
+    doc = word.Documents.Open(tmp_file_path)
+    doc.SaveAs(os.path.join(output_dir, REPORT_FILE_NAME), FileFormat=16)  # 16 = wdFormatDocumentDefault (.docx)
 
-        object[key].append(item)
-        return item
+    doc.Close()
+    word.Quit()
+    os.remove(tmp_file_path)
 
-    data = {"tests": [], "mode": mode, "testMode": TestMode}
-
-    # Step 2: Populate the structure
-    for key, item in test_results.items():
-        test = find_or_create(data, "tests", item["test"])
-        part = find_or_create(test, "test_parts", item["part"])
-        find_or_create(part, "test_cases", item["case"])
-
-    env = Environment(loader=FileSystemLoader('./templates'))
-    template = env.get_template('test.html')
-
-    # Render the HTML template with data
-    html_out = template.render(data)
-    css_path = './templates/style.css'
-    # Convert the rendered HTML to PDF
-    os.makedirs(output_dir, exist_ok=True)  # Creates the directory structure if it doesn't exist
-    HTML(string=html_out).write_pdf(os.path.join(output_dir, "Report.pdf"), stylesheets=[CSS(css_path)])
-"""
-
-def create_test_report(test_results, output_dir, mode: TestMode):
-    def find_or_create(object, key, item):
-        # Search for the test with the matching id
-        for new_item in object[key]:
-            if new_item["id"] == item["id"]:
-                return new_item  # Return the existing test if found
-
-        object[key].append(item)
-        return item
-
-    data = {"tests": [], "mode": mode, "testMode": TestMode}
-
-    # Step 2: Populate the structure
-    for key, item in test_results.items():
-        test = find_or_create(data, "tests", item["test"])
-        part = find_or_create(test, "test_parts", item["part"])
-        find_or_create(part, "test_cases", item["case"])
-
-    env = Environment(loader=FileSystemLoader('./templates'))
-    template = env.get_template('test.html')
+def populate_template(file_name, data):
+    env = Environment(loader=FileSystemLoader(TEMPLATE_PATH))
+    template = env.get_template(file_name)
     html_out = template.render(data)
 
-    with open("./templates/style.css", "r", encoding="utf-8") as f:
+    with open(TEMPLATE_STYLE_PATH, "r", encoding="utf-8") as f:
         css = f.read()
     html_content = f"<style>{css}</style>\n" + html_out
     html_styled = transform(html_content)  # inline all CSS
 
-    with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False, encoding="utf-8") as tmp_file:
-        tmp_file.write(html_styled)
-        tmp_file_path = tmp_file.name
+    return html_styled
 
+def create_temp_file(html_out):
+    with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False, encoding="utf-8") as tmp_file:
+        tmp_file.write(html_out)
+        tmp_file_path = tmp_file.name
+    return tmp_file_path
+
+def setup_word():
     word = win32.gencache.EnsureDispatch("Word.Application")
     word.Visible = False  # Set to True if you want to see Word opening
+    return word
+
+# PUBLIC FUNCTIONS
+
+def create_test_report(test_results, output_dir, mode: TestMode):
+    def find_or_create(object, key, item):
+        # Search for the test with the matching id
+        for new_item in object[key]:
+            if new_item["id"] == item["id"]:
+                return new_item  # Return the existing test if found
+
+        object[key].append(item)
+        return item
+
+    data = {"tests": [], "mode": mode, "testMode": TestMode}
+
+    # Step 2: Populate the structure
+    for key, item in test_results.items():
+        test = find_or_create(data, "tests", item["test"])
+        part = find_or_create(test, "test_parts", item["part"])
+        find_or_create(part, "test_cases", item["case"])
+
+    html_out = populate_template(TEST_TEMPLATE_NAME, data)
+    tmp_file_path = create_temp_file(html_out)
+
+    word = setup_word()
+
     doc = word.Documents.Open(tmp_file_path)
-    doc.SaveAs(os.path.join(output_dir, "Report.docx"), FileFormat=16)  # 16 = wdFormatDocumentDefault (.docx)
+    doc.SaveAs(os.path.join(output_dir, REPORT_FILE_NAME), FileFormat=16)  # 16 = wdFormatDocumentDefault (.docx)
+
     doc.Close()
     word.Quit()
-
     os.remove(tmp_file_path)
 
 def generate_case_report(test_item, test_dir, date_time, mode: TestMode):
@@ -410,22 +386,3 @@ def generate_case_report(test_item, test_dir, date_time, mode: TestMode):
     create_graphs_pdf(data2, os.path.join(test_dir, "Graphs.pdf"))
 
     return data
-
-
-# Generate the PDF
-# if __name__ == "__main__":
-#     # 1. einen, mehrerer oder alle tests
-#     # 2. einen oder mehrere test cases
-#     print("MQTG PDF Creator")
-#     create_init_cond = input("Create Initial QTG? (y/n): ").strip().lower() == 'y'
-#     test_name = input("Enter Test (leave empty to create all): ")
-#     test_case_name = ""
-#     if len(test_name) != 0:
-#         test_case_name = input("Enter Test Case (leave empty to create all test cases of a test): ")
-#
-#     print(f"Create Initial QTG: {create_init_cond}")
-#     print(f"Test: {test_name}")
-#     print(f"Test Case: {test_case_name}")
-#     input()
-#
-#     generate_case_report("./data")
