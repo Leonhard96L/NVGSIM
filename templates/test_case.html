@@ -76,7 +76,7 @@
     {% endif %}
 
     {% for plot in case.plots_base64 %}
-        <img class="plot-image" src="data:image/svg;base64,{{ plot }}" alt="Plot Image">
+        <img class="plot-image" src="data:image/png;base64,{{ plot }}" alt="Plot Image">
         {% if loop.index0 % 3 == 0 %}
             {% include 'test_case_footer.html' %}
             {% include 'test_part_footer.html' %}

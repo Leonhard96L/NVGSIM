@@ -87,13 +87,13 @@ def load_plots(qtg_path, mode, only_refer=True):
     # Get the sorted list of .svg files in numerical order
     if only_refer:
         if mode == TestMode.REFERENCE:
-            image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('refer.svg')], key=numerical_sort)
+            image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('refer.png')], key=numerical_sort)
         elif mode == TestMode.MQTG:
-            image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('mqtg.svg')], key=numerical_sort)
+            image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('mqtg.png')], key=numerical_sort)
         elif mode == TestMode.QTG:
-            image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('recurrent.svg')], key=numerical_sort)
+            image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('recurrent.png')], key=numerical_sort)
     else:
-        image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('.svg')], key=numerical_sort)
+        image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('.png')], key=numerical_sort)
 
     # Loop through all files in the directory
     for file_name in image_files:
@@ -306,35 +306,10 @@ def create_test_case_pdf(data, output_dir):
 
     word = setup_word()
 
-    doc = word.Documents.Open(tmp_file_path)
-    doc.SaveAs(os.path.join(output_dir, REPORT_FILE_NAME), FileFormat=16)  # 16 = wdFormatDocumentDefault (.docx)
+    doc = open_document(word, tmp_file_path)
+    save_document(doc, output_dir)
 
-    doc.Close()
-    word.Quit()
-    os.remove(tmp_file_path)
-
-def populate_template(file_name, data):
-    env = Environment(loader=FileSystemLoader(TEMPLATE_PATH))
-    template = env.get_template(file_name)
-    html_out = template.render(data)
-
-    with open(TEMPLATE_STYLE_PATH, "r", encoding="utf-8") as f:
-        css = f.read()
-    html_content = f"<style>{css}</style>\n" + html_out
-    html_styled = transform(html_content)  # inline all CSS
-
-    return html_styled
-
-def create_temp_file(html_out):
-    with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False, encoding="utf-8") as tmp_file:
-        tmp_file.write(html_out)
-        tmp_file_path = tmp_file.name
-    return tmp_file_path
-
-def setup_word():
-    word = win32.gencache.EnsureDispatch("Word.Application")
-    word.Visible = False  # Set to True if you want to see Word opening
-    return word
+    do_post_processing(doc, word, tmp_file_path)
 
 # PUBLIC FUNCTIONS
 
@@ -361,9 +336,55 @@ def create_test_report(test_results, output_dir, mode: TestMode):
 
     word = setup_word()
 
-    doc = word.Documents.Open(tmp_file_path)
+    doc = open_document(word, tmp_file_path)
+    create_table_of_contents(doc)
+    save_document(doc, output_dir)
+
+    do_post_processing(doc, word, tmp_file_path)
+
+def populate_template(file_name, data):
+    env = Environment(loader=FileSystemLoader(TEMPLATE_PATH))
+    template = env.get_template(file_name)
+    html_out = template.render(data)
+
+    with open(TEMPLATE_STYLE_PATH, "r", encoding="utf-8") as f:
+        css = f.read()
+    html_content = f"<style>{css}</style>\n" + html_out
+    html_styled = transform(html_content)  # inline all CSS
+
+    return html_styled
+
+def create_temp_file(html_out):
+    with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False, encoding="utf-8") as tmp_file:
+        tmp_file.write(html_out)
+        tmp_file_path = tmp_file.name
+    return tmp_file_path
+
+def setup_word():
+    word = win32.gencache.EnsureDispatch("Word.Application")
+    word.Visible = False  # Set to True if you want to see Word opening
+    return word
+
+def open_document(word, file_path):
+    # GAR: maybe do word.Documents.Open(pdf_path, False, False, False) for supress popups
+    return word.Documents.Open(file_path)
+
+def save_document(doc, output_dir):
     doc.SaveAs(os.path.join(output_dir, REPORT_FILE_NAME), FileFormat=16)  # 16 = wdFormatDocumentDefault (.docx)
 
+def create_table_of_contents(doc):
+    toc_range = doc.Range(0, 0)
+    doc.TablesOfContents.Add(
+        Range=toc_range,
+        UseHeadingStyles=True,
+        UpperHeadingLevel=1,
+        LowerHeadingLevel=3,
+        RightAlignPageNumbers=True,
+        IncludePageNumbers=True
+    )
+    doc.TablesOfContents(1).Update()
+
+def do_post_processing(doc, word, tmp_file_path):
     doc.Close()
     word.Quit()
     os.remove(tmp_file_path)
