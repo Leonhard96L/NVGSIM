@@ -11,7 +11,7 @@ from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML, CSS
 
 from constants import CASE_WRAPPER_TEMPLATE_NAME, REPORT_FILE_NAME, TEMPLATE_PATH, TEMPLATE_STYLE_PATH, \
-    TEST_TEMPLATE_NAME
+    TEST_TEMPLATE_NAME, CASE_FOOTER_TEMPLATE_NAME
 from qtg_data_structure import data as qtg_structure
 from function_lib import split_string, get_test_test_part_test_case, units_conversion
 from qtg_generator import software_version
@@ -337,10 +337,87 @@ def create_test_report(test_results, output_dir, mode: TestMode):
     word = setup_word()
 
     doc = open_document(word, tmp_file_path)
+
+    do_pagination(word, doc)
+    # do_footer_table(word, doc, data)
     create_table_of_contents(doc)
     save_document(doc, output_dir)
 
     do_post_processing(doc, word, tmp_file_path)
+
+def do_pagination(word, doc):
+    pages = [2, 8]
+    doc.Repaginate()
+    num_of_pages = doc.ComputeStatistics(2)
+    for i in range(num_of_pages, 0, -1):
+        word.Selection.GoTo(win32.constants.wdGoToPage, win32.constants.wdGoToAbsolute, str(i))
+        if i in pages:
+            print(f"Reset at page {i}")
+
+            word.Selection.InsertBreak(win32.constants.wdSectionBreakNextPage)
+
+            rng = word.Selection.Range
+            section = rng.Sections(1)
+
+            # Add page numbers in footer if missing
+            footer = section.Footers(win32.constants.wdHeaderFooterPrimary)
+            if footer.PageNumbers.Count == 0:
+                footer.PageNumbers.Add(win32.constants.wdAlignParagraphCenter)
+
+            # Restart page numbering at 1
+            footer.PageNumbers.RestartNumberingAtSection = True
+            footer.PageNumbers.StartingNumber = 1
+
+def do_footer_table(word, doc, data):
+    pages = [2, 8]
+    doc.Repaginate()
+    num_of_pages = doc.ComputeStatistics(2)
+    cases = transform_cases(data)
+    footer_table_path = None
+    footer_table = None
+    count_cases = 0
+    for i in range(num_of_pages, 0, -1):
+        word.Selection.GoTo(win32.constants.wdGoToPage, win32.constants.wdGoToAbsolute, str(i))
+        if i in pages:
+            count_cases += 1
+            if footer_table_path is not None and footer_table is not None:
+                footer_table.Close(False)
+                os.remove(footer_table_path)
+
+            word.Selection.InsertBreak(win32.constants.wdSectionBreakNextPage)
+
+            footer_table_path = get_footer(cases[-count_cases])
+            footer_table = word.Documents.Open(footer_table_path)
+
+            new_section = word.Selection.Range.Sections(1)  # the section that contains this range
+
+            # Disable "link to previous" footer
+            new_section.Footers(win32.constants.wdHeaderFooterPrimary).LinkToPrevious = False
+            # Paste into footer
+            footer_table.Content.Copy()
+            new_section.Footers(win32.constants.wdHeaderFooterPrimary).Range.Paste()
+
+    if footer_table_path is not None and footer_table is not None:
+        footer_table.Close(False)
+        os.remove(footer_table_path)
+
+def get_footer(case):
+    footer_out = populate_template(CASE_FOOTER_TEMPLATE_NAME, case)
+    return create_temp_file(footer_out)
+
+def transform_cases(data):
+    result = []
+    for test in data.get("tests", []):
+        test_id = test.get("id")
+        for part in test.get("test_parts", []):
+            part_id = part.get("id")
+            for case in part.get("test_cases", []):
+                result.append({
+                    "test": {"id": test_id},
+                    "part": {"id": part_id},
+                    "case": case
+                })
+    return result
 
 def populate_template(file_name, data):
     env = Environment(loader=FileSystemLoader(TEMPLATE_PATH))
@@ -362,7 +439,10 @@ def create_temp_file(html_out):
 
 def setup_word():
     word = win32.gencache.EnsureDispatch("Word.Application")
-    word.Visible = False  # Set to True if you want to see Word opening
+    word.Visible = True # Set to True if you want to see Word opening
+    word.ScreenUpdating = False
+    word.DisplayAlerts = False
+
     return word
 
 def open_document(word, file_path):
@@ -371,6 +451,63 @@ def open_document(word, file_path):
 
 def save_document(doc, output_dir):
     doc.SaveAs(os.path.join(output_dir, REPORT_FILE_NAME), FileFormat=16)  # 16 = wdFormatDocumentDefault (.docx)
+
+# GAR: chat-gpt code -> not used right now but kind of works
+# GAR Notes:   "1 Performance" is Heading 1 no footer
+#               "1.d Hover Performance" is Heading 2 simple footer
+#               "1.d A1 blabla" is Heading 2 full footer
+# get heading text para.Range.Text
+def page_numbering(doc):
+
+    paragraphs = list(doc.Paragraphs)
+
+    for idx, para in enumerate(paragraphs):
+
+        style_name = para.Range.Style.NameLocal
+        if style_name == "Heading 2":
+            print("found heading nr.", str(idx))
+            # Insert a Section Break before this paragraph
+            # para.Range.InsertBreak(win32.constants.wdSectionBreakNextPage)
+
+            # Get the new section (it’s the last one after break)
+            section = para.Range.Sections(1)  # current section
+
+            # Add page numbers in footer if missing
+            footer = section.Footers(win32.constants.wdHeaderFooterPrimary)
+            footer.PageNumbers.Add(win32.constants.wdAlignParagraphCenter)
+
+            # Restart page numbering at 1
+            section.Footers(win32.constants.wdHeaderFooterPrimary).PageNumbers.RestartNumberingAtSection = True
+            section.Footers(win32.constants.wdHeaderFooterPrimary).PageNumbers.StartingNumber = 1
+        else:
+            # Get the new section (it’s the last one after break)
+            section = para.Range.Sections(1)  # current section            # Add page numbers in footer if missing
+            footer = section.Footers(win32.constants.wdHeaderFooterPrimary)
+            footer.PageNumbers.Add(win32.constants.wdAlignParagraphCenter)
+
+# GAR: chat-gpt code works semi
+def footer_stuff(doc):
+    for i in range(doc.Tables.Count, 0, -1):
+        tbl = doc.Tables(i)
+
+        # Check if this is a footer table by some marker text
+        if "SW V." in tbl.Range.Text:
+            # Insert a section break before the table (splits footer content into its own section)
+            tbl.Range.InsertBreak(win32.constants.wdSectionBreakNextPage)
+
+            # Copy table
+            tbl.Range.Copy()
+
+            # Find the new section created (the section after the break)
+            new_section = tbl.Range.Sections(1)  # the section that contains this range
+
+            # Disable "link to previous" footer
+            new_section.Footers(win32.constants.wdHeaderFooterPrimary).LinkToPrevious = False
+            # Paste into footer
+            new_section.Footers(win32.constants.wdHeaderFooterPrimary).Range.Paste()
+
+            # Delete original table in body
+            tbl.Delete()
 
 def create_table_of_contents(doc):
     toc_range = doc.Range(0, 0)
@@ -383,6 +520,11 @@ def create_table_of_contents(doc):
         IncludePageNumbers=True
     )
     doc.TablesOfContents(1).Update()
+    rng = doc.TablesOfContents(1).Range
+    rng.Collapse(Direction=0)  # 1 = wdCollapseEnd (move to end of TOC)
+
+    # Insert a page break
+    rng.InsertBreak(win32.constants.wdPageBreak)
 
 def do_post_processing(doc, word, tmp_file_path):
     doc.Close()
