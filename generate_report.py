@@ -338,8 +338,8 @@ def create_test_report(test_results, output_dir, mode: TestMode):
 
     doc = open_document(word, tmp_file_path)
 
-    do_pagination(word, doc)
     do_footer_table(word, doc, data)
+    do_pagination(word, doc)
     create_table_of_contents(doc)
     save_document(doc, output_dir)
 
