@@ -339,7 +339,7 @@ def create_test_report(test_results, output_dir, mode: TestMode):
     doc = open_document(word, tmp_file_path)
 
     do_pagination(word, doc)
-    # do_footer_table(word, doc, data)
+    do_footer_table(word, doc, data)
     create_table_of_contents(doc)
     save_document(doc, output_dir)
 
@@ -369,37 +369,37 @@ def do_pagination(word, doc):
             footer.PageNumbers.StartingNumber = 1
 
 def do_footer_table(word, doc, data):
-    pages = [2, 8]
     doc.Repaginate()
     num_of_pages = doc.ComputeStatistics(2)
     cases = transform_cases(data)
-    footer_table_path = None
-    footer_table = None
-    count_cases = 0
-    for i in range(num_of_pages, 0, -1):
-        word.Selection.GoTo(win32.constants.wdGoToPage, win32.constants.wdGoToAbsolute, str(i))
+
+    pages = [8]  # pages where we move to the next case
+    case_index = 0  # track which case we’re on
+
+    for i in range(1, num_of_pages + 1):
         if i in pages:
-            count_cases += 1
-            if footer_table_path is not None and footer_table is not None:
-                footer_table.Close(False)
-                os.remove(footer_table_path)
-
+            word.Selection.GoTo(win32.constants.wdGoToPage,
+                                win32.constants.wdGoToAbsolute,
+                                str(i))
             word.Selection.InsertBreak(win32.constants.wdSectionBreakNextPage)
+            case_index += 1
 
-            footer_table_path = get_footer(cases[-count_cases])
-            footer_table = word.Documents.Open(footer_table_path)
+        footer_table_path = get_footer(cases[case_index])
+        footer_doc = word.Documents.Open(footer_table_path)
 
-            new_section = word.Selection.Range.Sections(1)  # the section that contains this range
+        footer_doc.Content.Select()
+        word.Selection.Copy()
+        footer_doc.Close(False)
 
-            # Disable "link to previous" footer
-            new_section.Footers(win32.constants.wdHeaderFooterPrimary).LinkToPrevious = False
-            # Paste into footer
-            footer_table.Content.Copy()
-            new_section.Footers(win32.constants.wdHeaderFooterPrimary).Range.Paste()
+        word.Selection.GoTo(win32.constants.wdGoToPage,
+                            win32.constants.wdGoToAbsolute,
+                            str(i))
 
-    if footer_table_path is not None and footer_table is not None:
-        footer_table.Close(False)
-        os.remove(footer_table_path)
+        sec = word.Selection.Range.Sections(1)
+        footer = sec.Footers(win32.constants.wdHeaderFooterPrimary)
+        footer.LinkToPrevious = False
+
+        footer.Range.Paste()
 
 def get_footer(case):
     footer_out = populate_template(CASE_FOOTER_TEMPLATE_NAME, case)
