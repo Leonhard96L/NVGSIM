@@ -49,8 +49,6 @@ th.subsection {
 }
 
 .centered-table {
-    margin-left: auto;
-    margin-right: auto;
     width: 60% !important; /* Adjust the width to make the table smaller */
     border-collapse: collapse; /* Ensures borders are not doubled */
 }

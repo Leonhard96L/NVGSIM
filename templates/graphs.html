@@ -21,7 +21,9 @@
 <div class="content">
     {% if not case.is_snapshot %}<h3 class="center-div">Test Results</h3>{% endif %}
     {% for plot in case.plots_base64 %}
-        <img class="plot-image" src="data:image/png;base64,{{ plot }}" alt="Plot Image">
+        <div style="text-align: center;">
+            <img class="plot-image" src="data:image/png;base64,{{ plot }}" alt="Plot Image">
+        </div>
     {% endfor %}
 
     {% if not case.plots_base64 %}
