@@ -361,8 +361,6 @@ def do_pagination(word, doc):
 
             # Add page numbers in footer if missing
             footer = section.Footers(win32.constants.wdHeaderFooterPrimary)
-            if footer.PageNumbers.Count == 0:
-                footer.PageNumbers.Add(win32.constants.wdAlignParagraphCenter)
 
             # Restart page numbering at 1
             footer.PageNumbers.RestartNumberingAtSection = True
@@ -400,6 +398,20 @@ def do_footer_table(word, doc, data):
         footer.LinkToPrevious = False
 
         footer.Range.Paste()
+
+        # Move the range to the end of the footer
+        rng = footer.Range
+        rng.Collapse(win32.constants.wdCollapseEnd)
+
+        rng.InsertParagraphAfter()
+        rng = footer.Range
+        rng.Collapse(win32.constants.wdCollapseEnd)
+        chapter_prefix = f"{cases[case_index]['test']['id']}.{cases[case_index]['part']['id']}-"
+        # Insert the prefix text
+        rng.InsertBefore(chapter_prefix)
+        rng.Collapse(win32.constants.wdCollapseEnd)
+        rng.Fields.Add(rng, Type=win32.constants.wdFieldPage)
+        rng.ParagraphFormat.Alignment = win32.constants.wdAlignParagraphRight
 
 def get_footer(case):
     footer_out = populate_template(CASE_FOOTER_TEMPLATE_NAME, case)
