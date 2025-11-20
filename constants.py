@@ -1,6 +1,8 @@
 TEMPLATE_PATH = "./templates"
-CASE_WRAPPER_TEMPLATE_NAME = "test_case_wrapper.html"
-TEST_TEMPLATE_NAME = "test.html"
-TEMPLATE_STYLE_PATH = "./templates/style.css"
-REPORT_FILE_NAME = "Report.docx"
-CASE_FOOTER_TEMPLATE_NAME = "test_case_footer.html"
+TEMPLATE_PATH_STYLE = "./templates/style.css"
+
+TEMPLATE_NAME_TEST = "test.html"
+TEMPLATE_NAME_CASE_WRAPPER = "test_case_wrapper.html"
+TEMPLATE_NAME_CASE_FOOTER = "test_case_footer.html"
+
+FILE_NAME_REPORT = "Report.docx"
