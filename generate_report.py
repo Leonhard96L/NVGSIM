@@ -310,7 +310,15 @@ def create_test_case_pdf(data, output_dir):
 
     word = setup_word()
 
+    cases = [{
+        "test": {"id": data.get("test").get("id")},
+        "part": {"id": data.get("part").get("id")},
+        "case": data.get("case")
+    }]
+
     doc = open_document(word, tmp_file_path)
+    # do_pagination(word, doc, [])
+    do_footer_table(word, doc, cases, [])
     save_document(doc, output_dir)
 
     do_post_processing(doc, word, tmp_file_path)
@@ -343,17 +351,22 @@ def create_test_report(test_results, output_dir, mode: TestMode):
 
     doc = open_document(word, tmp_file_path)
 
+    cases = transform_cases(data)
+
+    pages_before_toc = doc.ComputeStatistics(2)
     create_table_of_contents(doc)
-    do_pagination(word, doc)
-    do_footer_table(word, doc, data)
+    toc_length = doc.ComputeStatistics(2) - pages_before_toc
+    pages = get_pages(cases, toc_length)
+    pages_pagination = get_pages_pagination(cases, toc_length)
+    # do_pagination(word, doc, [toc_length + 2])
+    do_footer_table(word, doc, cases, pages)
     doc.TablesOfContents(1).Update()
     save_document(doc, output_dir)
 
     do_post_processing(doc, word, tmp_file_path)
 
 
-def do_pagination(word, doc):
-    pages = [2, 8]
+def do_pagination(word, doc, pages):
     doc.Repaginate()
     num_of_pages = doc.ComputeStatistics(2)
     for i in range(num_of_pages, 0, -1):
@@ -374,15 +387,12 @@ def do_pagination(word, doc):
             footer.PageNumbers.StartingNumber = 1
 
 
-def do_footer_table(word, doc, data):
+def do_footer_table(word, doc, cases, pages):
     doc.Repaginate()
-    num_of_pages = doc.ComputeStatistics(2)
-    cases = transform_cases(data)
-
-    pages = [8]  # pages where we move to the next case
     case_index = 0  # track which case we’re on
+    page_count = pages[-1] if pages else doc.ComputeStatistics(2) + 1
 
-    for i in range(2, num_of_pages + 1):
+    for i in range(1, page_count):
         if i in pages:
             word.Selection.GoTo(win32.constants.wdGoToPage,
                                 win32.constants.wdGoToAbsolute,
@@ -401,7 +411,7 @@ def do_footer_table(word, doc, data):
                             win32.constants.wdGoToAbsolute,
                             str(i))
 
-        sec = word.Selection.Range.Sections(1)
+        sec = word.ActiveDocument.Sections(word.ActiveDocument.Sections.Count)
         footer = sec.Footers(win32.constants.wdHeaderFooterPrimary)
         footer.LinkToPrevious = False
 
@@ -421,11 +431,44 @@ def do_footer_table(word, doc, data):
         rng.Fields.Add(rng, Type=win32.constants.wdFieldPage)
         rng.ParagraphFormat.Alignment = win32.constants.wdAlignParagraphRight
 
-
 def get_footer(case):
     footer_out = populate_template(CASE_FOOTER_TEMPLATE_NAME, case)
     return create_temp_file(footer_out)
 
+def get_pages(cases, offset):
+    pages = []
+    # start at 1 to always select next page
+    total = 1 + offset
+    test_id = None
+    part_id = None
+    for case in cases:
+        total += case["case"]["calculated_page_number"]
+        if case["test"]["id"] != test_id or test_id is None:
+            # start page new test or new part
+            total += 2
+            test_id = case["test"]["id"]
+            part_id = case["part"]["id"]
+        elif case["part"]["id"] != part_id:
+            total += 1
+            part_id = case["part"]["id"]
+
+        pages.append(total)
+
+    return pages
+
+def get_pages_pagination(cases, offset):
+    pages = []
+    total = offset
+    test_id = None
+    for case in cases:
+        total += case["case"]["calculated_page_number"]
+        if case["test"]["id"] != test_id or test_id is None:
+            # +1 page new case +1 next page
+            total += 2
+            test_id = case["test"]["id"]
+            pages.append(total)
+
+    return pages
 
 def transform_cases(data):
     result = []
@@ -440,7 +483,6 @@ def transform_cases(data):
                     "case": case
                 })
     return result
-
 
 def populate_template(file_name, data):
     env = Environment(loader=FileSystemLoader(TEMPLATE_PATH))
