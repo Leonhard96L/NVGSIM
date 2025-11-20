@@ -415,6 +415,10 @@ def do_footer_table(word, doc, cases, pages):
         footer = sec.Footers(win32.constants.wdHeaderFooterPrimary)
         footer.LinkToPrevious = False
 
+        if i in pages:
+            footer.PageNumbers.RestartNumberingAtSection = True
+            footer.PageNumbers.StartingNumber = 1
+
         footer.Range.Paste()
 
         # Move the range to the end of the footer
@@ -424,7 +428,7 @@ def do_footer_table(word, doc, cases, pages):
         rng.InsertParagraphAfter()
         rng = footer.Range
         rng.Collapse(win32.constants.wdCollapseEnd)
-        chapter_prefix = f"{cases[case_index]['test']['id']}.{cases[case_index]['part']['id']}-"
+        chapter_prefix = f"{cases[case_index]['test']['id']}.{cases[case_index]['part']['id']}.{cases[case_index]['case']['id']}-"
         # Insert the prefix text
         rng.InsertBefore(chapter_prefix)
         rng.Collapse(win32.constants.wdCollapseEnd)
