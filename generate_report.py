@@ -395,6 +395,7 @@ def do_post_processing(doc, word, tmp_file_path):
 
 def create_table_of_contents(doc):
     # doc.ComputeStatistics(2) return number of pages in doc
+    doc.Repaginate()
     pages_before_toc = doc.ComputeStatistics(2)
     insert_table_of_contents(doc)
     return doc.ComputeStatistics(2) - pages_before_toc
@@ -419,22 +420,23 @@ def insert_table_of_contents(doc):
     rng.InsertBreak(win32.constants.wdPageBreak)
 
 def create_footer_single_test_case(word, doc, data):
-    # flatten data to only ids
+    # flatten data to only ids for single case
     cases = [{
         "test": {"id": data.get("test").get("id")},
         "part": {"id": data.get("part").get("id")},
         "case": data.get("case")
     }]
-    do_footer_table(word, doc, cases, [])
-
-# GAR continue from here
+    # doc.ComputeStatistics(2) return number of pages in doc
+    doc.Repaginate()
+    do_footer_table(word, doc, cases, [doc.ComputeStatistics(2)])
 
 def create_footer_test_report(word, doc, data, toc_length):
-    cases = transform_cases(data)
-    pages = get_pages(cases, toc_length)
-    do_footer_table(word, doc, cases, pages)
+    cases = transform_to_case_data(data)
+    case_pagination = get_case_pagination(cases, toc_length)
+    do_footer_table(word, doc, cases, case_pagination)
 
-def transform_cases(data):
+def transform_to_case_data(data):
+    # flatten data list to only ids
     result = []
     for test in data.get("tests", []):
         test_id = test.get("id")
@@ -448,7 +450,8 @@ def transform_cases(data):
                 })
     return result
 
-def get_pages(cases, offset):
+# returns list representing the length in pages of each case
+def get_case_pagination(cases, offset):
     pages = []
     # start at 1 to always select next page
     total = 1 + offset
@@ -457,11 +460,12 @@ def get_pages(cases, offset):
     for case in cases:
         total += case["case"]["calculated_page_number"]
         if case["test"]["id"] != test_id or test_id is None:
-            # start page new test or new part
+            # when starting a new test two pages are added
             total += 2
             test_id = case["test"]["id"]
             part_id = case["part"]["id"]
         elif case["part"]["id"] != part_id:
+            # when starting a new test-part one page is added
             total += 1
             part_id = case["part"]["id"]
 
@@ -469,55 +473,62 @@ def get_pages(cases, offset):
 
     return pages
 
-def do_footer_table(word, doc, cases, pages):
-    doc.Repaginate()
-    page_count = pages[-1] if pages else doc.ComputeStatistics(2) + 1
-
+# creates a section per case and inserts the unique case-footer
+def do_footer_table(word, doc, cases, case_pagination):
+    total_pages = case_pagination[-1]
     case_index = 0
-    for i in range(1, page_count):
-        if i in pages:
+
+    for i in range(1, total_pages):
+
+        # create new section and move case index
+        if i in case_pagination:
+            # move to i-th page
             word.Selection.GoTo(win32.constants.wdGoToPage,
                                 win32.constants.wdGoToAbsolute,
                                 str(i))
+            #new section
             word.Selection.InsertBreak(win32.constants.wdSectionBreakNextPage)
             case_index += 1
 
-        footer_table_path = get_footer(cases[case_index])
+        # create footer table and copy to clipboard
+        footer_table_path = get_footer_as_file(cases[case_index])
         footer_doc = word.Documents.Open(footer_table_path)
-
         footer_doc.Content.Select()
         word.Selection.Copy()
         footer_doc.Close(False)
 
+        # move to i-th page
         word.Selection.GoTo(win32.constants.wdGoToPage,
                             win32.constants.wdGoToAbsolute,
                             str(i))
 
+        # get document footer
         sec = word.ActiveDocument.Sections(word.ActiveDocument.Sections.Count)
         footer = sec.Footers(win32.constants.wdHeaderFooterPrimary)
+        # section has different footer than previous
         footer.LinkToPrevious = False
 
-        if i in pages:
+        # reset page numbering for new case
+        if i in case_pagination:
             footer.PageNumbers.RestartNumberingAtSection = True
             footer.PageNumbers.StartingNumber = 1
 
+        # paste footer into document
         footer.Range.Paste()
 
-        # Move the range to the end of the footer
+        # move to end of footer and insert page-number with case-prefix
         rng = footer.Range
         rng.Collapse(win32.constants.wdCollapseEnd)
-
         rng.InsertParagraphAfter()
         rng = footer.Range
         rng.Collapse(win32.constants.wdCollapseEnd)
         chapter_prefix = f"{cases[case_index]['test']['id']}.{cases[case_index]['part']['id']}.{cases[case_index]['case']['id']}-"
-        # Insert the prefix text
         rng.InsertBefore(chapter_prefix)
         rng.Collapse(win32.constants.wdCollapseEnd)
         rng.Fields.Add(rng, Type=win32.constants.wdFieldPage)
         rng.ParagraphFormat.Alignment = win32.constants.wdAlignParagraphRight
 
-def get_footer(case):
+def get_footer_as_file(case):
     footer_out = populate_template(TEMPLATE_NAME_CASE_FOOTER, case)
     return create_temp_file(footer_out)
 
