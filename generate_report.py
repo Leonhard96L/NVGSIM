@@ -3,10 +3,15 @@ import json
 import math
 import os
 import re
+import tempfile
+import win32com.client as win32
+from premailer import transform
 
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML, CSS
 
+from constants import TEMPLATE_NAME_CASE_WRAPPER, FILE_NAME_REPORT, TEMPLATE_PATH, TEMPLATE_PATH_STYLE, \
+    TEMPLATE_NAME_TEST, TEMPLATE_NAME_CASE_FOOTER
 from qtg_data_structure import data as qtg_structure
 from function_lib import split_string, get_test_test_part_test_case, units_conversion
 from qtg_generator import software_version
@@ -82,13 +87,13 @@ def load_plots(qtg_path, mode, only_refer=True):
     # Get the sorted list of .svg files in numerical order
     if only_refer:
         if mode == TestMode.REFERENCE:
-            image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('refer.svg')], key=numerical_sort)
+            image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('refer.png')], key=numerical_sort)
         elif mode == TestMode.MQTG:
-            image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('mqtg.svg')], key=numerical_sort)
+            image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('mqtg.png')], key=numerical_sort)
         elif mode == TestMode.QTG:
-            image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('recurrent.svg')], key=numerical_sort)
+            image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('recurrent.png')], key=numerical_sort)
     else:
-        image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('.svg')], key=numerical_sort)
+        image_files = sorted([f for f in os.listdir(qtg_path) if f.endswith('.png')], key=numerical_sort)
 
     # Loop through all files in the directory
     for file_name in image_files:
@@ -204,7 +209,8 @@ def get_initial_conditions(case, init_cond_ref, init_cond_mqtg, init_cond_qtg, m
 
 
 # returns structure data and plots for one test.
-def process_test_case_data(test_item, snapshot_data, init_cond_ref, init_cond_mqtg, init_cond_qtg, plot_base64, date_time, mode):
+def process_test_case_data(test_item, snapshot_data, init_cond_ref, init_cond_mqtg, init_cond_qtg, plot_base64,
+                           date_time, mode):
     test_id, part_id, case_id = split_string(test_item['id'])
     test, part, case = get_test_test_part_test_case(qtg_structure['tests'], test_id, part_id, case_id)
 
@@ -212,13 +218,14 @@ def process_test_case_data(test_item, snapshot_data, init_cond_ref, init_cond_mq
     formatted_time = date_time.strftime("%H:%M:%S")
 
     get_initial_conditions(case, init_cond_ref, init_cond_mqtg, init_cond_qtg, mode)
-    is_automatic = False if mode == mode.REFERENCE else test_item['is_automatic']   # references cannot be automatic tests
+    is_automatic = False if mode == mode.REFERENCE else test_item[
+        'is_automatic']  # references cannot be automatic tests
 
     # use 1 page for part, 5 for static case, +1 for snapshot data, ceil(n/3) for plots
     count = 3 if mode != mode.REFERENCE else 2
     if part['snapshot']:
         count += 1
-    count += int(math.ceil(len(plot_base64)/3))
+    count += int(math.ceil(len(plot_base64) / 3))
 
     case.update({
         "is_snapshot": part['snapshot'],
@@ -266,18 +273,23 @@ def process_test_case_na(test_item, date_time, mode):
     return data
 
 
-# creates a test_case report for one test case with headers.
-def create_test_case_pdf(data, output_file):
-    # Set up Jinja2 environment
-    env = Environment(loader=FileSystemLoader('./templates'))
-    template = env.get_template('test_case_wrapper.html')
-
-    # Render the HTML template with data
-    html_out = template.render(data)
-    css_path = './templates/style.css'
-    # Convert the rendered HTML to PDF
-    HTML(string=html_out).write_pdf(output_file, stylesheets=[CSS(css_path)])
-
+# Generate the PDF
+# if __name__ == "__main__":
+#     # 1. einen, mehrerer oder alle tests
+#     # 2. einen oder mehrere test cases
+#     print("MQTG PDF Creator")
+#     create_init_cond = input("Create Initial QTG? (y/n): ").strip().lower() == 'y'
+#     test_name = input("Enter Test (leave empty to create all): ")
+#     test_case_name = ""
+#     if len(test_name) != 0:
+#         test_case_name = input("Enter Test Case (leave empty to create all test cases of a test): ")
+#
+#     print(f"Create Initial QTG: {create_init_cond}")
+#     print(f"Test: {test_name}")
+#     print(f"Test Case: {test_case_name}")
+#     input()
+#
+#     generate_case_report("./data")
 
 def create_graphs_pdf(data, output_file):
     # Set up Jinja2 environment
@@ -291,9 +303,21 @@ def create_graphs_pdf(data, output_file):
     HTML(string=html_out).write_pdf(output_file, stylesheets=[CSS(css_path)])
 
 
+# creates a test_case report for one test case with headers.
+def create_test_case_pdf(data, output_dir):
+    html_out = populate_template(TEMPLATE_NAME_CASE_WRAPPER, data)
+    tmp_file_path = create_temp_file(html_out)
+
+    word = setup_word()
+
+    doc = open_document(word, tmp_file_path)
+    create_footer_single_test_case(word, doc, data)
+    save_document(doc, output_dir)
+
+    do_post_processing(doc, word, tmp_file_path)
+
 # PUBLIC FUNCTIONS
 
-# create master test pdf in root directory for all executed tests.
 def create_test_report(test_results, output_dir, mode: TestMode):
     def find_or_create(object, key, item):
         # Search for the test with the matching id
@@ -312,16 +336,201 @@ def create_test_report(test_results, output_dir, mode: TestMode):
         part = find_or_create(test, "test_parts", item["part"])
         find_or_create(part, "test_cases", item["case"])
 
-    env = Environment(loader=FileSystemLoader('./templates'))
-    template = env.get_template('test.html')
+    html_out = populate_template(TEMPLATE_NAME_TEST, data)
+    tmp_file_path = create_temp_file(html_out)
 
-    # Render the HTML template with data
+    word = setup_word()
+
+    doc = open_document(word, tmp_file_path)
+    toc_length = create_table_of_contents(doc)
+    create_footer_test_report(word, data, toc_length)
+    doc.TablesOfContents(1).Update()
+    save_document(doc, output_dir)
+
+    do_post_processing(doc, word, tmp_file_path)
+
+def populate_template(file_name, data):
+    # open html template
+    env = Environment(loader=FileSystemLoader(TEMPLATE_PATH))
+    template = env.get_template(file_name)
     html_out = template.render(data)
-    css_path = './templates/style.css'
-    # Convert the rendered HTML to PDF
-    os.makedirs(output_dir, exist_ok=True)  # Creates the directory structure if it doesn't exist
-    HTML(string=html_out).write_pdf(os.path.join(output_dir, "Report.pdf"), stylesheets=[CSS(css_path)])
 
+    # inline all css since word ignores stylesheets
+    with open(TEMPLATE_PATH_STYLE, "r", encoding="utf-8") as f:
+        css = f.read()
+    html_content = f"<style>{css}</style>\n" + html_out
+    html_styled = transform(html_content)
+
+    return html_styled
+
+
+def create_temp_file(html_out):
+    with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False, encoding="utf-8") as tmp_file:
+        tmp_file.write(html_out)
+        tmp_file_path = tmp_file.name
+    return tmp_file_path
+
+
+def setup_word():
+    word = win32.gencache.EnsureDispatch("Word.Application")
+    # setting to false hides word but can lead to problems
+    word.Visible = True
+    word.ScreenUpdating = False
+    word.DisplayAlerts = False
+
+    return word
+
+
+def open_document(word, file_path):
+    return word.Documents.Open(file_path)
+
+def save_document(doc, output_dir):
+    # FileFormat 16 = wdFormatDocumentDefault (.docx)
+    doc.SaveAs(os.path.join(output_dir, FILE_NAME_REPORT), FileFormat=16)
+
+def do_post_processing(doc, word, tmp_file_path):
+    doc.Close()
+    word.Quit()
+    os.remove(tmp_file_path)
+
+def create_table_of_contents(doc):
+    # doc.ComputeStatistics(2) return number of pages in doc
+    doc.Repaginate()
+    pages_before_toc = doc.ComputeStatistics(2)
+    insert_table_of_contents(doc)
+    return doc.ComputeStatistics(2) - pages_before_toc
+
+def insert_table_of_contents(doc):
+    # set range to start of document
+    toc_range = doc.Range(0, 0)
+    doc.TablesOfContents.Add(
+        Range=toc_range,
+        UseHeadingStyles=True,
+        UpperHeadingLevel=1,
+        LowerHeadingLevel=3,
+        RightAlignPageNumbers=True,
+        IncludePageNumbers=True
+    )
+    doc.TablesOfContents(1).Update()
+    # select ToC
+    rng = doc.TablesOfContents(1).Range
+    # move to end of ToC
+    rng.Collapse(Direction=0)
+    # Insert a page break
+    rng.InsertBreak(win32.constants.wdPageBreak)
+
+def create_footer_single_test_case(word, doc, data):
+    # flatten data to only ids for single case
+    cases = [{
+        "test": {"id": data.get("test").get("id")},
+        "part": {"id": data.get("part").get("id")},
+        "case": data.get("case")
+    }]
+    # doc.ComputeStatistics(2) return number of pages in doc
+    doc.Repaginate()
+    create_case_footer(word, cases, [doc.ComputeStatistics(2)])
+
+def create_footer_test_report(word, data, toc_length):
+    cases = transform_to_case_data(data)
+    case_pagination = get_case_pagination(cases, toc_length)
+    create_case_footer(word, cases, case_pagination)
+
+def transform_to_case_data(data):
+    # flatten data list to only ids
+    result = []
+    for test in data.get("tests", []):
+        test_id = test.get("id")
+        for part in test.get("test_parts", []):
+            part_id = part.get("id")
+            for case in part.get("test_cases", []):
+                result.append({
+                    "test": {"id": test_id},
+                    "part": {"id": part_id},
+                    "case": case
+                })
+    return result
+
+# returns list representing the length in pages of each case
+def get_case_pagination(cases, offset):
+    pages = []
+    # start at 1 to always select next page
+    total = 1 + offset
+    test_id = None
+    part_id = None
+    for case in cases:
+        total += case["case"]["calculated_page_number"]
+        if case["test"]["id"] != test_id or test_id is None:
+            # when starting a new test two pages are added
+            total += 2
+            test_id = case["test"]["id"]
+            part_id = case["part"]["id"]
+        elif case["part"]["id"] != part_id:
+            # when starting a new test-part one page is added
+            total += 1
+            part_id = case["part"]["id"]
+
+        pages.append(total)
+
+    return pages
+
+# creates a section per case and inserts the unique case-footer
+def create_case_footer(word, cases, case_pagination):
+    total_pages = case_pagination[-1]
+    case_index = 0
+
+    for i in range(1, total_pages):
+
+        # create new section and move case index
+        if i in case_pagination:
+            # move to i-th page
+            word.Selection.GoTo(win32.constants.wdGoToPage,
+                                win32.constants.wdGoToAbsolute,
+                                str(i))
+            #new section
+            word.Selection.InsertBreak(win32.constants.wdSectionBreakNextPage)
+            case_index += 1
+
+        # create footer table and copy to clipboard
+        footer_table_path = get_footer_as_file(cases[case_index])
+        footer_doc = word.Documents.Open(footer_table_path)
+        footer_doc.Content.Select()
+        word.Selection.Copy()
+        footer_doc.Close(False)
+
+        # move to i-th page
+        word.Selection.GoTo(win32.constants.wdGoToPage,
+                            win32.constants.wdGoToAbsolute,
+                            str(i))
+
+        # get document footer
+        sec = word.ActiveDocument.Sections(word.ActiveDocument.Sections.Count)
+        footer = sec.Footers(win32.constants.wdHeaderFooterPrimary)
+        # section has different footer than previous
+        footer.LinkToPrevious = False
+
+        # reset page numbering for new case
+        if i in case_pagination:
+            footer.PageNumbers.RestartNumberingAtSection = True
+            footer.PageNumbers.StartingNumber = 1
+
+        # paste footer into document
+        footer.Range.Paste()
+
+        # move to end of footer and insert page-number with case-prefix
+        rng = footer.Range
+        rng.Collapse(win32.constants.wdCollapseEnd)
+        rng.InsertParagraphAfter()
+        rng = footer.Range
+        rng.Collapse(win32.constants.wdCollapseEnd)
+        chapter_prefix = f"{cases[case_index]['test']['id']}.{cases[case_index]['part']['id']}.{cases[case_index]['case']['id']}-"
+        rng.InsertBefore(chapter_prefix)
+        rng.Collapse(win32.constants.wdCollapseEnd)
+        rng.Fields.Add(rng, Type=win32.constants.wdFieldPage)
+        rng.ParagraphFormat.Alignment = win32.constants.wdAlignParagraphRight
+
+def get_footer_as_file(case):
+    footer_out = populate_template(TEMPLATE_NAME_CASE_FOOTER, case)
+    return create_temp_file(footer_out)
 
 def generate_case_report(test_item, test_dir, date_time, mode: TestMode):
     if not test_item['is_applicable']:
@@ -333,30 +542,13 @@ def generate_case_report(test_item, test_dir, date_time, mode: TestMode):
     snapshot_data = load_json_snapshots(test_item, test_dir, mode)
     # load existing images
     plots_base64 = load_plots(test_dir, mode)
-    data = process_test_case_data(test_item, snapshot_data, init_cond_ref, init_cond_mqtg, init_cond_qtg, plots_base64, date_time, mode)
-    create_test_case_pdf(data, os.path.join(test_dir, "Report.pdf"))
+    data = process_test_case_data(test_item, snapshot_data, init_cond_ref, init_cond_mqtg, init_cond_qtg, plots_base64,
+                                  date_time, mode)
+    create_test_case_pdf(data, test_dir)
 
     plots_base64 = load_plots(test_dir, mode, only_refer=False)
-    data2 = process_test_case_data(test_item, snapshot_data, init_cond_ref, init_cond_mqtg, init_cond_qtg, plots_base64, date_time, mode)
+    data2 = process_test_case_data(test_item, snapshot_data, init_cond_ref, init_cond_mqtg, init_cond_qtg, plots_base64,
+                                   date_time, mode)
     create_graphs_pdf(data2, os.path.join(test_dir, "Graphs.pdf"))
 
     return data
-
-
-# Generate the PDF
-# if __name__ == "__main__":
-#     # 1. einen, mehrerer oder alle tests
-#     # 2. einen oder mehrere test cases
-#     print("MQTG PDF Creator")
-#     create_init_cond = input("Create Initial QTG? (y/n): ").strip().lower() == 'y'
-#     test_name = input("Enter Test (leave empty to create all): ")
-#     test_case_name = ""
-#     if len(test_name) != 0:
-#         test_case_name = input("Enter Test Case (leave empty to create all test cases of a test): ")
-#
-#     print(f"Create Initial QTG: {create_init_cond}")
-#     print(f"Test: {test_name}")
-#     print(f"Test Case: {test_case_name}")
-#     input()
-#
-#     generate_case_report("./data")
