@@ -343,7 +343,7 @@ def create_test_report(test_results, output_dir, mode: TestMode):
 
     doc = open_document(word, tmp_file_path)
     toc_length = create_table_of_contents(doc)
-    create_footer_test_report(word, doc, data, toc_length)
+    create_footer_test_report(word, data, toc_length)
     doc.TablesOfContents(1).Update()
     save_document(doc, output_dir)
 
@@ -428,12 +428,12 @@ def create_footer_single_test_case(word, doc, data):
     }]
     # doc.ComputeStatistics(2) return number of pages in doc
     doc.Repaginate()
-    do_footer_table(word, doc, cases, [doc.ComputeStatistics(2)])
+    do_footer_table(word, cases, [doc.ComputeStatistics(2)])
 
-def create_footer_test_report(word, doc, data, toc_length):
+def create_footer_test_report(word, data, toc_length):
     cases = transform_to_case_data(data)
     case_pagination = get_case_pagination(cases, toc_length)
-    do_footer_table(word, doc, cases, case_pagination)
+    do_footer_table(word, cases, case_pagination)
 
 def transform_to_case_data(data):
     # flatten data list to only ids
@@ -474,7 +474,7 @@ def get_case_pagination(cases, offset):
     return pages
 
 # creates a section per case and inserts the unique case-footer
-def do_footer_table(word, doc, cases, case_pagination):
+def do_footer_table(word, cases, case_pagination):
     total_pages = case_pagination[-1]
     case_index = 0
 
