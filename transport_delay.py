@@ -72,7 +72,7 @@ def init_simulation():
     airspeed_x.write(INITIAL_AIRSPEED)
     speed_xy.write(INITIAL_FORWARD_SPEED)
 
-    #GAR check sleeps here
+    # TODO GAR check sleeps here
     simulation_mode.write(SimMode.TRIM)
     time.sleep(2)
 
@@ -103,9 +103,10 @@ def run_lateral_cyclic_test():
                 f"Cyclic movement detected: "
                 f"{current_cyclic:.6f}"
             )
-            # GAR why write different angles
+            # TODO GAR why write different angles. can i just use the same for every test?
             phi.write(DISPLACEMENT_MAGNITUDE)
-            # GAR can we do all in pause? break after input? etc
+            # TODO GAR can we do full test in pause?
+            # TODO GAR should i break after first input?
             simulation_mode.write(SimMode.PAUSE)
 
         elapsed = time.perf_counter() - loop_start
