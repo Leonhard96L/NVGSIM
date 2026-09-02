@@ -84,6 +84,7 @@ def init_simulation():
     latitude.write(LOWL_LATITUDE)
     longitude.write(LOWL_LONGITUDE)
     psi.write(RUNWAY_26_HEADING)
+    # TODO GAR write theta and phi?
 
     time.sleep(5)
 
@@ -175,6 +176,7 @@ def main():
     finally:
         try:
             simulation_mode.write(SimMode.PAUSE)
+            # TODO GAR call init_simulation() here?
 
         finally:
             winmm.timeEndPeriod(1)
