@@ -33,6 +33,11 @@ INITIAL_ALTITUDE = 295
 INITIAL_AIRSPEED = 0
 INITIAL_FORWARD_SPEED = 0
 
+INPUT_THRESHOLD = 0.0005
+LOOP_PERIOD = 0.01
+
+DISPLACEMENT_MAGNITUDE = np.deg2rad(20)
+
 class SimMode(enum.IntEnum):
     TRIM = 0
     RUN = 1
@@ -82,8 +87,76 @@ def init_simulation():
 
     time.sleep(5)
 
-def test():
+def run_lateral_cyclic_test():
+    initial_cyclic = cyclic_lateral.read()
+
     print("Ready")
+    print(f"Initial lateral cyclic: " f"{initial_cyclic:.6f}")
+
+    while True:
+        loop_start = time.perf_counter()
+
+        current_cyclic = cyclic_lateral.read()
+
+        if abs(current_cyclic - initial_cyclic) > INPUT_THRESHOLD:
+            print(
+                f"Cyclic movement detected: "
+                f"{current_cyclic:.6f}"
+            )
+            # GAR why write different angles
+            phi.write(DISPLACEMENT_MAGNITUDE)
+            # GAR can we do all in pause? break after input? etc
+            simulation_mode.write(SimMode.PAUSE)
+
+        elapsed = time.perf_counter() - loop_start
+        # fixed loop cycle time of 0.01s
+        time.sleep(max(0.0, LOOP_PERIOD - elapsed))
+
+def run_longitudinal_cyclic_test():
+    initial_cyclic = cyclic_longitudinal.read()
+
+    print("Ready")
+    print(f"Initial longitudinal cyclic: " f"{initial_cyclic:.6f}")
+
+    while True:
+        loop_start = time.perf_counter()
+
+        current_cyclic = cyclic_longitudinal.read()
+
+        if abs(current_cyclic - initial_cyclic) > INPUT_THRESHOLD:
+            print(
+                f"Cyclic movement detected: "
+                f"{current_cyclic:.6f}"
+            )
+            theta.write(DISPLACEMENT_MAGNITUDE)
+            simulation_mode.write(SimMode.PAUSE)
+
+        elapsed = time.perf_counter() - loop_start
+        # fixed loop cycle time of 0.01s
+        time.sleep(max(0.0, LOOP_PERIOD - elapsed))
+
+def run_pedals_test():
+    initial_cyclic = pedals.read()
+
+    print("Ready")
+    print(f"Initial pedals: " f"{initial_cyclic:.6f}")
+
+    while True:
+        loop_start = time.perf_counter()
+
+        current_pedals = pedals.read()
+
+        if abs(current_pedals - initial_cyclic) > INPUT_THRESHOLD:
+            print(
+                f"Cyclic movement detected: "
+                f"{current_pedals:.6f}"
+            )
+            psi.write(np.deg2rad(RUNWAY_26_HEADING) + DISPLACEMENT_MAGNITUDE)
+            simulation_mode.write(SimMode.PAUSE)
+
+        elapsed = time.perf_counter() - loop_start
+        # fixed loop cycle time of 0.01s
+        time.sleep(max(0.0, LOOP_PERIOD - elapsed))
 
 def main():
     winmm = ctypes.WinDLL('winmm')
@@ -91,7 +164,9 @@ def main():
 
     try:
         init_simulation()
-        test()
+        run_lateral_cyclic_test()
+        # run_longitudinal_cyclic_test()
+        # run_pedals_test()
 
     except KeyboardInterrupt:
         print("\nTest stopped by user.")
