@@ -72,7 +72,7 @@ def init_simulation():
     airspeed_x.write(INITIAL_AIRSPEED)
     speed_xy.write(INITIAL_FORWARD_SPEED)
 
-    # TODO GAR check sleeps here. is it necessary. fixed tmie for all sleeps
+    # TODO GAR check sleeps here. is it necessary. fixed time for all sleeps
     simulation_mode.write(SimMode.TRIM)
     time.sleep(2)
 
