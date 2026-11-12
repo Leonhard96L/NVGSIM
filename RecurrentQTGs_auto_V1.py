@@ -872,7 +872,7 @@ def create_plots(QTG_path, part):
                 y_label = 'Radar Altitude (ft)'
             else:
                 y_label = plot_title +' (??)'
-                pdfname = f"{plot_title}.svg"
+                pdfname = f"{plot_title}.png"
         return x,y,x_Ref,y_Ref,x_Rec,y_Rec,sc_fac,x_label,y_label
     
     
@@ -932,7 +932,7 @@ def create_plots(QTG_path, part):
             
 
             
-            pdfname = f"{count}_{plot_title}.svg"
+            pdfname = f"{count}_{plot_title}.png"
             
 
             y_uptol = [i+tol for i in y]
@@ -963,7 +963,7 @@ def create_plots(QTG_path, part):
             #plt.show() 
             save_path = os.path.join(dirpath, pdfname)
             
-            plt.savefig(save_path, format='svg')
+            plt.savefig(save_path, format='png')
             plt.close()
 
 
@@ -991,7 +991,7 @@ def create_plots(QTG_path, part):
             
             
 
-            pdfname = f"{count_add}_{plot_title}.svg"
+            pdfname = f"{count_add}_{plot_title}.png"
             
 
             plt.figure(figsize=(10, 6))
@@ -1014,7 +1014,7 @@ def create_plots(QTG_path, part):
             #plt.show() 
             save_path = os.path.join(dirpath, pdfname)
             
-            plt.savefig(save_path, format='svg')
+            plt.savefig(save_path, format='png')
             plt.close()
 
 

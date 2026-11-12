@@ -41,8 +41,8 @@ with open(file_path, 'r') as json_file:
     
     plot_title = "Pitch Angle"
 
-    pdfname = f"5_{plot_title}.svg"
-    pdfname_refer = f"5_{plot_title}_refer.svg"
+    pdfname = f"5_{plot_title}.png"
+    pdfname_refer = f"5_{plot_title}_refer.png"
 
     plt.figure(figsize=(10, 6))
 
@@ -68,7 +68,7 @@ with open(file_path, 'r') as json_file:
     #plt.show() 
     save_path = os.path.join(dirpath, pdfname)
     
-    plt.savefig(save_path, format='svg')
+    plt.savefig(save_path, format='png')
     plt.close()
     
     ##Neuer Plot (dient als Referenz)
@@ -90,5 +90,5 @@ with open(file_path, 'r') as json_file:
     #plt.show() 
     save_path = os.path.join(dirpath, pdfname_refer)
     
-    plt.savefig(save_path, format='svg')
+    plt.savefig(save_path, format='png')
     plt.close()

@@ -1,10 +1,8 @@
 <div class="content">
-    <h2 id="{{test.id}}.{{part.id}}.{{case.id}}">{{test.id}}.{{part.id}} {{case.id}}&nbsp;&nbsp;&nbsp;&nbsp;{{ case.condition }}</h2>
+    <h2 style="page-break-before: always;" id="{{test.id}}.{{part.id}}.{{case.id}}">{{test.id}}.{{part.id}} {{case.id}}&nbsp;&nbsp;&nbsp;&nbsp;{{ case.condition }}</h2>
     <h3 class="center-div">Initial Conditions</h3>
     {% include 'init_cond_table.html' %}
     <p class="tiny-text">* Snapshot Tests: Reference initial conditions are computed as mean values over data time histories</p>
-    {% include 'test_case_footer.html' %}
-    {% include 'test_part_footer.html' %}
 </div>
 {% if mode != testMode.REFERENCE %}
 <div class="content">
@@ -19,29 +17,29 @@
     {% if case.is_automatic %}
     {% for auto_test in case.automatic_testing %}{{ auto_test }}<br><br>{% endfor %}
     <br>
-    <table class="no-outer-borders centered-table">
-        <thead>
-            <tr>
-                <th class="align-left">Flight Controls</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for control in case.generic_flight_controls %}
-            <tr>
-                <td class="align-left">{{ control.fc }}</td>
-                <td>{{ control.status }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div style="text-align: center;">
+     <table class="no-outer-borders centered-table">
+            <thead>
+                <tr>
+                    <th class="align-left">Flight Controls</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for control in case.generic_flight_controls %}
+                <tr>
+                    <td class="align-left">{{ control.fc }}</td>
+                    <td>{{ control.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     <br>
     {% else %}
     No automatic procedure
     {% endif %}
 
-    {% include 'test_case_footer.html' %}
-    {% include 'test_part_footer.html' %}
 </div>
 {% endif %}
 
@@ -62,8 +60,6 @@
         </h3>
         {% include 'snapshot_table.html' %}
     {% endif %}
-        {% include 'test_case_footer.html' %}
-        {% include 'test_part_footer.html' %}
 </div>
 {% endif %}
 
@@ -76,16 +72,13 @@
     {% endif %}
 
     {% for plot in case.plots_base64 %}
-        <img class="plot-image" src="data:image/svg;base64,{{ plot }}" alt="Plot Image">
-        {% if loop.index0 % 3 == 0 %}
-            {% include 'test_case_footer.html' %}
-            {% include 'test_part_footer.html' %}
-        {% endif %}
+        <div style="text-align: center;">
+            <img class="plot-image" src="data:image/png;base64,{{ plot }}" alt="Plot Image">
+        </div>
     {% endfor %}
 
     {% if not case.plots_base64 %}
     <p>No plots available.</p>
-    {% include 'test_part_footer.html' %}
     {% endif %}
 </div>
 
@@ -131,7 +124,5 @@
 <!--            <td colspan="2" class="align-left"><p>No Rationales related to current SubCase are present</p></td>-->
 <!--        </tr>-->
     </table>
-    {% include 'test_case_footer.html' %}
-    {% include 'test_part_footer.html' %}
 </div>
 

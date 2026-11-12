@@ -935,7 +935,7 @@ def create_plots(QTG_path, part):
             else:
                 print("!1!")
                 y_label = plot_title +' (??)'
-                pdfname = f"{plot_title}.svg"
+                pdfname = f"{plot_title}.png"
         return x,y,x_Ref,y_Ref,x_Rec,y_Rec,sc_fac,x_label,y_label
     
     
@@ -995,8 +995,8 @@ def create_plots(QTG_path, part):
             
 
             
-            pdfname = f"{count}_{plot_title}.svg"
-            pdfname_mqtg = f"{count}_{plot_title}_mqtg.svg"
+            pdfname = f"{count}_{plot_title}.png"
+            pdfname_mqtg = f"{count}_{plot_title}_mqtg.png"
             
 
             y_uptol = [i+tol for i in y]
@@ -1029,7 +1029,7 @@ def create_plots(QTG_path, part):
             #plt.show() 
             save_path = os.path.join(dirpath, pdfname)
             
-            plt.savefig(save_path, format='svg')
+            plt.savefig(save_path, format='png')
             plt.close()
             
             ##Neuer Plot (dient als MQTG)
@@ -1067,7 +1067,7 @@ def create_plots(QTG_path, part):
             #plt.show() 
             save_path = os.path.join(dirpath, pdfname_mqtg)
             
-            plt.savefig(save_path, format='svg')
+            plt.savefig(save_path, format='png')
             plt.close()    
             
 
@@ -1096,8 +1096,8 @@ def create_plots(QTG_path, part):
             
             
 
-            pdfname = f"{count_add}_{plot_title}.svg"
-            pdfname_mqtg = f"{count_add}_{plot_title}_mqtg.svg"
+            pdfname = f"{count_add}_{plot_title}.png"
+            pdfname_mqtg = f"{count_add}_{plot_title}_mqtg.png"
             
 
             plt.figure(figsize=(10, 6))
@@ -1121,7 +1121,7 @@ def create_plots(QTG_path, part):
             #plt.show() 
             save_path = os.path.join(dirpath, pdfname)
             
-            plt.savefig(save_path, format='svg')
+            plt.savefig(save_path, format='png')
             plt.close()
             
             ##Neuer Plot (dient als MQTG)
@@ -1149,7 +1149,7 @@ def create_plots(QTG_path, part):
             #plt.show() 
             save_path = os.path.join(dirpath, pdfname_mqtg)
             
-            plt.savefig(save_path, format='svg')
+            plt.savefig(save_path, format='png')
             plt.close()  
 
     if issnapshot:
