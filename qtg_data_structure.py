@@ -12,11 +12,72 @@ data = {
             'name': 'Performance',
             'test_parts': [
                 {
+                    'id': 'a.1.i',
+                    'snapshot': False,
+                    'main_title': 'Engine Assessment',
+                    'test_title': 'Start Operations',
+                    'objective': 'The objective of this test is to demonstrate that the FSTD engine and rotor speed governing is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
+                    'test_cases': [
+                        {
+                            'id': 'A1',
+                            'name': 'RFM Engine Start - Rotor brake OFF during engine start',
+                            # 'condition': '',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
+                        },
+                    ]
+                },
+                {
+                    'id': 'a.1.ii',
+                    'snapshot': False,
+                    'main_title': 'Engine Assessment',
+                    'test_title': 'Steady State Idle and Operating RPM Conditions',
+                    'objective': 'The objective of this test is to demonstrate that the FSTD steady state idle and operating RPM parameters are compliant with the helicopter reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
+                    'test_cases': [
+                        {
+                            'id': 'A1',
+                            'name': 'Steady State Idle - Both Engines at IDLE',
+                            # 'condition': '',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
+                        },
+                        {
+                            'id': 'B1',
+                            'name': 'Operating RPM - Both Engines at FLIGHT',
+                            # 'condition': '',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
+                        },
+                    ]
+                },
+                {
+                    'id': 'a.2',
+                    'snapshot': False,
+                    'main_title': 'Engine Assessment',
+                    'test_title': 'Power Turbine Speed Trim',
+                    'objective': 'The objective of this test is to demonstrate that the FSTD power turbine speed trim is complinat with the helicopter reference data',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
+                    'test_cases': [
+                        {
+                            'id': 'A1',
+                            'name': 'HI NR - OFF to ON',
+                            # 'condition': '',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
+                        },
+                        {
+                            'id': 'A2',
+                            'name': 'HI NR - ON to OFF',
+                            # 'condition': '',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
+                        },
+                    ]
+                },
+                {
                     'id': 'a.3',
                     'snapshot': False,
                     'main_title': 'Engine Assessment',
                     'test_title': 'Engine & Rotor Speed Governing',
                     'objective': 'The objective of this test is to demonstrate that the FSTD engine and rotor speed governing is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Engine 1 Torque', 'unit': '[%]', 'tolerance': 'CT&M'},
                         {'parameter': 'Engine 2 Torque', 'unit': '[%]', 'tolerance': 'CT&M'},
@@ -51,23 +112,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Trim controls to reach 90 KIAS and descent with 1000ft/min',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.',
-                                'When the test elapsed time is 3.4 seconds, pull collective to reach a vertival velocity of 800ft/min in 3.5 seconds.'
+                                'Press "PTT" to start recording.',
+                                'When the test elapsed time is 3.4 seconds, pull collective to reach a vertical velocity of 800ft/min in 3.5 seconds.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['No Rationales related to the test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -83,23 +140,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Trim controls to reach 60 KIAS and climb with 1500ft/min',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.',
+                                'Press "PTT" to start recording.',
                                 'When the test elapsed time is 3.6 seconds, push collective to reach descent of 500ft/min in 4.5 seconds'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['No Rationales related to the Test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -107,10 +160,11 @@ data = {
                 },
                 {
                     'id': 'c.1',
-                    'snapshot' : False,
+                    'snapshot': False,
                     'main_title': 'Take-Off',
                     'test_title': 'Take-off All engines',
                     'objective': 'The objective of this test is to demonstrate that the FSTD all engines take-off is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Airspeed', 'unit': '[kts]', 'tolerance': 'CT&M'},
                         {'parameter': 'Radar Altitude', 'unit': '[ft]', 'tolerance': 'CT&M'},
@@ -155,17 +209,13 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Hover in 3ft AGL.',
-                                'Press "Enter" to start recording.',
+                                'Press "PTT" to start recording.',
                                 'After 2s start take-off run. ',
                                 'After 20s an IAS of 40kts and height of 50ft AGL should be reached.',
                                 'After 24s an IAS of 60kts and height of 100ft AGL should be reached.',
@@ -173,9 +223,8 @@ data = {
                                 'After 35s a height of 280ft AGL should be reached.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['No Rationales related to the Test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -183,10 +232,11 @@ data = {
                 },
                 {
                     'id': 'c.2',
-                    'snapshot' : False,
+                    'snapshot': False,
                     'main_title': 'Take-Off',
                     'test_title': 'OEI continued take-off',
                     'objective': 'The objective of this test is to demonstrate that the FSTD one engine inoperative continued take-off is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Airspeed', 'unit': '[kts]', 'tolerance': 'CT&M'},
                         {'parameter': 'Radar Altitude', 'unit': '[ft]', 'tolerance': 'CT&M'},
@@ -231,26 +281,23 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Hover in 3ft AGL.',
-                                'Press "Enter" to start recording.',
+                                'Press "PTT" to start recording.',
                                 'After 5s start take-off run. ',
+                                'After 17s press Engine 2 fail.',
                                 'After 25s an IAS of 45kts and height of 100ft AGL should be reached.',
                                 'After 35s an IAS of 40kts and height of 320ft AGL should be reached.',
                                 'After 35s an IAS of 55kts and height of 400ft AGL should be reached.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                ' 2. HI NR not available in simulation','3. In order to simulate OEI, an engine fail was used'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': [
+                                    '1. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -258,10 +305,11 @@ data = {
                 },
                 {
                     'id': 'd',
-                    'snapshot' : True,
+                    'snapshot': True,
                     'main_title': 'Hover Performance',
                     'test_title': '',
                     'objective': 'The objective of this test is to demonstrate that the FSTD hover performance is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Engine 1 Torque', 'unit': '[%]', 'tolerance': 'CT&M'},
                         {'parameter': 'Engine 2 Torque', 'unit': '[%]', 'tolerance': 'CT&M'},
@@ -298,21 +346,17 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Pull Collective until hovering in 3ft AGL'
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -329,21 +373,17 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Pull Collective until hovering in 10ft AGL'
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -360,22 +400,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Pull Collective until hovering in 25ft AGL'
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -391,22 +427,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Pull Collective until hovering in 70ft AGL'
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -422,22 +454,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Pull Collective until hovering in 3ft AGL'
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -453,22 +481,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Pull Collective until hovering in 10ft AGL'
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -484,22 +508,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Pull Collective until hovering in 25ft AGL'
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -515,22 +535,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Pull Collective until hovering in 70ft AGL'
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -538,10 +554,11 @@ data = {
                 },
                 {
                     'id': 'e',
-                    'snapshot' : True,
+                    'snapshot': True,
                     'main_title': 'Vertical Climb Performance',
-                    'test_title': 'Vertical Climb Performance',
+                    'test_title': '',
                     'objective': 'The objective of this test is to demonstrate that the FSTD vertical climb performance is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Vertical Velocity', 'unit': '[ft/min]', 'tolerance': 'CT&M'},
                         {'parameter': 'Pedals Pos.', 'unit': '[%]', 'tolerance': 'CT&M'},
@@ -575,21 +592,17 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Pull collective until the FLI reaches TOP.',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -606,22 +619,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Pull collective until the FLI reaches MCP',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -629,10 +638,11 @@ data = {
                 },
                 {
                     'id': 'f',
-                    'snapshot' : True,
+                    'snapshot': True,
                     'main_title': 'Level Flight Performance and Trimmed Flight Control Position',
-                    'test_title': 'Level Flight Performance and Trimmed Flight Control Position',
+                    'test_title': '',
                     'objective': 'The objective of this test is to demonstrate that the FSTD level flight performance is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Engine 1 Torque', 'unit': '[%]', 'tolerance': 'CT&M'},
                         {'parameter': 'Engine 2 Torque', 'unit': '[%]', 'tolerance': 'CT&M'},
@@ -670,24 +680,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Trim controls to reach 64 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -703,23 +708,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Trim controls to reach 130 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -735,23 +736,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Trim controls to reach 64 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -767,23 +764,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Trim controls to reach 130 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -791,10 +784,11 @@ data = {
                 },
                 {
                     'id': 'g',
-                    'snapshot' : True,
+                    'snapshot': True,
                     'main_title': 'Climb Performance and Trimmed Flight Control Position',
-                    'test_title': 'Climb Performance and Trimmed Flight Control Position',
+                    'test_title': '',
                     'objective': 'The objective of this test is to demonstrate that the FSTD climb performance is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Vertical Velocity', 'unit': '[ft/min]', 'tolerance': 'CT&M'},
                         {'parameter': 'Pitch Angle', 'unit': '[deg]', 'tolerance': 'CT&M'},
@@ -834,23 +828,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Pull collective until the FLI reaches MCP.',
                                 'Trim controls to reach 63 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -866,23 +856,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Pull collective until the FLI reaches TOP.',
                                 'Trim controls to reach 63 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['No Rationales related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -898,22 +884,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Pull collective until the FLI reaches MCP.',
                                 'Trim controls to reach 64 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -930,22 +912,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Pull collective until the FLI reaches 2 min.',
                                 'Trim controls to reach 38 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -962,22 +940,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Pull collective until the FLI reaches 30s.',
                                 'Trim controls to reach 37 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -994,22 +968,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Pull collective until the FLI reaches MCP.',
                                 'Trim controls to reach 62 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1026,22 +996,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Pull collective until the FLI reaches TOP.',
                                 'Trim controls to reach 62 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1058,22 +1024,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Pull collective until the FLI reaches MCP.',
                                 'Trim controls to reach 65 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1090,23 +1052,21 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Pull collective until the FLI reaches 2 min.',
                                 'Trim controls to reach 35 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. In order to simulate OEI, an engine fail was used','2. Note that it is not possible to turn off SAS (stability augmentation system)'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': [
+                                    '1. In order to simulate OEI, an engine fail was used',
+                                    '2. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1122,23 +1082,21 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Pull collective until the FLI reaches 30s.',
                                 'Trim controls to reach 42 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. In order to simulate OEI, an engine fail was used','2. Note that it is not possible to turn off SAS (stability augmentation system)'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': [
+                                    '1. In order to simulate OEI, an engine fail was used',
+                                    '2. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -1146,10 +1104,11 @@ data = {
                 },
                 {
                     'id': 'h.1',
-                    'snapshot' : True,
+                    'snapshot': True,
                     'main_title': 'Descent',
                     'test_title': 'Descent Performance and Trimmed Flight Control Position',
                     'objective': 'The objective of this test is to demonstrate that the FSTD descent performance is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Engine 1 Torque', 'unit': '[%]', 'tolerance': 'CT&M'},
                         {'parameter': 'Engine 2 Torque', 'unit': '[%]', 'tolerance': 'CT&M'},
@@ -1172,7 +1131,6 @@ data = {
                     ],
                     'add_plots' : [
                         {'parameter': 'Airspeed', 'unit': '[kts]'},
-                        {'parameter': 'Pitch Angle', 'unit': '[deg]'},
                         {'parameter': 'Bank Angle', 'unit': '[deg]'},
                         {'parameter': 'Heading', 'unit': '[deg]'},
                         {'parameter': 'Vertical Velocity', 'unit': '[ft/min]'}
@@ -1190,24 +1148,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Push collective until reaching 1000 fpm of descent',
                                 'Trim controls to reach 90 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. Note that it is not possible to turn off SAS (stability augmentation system)'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1223,22 +1176,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Push collective until reaching 1000 fpm of descent',
                                 'Trim controls to reach 90 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1247,10 +1196,11 @@ data = {
                 },
                 {
                     'id': 'j.1',
-                    'snapshot' : False,
+                    'snapshot': False,
                     'main_title': 'Landing',
-                    'test_title': 'Landing - All Engines',
+                    'test_title': 'All Engines',
                     'objective': 'The objective of this test is to demonstrate that the FSTD landing performance with all engines operative is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Airspeed', 'unit': '[kts]', 'tolerance': 'CT&M'},
                         {'parameter': 'Radar Altitude', 'unit': '[ft]', 'tolerance': 'CT&M'},
@@ -1296,28 +1246,23 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Start from position: '
                                 'Climb up to 316ft AGL.',
                                 'Trim controls to reach and maintain 70 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.',
+                                'Press "PTT" to start recording.',
                                 'When the test elapsed time is 1.0 seconds, decrease collective to achieve 450 ft/min of rate of descent in approximately 20.0 seconds and maintain it. In the meantime move controls to reduce airspeed by 20.0 KIAS and maintain it.',
                                 'When the test elapsed time is 36.0 seconds, increase collective to achieve level flight condition in approximately 13.0 seconds. In the meantime move controls to reach an hover condition in 23.0 seconds and maintain it.',
                                 'Continue the maneuver touching the ground when the test elapsed time is 59.0 seconds.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                ' 2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['No Rationales related to the Test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -1325,10 +1270,11 @@ data = {
                 },
                 {
                     'id': 'j.2',
-                    'snapshot' : False,
+                    'snapshot': False,
                     'main_title': 'Landing',
-                    'test_title': 'Landing - One Engine Inoperative',
+                    'test_title': 'One Engine Inoperative',
                     'objective': 'The objective of this test is to demonstrate that the FSTD one engine inoperative landing is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Airspeed', 'unit': '[kts]', 'tolerance': 'CT&M'},
                         {'parameter': 'Radar Altitude', 'unit': '[ft]', 'tolerance': 'CT&M'},
@@ -1374,20 +1320,16 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Start from position: '
                                 'Climb up to 305ft AGL.',
                                 'Trim controls to reach and maintain 68 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.',
+                                'Press "PTT" to start recording.',
                                 'Maintain pitch attitude to 5.0 deg nose up to reach 40 KIAS in 42.0 seconds, while maintaining a 300 ft/min rate of descent.',
                                 'When the test elapsed time is 42.0 seconds, maintain 40 KIAS and continue the descent.',
                                 'When the test elapsed time is 48.0 seconds, decrease the airspeed to 20.0 KIAS in 11.0 seconds and continue the descent.',
@@ -1396,9 +1338,9 @@ data = {
                                 'Start to pull the collective to cushion the landing and touch the ground when the test elapsed time is 72.0 seconds.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                ' 2. HI NR not available in simulation',' 3. In order to simulate OEI, an engine fail was used'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': [
+                                    '1. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1414,20 +1356,16 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Start from position: '
                                 'Climb up to 270ft AGL.',
                                 'Trim controls to reach and maintain 77 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.',
+                                'Press "PTT" to start recording.',
                                 'Increase pitch attitude to 6.0 deg nose up to reach 40 KIAS in 34.0 seconds, while maintaining a 300 ft/min rate of descent.',
                                 'When the test elapsed time is 34.0 seconds, maintain 40 KIAS and continue the descent.',
                                 'When the test elapsed time is 40.0 seconds, decrease the airspeed to 20.0 KIAS in 10.0 seconds and continue the descent.',
@@ -1436,9 +1374,9 @@ data = {
                                 'Start to pull the collective to cushion the landing and touch the ground when the test elapsed time is 74.0 seconds.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation',' 3. In order to simulate OEI, an engine fail was used'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': [
+                                    '1. In order to simulate OEI, an engine fail was used'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -1452,10 +1390,11 @@ data = {
             'test_parts': [
                 {
                     'id': 'a.1',
-                    'snapshot' : False,
+                    'snapshot': False,
                     'main_title': 'Control System Mechanical Characteristics',
                     'test_title': 'Cyclic Force vs Position',
                     'objective': 'The objective of this test is to demonstrate that the FSTD Cyclic Control System Mechanical Characteristics are compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Breakout', 'unit': '[daN]', 'tolerance': 'CT&M'},
                         {'parameter': 'Force', 'unit': '[daN]', 'tolerance': 'CT&M'}
@@ -1480,22 +1419,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                            'manual_testing': [
-                               'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                               'Right click on the corresponding test in the right column to change in manual mode.',
-                               'Press "Start QTG" to start the test.',
-                               'In the text field below, enter the desired time for the test to run. Press "Enter".',
-                               'Press "Enter" to start recording.',
+                               'To perform the test manually, follow the instructions in the "Recording procedures" section.',
+                               'Press "PTT" to start recording.',
                                'Move the Cyclic stick to perform a complete sweep on the longitudinal axis.'
                            ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)',
-                                '2. Refer to the appendix A - Control Loading System (CLS)'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': [
+                                    '1. Note that it is not possible to turn off SAS (stability augmentation system)',
+                                    '2. Refer to the appendix A - Control Loading System (CLS)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1511,22 +1447,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
-                                'Press "Enter" to start recording.',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
+                                'Press "PTT" to start recording.',
                                 'Move the Cyclic stick to perform a complete sweep on the longitudinal axis while pressing the FTR Release button.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)',
-                                '2. Refer to the appendix where the CLS is described'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': [
+                                    '1. Note that it is not possible to turn off SAS (stability augmentation system)',
+                                    '2. Refer to the appendix where the CLS is described'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1542,22 +1475,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
-                                'Press "Enter" to start recording.',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
+                                'Press "PTT" to start recording.',
                                 'Move the Cyclic stick to perform a complete sweep on the lateral axis.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)',
-                                '2. Refer to the appendix where the CLS is described'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': [
+                                    '1. Note that it is not possible to turn off SAS (stability augmentation system)',
+                                    '2. Refer to the appendix where the CLS is described'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1573,22 +1503,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
-                                'Press "Enter" to start recording.',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
+                                'Press "PTT" to start recording.',
                                 'Move the Cyclic stick to perform a complete sweep on the lateral axis while pressing the FTR Release button.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)',
-                                '2. Refer to the appendix where the CLS is described'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': [
+                                    '1. Note that it is not possible to turn off SAS (stability augmentation system)',
+                                    '2. Refer to the appendix where the CLS is described'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -1596,10 +1523,11 @@ data = {
                 },
                 {
                     'id': 'a.2',
-                    'snapshot' : False,
+                    'snapshot': False,
                     'main_title': 'Control System Mechanical Characteristics',
                     'test_title': 'Collective/Pedals Force vs Position',
                     'objective': 'The objective of this test is to demonstrate that the FSTD Collective/Pedals Control System Mechanical Characteristics are compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Breakout', 'unit': '[daN]', 'tolerance': 'CT&M'},
                         {'parameter': 'Force', 'unit': '[daN]', 'tolerance': 'CT&M'}
@@ -1624,24 +1552,27 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
-                                'Press "Enter" to start recording.',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
+                                'Press "PTT" to start recording.',
                                 'Move the Collective lever to perform a complete sweep.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)',
-                                '2. Refer to the appendix where the CLS is described'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': [
+                                    '1. Note that it is not possible to turn off SAS (stability augmentation system)',
+                                    '2. Refer to the appendix where the CLS is described'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
+                        },
+                        {
+                            'id': 'A2',
+                            'name': 'Collective - Trim OFF',
+                            # 'condition': '',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
                         },
                         {
                             'id': 'B1',
@@ -1655,33 +1586,50 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
-                                'Press "Enter" to start recording.',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
+                                'Press "PTT" to start recording.',
                                 'Move the Pedals to perform a complete sweep.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)',
-                                '2. Refer to the appendix where the CLS is described'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': [
+                                    '1. Note that it is not possible to turn off SAS (stability augmentation system)',
+                                    '2. Refer to the appendix where the CLS is described'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
                     ]
                 },
                 {
+                    'id': 'a.3',
+                    'snapshot': False,
+                    'main_title': 'Brake Pedal Force vs. Position',
+                    'test_cases': [
+                        {
+                            'id': 'A1',
+                            'name': 'Right Toe Brake',
+                            'condition': 'Right Toe Brake',
+                            'not_applicable': 'Test not applicable since helicopter is equipped with skids.',
+                        },
+                        {
+                            'id': 'A2',
+                            'name': 'Left Toe Brake',
+                            'condition': 'Left Toe Brake',
+                            'not_applicable': 'Test not applicable since helicopter is equipped with skids.',
+                        },
+                    ]
+                },
+                {
                     'id': 'a.4',
-                    'snapshot' : False,
+                    'snapshot': False,
                     'main_title': 'Control System Mechanical Characteristics',
                     'test_title': 'Trim System Rate',
                     'objective': 'The objective of this test is to demonstrate that the FSTD Trim System Rate Characteristics are compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Trim Rate', 'unit': '[%]', 'tolerance': 'CT&M'}
                     ],
@@ -1704,20 +1652,16 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
-                                'Press "Enter" to start recording.',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
+                                'Press "PTT" to start recording.',
                                 'Press the Beep-Trim to move the Cyclic stick in the full aft position on the longitudinal axis.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['No Rationales related to the Test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
@@ -1734,32 +1678,41 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
-                                'Press "Enter" to start recording.',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
+                                'Press "PTT" to start recording.',
                                 'Press the Beep-Trim to move the Cyclic stick in the full right position on the lateral axis.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
                                 'rationales_validation_data': ['No Rationales related to the Test are present'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
-                        }
+                        },
+                        {
+                            'id': 'C1',
+                            'name': 'Pedals - ATRIM',
+                            # 'condition': '',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
+                        },
+                        {
+                            'id': 'D1',
+                            'name': 'Collective - ATRIM',
+                            # 'condition': '',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
+                        },
                     ]
                 },
                 {
                     'id': 'c.2',
-                    'snapshot' : True,
+                    'snapshot': True,
                     'main_title': 'Longitudinal Handling Qualities',
                     'test_title': 'Longitudinal Static Stability',
                     'objective': 'The objective of this test is to demonstrate that the FSTD longitudinal static stability is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]', 'tolerance': 'CT&M'}
                     ],
@@ -1773,7 +1726,6 @@ data = {
                         {'parameter': 'Heading', 'unit': '[deg]'},
                         {'parameter': 'Engine 1 Torque', 'unit': '[%]'},
                         {'parameter': 'Engine 2 Torque', 'unit': '[%]'},
-                        {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]'},
                         {'parameter': 'Lateral Cyclic Pos.', 'unit': '[%]'},
                         {'parameter': 'Pedals Pos.', 'unit': '[%]'},
                         {'parameter': 'Collective Pos.', 'unit': '[%]'},
@@ -1792,24 +1744,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Trim controls to reach 119 KIAS',
                                 'Stabilize and maintain current flight condition.',
                                 'Leave the collective fixed at its initial value and maintain the target IAS.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1825,24 +1772,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Trim controls to reach and maintain 124 KIAS',
                                 'Stabilize and maintain current flight condition.',
                                 'Leave the collective fixed at its initial value and maintain the target IAS.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.2 A1'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1858,24 +1800,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Trim controls to reach and maintain 129 KIAS',
                                 'Stabilize and maintain current flight condition.',
                                 'Leave the collective fixed at its initial value and maintain the target IAS.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.2 A1'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1891,24 +1828,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Trim controls to reach and maintain 120 KIAS',
                                 'Stabilize and maintain current flight condition.',
                                 'Leave the collective fixed at its initial value and maintain the target IAS.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1924,24 +1856,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Trim controls to reach and maintain 115 KIAS',
                                 'Stabilize and maintain current flight condition.',
                                 'Leave the collective fixed at its initial value and maintain the target IAS.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.2 B1'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1957,24 +1884,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Trim controls to reach and maintain 107 KIAS',
                                 'Stabilize and maintain current flight condition.',
                                 'Leave the collective fixed at its initial value and maintain the target IAS.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.2 B1'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -1990,24 +1912,20 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Trim controls to reach and maintain 74 KIAS',
                                 'Stabilize and maintain current flight condition.',
                                 'Leave the collective fixed at its initial value and maintain the target IAS.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation','3. Note that it is not possible to turn off SAS (stability augmentation system)'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': [
+                                    '1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2023,24 +1941,20 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Trim controls to reach and maintain 84 KIAS',
                                 'Stabilize and maintain current flight condition.',
                                 'Leave the collective fixed at its initial value and maintain the target IAS.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation','3. Note that it is not possible to turn off SAS (stability augmentation system)'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.2 C1'],
+                                'rationales_validation_data': [
+                                    '1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2056,26 +1970,20 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Trim controls to reach and maintain 88 KIAS',
                                 'Stabilize and maintain current flight condition.',
                                 'Leave the collective fixed at its initial value and maintain the target IAS.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.2 C1'],
                                 'rationales_validation_data': [
-                                    '1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                    '2. HI NR not available in simulation',
-                                    '3. Note that it is not possible to turn off SAS (stability augmentation system)'],
+                                    '1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2091,24 +1999,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Trim controls to reach and maintain 75 KIAS',
                                 'Stabilize and maintain current flight condition.',
                                 'Leave the collective fixed at its initial value and maintain the target IAS.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2124,24 +2027,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Trim controls to reach and maintain 65 KIAS',
                                 'Stabilize and maintain current flight condition.',
                                 'Leave the collective fixed at its initial value and maintain the target IAS.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.2 D1'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2157,24 +2055,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Trim controls to reach and maintain 55 KIAS',
                                 'Stabilize and maintain current flight condition.',
                                 'Leave the collective fixed at its initial value and maintain the target IAS.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.2 D1'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -2182,10 +2075,11 @@ data = {
                 },
                 {
                     'id': 'c.4',
-                    'snapshot' : True,
+                    'snapshot': True,
                     'main_title': 'Longitudinal Handling Qualities',
                     'test_title': 'Manoeuvring Stability',
                     'objective': 'The objective of this test is to demonstrate that the FSTD longitudinal manoeuvring stability is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]', 'tolerance': 'CT&M'}
                     ],
@@ -2219,23 +2113,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2251,23 +2140,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.4 A1'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2283,23 +2167,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.4 A1'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2315,23 +2194,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2347,23 +2221,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.4 B1'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2379,23 +2248,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.4 B1'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2411,23 +2275,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2443,23 +2302,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.4 C1'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2475,23 +2329,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.4 C1'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2507,23 +2356,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2539,23 +2383,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.4 D1'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2571,34 +2410,43 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Maintain level flight or turn at the initialisation speed, leaving the collective set at its initial value.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. HI NR not available in simulation'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.c.4 D1'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
                     ]
                 },
                 {
+                    'id': 'c.5',
+                    'snapshot': False,
+                    'main_title': 'Landing Gear Operating Time',
+                    'test_cases': [
+                        {
+                            'id': 'A1',
+                            'name': 'Landing gear operating time',
+                            'condition': 'Landing gear operating time',
+                            'not_applicable': 'Test not applicable since helicopter is equipped with skids.',
+                        }
+                    ]
+                },
+                {
                     'id': 'd.2',
-                    'snapshot' : True,
+                    'snapshot': True,
                     'main_title': 'Lateral & Directional Handling Qualities',
                     'test_title': 'Directional Static Stability',
                     'objective': 'The objective of this test is to demonstrate that the FSTD directional static stability is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Bank Angle', 'unit': '[deg]', 'tolerance': 'CT&M'},
                         {'parameter': 'Longitudinal Cyclic Pos.', 'unit': '[%]', 'tolerance': 'CT&M'},
@@ -2618,7 +2466,6 @@ data = {
                         {'parameter': 'Engine 1 Torque', 'unit': '[%]'},
                         {'parameter': 'Engine 2 Torque', 'unit': '[%]'},
                         {'parameter': 'Sideslip Angle', 'unit': '[deg]'},
-                        {'parameter': 'Pedals Pos.', 'unit': '[%]'},
                         {'parameter': 'Collective Pos.', 'unit': '[%]'}
                     ],
                     'test_cases': [
@@ -2634,22 +2481,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2665,22 +2508,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.d.2 A1'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2696,22 +2535,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.d.2 A1'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2727,23 +2562,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. Note that it is not possible to turn off SAS (stability augmentation system)'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2759,23 +2589,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. Note that it is not possible to turn off SAS (stability augmentation system)'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.d.2 B1'],
+                                'rationales_validation_data': ['Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2791,23 +2616,18 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS',
-                                '2. Note that it is not possible to turn off SAS (stability augmentation system)'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.','2. Compare test result with test: 2.d.2 B1'],
+                                'rationales_validation_data': ['Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -2815,10 +2635,11 @@ data = {
                 },
                 {
                     'id': 'd.3.i',
-                    'snapshot' : False,
+                    'snapshot': False,
                     'main_title': 'Dynamic Lateral and Directional Stability',
                     'test_title': 'Lateral-Directional Oscillations',
                     'objective': 'The objective of this test is to demonstrate that the FSTD dynamic lateral-directional stability (oscillations) is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
 # =============================================================================
 #                     'tolerances_evaluation_criteria': [
 #                         {'parameter': 'Calculated period', 'unit': '[%]', 'tolerance': 'CT&M'},
@@ -2849,7 +2670,7 @@ data = {
                         {'parameter': 'Roll Rate', 'unit': '[deg/s]', 'tolerance': '±5'},
                         {'parameter': 'Yaw Rate', 'unit': '[deg/s]', 'tolerance': '±4'}
                     ],
-                    'add_plots' : [
+                    'add_plots': [
                         {'parameter': 'Pitch Angle', 'unit': '[deg]'},
                         {'parameter': 'Bank Angle', 'unit': '[deg]'},
                         {'parameter': 'Heading', 'unit': '[deg]'},
@@ -2875,30 +2696,27 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Trim controls to reach 66 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.',
+                                'Press "PTT" to start recording.',
                                 'When the test elapsed time is 3.0 seconds, perform a pedal control doublet. Return pedal controls position to initial position, and then keep hands-off controls.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
                         {
                             'id': 'A2',
-                            'name': 'Lateral-Directional Oscillations',
+                            'name': 'Mid Speed - Vy, AFCS OFF, Left Pedal input',
                             'condition': 'Mid Speed - 66 KIAS, Left Pedal input',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',    # NUR in NA tests einbauen!
                             'automatic_testing_possible': True,
                             'generic_flight_controls': [
                                 {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
@@ -2907,23 +2725,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Trim controls to reach 67 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.',
+                                'Press "PTT" to start recording.',
                                 'When the test elapsed time is 3.5 seconds, perform a pedal control doublet. Return pedal controls position to initial position, and then keep hands-off controls.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2939,23 +2753,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Trim controls to reach 90 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.',
+                                'Press "PTT" to start recording.',
                                 'When the test elapsed time is 3.6 seconds, perform a pedal control doublet. Return pedal controls position to initial position, and then keep hands-off controls.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -2963,6 +2773,7 @@ data = {
                             'id': 'B2',
                             'name': 'Lateral-Directional Oscillations',
                             'condition': 'High Speed - 90 KIAS, Left Pedal input',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
                             'automatic_testing_possible': True,
                             'generic_flight_controls': [
                                 {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
@@ -2971,23 +2782,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Trim controls to reach 90 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.',
+                                'Press "PTT" to start recording.',
                                 'When the test elapsed time is 2.5 seconds, perform a pedal control doublet. Return pedal controls position to initial position, and then keep hands-off controls.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
@@ -2995,10 +2802,11 @@ data = {
                 },
                 {
                     'id': 'd.3.ii',
-                    'snapshot' : False,
+                    'snapshot': False,
                     'main_title': 'Dynamic Lateral and Directional Stability',
                     'test_title': 'Spiral Stability',
                     'objective': 'The objective of this test is to demonstrate that the FSTD spiral stability is compliant with the reference data.',
+                    'demonstration_procedure': 'To demonstrate use the QTG tool.',
                     'tolerances_evaluation_criteria': [
                         {'parameter': 'Correct Trend on Bank', 'unit': '[deg]', 'tolerance': 'CT&M'}
                     ],
@@ -3034,24 +2842,20 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Trim controls to reach 64 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.',
+                                'Press "PTT" to start recording.',
                                 'When the test elapsed time is 7.0 seconds, move lateral cyclic to reach 30.0 deg of positive bank angle in 18.0 seconds and maintain it, leaving collective control and pedals free.',
                                 'When the test elapsed time is 36.0 seconds, release lateral cyclic.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -3059,6 +2863,7 @@ data = {
                             'id': 'A2',
                             'name': 'Spiral Stability',
                             'condition': 'Right Input - 64 KIAS',
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
                             'automatic_testing_possible': True,
                             'generic_flight_controls': [
                                 {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
@@ -3067,21 +2872,17 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Set controls to reach target values.'
-                                'Press "Enter" to start recording.'
+                                'Press "PTT" to start recording.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -3097,24 +2898,20 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
+                                'To perform the test manually, follow the instructions in the "Recording procedures" section.',
                                 'Trim controls to reach 63 KIAS',
                                 'Stabilize and maintain current flight condition.',
-                                'Press "Enter" to start recording.',
+                                'Press "PTT" to start recording.',
                                 'When the test elapsed time is 12.0 seconds, move lateral cyclic to reach 20.0 deg of negative bank angle in 10.0 seconds and maintain it, leaving collective control and pedals free.',
                                 'When the test elapsed time is 44.0 seconds, release lateral cyclic.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         },
@@ -3122,7 +2919,8 @@ data = {
                             'id': 'B2',
                             'name': 'Spiral Stability',
                             'condition': 'Left Input - 64 KIAS',
-                            'automatic_testing_possible': True,
+                            'not_applicable': 'Test not applicable. Refer to Ref. 6.',
+                            'automatic_testing_possible': False,
                             'generic_flight_controls': [
                                 {'fc': 'Longitudinal', 'status': 'MATH PILOT'},
                                 {'fc': 'Lateral', 'status': 'MATH PILOT'},
@@ -3130,24 +2928,19 @@ data = {
                                 {'fc': 'Pedals', 'status': 'MATH PILOT'}
                             ],
                             'automatic_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Press "Start QTG" to start the test.',
+                                'To perform the test automatically, follow the instructions in the "Recording procedures" section.',
                                 'The generic flight controls will be internally controlled according to the following table:'
                             ],
                             'manual_testing': [
-                                'On the left column double click on the corresponding test. The test will displayed in the right column.',
-                                'Right click on the corresponding test in the right column to change in manual mode.',
-                                'Press "Start QTG" to start the test.',
-                                'In the text field below, enter the desired time for the test to run. Press "Enter".',
-                                'Set controls to reach target values.'
-                                'Press "Enter" to start recording.'
+                                'N.A.'
                             ],
                             'notes_rationales': {
-                                'notes': ['No Notes related to the Test are present'],
-                                'rationales_validation_data': ['1. Note if Airspeed is shown as plot, referrence data is specified as IAS while test result is meassured in TAS'],
+                                'notes': ['1. True airspeed (TAS) is displayed in the results.'],
+                                'rationales_validation_data': ['1. Note that it is not possible to turn off SAS (stability augmentation system)'],
                                 'rationales_results': ['No Rationales related to the Test are present']
                             }
                         }
+
                     ]
                 }
             ]

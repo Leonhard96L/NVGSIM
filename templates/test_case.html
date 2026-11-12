@@ -1,47 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="./style.css">
-    <title>{{test.id}}.{{part.id}}.{{case.id}} {{ case.name }}</title>
-</head>
-<body>
-<div class="content">
-    <h1>{{ part.main_title }}</h1>
-    <h2>{{ test.id }}.{{part.id}} {{ part.test_title }}</h2>
-    <br/>
-    <br/>
-    <h3 class="center-div">Test Objective</h3>
-
-    <p>{{ part.objective }}</p>
-
-    <h3 class="center-div">Tolerances and Evaluation Criteria</h3>
-
-    <h3>FTD Level 1:</h3>
-
-    {% include 'tolerances_table.html' %}
-    <br>
-
-    <p>Evaluation Criteria to be applied to Overplots figures.</p>
-
-    <h3 class="center-div">Applicability</h3>
-
-    <p>Test applicable to FTD Level 1.</p>
-
-    <h3 class="center-div">References</h3>
-
-    <p>EASA CS-FSTD(H)</p>
-</div>
-
 <div class="content">
     <h2 id="{{test.id}}.{{part.id}}.{{case.id}}">{{test.id}}.{{part.id}} {{case.id}}&nbsp;&nbsp;&nbsp;&nbsp;{{ case.condition }}</h2>
+    <h3 class="center-div">Initial Conditions</h3>
+    {% include 'init_cond_table.html' %}
+    <p class="tiny-text">* Snapshot Tests: Reference initial conditions are computed as mean values over data time histories</p>
+    {% include 'test_case_footer.html' %}
+    {% include 'test_part_footer.html' %}
+</div>
+{% if mode != testMode.REFERENCE %}
+<div class="content">
+    <h3 class="center-div">Manual Test Procedure</h3>
+    <ol>
+        {% for man_test in case.manual_testing %}
+        <li><p>{{ man_test }}</p></li>
+        {% endfor %}
+    </ol>
 
-    <h3 class="center-div">Test Procedure</h3>
-    <p>
-        On the IOS select ’Maintenance’ page then ’QTG-Test’.
-        The test can be run either in automatic or manual mode.
-    </p>
-
-    <b>Automatic testing:</b>
+    <h3 class="center-div">Automatic Test Procedure</h3>
     {% if case.is_automatic %}
     {% for auto_test in case.automatic_testing %}{{ auto_test }}<br><br>{% endfor %}
     <br>
@@ -63,64 +37,59 @@
     </table>
     <br>
     {% else %}
-    N.A.
+    No automatic procedure
     {% endif %}
-    <p><b>Manual testing:</b> follow the Manual Procedure steps indicated in the next page.</p>
 
     {% include 'test_case_footer.html' %}
+    {% include 'test_part_footer.html' %}
+</div>
+{% endif %}
+
+{% if mode != testMode.REFERENCE or case.is_snapshot %}
+<div class="content">
+    {% if mode != testMode.REFERENCE %}
+        <h3 class="center-div">Tolerances and Evaluation Criteria</h3>
+        <h3>FTD Level 1:</h3>
+        {% include 'tolerances_table.html' %}
+        <p>Evaluation Criteria to be applied to Overplots figures.</p>
+    {% endif %}
+<!--    <h3 class="center-div">Expected Results</h3>-->
+<!--    <p>It is expected that the test data is within the tolerances of the reference.</p>-->
+    {% if case.is_snapshot %}
+        <h3 class="center-div">
+            {% if mode == testMode.REFERENCE %} Test Results
+            {% else %} Expected Results, Test Results and Comparison of Results {% endif %}
+        </h3>
+        {% include 'snapshot_table.html' %}
+    {% endif %}
+        {% include 'test_case_footer.html' %}
+        {% include 'test_part_footer.html' %}
+</div>
+{% endif %}
+
+<div class="content">
+    {% if not case.is_snapshot %}
+    <h3 class="center-div">
+        {% if mode == testMode.REFERENCE %} Test Results
+        {% else %} Expected Results, Test Results and Comparison of Results {% endif %}
+    </h3>
+    {% endif %}
+
+    {% for plot in case.plots_base64 %}
+        <img class="plot-image" src="data:image/svg;base64,{{ plot }}" alt="Plot Image">
+        {% if loop.index0 % 3 == 0 %}
+            {% include 'test_case_footer.html' %}
+            {% include 'test_part_footer.html' %}
+        {% endif %}
+    {% endfor %}
+
+    {% if not case.plots_base64 %}
+    <p>No plots available.</p>
+    {% include 'test_part_footer.html' %}
+    {% endif %}
 </div>
 
 <div class="content">
-    <h3>Manual Procedure</h3>
-
-    <ol>
-        {% for man_test in case.manual_testing %}
-        <li><p>{{ man_test }}</p></li>
-        {% endfor %}
-    </ol>
-
-    <!--    PLEASE OUTSOURCE-->
-    {% include 'test_case_footer.html' %}
-</div>
-
-<div class="content">
-    <h3 class="center-div">Initial Conditions</h3>
-    {% include 'init_cond_table.html' %}
-    <p class="tiny-text">* Snapshot Tests: Reference initial conditions are computed as mean values over data time histories</p>
-    {% include 'test_case_footer.html' %}
-</div>
-
-<div class="content">
-<!--    <h3 class="center-div">Test Results</h3>-->
-<!--    <table class="no-outer-borders">-->
-<!--        <thead>-->
-<!--        <tr>-->
-<!--            <th class="align-left">Parameter <span class="light-text">[U oM]</span></th>-->
-<!--            <th>Reference</th>-->
-<!--            <th>Min**</th>-->
-<!--            <th>FSTD</th>-->
-<!--            <th>Max**</th>-->
-<!--        </tr>-->
-<!--        </thead>-->
-<!--        <tbody>-->
-<!--        <tr>-->
-<!--            <th class="subsection" colspan="5">Snapshot Data</th>-->
-<!--        </tr>-->
-<!--        <tr>-->
-<!--            <td class="align-left">Engine 1 Torque <span class="light-text">[%]</span></td>-->
-<!--            <td>1</td>-->
-<!--            <td>2</td>-->
-<!--            <td>3</td>-->
-<!--            <td>4</td>-->
-<!--        </tr>-->
-<!--        </tbody>-->
-<!--    </table>-->
-<!--    <br>-->
-<!--    <p class="center-div tiny-text">-->
-<!--        ** The Min value is computed as the Reference value minus the specific tolerance value.<br>-->
-<!--        The Max value is computed as the Reference value plus the specific tolerance value-->
-<!--    </p>-->
-
     <h3 class="center-div">Notes and Rationales</h3>
 
     <table class="no-outer-borders">
@@ -163,17 +132,6 @@
 <!--        </tr>-->
     </table>
     {% include 'test_case_footer.html' %}
+    {% include 'test_part_footer.html' %}
 </div>
-<div class="content">
-    <h3 class="center-div">Results</h3>
 
-    {% for plot in case.plots_base64 %}
-        <img src="data:image/svg;base64,{{ plot }}" alt="Plot Image">
-        {% include 'test_case_footer.html' %}
-    {% endfor %}
-    {% if not case.plots_base64 %}
-    <p>No plots available.</p>
-    {% endif %}
-</div>
-</body>
-</html>

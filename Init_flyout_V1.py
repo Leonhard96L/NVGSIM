@@ -840,32 +840,14 @@ Reiser:
 
 
 """
-Revise MQTG:
-    1. Snapshot tests -> tabellen machen mit Zahlenwerte anstelle von plots
-    2. Beim init flyout kann man alte Referenz zum Vergleichen nehmen
-    3. Die ganzen Umrechnungsfunktionen fuer Gewicht und CG kommen weck. Es wird also nun Gewicht, CG, Traeqheiten uebergeben
-    4. Es wird das initflyout gemacht und beim plotten wird verglichen ob das ganze passt. 
-    5. Das init flyout ist dann die neue Referenz.
-    6. Ein Recurrent QTG ist dann das MQTG. Hier Gilt CTG&M
-    7. Fuer alle weitern QTGs gelten dann die Toleranzen
-    8. Mit neuen Flugmodell Flyout machen und die FTD3 Referenz beibehalten zur kontrolle.
-    9. Gleichzeitig auch snapshottest tabellen generieren lassen und die Plots mit nur einer Linie. Diese werden im Anhang als Referenz definiert.
-    10. Aus den erflogenen Daten wird dann das MQTG aus den automatic recurrent gebildet.
+Einige neue probleme seit dem update:
     
-    Schritt fuer Schritt:
-    1. Entnehme init cond aus FTD3 Referenz und versuche die Referenz so gut als moeglich nachzufliegen.
-    2. Generiere die Neuen Plots und Tabelle(snapshot tests) mit init cond.
-    3. MQTG: mache Recurrent QTG auto um das MQTG zu bilden. 
-    
-    
-    
-    Fuer Michi:
-        1. Aus diesem Skript bauen wir die Reference Daten. Durch Manuelles 
-        2. Dafuer gibt es: Test Name, Init cond, Results (Plots und Tables) 
-            -Achtung die Table hat dann nur eine Spalte mit Werten
-        3. Am besten wir machen einen Neuen Ordner. Da gibt es dann 
-        
-        
+    1. Ich die Kraefte nicht mehr auslesen
+    5. Sobald die Kraefte wieder ausgelsen werden koennen muss ich mir unbedingt die  
+    6. Die plot funktion muss angepasst werden
+    7. Die Scenarios neu konfigurtieren: Brownout
+    8. Eine Sorge noch bei den automatic QTGs ist nur mehr die tests mit KIAS < 10
+    9. Achtung es gibt Test mit Hands off controls -> da den Regler abschalten
     
 """
 

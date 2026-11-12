@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="./style.css">
+    <title>Report {{ test.id }}.{{ part.id }}.{{ case.id }} {{ case.name }}</title>
+</head>
+<body>
+<div class="content">
+    <h2 id="{{test.id}}.{{part.id}}.{{case.id}}">{{test.id}}.{{part.id}} {{case.id}}&nbsp;&nbsp;&nbsp;&nbsp;{{ case.condition }}</h2>
+    <h3 class="center-div">Initial Conditions</h3>
+    {% include 'init_cond_table.html' %}
+</div>
+
+{% if case.is_snapshot %}
+<div class="content">
+    <h3 class="center-div">Test Results</h3>
+    {% include 'snapshot_table.html' %}
+</div>
+{% endif %}
+
+<div class="content">
+    {% if not case.is_snapshot %}<h3 class="center-div">Test Results</h3>{% endif %}
+    {% for plot in case.plots_base64 %}
+        <img class="plot-image" src="data:image/svg;base64,{{ plot }}" alt="Plot Image">
+    {% endfor %}
+
+    {% if not case.plots_base64 %}
+    <p>No plots available.</p>
+    {% endif %}
+</div>
+</body>
+</html>

@@ -1,4 +1,5 @@
 import shutil
+import traceback
 from datetime import datetime
 import os
 import tkinter as tk
@@ -7,30 +8,38 @@ from tkinter import ttk, filedialog
 # import execute_test
 import platform
 
+from test_mode import TestMode
+
 # Check if the OS is Windows
 if platform.system() == "Windows":
     import execute_test
 
     # Define a function to run the test if the module was imported
-    def run_test(test_item, test_dir, mqtg, gui_output, gui_input):
+    def run_test(test_item, test_dir, mode, gui_output, gui_input):
         # Invoke the function from the imported module
-        execute_test.execute_test(test_item, test_dir, mqtg, gui_output, gui_input)
+        execute_test.execute_test(test_item, test_dir, mode, gui_output, gui_input)
 
 from qtg_data_structure import data
 import generate_report
 
 
 root_dir = './data'
+software_version = '1_FTD_2.1.1'
 
 
 # Function to populate the Treeview with test cases
 def populate_tree(tree, data):
     for test in data['tests']:
         for part in test['test_parts']:
-            for case in part['test_cases']:
-                item_id = f"{test['id']}.{part['id']}_{case['id']}"
-                item_text = f"{item_id} - {part['main_title']}: {case['condition']}"
-                tree.insert('', 'end', text=item_text)
+            if part.get('test_cases'):
+                for case in part['test_cases']:
+                    item_id = f"{test['id']}.{part['id']}_{case['id']}"
+                    cond = case.get('name') if case.get('condition') is None else case.get('condition')
+                    item_text = f"{item_id} - {part['main_title']}: {cond}"
+
+                    is_applicable = True if case.get('not_applicable') is None else False
+                    auto_possible = case.get('automatic_testing_possible')
+                    tree.insert('', 'end', text=item_text, values=("", is_applicable, auto_possible))
 
 
 # Function to sort Treeview items alphabetically
@@ -43,7 +52,8 @@ def sort_treeview(tree):
 
 # Function to toggle test type
 def toggle_test_type(tt):
-    return 'Manual' if tt == 'Automatic' else 'Automatic'
+    tt[0] = 'Automatic' if (tt[0] == 'Manual' and eval(tt[2])) else 'Manual'
+    return tt
 
 
 # Function to handle item transfer between Treeviews
@@ -52,13 +62,17 @@ def on_item_click(event, source_tree, target_tree):
     if selected_items:
         for selected_item in selected_items:
             item_text = source_tree.item(selected_item, 'text')
+            item_values = list(source_tree.item(selected_item, 'value'))
             if source_tree == tree_available:
                 # Move item from left to right
-                test_type = 'Automatic'
-                target_tree.insert('', 'end', text=item_text, values=(test_type,))
+                item_values[0] = 'Manual'
+                # item_value[1] means automatic_possible!
+                if eval(item_values[2]):
+                    item_values[0] = 'Automatic'
+                target_tree.insert('', 'end', text=item_text, values=item_values)
             elif source_tree == tree_selected:
                 # Move item from right to left
-                tree_available.insert('', 'end', text=item_text)
+                tree_available.insert('', 'end', text=item_text, values=item_values)
             source_tree.delete(selected_item)
         sort_treeview(source_tree)  # Sort the source treeview
         sort_treeview(target_tree)  # Sort the target treeview
@@ -79,11 +93,10 @@ def on_item_single_click(event, source_tree, target_tree):
     if selected_items:
         for selected_item in selected_items:
             if source_tree == tree_selected:
-                item_values = source_tree.item(selected_item, 'values')
-                test_type = toggle_test_type(item_values[0])  # Toggle the flag
-
                 # Update the item's text and values
-                source_tree.item(selected_item, values=(test_type))
+                item_values = list(source_tree.item(selected_item, 'values'))
+                item_values = toggle_test_type(item_values)
+                source_tree.item(selected_item, values=item_values)
 
 
 # Function to handle double-click
@@ -117,14 +130,19 @@ def on_remove_all_tests():
         on_item_click(None, tree_selected, tree_available)
 
 
+def on_start_reference():
+    gui_output("Starting Reference...")
+    start_testing(create_test_list(), output_dir=directory_var.get(), mode=TestMode.REFERENCE)
+
+
 def on_start_mqtg():
     gui_output("Starting MQTG...")
-    start_testing(create_test_list(), output_dir=directory_var.get(), mqtg=True)
+    start_testing(create_test_list(), output_dir=directory_var.get(), mode=TestMode.MQTG)
 
 
 def on_start_qtg():
     gui_output("Starting QTG...")
-    start_testing(create_test_list(), output_dir=directory_var.get(), mqtg=False)
+    start_testing(create_test_list(), output_dir=directory_var.get(), mode=TestMode.QTG)
 
 
 def create_test_list():
@@ -139,11 +157,13 @@ def create_test_list():
 
         # Create a boolean based on the test_type value
         is_automatic = (item_values[0] == "Automatic")
+        is_applicable = eval(item_values[1])
 
         # Append the processed data to the list
         test_item = {
             'id': test_id,
             'is_automatic': is_automatic,
+            'is_applicable': is_applicable,
             'full_name': item_text,
         }
         items_data.append(test_item)
@@ -165,13 +185,14 @@ def on_input_submit():
         input_text.set(inp)
         gui_output(f"$: {inp}")
         input_var.set("")
-
+        
 
 def gui_input(prompt):
     gui_output(prompt, nl=False)
     root.wait_variable(input_text)  # Block until input_var is updated
     inp = input_text.get()
     return inp
+
 
 # todo: error handling if null
 def get_newest_folder(directory_path):
@@ -191,6 +212,7 @@ def copy_directory_contents(src_dir, dest_dir):
     :param dest_dir: Destination directory path
     """
     # Check if source directory exists
+
     if not os.path.exists(src_dir):
         raise FileNotFoundError(f"The source directory '{src_dir}' does not exist.")
 
@@ -219,16 +241,21 @@ def copy_directory_contents(src_dir, dest_dir):
 
 
 # this is basically the main method that controls all other programs
-def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output, gui_input=gui_input):
+def start_testing(tests: [], output_dir='./', mode=TestMode.QTG, gui_output=gui_output, gui_input=gui_input):
     date_time = datetime.now()  # use this datetime for folder structure and reports
-    
-    qtg_dir = "qtg"
-    if mqtg:
-        qtg_dir = "mqtg"
+
+    qtg_dir = ""
+    reference_data = ""
+    if mode == TestMode.REFERENCE:
+        qtg_dir = "reference"
         reference_data = get_newest_folder(os.path.join(output_dir, "reference_data"))
-    else:
+    elif mode == TestMode.MQTG:
+        qtg_dir = "mqtg"
+        reference_data = get_newest_folder(os.path.join(output_dir, "reference"))
+    elif mode == TestMode.QTG:
+        qtg_dir = "qtg"
         reference_data = get_newest_folder(os.path.join(output_dir, "mqtg"))
-    
+
     # Get the current date and format it as yyyymmdd
     directory_structure = os.path.join(output_dir, qtg_dir, date_time.strftime('%Y%m%d_%H%M%S'))
     # directory_structure = os.path.join(output_dir, qtg_dir, "20240827_091010")    # this is for testing purposes only!
@@ -241,31 +268,32 @@ def start_testing(tests: [], output_dir='./', mqtg=False, gui_output=gui_output,
             ref_dir = os.path.join(reference_data, test_item['id'])
             test_dir = os.path.join(directory_structure, test_item['id'])
 
-            copy_directory_contents(ref_dir, test_dir)
-
-            # todo: check if ref_dir is existing and full with data
-
-            gui_output(f"Save directory: {test_dir}")
-
-            if mqtg:
+            if mode == TestMode.REFERENCE:
                 test_item['is_automatic'] = False
 
-            while True:
-                # execute test
-                if platform.system() == "Windows":
-                    run_test(test_item, test_dir, mqtg, gui_output, gui_input)
-                # execute_test.execute_test(test_item, test_dir, mqtg, gui_output, gui_input)
+            if test_item['is_applicable']:
+                copy_directory_contents(ref_dir, test_dir)
+                gui_output(f"Save directory: {test_dir}")
 
-                # generate report
-                gui_output("Creating Test Report. This may take a second...")
-                test_results[test_item['id']] = generate_report.generate_case_report(test_item, test_dir, date_time, mqtg)
-                gui_output("Done creating Report.\n")
+                while True:
+                    # execute test
+                    if platform.system() == "Windows":
+                        run_test(test_item, test_dir, mode, gui_output, gui_input)
+                    # execute_test.execute_test(test_item, test_dir, mqtg, gui_output, gui_input)
 
-                if gui_input("Do you want to continue with the next test (y) or repeat the current test (n) ? ").lower() == 'y':
-                    break
+                    # generate report
+                    gui_output("Creating Test Report. This may take a second...")
+                    test_results[test_item['id']] = generate_report.generate_case_report(test_item, test_dir, date_time, mode)
+                    gui_output("Done creating Report.\n")
+
+                    if gui_input("Do you want to continue with the next test (y) or repeat the current test (n) ? ").lower() == 'y':
+                        break
+            else:
+                gui_output(f"Test not applicable - skipping. It will be inserted to the main report")
+                test_results[test_item['id']] = generate_report.generate_case_report(test_item, test_dir, date_time, mode)
 
         gui_output("Creating Full Report. This may take a second...")
-        generate_report.create_test_report(test_results, directory_structure)
+        generate_report.create_test_report(test_results, directory_structure, mode)
         gui_output("Done creating Full Report.\n")
         gui_output("COMPLETED!")
 
@@ -306,13 +334,17 @@ def generate_report_only():
 
     parent_name = os.path.basename(os.path.dirname(dir))
     print(parent_name)
-    if parent_name != "mqtg" and parent_name != "qtg":
-        gui_output("Parent dir is not mqtg/qtg. Cancelling.")
+    if parent_name != "reference" and parent_name != "mqtg" and parent_name != "qtg":
+        gui_output("Parent dir is not reference/mqtg/qtg. Cancelling.")
         return
 
-    is_mqtg = False
-    if parent_name == "mqtg":
-        is_mqtg = True
+    mode = TestMode.QTG
+    if parent_name == "reference":
+        mode = TestMode.REFERENCE
+    elif parent_name == "mqtg":
+        mode = TestMode.MQTG
+    elif parent_name == "qtg":
+        mode = TestMode.QTG
 
     on_remove_all_tests()
     select_items_by_ids(tree_available, subfolders)
@@ -328,19 +360,21 @@ def generate_report_only():
     try:
         for test_item in tests:
             gui_output(f"Creating Test Report for {test_item['id']}. This may take a second...")
-            test_results[test_item['id']] = generate_report.generate_case_report(test_item, os.path.join(dir, test_item['id']), test_date, is_mqtg)
+            test_results[test_item['id']] = generate_report.generate_case_report(test_item, os.path.join(dir, test_item['id']), test_date, mode)
 
         gui_output("Creating Full Report. This may take a second...")
-        generate_report.create_test_report(test_results, dir)
+        generate_report.create_test_report(test_results, dir, mode)
         gui_output("Done creating Full Report.\n")
     except Exception as e:
         gui_output(f"Error: {e}")
+        print("Error:", e)  # Print the error message to the console
+        traceback.print_exc()  # Print the stack trace to the console
 
 
 # Initialize and configure the Tkinter window
 if __name__ == "__main__":
     root = tk.Tk()
-    root.title("QTG Generator v0.1")
+    root.title("QTG Generator v1.1")
     root.geometry('1920x1080')
 
     # Initialize flag to indicate a double-click
@@ -367,12 +401,16 @@ if __name__ == "__main__":
     tree_available = ttk.Treeview(frame_left, columns=(), show='tree', height=18)
     tree_available.grid(row=0, column=0, sticky="nsew")
 
-    tree_selected = ttk.Treeview(frame_right, columns=('test_type'), show='tree headings', height=18)
+    tree_selected = ttk.Treeview(frame_right, columns=('test_type', 'is_applicable', 'auto_possible'), show='tree headings', height=18)
     tree_selected.grid(row=0, column=0, sticky="nsew")
     tree_selected.heading('test_type', text='Test Type')
+    tree_selected.heading('is_applicable', text='Applicable')
+    tree_selected.heading('auto_possible', text="Auto possible")
 
     # Set column weights and widths
-    tree_selected.column('test_type', width=70, stretch=tk.NO)
+    tree_selected.column('test_type', width=80, stretch=tk.NO)
+    tree_selected.column('is_applicable', width=80, stretch=tk.NO)
+    tree_selected.column('auto_possible', width=80, stretch=tk.NO)
 
     # Add scrollbars
     scrollbar = ttk.Scrollbar(frame_left, orient=tk.VERTICAL, command=tree_available.yview)
@@ -401,10 +439,13 @@ if __name__ == "__main__":
     select_all_button.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
     remove_all_button = ttk.Button(frame_controls, text="Remove All Tests", command=on_remove_all_tests)
     remove_all_button.grid(row=1, column=1, padx=5, pady=5, sticky="ew")
+
+    start_reference_button = ttk.Button(frame_controls, text="Start Reference", command=on_start_reference)
+    start_reference_button.grid(row=2, column=0, padx=5, pady=5, sticky="ew")
     start_mqtg_button = ttk.Button(frame_controls, text="Start MQTG", command=on_start_mqtg)
-    start_mqtg_button.grid(row=2, column=0, padx=5, pady=5, sticky="ew")
+    start_mqtg_button.grid(row=2, column=1, padx=5, pady=5, sticky="ew")
     start_qtg_button = ttk.Button(frame_controls, text="Start QTG", command=on_start_qtg)
-    start_qtg_button.grid(row=2, column=1, padx=5, pady=5, sticky="ew")
+    start_qtg_button.grid(row=2, column=2, padx=5, pady=5, sticky="ew")
 
     # Create progress text box
     progress_text = tk.Text(frame_progress, height=15, wrap='word')

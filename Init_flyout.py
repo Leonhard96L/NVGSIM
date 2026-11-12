@@ -38,7 +38,7 @@ import numpy as np
 import time
 from datetime import datetime
 
-from function_lib import units_conversion, GW_map, CG_x_map, ft2m, map360, map_control, pitch_brun2N, pitch_brun2angle, \
+from function_lib import units_conversion, CG_x_map, ft2m, map360, map_control, pitch_brun2N, pitch_brun2angle, \
     roll_brun2N, roll_brun2angle, coll_brun2N, coll_brun2angle, yaw_brun2angle, ATRIM_calc, mps2kt, m2ft, mps2fpm, \
     rpm2perc, inv_map_control, split_string
 
@@ -104,6 +104,10 @@ class AxisBitmask(enum.IntEnum):
 
 
 ###All needed NVGSIM Variables
+
+#Button to confirm start
+hardware_pilot_cyclic_radio_ptt = DSim.Variable.Bool(
+    DSim.Node(dsim_entity, "hardware/pilot/cyclic/radio/ptt"))
 
 # read
 reference_frame_inertial_position_latitude = DSim.Variable.Double(
@@ -273,14 +277,83 @@ def logandsave_flyout_init_cond(QTG_path):
     with open(init_cond_FTD_path, 'r') as json_file:
         data = json.load(json_file)
 
-    data["Init_condition_MQTG"] = init_cond_log_dict
+    data["Init_condition_Refer"] = init_cond_log_dict
     with open(init_cond_FTD_path, 'w') as json_file:
         json.dump(data, json_file, indent=4)
 
     print(filename_date + ' wurde unter ' + QTG_path + ' gespeichert!')
 
 
+def math_pilot(QTG_path, T):
+    ref_input_matrix = np.empty((len(T), INPUT.NUMBER_OF_INPUTS))
+    output_matrix = np.empty((len(T), OUTPUT.NUMBER_OF_OUTPUTS))
+    input_matrix = np.empty((len(T), INPUT.NUMBER_OF_INPUTS))
+    force_matrix = np.empty((len(T), INPUT.NUMBER_OF_INPUTS))
 
+    # Get Reference control arrays
+    Input_paths = [
+        os.path.join(QTG_path, 'Control Position Collective.XY.qtgplot.sim'),
+        os.path.join(QTG_path, 'Control Position Roll.XY.qtgplot.sim'),
+        os.path.join(QTG_path, 'Control Position Pitch.XY.qtgplot.sim'),
+        os.path.join(QTG_path, 'Control Position Yaw.XY.qtgplot.sim')]
+
+    for path, i in zip(Input_paths, range(INPUT.NUMBER_OF_INPUTS)):
+        with open(path, 'r') as json_file:
+            data = json.load(json_file)
+        ref_input_matrix[:, i] = data['Storage'][0]['y']
+
+
+
+    # Moog2Brunner - Value mapping
+    
+
+    vec_fun = np.vectorize(inv_map_control)
+
+    
+    ref_input_matrix[:,INPUT.CYCLIC_LONGITUDINAL] = vec_fun(ref_input_matrix[:,INPUT.CYCLIC_LONGITUDINAL],'pitch')
+    ref_input_matrix[:,INPUT.CYCLIC_LATERAL] = vec_fun(ref_input_matrix[:,INPUT.CYCLIC_LATERAL],'roll')
+    ref_input_matrix[:,INPUT.PEDALS] = vec_fun(ref_input_matrix[:,INPUT.PEDALS], 'pedal')
+    ref_input_matrix[:,INPUT.COLLECTIVE] = vec_fun(ref_input_matrix[:,INPUT.COLLECTIVE], 'collective')
+
+
+    i = 0
+    simulation_mode.write(SIM_MODE.RUN)
+
+    while i < len(T) - 1:
+        hardware_pilot_collective_position.write(ref_input_matrix[i, INPUT.COLLECTIVE])
+        hardware_pilot_cyclic_lateral_position.write(ref_input_matrix[i, INPUT.CYCLIC_LATERAL])
+        hardware_pilot_cyclic_longitudinal_position.write(-ref_input_matrix[i, INPUT.CYCLIC_LONGITUDINAL])
+        hardware_pilot_pedals_position.write(-ref_input_matrix[i, INPUT.PEDALS])
+
+        input_matrix[i, INPUT.COLLECTIVE] = hardware_pilot_collective_position.read()
+        input_matrix[i, INPUT.CYCLIC_LATERAL] = hardware_pilot_cyclic_lateral_position.read()
+        input_matrix[i, INPUT.CYCLIC_LONGITUDINAL] = hardware_pilot_cyclic_longitudinal_position.read()
+        input_matrix[i, INPUT.PEDALS] = hardware_pilot_pedals_position.read()
+
+        output_matrix[i, OUTPUT.AIRSPEED] = reference_frame_body_freestream_airspeed.read()
+        output_matrix[i, OUTPUT.GROUNDSPEED] = reference_frame_inertial_position_v_xy.read()
+        output_matrix[i, OUTPUT.RADARALT] = radio_altimeter_altitude.read()
+        output_matrix[i, OUTPUT.E1TRQ] = engine_1_torque.read()
+        output_matrix[i, OUTPUT.E2TRQ] = engine_2_torque.read()
+        output_matrix[i, OUTPUT.ROTORSPEED] = transmisson_n_r.read()
+        output_matrix[i, OUTPUT.PITCH] = reference_frame_inertial_attitude_theta.read()
+        output_matrix[i, OUTPUT.BANK] = reference_frame_inertial_attitude_phi.read()
+        output_matrix[i, OUTPUT.HEADING] = reference_frame_inertial_attitude_psi.read()
+        output_matrix[i, OUTPUT.PITCHRATE] = reference_frame_body_attitude_q.read()
+        output_matrix[i, OUTPUT.ROLLRATE] = reference_frame_body_attitude_p.read()
+        output_matrix[i, OUTPUT.YAWRATE] = reference_frame_body_attitude_r.read()
+        output_matrix[i, OUTPUT.VERTICALSPEED] = reference_frame_inertial_position_v_z.read()
+        output_matrix[i, OUTPUT.SIDESLIP] = reference_frame_body_freestream_beta.read()
+        
+
+        # sleep for dT amount of seconds
+        dT = T[i + 1] - T[i]
+        time.sleep(dT)
+        # increment data row index
+        i += 1
+
+    simulation_mode.write(SIM_MODE.PAUSE)
+    return input_matrix, output_matrix, force_matrix
 
 
 def log_flyout_input_output(T, gui_output):
@@ -355,8 +428,8 @@ def save_io_files(QTG_path, input_matrix, output_matrix, force_matrix, T):
         os.path.join(QTG_path, 'Pitch Angle.XY.qtgplot.sim'),
         os.path.join(QTG_path, 'Roll Angle.XY.qtgplot.sim'),
         os.path.join(QTG_path, 'Yaw Angle Unwrapped.XY.qtgplot.sim'),
-        os.path.join(QTG_path, 'Pitch Angle Rate.XY.qtgplot.sim'),
-        os.path.join(QTG_path, 'Roll Angle Rate.XY.qtgplot.sim'),
+        os.path.join(QTG_path, 'Pitch Rate.XY.qtgplot.sim'),
+        os.path.join(QTG_path, 'Roll Rate.XY.qtgplot.sim'),
         os.path.join(QTG_path, 'Yaw Angle Rate.XY.qtgplot.sim'),
         os.path.join(QTG_path, 'Vertical Speed.XY.qtgplot.sim'),
         os.path.join(QTG_path, 'Angle of Sideslip.XY.qtgplot.sim')
@@ -423,8 +496,13 @@ def save_io_files(QTG_path, input_matrix, output_matrix, force_matrix, T):
 
 
 def set_standard_cond():
-    configuration_loading_empty_mass.write(7500)
-    flightmodel_configuration_cg_x.write(-4.7)
+    configuration_loading_empty_mass.write(2672)
+    flightmodel_configuration_cg_x.write(-3.17)
+    flightmodel_configuration_cg_y.write(0)
+    flightmodel_configuration_inertia_i_xx.write(2711)
+    flightmodel_configuration_inertia_i_xz.write(927)
+    flightmodel_configuration_inertia_i_yy.write(10448)
+    flightmodel_configuration_inertia_i_zz.write(12180)
     configuration_failure_engine_1_failed.write(False)
     configuration_failure_engine_2_failed.write(False)
 
@@ -440,8 +518,17 @@ def set_init_cond_flyout(init_cond_dict):
     reference_frame_inertial_position_latitude.write(LOWL[0])
     reference_frame_inertial_position_longitude.write(LOWL[1])
 
-    configuration_loading_empty_mass.write(GW_map(init_cond_dict['Gross Weight']))
+
+    configuration_loading_empty_mass.write(init_cond_dict['Gross Weight'])
     flightmodel_configuration_cg_x.write(CG_x_map(init_cond_di_si['CG Longitudinal']))
+    flightmodel_configuration_cg_y.write(init_cond_di_si['CG Lateral'])
+    
+    
+    
+    flightmodel_configuration_inertia_i_xx.write(float(init_cond_dict['Moment of Inertia XX']))
+    flightmodel_configuration_inertia_i_xz.write(-float(init_cond_dict['Moment of Inertia XZ']))
+    flightmodel_configuration_inertia_i_yy.write(float(init_cond_dict['Moment of Inertia YY']))
+    flightmodel_configuration_inertia_i_zz.write(float(init_cond_dict['Moment of Inertia ZZ']))
 
     # x -> Pitch achse CG
     # y -> Rollachsen CG
@@ -515,6 +602,8 @@ def get_test_test_part_test_case(tests, test_id, part_id, case_id):
 
 
 def create_plots(QTG_path, part):
+    issnapshot = part['snapshot']
+    output_table_refer =  {}
     
     def plot_cases(data,compare_name,sc_fac):
         if 'FTD1' in data.keys():
@@ -535,6 +624,18 @@ def create_plots(QTG_path, part):
                 y = [map360(i) for i in y]
                 x_label = 'Time(s)'
                 y_label = 'Heading (deg)'
+            elif 'Pitch Rate' in para_file_dict[plot_title]:
+                y=np.rad2deg(y)
+                x_label = 'Time(s)'
+                y_label = 'Angle Rate (deg/s)'
+            elif 'Roll Rate' in para_file_dict[plot_title]:
+                y=np.rad2deg(y)
+                x_label = 'Time(s)'
+                y_label = 'Angle Rate (deg/s)'
+            elif 'Yaw Angle Rate' in para_file_dict[plot_title]:
+                y=np.rad2deg(y)
+                x_label = 'Time(s)'
+                y_label = 'Angle Rate (deg/s)'
             elif 'Roll Angle' in para_file_dict[plot_title]:
                 y=np.rad2deg(y)
                 x_label = 'Time(s)'
@@ -547,10 +648,6 @@ def create_plots(QTG_path, part):
                 y=np.rad2deg(y)
                 x_label = 'Time(s)'
                 y_label = 'Sideslip Angle (deg)'
-            elif 'Angle Rate' in para_file_dict[plot_title]:
-                y=np.rad2deg(y)
-                x_label = 'Time(s)'
-                y_label = 'Angle Rate (deg/s)'
             elif 'Control Position Pitch' in para_file_dict[plot_title]: 
                 y=[map_control(i, 'pitch') for i in y]
                 x_label = 'Time(s)'
@@ -689,7 +786,7 @@ def create_plots(QTG_path, part):
             
 
             pdfname = f"{count}_{plot_title}.svg"
-    
+            pdfname_refer = f"{count}_{plot_title}_refer.svg"
 
             plt.figure(figsize=(10, 6))
 
@@ -702,6 +799,8 @@ def create_plots(QTG_path, part):
             
             plt.autoscale()
             y_min, y_max = plt.ylim()
+            x_min, x_max = plt.xlim()
+            
             y_range = y_max - y_min
             plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
 
@@ -715,7 +814,35 @@ def create_plots(QTG_path, part):
             
             plt.savefig(save_path, format='svg')
             plt.close()
+            
+            ##Neuer Plot (dient als Referenz)
+            x_max_snapshot = 1/x_max*x[-1]
+            x_min_snapshot = 1/(x_max-x_min)*-x_min
+            
+            plt.figure(figsize=(10, 6))
+            if issnapshot:
+                plt.axhline(y = np.mean(y), xmin = x_min_snapshot, xmax = x_max_snapshot, label='Reference')
+                plt.xlim(x_min, x_max)
+                #Table
+                output_table_refer[plot_title +' '+ param['unit']] = [round(np.mean(y),2)]
+            else:
+                plt.plot(x, y, label='Reference')
 
+            ##Section for scale
+            plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
+
+            plt.xlabel(x_label)
+            plt.ylabel(y_label)
+            plt.title(plot_title)
+            plt.legend()
+            plt.grid(True)
+            #plt.show() 
+            save_path = os.path.join(dirpath, pdfname_refer)
+            
+            plt.savefig(save_path, format='svg')
+            plt.close()
+
+            
 
     params_add = part['add_plots']
 
@@ -742,6 +869,7 @@ def create_plots(QTG_path, part):
             
 
             pdfname = f"{count_add}_{plot_title}.svg"
+            pdfname_refer = f"{count_add}_{plot_title}_refer.svg"
             
 
             plt.figure(figsize=(10, 6))
@@ -753,6 +881,7 @@ def create_plots(QTG_path, part):
 
             plt.autoscale()
             y_min, y_max = plt.ylim()
+            x_min, x_max = plt.xlim()
             y_range = y_max - y_min
             plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
 
@@ -766,6 +895,35 @@ def create_plots(QTG_path, part):
             
             plt.savefig(save_path, format='svg')
             plt.close()
+            
+            ##Neuer Plot (dient als Referenz)
+            plt.figure(figsize=(10, 6))
+            if issnapshot:
+                plt.axhline(y = np.mean(y), xmin = x_min_snapshot, xmax = x_max_snapshot, label='Reference')
+                plt.xlim(x_min, x_max)
+                #Table
+                output_table_refer[plot_title +' '+ param_add['unit']] = [round(np.mean(y),2)]
+            else:
+                plt.plot(x, y, label='Reference')
+
+            plt.ylim(y_min - y_range*sc_fac, y_max + y_range*sc_fac)
+
+            plt.xlabel(x_label)
+            plt.ylabel(y_label)
+            plt.title(plot_title)
+            plt.legend()
+            plt.grid(True)
+            #plt.show() 
+            save_path = os.path.join(dirpath, pdfname_refer)
+            
+            plt.savefig(save_path, format='svg')
+            plt.close()
+                
+    if issnapshot:
+        filename = 'output_table_refer.json'
+        output_table_path = os.path.join(QTG_path, filename)
+        with open(output_table_path, 'w') as json_file:
+            json.dump(output_table_refer, json_file, indent=4)
 
 
 
@@ -781,6 +939,8 @@ def main(test_item, test_dir, gui_output, gui_input):
 
     test_id, part_id, case_id = split_string(QTG_name)
     test, part, case = get_test_test_part_test_case(qtg_data_structure.data['tests'], test_id, part_id, case_id)
+    
+    
 
 
     # Zeitdauer des Tests
@@ -796,16 +956,25 @@ def main(test_item, test_dir, gui_output, gui_input):
     simulation_mode.write(SIM_MODE.TRIM)
     time.sleep(1.5)
     simulation_mode.write(SIM_MODE.RUN)
+
+    gui_output("Press ptt button when Pilot is ready")    
     
-    gui_input("Hit Enter if Pilot is ready ")
+    while hardware_pilot_cyclic_radio_ptt.read() == False:
+        time.sleep(0.01)
+        
+
+    #gui_input("Hit Enter if Pilot is ready ")
 
     
     logandsave_flyout_init_cond(QTG_path)
+    #input_matrix, output_matrix, force_matrix = math_pilot(QTG_path, T)
     input_matrix, output_matrix, force_matrix = log_flyout_input_output(T, gui_output)
 
     save_io_files(QTG_path, input_matrix, output_matrix, force_matrix, T)
 
     create_plots(QTG_path, part)
+
+    
 
 
     set_standard_cond()
@@ -813,7 +982,7 @@ def main(test_item, test_dir, gui_output, gui_input):
     LOWL = [48.23380,14.20719]
     reference_frame_inertial_position_latitude.write(LOWL[0])
     reference_frame_inertial_position_longitude.write(LOWL[1])
-    reference_frame_inertial_position_altitude.write(295)
+    reference_frame_inertial_position_altitude.write(296)
     reference_frame_body_freestream_airspeed.write(0)
     reference_frame_inertial_position_v_xy.write(0)
     simulation_mode.write(SIM_MODE.TRIM)
@@ -840,14 +1009,32 @@ Reiser:
 
 
 """
-Einige neue probleme seit dem update:
+Revise MQTG:
+    1. Snapshot tests -> tabellen machen mit Zahlenwerte anstelle von plots
+    2. Beim init flyout kann man alte Referenz zum Vergleichen nehmen
+    3. Die ganzen Umrechnungsfunktionen fuer Gewicht und CG kommen weck. Es wird also nun Gewicht, CG, Traeqheiten uebergeben
+    4. Es wird das initflyout gemacht und beim plotten wird verglichen ob das ganze passt. 
+    5. Das init flyout ist dann die neue Referenz.
+    6. Ein Recurrent QTG ist dann das MQTG. Hier Gilt CTG&M
+    7. Fuer alle weitern QTGs gelten dann die Toleranzen
+    8. Mit neuen Flugmodell Flyout machen und die FTD3 Referenz beibehalten zur kontrolle.
+    9. Gleichzeitig auch snapshottest tabellen generieren lassen und die Plots mit nur einer Linie. Diese werden im Anhang als Referenz definiert.
+    10. Aus den erflogenen Daten wird dann das MQTG aus den automatic recurrent gebildet.
     
-    1. Ich die Kraefte nicht mehr auslesen
-    5. Sobald die Kraefte wieder ausgelsen werden koennen muss ich mir unbedingt die  
-    6. Die plot funktion muss angepasst werden
-    7. Die Scenarios neu konfigurtieren: Brownout
-    8. Eine Sorge noch bei den automatic QTGs ist nur mehr die tests mit KIAS < 10
-    9. Achtung es gibt Test mit Hands off controls -> da den Regler abschalten
+    Schritt fuer Schritt:
+    1. Entnehme init cond aus FTD3 Referenz und versuche die Referenz so gut als moeglich nachzufliegen.
+    2. Generiere die Neuen Plots und Tabelle(snapshot tests) mit init cond.
+    3. MQTG: mache Recurrent QTG auto um das MQTG zu bilden. 
+    
+    
+    
+    Fuer Michi:
+        1. Aus diesem Skript bauen wir die Reference Daten. Durch Manuelles 
+        2. Dafuer gibt es: Test Name, Init cond, Results (Plots und Tables) 
+            -Achtung die Table hat dann nur eine Spalte mit Werten
+        3. Am besten wir machen einen Neuen Ordner. Da gibt es dann 
+        
+        
     
 """
 

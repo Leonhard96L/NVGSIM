@@ -76,10 +76,10 @@ def inv_map_control(x, axis):  # Moog2Brunner
     return round(min_val + (x / 100) * (max_val - min_val),2) 
 
 
-def rpm2perc(x): return round((np.rad2deg(x) / 1590) * 100, 2)
+def rpm2perc(x): return round((np.rad2deg(x) / 2370) * 100, 2)
 
 
-def perc2rpm(x): return round(((np.deg2rad(x) / 100) * 1590), 2)
+def perc2rpm(x): return round(((np.deg2rad(x) / 100) * 2370), 2)
 
 
 def m2ft(x): return x * 3.281
@@ -174,16 +174,28 @@ def ATRIM_calc(x, y):
 # Linear interpolation of GW:
 # EC135T2+ min. GW = 1700kg max.GW = 2980kg
 # AS532 min. GW = 4500kg max.GW = 8600kg
-def GW_map(x):
-    return 4500 + (4100 / 1280) * (float(x) - 1700)
+# =============================================================================
+# def GW_map(x):
+#     return 4500 + (4100 / 1280) * (float(x) - 1700)
+# =============================================================================
 
+
+# =============================================================================
+# # CG_Long
+# # Linear interpolation of CG_x:
+# # EC135T2+ max.AFT = 4541mm max.FWD=4121mm
+# # AS532 max.AFT = -4.97m max.FWD=-4.47m
+# def CG_x_map(x):
+#     return -4.97 + (0.5 / -0.42) * (x - 4.541)
+# =============================================================================
 
 # CG_Long
-# Linear interpolation of CG_x:
 # EC135T2+ max.AFT = 4541mm max.FWD=4121mm
-# AS532 max.AFT = -4.97m max.FWD=-4.47m
+#Calculation from multisim to EC135
+#Coordinate System on the nose of the HC
 def CG_x_map(x):
-    return -4.97 + (0.5 / -0.42) * (x - 4.541)
+     return -(x - 1.2)
+
 
 
 def units_conversion(init_cond_dict, unit):
@@ -230,7 +242,7 @@ def units_conversion(init_cond_dict, unit):
     elif unit == 'Avi':
         init_cond_dict_Avi = init_cond_dict
         init_cond_dict_Avi['Gross Weight'] = round(float(init_cond_dict['Gross Weight']), 2)
-        init_cond_dict_Avi['CG Longitudinal'] = round(float(init_cond_dict['CG Longitudinal']) * m2mm, 2)
+        init_cond_dict_Avi['CG Longitudinal'] = round(float(CG_x_map(init_cond_dict['CG Longitudinal'])) * m2mm, 2)
         init_cond_dict_Avi['CG Lateral'] = round(float(init_cond_dict['CG Lateral']) * m2mm, 1)
         init_cond_dict_Avi['Pressure Altitude'] = round(float(init_cond_dict['Pressure Altitude']) * m2ft, 2)
         init_cond_dict_Avi['Wind Direction'] = round(np.rad2deg(float(init_cond_dict['Wind Direction'])), 2)
@@ -244,7 +256,7 @@ def units_conversion(init_cond_dict, unit):
         init_cond_dict_Avi['Engine 2 Torque'] = round(float(init_cond_dict['Engine 2 Torque']), 2)
         init_cond_dict_Avi['Pitch Angle'] = round(np.rad2deg(float(init_cond_dict['Pitch Angle'])), 2)
         init_cond_dict_Avi['Bank Angle'] = round(np.rad2deg(float(init_cond_dict['Bank Angle'])), 2)
-        init_cond_dict_Avi['Heading'] = map360(float(init_cond_dict['Heading']))
+        init_cond_dict_Avi['Heading'] = round(map360(float(init_cond_dict['Heading'])),2)
         init_cond_dict_Avi['Pitch Rate'] = round(np.rad2deg(float(init_cond_dict['Pitch Rate'])), 2)
         init_cond_dict_Avi['Roll Rate'] = round(np.rad2deg(float(init_cond_dict['Roll Rate'])), 2)
         init_cond_dict_Avi['Yaw Rate'] = round(np.rad2deg(float(init_cond_dict['Yaw Rate'])), 2)

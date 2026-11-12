@@ -1,0 +1,36 @@
+<div class="content">
+    <h2 id="{{test.id}}.{{part.id}}.{{case.id}}">{{test.id}}.{{part.id}} {{case.id}}&nbsp;&nbsp;&nbsp;&nbsp;
+        {% if case.condition %} - {{ case.condition }} {% else %} {{ case.name }} {% endif %}</h2>
+    <h3 class="center-div">Initial Conditions</h3>
+    <p>Not Applicable</p>
+
+    <h3 class="center-div">Manual Test Procedure</h3>
+    <p>Not Applicable</p>
+
+    <h3 class="center-div">Automatic Test Procedure</h3>
+    <p>Not Applicable</p>
+
+    {% if mode != testMode.REFERENCE %}
+        <h3 class="center-div">Tolerances and Evaluation Criteria</h3>
+        <h3>FTD Level 1:</h3>
+        <p>Not Applicable</p>
+    {% endif %}
+
+    <h3 class="center-div">Expected Results</h3>
+    <p>Not Applicable</p>
+
+
+    <h3 class="center-div">Test Results</h3>
+    <p>Not Applicable</p>
+
+    <h3 class="center-div">Source Data</h3>
+    <p>Not Applicable</p>
+
+    <h3 class="center-div">Comparison of Results</h3>
+    <p>Not Applicable</p>
+
+    <h3 class="center-div">Notes and Rationales</h3>
+    <p>Not Applicable</p>
+    {% include 'test_case_footer.html' %}
+    {% include 'test_part_footer.html' %}
+</div>
